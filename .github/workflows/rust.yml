@@ -14,9 +14,9 @@ jobs:
     - name: Install dependencies
       run: rustup component add rustfmt
     - name: Build
-      run: cargo doc --lib --verbose
+      run: cargo doc --lib
     - name: Add index.html
-      run: echo '<meta http-equiv=refresh content=0;url=firestore_grpc/index.html>' > target/doc/index.html
+      run: echo '<!DOCTYPE html><html><head><meta http-equiv=refresh content="0; URL=firestore_grpc/index.html"><title>x</title></head><body>x</body></html>' > target/doc/index.html
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
