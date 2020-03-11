@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ResponseFuture","Future eventually completed with the response to the original request."]]});

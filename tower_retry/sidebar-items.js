@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["budget","A retry \"budget\" for allowing only a certain amount of retries over time."],["future","Future types"]],"struct":[["Retry","Configure retrying requests of \"failed\" responses."],["RetryLayer","Retry requests based on a policy"]],"trait":[["Policy","A \"retry policy\" to classify if a request should be retried."]]});

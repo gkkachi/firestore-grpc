@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["code_generator_response",""]],"struct":[["CodeGeneratorRequest","An encoded CodeGeneratorRequest is written to the plugin's stdin."],["CodeGeneratorResponse","The plugin writes an encoded CodeGeneratorResponse to stdout."],["Version","The version number of protocol compiler."]]});

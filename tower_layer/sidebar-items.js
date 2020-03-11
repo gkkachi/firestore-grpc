@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Identity","A no-op middleware."],["Stack","Two middlewares chained together."]],"trait":[["Layer","Decorates a `Service`, transforming either the request or the response."]]});

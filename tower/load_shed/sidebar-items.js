@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["error","Error types"],["future","Future types"]],"struct":[["LoadShed","A `Service` that sheds load when the inner service isn't ready."],["LoadShedLayer","A `tower-layer` to wrap services in `LoadShed` middleware."]]});

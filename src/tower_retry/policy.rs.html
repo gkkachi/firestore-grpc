@@ -1,0 +1,127 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tower-retry-0.3.0/src/policy.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>policy.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../tower_retry/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
+<span id="2"> 2</span>
+<span id="3"> 3</span>
+<span id="4"> 4</span>
+<span id="5"> 5</span>
+<span id="6"> 6</span>
+<span id="7"> 7</span>
+<span id="8"> 8</span>
+<span id="9"> 9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+</pre><div class="example-wrap"><pre class="rust ">
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">future</span>::<span class="ident">Future</span>;
+
+<span class="doccomment">/// A &quot;retry policy&quot; to classify if a request should be retried.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Example</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// use tower_retry::Policy;</span>
+<span class="doccomment">/// use futures_util::future;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// type Req = String;</span>
+<span class="doccomment">/// type Res = String;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// struct Attempts(usize);</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// impl&lt;E&gt; Policy&lt;Req, Res, E&gt; for Attempts {</span>
+<span class="doccomment">///     type Future = future::Ready&lt;Self&gt;;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     fn retry(&amp;self, req: &amp;Req, result: Result&lt;&amp;Res, &amp;E&gt;) -&gt; Option&lt;Self::Future&gt; {</span>
+<span class="doccomment">///         match result {</span>
+<span class="doccomment">///             Ok(_) =&gt; {</span>
+<span class="doccomment">///                 // Treat all `Response`s as success,</span>
+<span class="doccomment">///                 // so don&#39;t retry...</span>
+<span class="doccomment">///                 None</span>
+<span class="doccomment">///             },</span>
+<span class="doccomment">///             Err(_) =&gt; {</span>
+<span class="doccomment">///                 // Treat all errors as failures...</span>
+<span class="doccomment">///                 // But we limit the number of attempts...</span>
+<span class="doccomment">///                 if self.0 &gt; 0 {</span>
+<span class="doccomment">///                     // Try again!</span>
+<span class="doccomment">///                     Some(future::ready(Attempts(self.0 - 1)))</span>
+<span class="doccomment">///                 } else {</span>
+<span class="doccomment">///                     // Used all our attempts, no retry...</span>
+<span class="doccomment">///                     None</span>
+<span class="doccomment">///                 }</span>
+<span class="doccomment">///             }</span>
+<span class="doccomment">///         }</span>
+<span class="doccomment">///     }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     fn clone_request(&amp;self, req: &amp;Req) -&gt; Option&lt;Req&gt; {</span>
+<span class="doccomment">///         Some(req.clone())</span>
+<span class="doccomment">///     }</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Policy</span><span class="op">&lt;</span><span class="ident">Req</span>, <span class="ident">Res</span>, <span class="ident">E</span><span class="op">&gt;</span>: <span class="ident">Sized</span> {
+    <span class="doccomment">/// The `Future` type returned by `Policy::retry()`.</span>
+    <span class="kw">type</span> <span class="ident">Future</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Check the policy if a certain request should be retried.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This method is passed a reference to the original request, and either</span>
+    <span class="doccomment">/// the `Service::Response` or `Service::Error` from the inner service.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If the request should **not** be retried, return `None`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If the request *should* be retried, return `Some` future of a new</span>
+    <span class="doccomment">/// policy that would apply for the next request attempt.</span>
+    <span class="kw">fn</span> <span class="ident">retry</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="ident">Req</span>, <span class="ident">result</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Res</span>, <span class="kw-2">&amp;</span><span class="ident">E</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Future</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Tries to clone a request before being passed to the inner service.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If the request cannot be cloned, return `None`.</span>
+    <span class="kw">fn</span> <span class="ident">clone_request</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="ident">Req</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Req</span><span class="op">&gt;</span>;
+}
+</pre></div>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "tower_retry";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

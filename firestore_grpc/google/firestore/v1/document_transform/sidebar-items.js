@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["field_transform",""]],"struct":[["FieldTransform","A transformation of a field of the document."]]});

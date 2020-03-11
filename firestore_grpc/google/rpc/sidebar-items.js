@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Status","The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by gRPC. Each `Status` message contains three pieces of data: error code, error message, and error details."]]});

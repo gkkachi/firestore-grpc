@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Cost","Represents the relative cost of communicating with a service."],["Handle","Tracks an in-flight request and updates the RTT-estimate on Drop."],["PeakEwma","Wraps an `S`-typed Service with Peak-EWMA load measurement."],["PeakEwmaDiscover","Wraps a `D`-typed stream of discovery updates with `PeakEwma`."]]});

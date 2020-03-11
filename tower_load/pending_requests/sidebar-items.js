@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Count","Represents the number of currently-pending requests to a given service."],["Handle","Tracks an in-flight request by reference count."],["PendingRequests","Expresses load based on the number of currently-pending requests."],["PendingRequestsDiscover","Wraps `inner`'s services with `PendingRequests`."]]});
