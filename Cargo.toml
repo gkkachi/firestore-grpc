@@ -5,6 +5,7 @@ authors = ["Konosuke Kachi <github@s.k-kachi.net>"]
 edition = "2018"
 license = "MIT"
 repository = "https://github.com/gkkachi/firestore-grpc"
+documentation = "https://gkkachi.github.io/firestore-grpc"
 description = """
 A gRPC client library for Firestore, generated automatically from the API definition files in Google APIs.
 """
