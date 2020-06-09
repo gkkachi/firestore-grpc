@@ -43,6 +43,6 @@ jobs:
     - name: Commit new version
       run: git add . && git commit -m "New version"
     - name: Git push 2
-      run: git push
+      run: git pull && git push
     - name: publish
       run: cargo publish
