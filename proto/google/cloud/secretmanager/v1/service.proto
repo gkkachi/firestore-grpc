@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC.
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
 syntax = "proto3";
 
@@ -253,6 +252,10 @@ message CreateSecretRequest {
   ];
 
   // Required. This must be unique within the project.
+  //
+  // A secret ID is a string with a maximum length of 255 characters and can
+  // contain uppercase and lowercase letters, numerals, and the hyphen (`-`) and
+  // underscore (`_`) characters.
   string secret_id = 2 [(google.api.field_behavior) = REQUIRED];
 
   // Required. A [Secret][google.cloud.secretmanager.v1.Secret] with initial field values.

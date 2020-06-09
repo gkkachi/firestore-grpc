@@ -17,6 +17,7 @@ syntax = "proto3";
 package google.cloud.dialogflow.v2beta1;
 
 import "google/api/annotations.proto";
+import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/cloud/dialogflow/v2beta1/agent.proto";
@@ -29,7 +30,6 @@ import "google/protobuf/field_mask.proto";
 import "google/protobuf/struct.proto";
 import "google/rpc/status.proto";
 import "google/type/latlng.proto";
-import "google/api/client.proto";
 
 option cc_enable_arenas = true;
 option csharp_namespace = "Google.Cloud.Dialogflow.V2beta1";
@@ -40,8 +40,9 @@ option java_package = "com.google.cloud.dialogflow.v2beta1";
 option objc_class_prefix = "DF";
 option (google.api.resource_definition) = {
   type: "dialogflow.googleapis.com/Session"
-  pattern: "projects/{project}/locations/{location}/agent/sessions/{session}"
   pattern: "projects/{project}/agent/sessions/{session}"
+  pattern: "projects/{project}/agent/environments/{environment}/users/{user}/sessions/{session}"
+  pattern: "projects/{project}/locations/{location}/agent/sessions/{session}"
 };
 
 // A session represents an interaction with a user. You retrieve user input
@@ -75,6 +76,7 @@ service Sessions {
         body: "*"
       }
     };
+    option (google.api.method_signature) = "session,query_input";
   }
 
   // Processes a natural language query in audio format in a streaming fashion
@@ -84,8 +86,6 @@ service Sessions {
   }
 }
 
-// ============================================================================
-// Requests and responses for custom methods.
 // The request to detect user's intent.
 message DetectIntentRequest {
   // Required. The name of the session this query is sent to. Format:
@@ -162,6 +162,10 @@ message DetectIntentResponse {
   // multiple default text responses exist, they will be concatenated when
   // generating audio. If no default platform text responses exist, the
   // generated audio content will be empty.
+  //
+  // In some scenarios, multiple output audio fields may be present in the
+  // response structure. In these cases, only the top-most-level audio output
+  // has content.
   bytes output_audio = 4;
 
   // The config used by the speech synthesizer to generate the output audio.
@@ -192,8 +196,11 @@ message QueryParameters {
   // for the session of this query.
   repeated SessionEntityType session_entity_types = 5;
 
-  // This field can be used to pass custom data into the webhook
-  // associated with the agent. Arbitrary JSON objects are supported.
+  // This field can be used to pass custom data to your webhook.
+  // Arbitrary JSON objects are supported.
+  // If supplied, the value is used to populate the
+  // `WebhookRequest.original_detect_intent_request.payload`
+  // field sent to your webhook.
   google.protobuf.Struct payload = 6;
 
   // KnowledgeBases to get alternative results from. If not set, the
@@ -280,6 +287,20 @@ message QueryResult {
   string action = 3;
 
   // The collection of extracted parameters.
+  //
+  // Depending on your protocol or client library language, this is a
+  // map, associative array, symbol table, dictionary, or JSON object
+  // composed of a collection of (MapKey, MapValue) pairs:
+  //
+  // -   MapKey type: string
+  // -   MapKey value: parameter name
+  // -   MapValue type:
+  //     -   If parameter's entity type is a composite entity: map
+  //     -   Else: string or number, depending on parameter value type
+  // -   MapValue value:
+  //     -   If parameter's entity type is a composite entity:
+  //         map from composite entity property names to property values
+  //     -   Else: parameter value
   google.protobuf.Struct parameters = 4;
 
   // This field is set to:
@@ -536,6 +557,10 @@ message StreamingDetectIntentResponse {
   // multiple default text responses exist, they will be concatenated when
   // generating audio. If no default platform text responses exist, the
   // generated audio content will be empty.
+  //
+  // In some scenarios, multiple output audio fields may be present in the
+  // response structure. In these cases, only the top-most-level audio output
+  // has content.
   bytes output_audio = 5;
 
   // The config used by the speech synthesizer to generate the output audio.
@@ -618,6 +643,7 @@ message StreamingRecognitionResult {
 
   // An estimate of the likelihood that the speech recognizer will
   // not change its guess about this interim recognition result:
+  //
   // * If the value is unspecified or 0.0, Dialogflow didn't compute the
   //   stability. In particular, Dialogflow will only provide stability for
   //   `TRANSCRIPT` results with `is_final = false`.
@@ -658,6 +684,20 @@ message EventInput {
   string name = 1;
 
   // The collection of parameters associated with the event.
+  //
+  // Depending on your protocol or client library language, this is a
+  // map, associative array, symbol table, dictionary, or JSON object
+  // composed of a collection of (MapKey, MapValue) pairs:
+  //
+  // -   MapKey type: string
+  // -   MapKey value: parameter name
+  // -   MapValue type:
+  //     -   If parameter's entity type is a composite entity: map
+  //     -   Else: string or number, depending on parameter value type
+  // -   MapValue value:
+  //     -   If parameter's entity type is a composite entity:
+  //         map from composite entity property names to property values
+  //     -   Else: parameter value
   google.protobuf.Struct parameters = 2;
 
   // Required. The language of this query. See [Language

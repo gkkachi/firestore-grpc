@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC.
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
 syntax = "proto3";
 
@@ -141,7 +140,7 @@ message TargetCpm {
 // An automated bidding strategy that sets bids so that a certain percentage of
 // search ads are shown at the top of the first page (or other targeted
 // location).
-// Next Id = 4
+// next tag = 4
 message TargetImpressionShare {
   // The targeted location on the search results page.
   google.ads.googleads.v2.enums.TargetImpressionShareLocationEnum.TargetImpressionShareLocation location = 1;

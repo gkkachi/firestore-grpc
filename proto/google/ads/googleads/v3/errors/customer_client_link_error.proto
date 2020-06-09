@@ -59,6 +59,9 @@ message CustomerClientLinkErrorEnum {
 
     // Parent manager account has the maximum number of linked accounts.
     CUSTOMER_HAS_TOO_MANY_ACCOUNTS_AT_MANAGER = 8;
+
+    // Client has too many managers.
+    CLIENT_HAS_TOO_MANY_MANAGERS = 9;
   }
 
 

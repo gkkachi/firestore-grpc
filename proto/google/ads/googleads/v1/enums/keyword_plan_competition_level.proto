@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC.
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
 syntax = "proto3";
 
@@ -44,13 +43,13 @@ message KeywordPlanCompetitionLevelEnum {
     // The value is unknown in this version.
     UNKNOWN = 1;
 
-    // Low competition.
+    // Low competition. The Competition Index range for this is [0, 33].
     LOW = 2;
 
-    // Medium competition.
+    // Medium competition. The Competition Index range for this is [34, 66].
     MEDIUM = 3;
 
-    // High competition.
+    // High competition. The Competition Index range for this is [67, 100].
     HIGH = 4;
   }
 
