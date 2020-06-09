@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-util-0.3.4/src/stream/stream/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../futures_util/index.html'><div class='logo-container'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-util-0.3.5/src/stream/stream/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../futures_util/index.html'><div class='logo-container'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1239,6 +1239,145 @@
 <span id="1239">1239</span>
 <span id="1240">1240</span>
 <span id="1241">1241</span>
+<span id="1242">1242</span>
+<span id="1243">1243</span>
+<span id="1244">1244</span>
+<span id="1245">1245</span>
+<span id="1246">1246</span>
+<span id="1247">1247</span>
+<span id="1248">1248</span>
+<span id="1249">1249</span>
+<span id="1250">1250</span>
+<span id="1251">1251</span>
+<span id="1252">1252</span>
+<span id="1253">1253</span>
+<span id="1254">1254</span>
+<span id="1255">1255</span>
+<span id="1256">1256</span>
+<span id="1257">1257</span>
+<span id="1258">1258</span>
+<span id="1259">1259</span>
+<span id="1260">1260</span>
+<span id="1261">1261</span>
+<span id="1262">1262</span>
+<span id="1263">1263</span>
+<span id="1264">1264</span>
+<span id="1265">1265</span>
+<span id="1266">1266</span>
+<span id="1267">1267</span>
+<span id="1268">1268</span>
+<span id="1269">1269</span>
+<span id="1270">1270</span>
+<span id="1271">1271</span>
+<span id="1272">1272</span>
+<span id="1273">1273</span>
+<span id="1274">1274</span>
+<span id="1275">1275</span>
+<span id="1276">1276</span>
+<span id="1277">1277</span>
+<span id="1278">1278</span>
+<span id="1279">1279</span>
+<span id="1280">1280</span>
+<span id="1281">1281</span>
+<span id="1282">1282</span>
+<span id="1283">1283</span>
+<span id="1284">1284</span>
+<span id="1285">1285</span>
+<span id="1286">1286</span>
+<span id="1287">1287</span>
+<span id="1288">1288</span>
+<span id="1289">1289</span>
+<span id="1290">1290</span>
+<span id="1291">1291</span>
+<span id="1292">1292</span>
+<span id="1293">1293</span>
+<span id="1294">1294</span>
+<span id="1295">1295</span>
+<span id="1296">1296</span>
+<span id="1297">1297</span>
+<span id="1298">1298</span>
+<span id="1299">1299</span>
+<span id="1300">1300</span>
+<span id="1301">1301</span>
+<span id="1302">1302</span>
+<span id="1303">1303</span>
+<span id="1304">1304</span>
+<span id="1305">1305</span>
+<span id="1306">1306</span>
+<span id="1307">1307</span>
+<span id="1308">1308</span>
+<span id="1309">1309</span>
+<span id="1310">1310</span>
+<span id="1311">1311</span>
+<span id="1312">1312</span>
+<span id="1313">1313</span>
+<span id="1314">1314</span>
+<span id="1315">1315</span>
+<span id="1316">1316</span>
+<span id="1317">1317</span>
+<span id="1318">1318</span>
+<span id="1319">1319</span>
+<span id="1320">1320</span>
+<span id="1321">1321</span>
+<span id="1322">1322</span>
+<span id="1323">1323</span>
+<span id="1324">1324</span>
+<span id="1325">1325</span>
+<span id="1326">1326</span>
+<span id="1327">1327</span>
+<span id="1328">1328</span>
+<span id="1329">1329</span>
+<span id="1330">1330</span>
+<span id="1331">1331</span>
+<span id="1332">1332</span>
+<span id="1333">1333</span>
+<span id="1334">1334</span>
+<span id="1335">1335</span>
+<span id="1336">1336</span>
+<span id="1337">1337</span>
+<span id="1338">1338</span>
+<span id="1339">1339</span>
+<span id="1340">1340</span>
+<span id="1341">1341</span>
+<span id="1342">1342</span>
+<span id="1343">1343</span>
+<span id="1344">1344</span>
+<span id="1345">1345</span>
+<span id="1346">1346</span>
+<span id="1347">1347</span>
+<span id="1348">1348</span>
+<span id="1349">1349</span>
+<span id="1350">1350</span>
+<span id="1351">1351</span>
+<span id="1352">1352</span>
+<span id="1353">1353</span>
+<span id="1354">1354</span>
+<span id="1355">1355</span>
+<span id="1356">1356</span>
+<span id="1357">1357</span>
+<span id="1358">1358</span>
+<span id="1359">1359</span>
+<span id="1360">1360</span>
+<span id="1361">1361</span>
+<span id="1362">1362</span>
+<span id="1363">1363</span>
+<span id="1364">1364</span>
+<span id="1365">1365</span>
+<span id="1366">1366</span>
+<span id="1367">1367</span>
+<span id="1368">1368</span>
+<span id="1369">1369</span>
+<span id="1370">1370</span>
+<span id="1371">1371</span>
+<span id="1372">1372</span>
+<span id="1373">1373</span>
+<span id="1374">1374</span>
+<span id="1375">1375</span>
+<span id="1376">1376</span>
+<span id="1377">1377</span>
+<span id="1378">1378</span>
+<span id="1379">1379</span>
+<span id="1380">1380</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Streams</span>
 <span class="doccomment">//!</span>
@@ -1260,6 +1399,8 @@
 };
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;sink&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">futures_sink</span>::<span class="ident">Sink</span>;
+
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">fns</span>::{<span class="ident">InspectFn</span>, <span class="ident">inspect_fn</span>};
 
 <span class="kw">mod</span> <span class="ident">chain</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
@@ -1286,8 +1427,14 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">filter_map</span>::<span class="ident">FilterMap</span>;
 
 <span class="kw">mod</span> <span class="ident">flatten</span>;
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">flatten</span>::<span class="ident">Flatten</span>;
+
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Stream for the [`inspect`](StreamExt::inspect) method.</span>
+    <span class="ident">Flatten</span><span class="op">&lt;</span><span class="ident">St</span><span class="op">&gt;</span>(
+        <span class="ident">flatten</span>::<span class="ident">Flatten</span><span class="op">&lt;</span><span class="ident">St</span>, <span class="ident">St</span>::<span class="ident">Item</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Sink</span> <span class="op">+</span> <span class="ident">Stream</span> <span class="op">+</span> <span class="ident">FusedStream</span> <span class="op">+</span> <span class="ident">AccessInner</span>[<span class="ident">St</span>, (.)] <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">St</span><span class="op">|</span> <span class="ident">flatten</span>::<span class="ident">Flatten</span>::<span class="ident">new</span>(<span class="ident">x</span>)]
+    <span class="kw">where</span> <span class="ident">St</span>: <span class="ident">Stream</span>
+);
 
 <span class="kw">mod</span> <span class="ident">fold</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
@@ -1295,9 +1442,15 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;sink&quot;</span>)]</span>
 <span class="kw">mod</span> <span class="ident">forward</span>;
+
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;sink&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">forward</span>::<span class="ident">Forward</span>;
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Future for the [`forward`](super::StreamExt::forward) method.</span>
+    <span class="ident">Forward</span><span class="op">&lt;</span><span class="ident">St</span>, <span class="ident">Si</span><span class="op">&gt;</span>(
+        <span class="ident">forward</span>::<span class="ident">Forward</span><span class="op">&lt;</span><span class="ident">St</span>, <span class="ident">Si</span>, <span class="ident">St</span>::<span class="prelude-val">Ok</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Future</span> <span class="op">+</span> <span class="ident">FusedFuture</span> <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">St</span>, <span class="ident">y</span>: <span class="ident">Si</span><span class="op">|</span> <span class="ident">forward</span>::<span class="ident">Forward</span>::<span class="ident">new</span>(<span class="ident">x</span>, <span class="ident">y</span>)]
+    <span class="kw">where</span> <span class="ident">St</span>: <span class="ident">TryStream</span>
+);
 
 <span class="kw">mod</span> <span class="ident">for_each</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
@@ -1311,14 +1464,23 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">into_future</span>::<span class="ident">StreamFuture</span>;
 
-<span class="kw">mod</span> <span class="ident">inspect</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="self">self</span>::<span class="ident">inspect</span>::<span class="ident">inspect</span>; <span class="comment">// used by `TryStreamExt::{inspect_ok, inspect_err}`</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">inspect</span>::<span class="ident">Inspect</span>;
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Stream for the [`inspect`](StreamExt::inspect) method.</span>
+    <span class="ident">Inspect</span><span class="op">&lt;</span><span class="ident">St</span>, <span class="ident">F</span><span class="op">&gt;</span>(
+        <span class="ident">map</span>::<span class="ident">Map</span><span class="op">&lt;</span><span class="ident">St</span>, <span class="ident">InspectFn</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Sink</span> <span class="op">+</span> <span class="ident">Stream</span> <span class="op">+</span> <span class="ident">FusedStream</span> <span class="op">+</span> <span class="ident">AccessInner</span>[<span class="ident">St</span>, (.)] <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">St</span>, <span class="ident">f</span>: <span class="ident">F</span><span class="op">|</span> <span class="ident">map</span>::<span class="ident">Map</span>::<span class="ident">new</span>(<span class="ident">x</span>, <span class="ident">inspect_fn</span>(<span class="ident">f</span>))]
+);
 
 <span class="kw">mod</span> <span class="ident">map</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">map</span>::<span class="ident">Map</span>;
+
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Stream for the [`flat_map`](StreamExt::flat_map) method.</span>
+    <span class="ident">FlatMap</span><span class="op">&lt;</span><span class="ident">St</span>, <span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>(
+        <span class="ident">flatten</span>::<span class="ident">Flatten</span><span class="op">&lt;</span><span class="ident">Map</span><span class="op">&lt;</span><span class="ident">St</span>, <span class="ident">F</span><span class="op">&gt;</span>, <span class="ident">U</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Sink</span> <span class="op">+</span> <span class="ident">Stream</span> <span class="op">+</span> <span class="ident">FusedStream</span> <span class="op">+</span> <span class="ident">AccessInner</span>[<span class="ident">St</span>, (. .)] <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">St</span>, <span class="ident">f</span>: <span class="ident">F</span><span class="op">|</span> <span class="ident">flatten</span>::<span class="ident">Flatten</span>::<span class="ident">new</span>(<span class="ident">Map</span>::<span class="ident">new</span>(<span class="ident">x</span>, <span class="ident">f</span>))]
+);
 
 <span class="kw">mod</span> <span class="ident">next</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
@@ -1348,6 +1510,10 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">take_while</span>::<span class="ident">TakeWhile</span>;
 
+<span class="kw">mod</span> <span class="ident">take_until</span>;
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">take_until</span>::<span class="ident">TakeUntil</span>;
+
 <span class="kw">mod</span> <span class="ident">then</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">then</span>::<span class="ident">Then</span>;
@@ -1361,6 +1527,12 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">chunks</span>::<span class="ident">Chunks</span>;
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
+<span class="kw">mod</span> <span class="ident">ready_chunks</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">ready_chunks</span>::<span class="ident">ReadyChunks</span>;
 
 <span class="kw">mod</span> <span class="ident">scan</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
@@ -1786,10 +1958,46 @@
         <span class="ident">Flatten</span>::<span class="ident">new</span>(<span class="self">self</span>)
     }
 
-    <span class="doccomment">/// Combinator similar to [`StreamExt::fold`] that holds internal state and produces a new stream.</span>
+    <span class="doccomment">/// Maps a stream like [`StreamExt::map`] but flattens nested `Stream`s.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Accepts initial state and closure which will be applied to each element of the stream until provided closure</span>
-    <span class="doccomment">/// returns `None`. Once `None` is returned, stream will be terminated.</span>
+    <span class="doccomment">/// [`StreamExt::map`] is very useful, but if it produces a `Stream` instead,</span>
+    <span class="doccomment">/// you would have to chain combinators like `.map(f).flatten()` while this</span>
+    <span class="doccomment">/// combinator provides ability to write `.flat_map(f)` instead of chaining.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The provided closure which produce inner streams is executed over all elements</span>
+    <span class="doccomment">/// of stream as last inner stream is terminated and next stream item is available.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Note that this function consumes the stream passed into it and returns a</span>
+    <span class="doccomment">/// wrapped version of it, similar to the existing `flat_map` methods in the</span>
+    <span class="doccomment">/// standard library.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// # futures::executor::block_on(async {</span>
+    <span class="doccomment">/// use futures::stream::{self, StreamExt};</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let stream = stream::iter(1..=3);</span>
+    <span class="doccomment">/// let stream = stream.flat_map(|x| stream::iter(vec![x + 3; x]));</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(vec![4, 5, 5, 6, 6, 6], stream.collect::&lt;Vec&lt;_&gt;&gt;().await);</span>
+    <span class="doccomment">/// # });</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">fn</span> <span class="ident">flat_map</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FlatMap</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">U</span>,
+        <span class="ident">U</span>: <span class="ident">Stream</span>,
+        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    {
+        <span class="ident">FlatMap</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>)
+    }
+
+    <span class="doccomment">/// Combinator similar to [`StreamExt::fold`] that holds internal state </span>
+    <span class="doccomment">/// and produces a new stream.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Accepts initial state and closure which will be applied to each element</span>
+    <span class="doccomment">/// of the stream until provided closure returns `None`. Once `None` is</span>
+    <span class="doccomment">/// returned, stream will be terminated.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -1822,7 +2030,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function, like `Iterator::skip_while`, will skip elements on the</span>
     <span class="doccomment">/// stream until the predicate `f` resolves to `false`. Once one element</span>
-    <span class="doccomment">/// returns false all future elements will be returned from the underlying</span>
+    <span class="doccomment">/// returns `false`, all future elements will be returned from the underlying</span>
     <span class="doccomment">/// stream.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
@@ -1853,7 +2061,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function, like `Iterator::take_while`, will take elements from the</span>
     <span class="doccomment">/// stream until the predicate `f` resolves to `false`. Once one element</span>
-    <span class="doccomment">/// returns false it will always return that the stream is done.</span>
+    <span class="doccomment">/// returns `false`, it will always return that the stream is done.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -1876,6 +2084,50 @@
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
         <span class="ident">TakeWhile</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>)
+    }
+
+    <span class="doccomment">/// Take elements from this stream until the provided future resolves.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This function will take elements from the stream until the provided</span>
+    <span class="doccomment">/// stopping future `fut` resolves. Once the `fut` future becomes ready,</span>
+    <span class="doccomment">/// this stream combinator will always return that the stream is done.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The stopping future may return any type. Once the stream is stopped</span>
+    <span class="doccomment">/// the result of the stopping future may be aceessed with `TakeUntil::take_result()`.</span>
+    <span class="doccomment">/// The stream may also be resumed with `TakeUntil::take_future()`.</span>
+    <span class="doccomment">/// See the documentation of [`TakeUntil`] for more information.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// # futures::executor::block_on(async {</span>
+    <span class="doccomment">/// use futures::future;</span>
+    <span class="doccomment">/// use futures::stream::{self, StreamExt};</span>
+    <span class="doccomment">/// use futures::task::Poll;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let stream = stream::iter(1..=10);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut i = 0;</span>
+    <span class="doccomment">/// let stop_fut = future::poll_fn(|_cx| {</span>
+    <span class="doccomment">///     i += 1;</span>
+    <span class="doccomment">///     if i &lt;= 5 {</span>
+    <span class="doccomment">///         Poll::Pending</span>
+    <span class="doccomment">///     } else {</span>
+    <span class="doccomment">///         Poll::Ready(())</span>
+    <span class="doccomment">///     }</span>
+    <span class="doccomment">/// });</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let stream = stream.take_until(stop_fut);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(vec![1, 2, 3, 4, 5], stream.collect::&lt;Vec&lt;_&gt;&gt;().await);</span>
+    <span class="doccomment">/// # });</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">fn</span> <span class="ident">take_until</span><span class="op">&lt;</span><span class="ident">Fut</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">fut</span>: <span class="ident">Fut</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TakeUntil</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Fut</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">Fut</span>: <span class="ident">Future</span>,
+        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    {
+        <span class="ident">TakeUntil</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">fut</span>)
     }
 
     <span class="doccomment">/// Runs this stream to completion, executing the provided asynchronous</span>
@@ -2340,6 +2592,32 @@
         <span class="ident">Chunks</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">capacity</span>)
     }
 
+    <span class="doccomment">/// An adaptor for chunking up ready items of the stream inside a vector.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This combinator will attempt to pull ready items from this stream and</span>
+    <span class="doccomment">/// buffer them into a local vector. At most `capacity` items will get</span>
+    <span class="doccomment">/// buffered before they&#39;re yielded from the returned stream. If underlying</span>
+    <span class="doccomment">/// stream returns `Poll::Pending`, and collected chunk is not empty, it will</span>
+    <span class="doccomment">/// be immediately returned.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If the underlying stream ended and only a partial vector was created,</span>
+    <span class="doccomment">/// it&#39;ll be returned. Additionally if an error happens from the underlying</span>
+    <span class="doccomment">/// stream then the currently buffered items will be yielded.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This method is only available when the `std` or `alloc` feature of this</span>
+    <span class="doccomment">/// library is activated, and it is activated by default.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This method will panic if `capacity` is zero.</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">ready_chunks</span>(<span class="self">self</span>, <span class="ident">capacity</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ReadyChunks</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+        <span class="kw">where</span>
+            <span class="self">Self</span>: <span class="ident">Sized</span>,
+    {
+        <span class="ident">ReadyChunks</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">capacity</span>)
+    }
+
     <span class="doccomment">/// A future that completes after the given stream has been fully processed</span>
     <span class="doccomment">/// into the sink and the sink has been flushed and closed.</span>
     <span class="doccomment">///</span>
@@ -2353,13 +2631,13 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;sink&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">forward</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">sink</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Forward</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">S</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">S</span>: <span class="ident">Sink</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">TryStream</span><span class="op">&gt;</span>::<span class="prelude-val">Ok</span><span class="op">&gt;</span>,
-        <span class="self">Self</span>: <span class="ident">TryStream</span><span class="op">&lt;</span><span class="ident">Error</span> <span class="op">=</span> <span class="ident">S</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span>,
+        <span class="ident">S</span>: <span class="ident">Sink</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="prelude-val">Ok</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span>,
+        <span class="self">Self</span>: <span class="ident">TryStream</span> <span class="op">+</span> <span class="ident">Sized</span>,
     {
         <span class="ident">Forward</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">sink</span>)
     }
 
-    <span class="doccomment">/// Splits this `Stream + Sink` object into separate `Stream` and `Sink`</span>
+    <span class="doccomment">/// Splits this `Stream + Sink` object into separate `Sink` and `Stream`</span>
     <span class="doccomment">/// objects.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This can be useful when you want to split ownership between tasks, or</span>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-0.2.13/src/runtime/builder.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>builder.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../tokio/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-0.2.21/src/runtime/builder.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>builder.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../tokio/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -517,6 +517,9 @@
 <span id="517">517</span>
 <span id="518">518</span>
 <span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">runtime</span>::<span class="ident">handle</span>::<span class="ident">Handle</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">runtime</span>::<span class="ident">shell</span>::<span class="ident">Shell</span>;
@@ -919,12 +922,13 @@
         <span class="doccomment">/// Sets runtime to use a simpler scheduler that runs all tasks on the current-thread.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The executor and all necessary drivers will all be run on the current</span>
-        <span class="doccomment">/// thread during `block_on` calls.</span>
+        <span class="doccomment">/// thread during [`block_on`] calls.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// See also [the module level documentation][1], which has a section on scheduler</span>
         <span class="doccomment">/// types.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// [1]: index.html#runtime-configurations</span>
+        <span class="doccomment">/// [`block_on`]: Runtime::block_on</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">basic_scheduler</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
             <span class="self">self</span>.<span class="ident">kind</span> <span class="op">=</span> <span class="ident">Kind</span>::<span class="ident">Basic</span>;
             <span class="self">self</span>
@@ -945,7 +949,7 @@
             <span class="comment">// the reactor to generate some new stimuli for the futures to continue</span>
             <span class="comment">// in their life.</span>
             <span class="kw">let</span> <span class="ident">scheduler</span> <span class="op">=</span> <span class="ident">BasicScheduler</span>::<span class="ident">new</span>(<span class="ident">driver</span>);
-            <span class="kw">let</span> <span class="ident">spawner</span> <span class="op">=</span> <span class="ident">Spawner</span>::<span class="ident">Basic</span>(<span class="ident">scheduler</span>.<span class="ident">spawner</span>());
+            <span class="kw">let</span> <span class="ident">spawner</span> <span class="op">=</span> <span class="ident">Spawner</span>::<span class="ident">Basic</span>(<span class="ident">scheduler</span>.<span class="ident">spawner</span>().<span class="ident">clone</span>());
 
             <span class="comment">// Blocking pool</span>
             <span class="kw">let</span> <span class="ident">blocking_pool</span> <span class="op">=</span> <span class="ident">blocking</span>::<span class="ident">create_blocking_pool</span>(<span class="self">self</span>, <span class="self">self</span>.<span class="ident">max_threads</span>);
@@ -980,17 +984,19 @@
         }
 
         <span class="kw">fn</span> <span class="ident">build_threaded_runtime</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span> {
+            <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">loom</span>::<span class="ident">sys</span>::<span class="ident">num_cpus</span>;
             <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">runtime</span>::{<span class="ident">Kind</span>, <span class="ident">ThreadPool</span>};
             <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">runtime</span>::<span class="ident">park</span>::<span class="ident">Parker</span>;
+            <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">cmp</span>;
 
-            <span class="kw">let</span> <span class="ident">core_threads</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">core_threads</span>.<span class="ident">unwrap_or_else</span>(<span class="kw">crate</span>::<span class="ident">loom</span>::<span class="ident">sys</span>::<span class="ident">num_cpus</span>);
+            <span class="kw">let</span> <span class="ident">core_threads</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">core_threads</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">cmp</span>::<span class="ident">min</span>(<span class="self">self</span>.<span class="ident">max_threads</span>, <span class="ident">num_cpus</span>()));
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">core_threads</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">max_threads</span>, <span class="string">&quot;Core threads number cannot be above max limit&quot;</span>);
 
             <span class="kw">let</span> <span class="ident">clock</span> <span class="op">=</span> <span class="ident">time</span>::<span class="ident">create_clock</span>();
 
             <span class="kw">let</span> (<span class="ident">io_driver</span>, <span class="ident">io_handle</span>) <span class="op">=</span> <span class="ident">io</span>::<span class="ident">create_driver</span>(<span class="self">self</span>.<span class="ident">enable_io</span>)<span class="question-mark">?</span>;
             <span class="kw">let</span> (<span class="ident">driver</span>, <span class="ident">time_handle</span>) <span class="op">=</span> <span class="ident">time</span>::<span class="ident">create_driver</span>(<span class="self">self</span>.<span class="ident">enable_time</span>, <span class="ident">io_driver</span>, <span class="ident">clock</span>.<span class="ident">clone</span>());
-            <span class="kw">let</span> (<span class="ident">scheduler</span>, <span class="ident">workers</span>) <span class="op">=</span> <span class="ident">ThreadPool</span>::<span class="ident">new</span>(<span class="ident">core_threads</span>, <span class="ident">Parker</span>::<span class="ident">new</span>(<span class="ident">driver</span>));
+            <span class="kw">let</span> (<span class="ident">scheduler</span>, <span class="ident">launch</span>) <span class="op">=</span> <span class="ident">ThreadPool</span>::<span class="ident">new</span>(<span class="ident">core_threads</span>, <span class="ident">Parker</span>::<span class="ident">new</span>(<span class="ident">driver</span>));
             <span class="kw">let</span> <span class="ident">spawner</span> <span class="op">=</span> <span class="ident">Spawner</span>::<span class="ident">ThreadPool</span>(<span class="ident">scheduler</span>.<span class="ident">spawner</span>().<span class="ident">clone</span>());
 
             <span class="comment">// Create the blocking pool</span>
@@ -1007,7 +1013,7 @@
             };
 
             <span class="comment">// Spawn the thread pool workers</span>
-            <span class="ident">workers</span>.<span class="ident">spawn</span>(<span class="kw-2">&amp;</span><span class="ident">handle</span>);
+            <span class="ident">handle</span>.<span class="ident">enter</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">launch</span>.<span class="ident">launch</span>());
 
             <span class="prelude-val">Ok</span>(<span class="ident">Runtime</span> {
                 <span class="ident">kind</span>: <span class="ident">Kind</span>::<span class="ident">ThreadPool</span>(<span class="ident">scheduler</span>),

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-0.2.13/src/io/registration.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>registration.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../tokio/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-0.2.21/src/io/registration.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>registration.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../tokio/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -291,6 +291,49 @@
 <span id="291">291</span>
 <span id="292">292</span>
 <span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">io</span>::<span class="ident">driver</span>::{<span class="ident">platform</span>, <span class="ident">Direction</span>, <span class="ident">Handle</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">util</span>::<span class="ident">slab</span>::<span class="ident">Address</span>;
@@ -360,9 +403,46 @@
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Evented</span>,
     {
+        <span class="ident">Registration</span>::<span class="ident">new_with_ready</span>(<span class="ident">io</span>, <span class="ident">mio</span>::<span class="ident">Ready</span>::<span class="ident">all</span>())
+    }
+
+    <span class="doccomment">/// Registers the I/O resource with the default reactor, for a specific `mio::Ready` state.</span>
+    <span class="doccomment">/// `new_with_ready` should be used over `new` when you need control over the readiness state,</span>
+    <span class="doccomment">/// such as when a file descriptor only allows reads. This does not add `hup` or `error` so if</span>
+    <span class="doccomment">/// you are interested in those states, you will need to add them to the readiness state passed</span>
+    <span class="doccomment">/// to this function.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// An example to listen to read only</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// ##[cfg(unix)]</span>
+    <span class="doccomment">///     mio::Ready::from_usize(</span>
+    <span class="doccomment">///         mio::Ready::readable().as_usize()</span>
+    <span class="doccomment">///         | mio::unix::UnixReady::error().as_usize()</span>
+    <span class="doccomment">///         | mio::unix::UnixReady::hup().as_usize()</span>
+    <span class="doccomment">///     );</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Return</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// - `Ok` if the registration happened successfully</span>
+    <span class="doccomment">/// - `Err` if an error was encountered during registration</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This function panics if thread-local runtime is not set.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The runtime is usually set implicitly when this function is called</span>
+    <span class="doccomment">/// from a future driven by a tokio runtime, otherwise runtime can be set</span>
+    <span class="doccomment">/// explicitly with [`Handle::enter`](crate::runtime::Handle::enter) function.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_with_ready</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">io</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="ident">ready</span>: <span class="ident">mio</span>::<span class="ident">Ready</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Registration</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">Evented</span>,
+    {
         <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">Handle</span>::<span class="ident">current</span>();
         <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">inner</span>) <span class="op">=</span> <span class="ident">handle</span>.<span class="ident">inner</span>() {
-            <span class="ident">inner</span>.<span class="ident">add_source</span>(<span class="ident">io</span>)<span class="question-mark">?</span>
+            <span class="ident">inner</span>.<span class="ident">add_source</span>(<span class="ident">io</span>, <span class="ident">ready</span>)<span class="question-mark">?</span>
         } <span class="kw">else</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(
                 <span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">Other</span>,
@@ -433,6 +513,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function will panic if called from outside of a task context.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">poll_read_ready</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">mio</span>::<span class="ident">Ready</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="comment">// Keep track of task budget</span>
+        <span class="macro">ready</span><span class="macro">!</span>(<span class="kw">crate</span>::<span class="ident">coop</span>::<span class="ident">poll_proceed</span>(<span class="ident">cx</span>));
+
         <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">poll_ready</span>(<span class="ident">Direction</span>::<span class="ident">Read</span>, <span class="prelude-val">Some</span>(<span class="ident">cx</span>))<span class="question-mark">?</span>;
         <span class="kw">match</span> <span class="ident">v</span> {
             <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">v</span>)),
@@ -484,6 +567,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function will panic if called from outside of a task context.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">poll_write_ready</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">mio</span>::<span class="ident">Ready</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="comment">// Keep track of task budget</span>
+        <span class="macro">ready</span><span class="macro">!</span>(<span class="kw">crate</span>::<span class="ident">coop</span>::<span class="ident">poll_proceed</span>(<span class="ident">cx</span>));
+
         <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">poll_ready</span>(<span class="ident">Direction</span>::<span class="ident">Write</span>, <span class="prelude-val">Some</span>(<span class="ident">cx</span>))<span class="question-mark">?</span>;
         <span class="kw">match</span> <span class="ident">v</span> {
             <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">v</span>)),

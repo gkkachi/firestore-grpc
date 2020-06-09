@@ -6,10 +6,4 @@ implementors["tower_limit"] = [{"text":"impl&lt;S&gt; <a class=\"trait\" href=\"
 implementors["tower_load_shed"] = [{"text":"impl&lt;S&gt; <a class=\"trait\" href=\"tower_layer/trait.Layer.html\" title=\"trait tower_layer::Layer\">Layer</a>&lt;S&gt; for <a class=\"struct\" href=\"tower_load_shed/struct.LoadShedLayer.html\" title=\"struct tower_load_shed::LoadShedLayer\">LoadShedLayer</a>","synthetic":false,"types":["tower_load_shed::layer::LoadShedLayer"]}];
 implementors["tower_retry"] = [{"text":"impl&lt;P, S&gt; <a class=\"trait\" href=\"tower_layer/trait.Layer.html\" title=\"trait tower_layer::Layer\">Layer</a>&lt;S&gt; for <a class=\"struct\" href=\"tower_retry/struct.RetryLayer.html\" title=\"struct tower_retry::RetryLayer\">RetryLayer</a>&lt;P&gt; <span class=\"where fmt-newline\">where<br>&nbsp;&nbsp;&nbsp;&nbsp;P: <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html\" title=\"trait core::clone::Clone\">Clone</a>,&nbsp;</span>","synthetic":false,"types":["tower_retry::layer::RetryLayer"]}];
 implementors["tower_timeout"] = [{"text":"impl&lt;S&gt; <a class=\"trait\" href=\"tower_layer/trait.Layer.html\" title=\"trait tower_layer::Layer\">Layer</a>&lt;S&gt; for <a class=\"struct\" href=\"tower_timeout/struct.TimeoutLayer.html\" title=\"struct tower_timeout::TimeoutLayer\">TimeoutLayer</a>","synthetic":false,"types":["tower_timeout::layer::TimeoutLayer"]}];
-
-            if (window.register_implementors) {
-                window.register_implementors(implementors);
-            } else {
-                window.pending_implementors = implementors;
-            }
-        })()
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

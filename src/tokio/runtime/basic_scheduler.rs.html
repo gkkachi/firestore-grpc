@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-0.2.13/src/runtime/basic_scheduler.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>basic_scheduler.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../tokio/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-0.2.21/src/runtime/basic_scheduler.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>basic_scheduler.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../tokio/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -324,59 +324,37 @@
 <span id="324">324</span>
 <span id="325">325</span>
 <span id="326">326</span>
-<span id="327">327</span>
-<span id="328">328</span>
-<span id="329">329</span>
-<span id="330">330</span>
-<span id="331">331</span>
-<span id="332">332</span>
-<span id="333">333</span>
-<span id="334">334</span>
-<span id="335">335</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">park</span>::{<span class="ident">Park</span>, <span class="ident">Unpark</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">task</span>::{<span class="self">self</span>, <span class="ident">queue</span>::<span class="ident">MpscQueues</span>, <span class="ident">JoinHandle</span>, <span class="ident">Schedule</span>, <span class="ident">ScheduleSendOnly</span>, <span class="ident">Task</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">runtime</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">runtime</span>::<span class="ident">task</span>::{<span class="self">self</span>, <span class="ident">JoinHandle</span>, <span class="ident">Schedule</span>, <span class="ident">Task</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">util</span>::<span class="ident">linked_list</span>::<span class="ident">LinkedList</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">util</span>::{<span class="ident">waker_ref</span>, <span class="ident">Wake</span>};
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">cell</span>::<span class="ident">Cell</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">cell</span>::<span class="ident">RefCell</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">VecDeque</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">future</span>::<span class="ident">Future</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">ManuallyDrop</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ptr</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">task</span>::{<span class="ident">RawWaker</span>, <span class="ident">RawWakerVTable</span>, <span class="ident">Waker</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">task</span>::<span class="ident">Poll</span>::<span class="ident">Ready</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Duration</span>;
 
 <span class="doccomment">/// Executes tasks on the current thread</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">BasicScheduler</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">P</span>: <span class="ident">Park</span>,
 {
-    <span class="doccomment">/// Scheduler component</span>
-    <span class="ident">scheduler</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">SchedulerPriv</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Scheduler run queue</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// When the scheduler is executed, the queue is removed from `self` and</span>
+    <span class="doccomment">/// moved into `Context`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This indirection is to allow `BasicScheduler` to be `Send`.</span>
+    <span class="ident">tasks</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Tasks</span><span class="op">&gt;</span>,
 
-    <span class="doccomment">/// Local state</span>
-    <span class="ident">local</span>: <span class="ident">LocalState</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>,
-}
+    <span class="doccomment">/// Sendable task spawner</span>
+    <span class="ident">spawner</span>: <span class="ident">Spawner</span>,
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">Spawner</span> {
-    <span class="ident">scheduler</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">SchedulerPriv</span><span class="op">&gt;</span>,
-}
-
-<span class="doccomment">/// The scheduler component.</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct</span> <span class="ident">SchedulerPriv</span> {
-    <span class="ident">queues</span>: <span class="ident">MpscQueues</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Unpark the blocked thread</span>
-    <span class="ident">unpark</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Unpark</span><span class="op">&gt;</span>,
-}
-
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">SchedulerPriv</span> {}
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">SchedulerPriv</span> {}
-
-<span class="doccomment">/// Local state</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">struct</span> <span class="ident">LocalState</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Current tick</span>
     <span class="ident">tick</span>: <span class="ident">u8</span>,
 
@@ -384,33 +362,76 @@
     <span class="ident">park</span>: <span class="ident">P</span>,
 }
 
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">Spawner</span> {
+    <span class="ident">shared</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Shared</span><span class="op">&gt;</span>,
+}
+
+<span class="kw">struct</span> <span class="ident">Tasks</span> {
+    <span class="doccomment">/// Collection of all active tasks spawned onto this executor.</span>
+    <span class="ident">owned</span>: <span class="ident">LinkedList</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Shared</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+
+    <span class="doccomment">/// Local run queue.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Tasks notified from the current thread are pushed into this queue.</span>
+    <span class="ident">queue</span>: <span class="ident">VecDeque</span><span class="op">&lt;</span><span class="ident">task</span>::<span class="ident">Notified</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Shared</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+}
+
+<span class="doccomment">/// Scheduler state shared between threads.</span>
+<span class="kw">struct</span> <span class="ident">Shared</span> {
+    <span class="doccomment">/// Remote run queue</span>
+    <span class="ident">queue</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">VecDeque</span><span class="op">&lt;</span><span class="ident">task</span>::<span class="ident">Notified</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Shared</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+
+    <span class="doccomment">/// Unpark the blocked thread</span>
+    <span class="ident">unpark</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Unpark</span><span class="op">&gt;</span>,
+}
+
+<span class="doccomment">/// Thread-local context</span>
+<span class="kw">struct</span> <span class="ident">Context</span> {
+    <span class="doccomment">/// Shared scheduler state</span>
+    <span class="ident">shared</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Shared</span><span class="op">&gt;</span>,
+
+    <span class="doccomment">/// Local queue</span>
+    <span class="ident">tasks</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="ident">Tasks</span><span class="op">&gt;</span>,
+}
+
+<span class="doccomment">/// Initial queue capacity</span>
+<span class="kw">const</span> <span class="ident">INITIAL_CAPACITY</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">64</span>;
+
 <span class="doccomment">/// Max number of tasks to poll per tick.</span>
 <span class="kw">const</span> <span class="ident">MAX_TASKS_PER_TICK</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">61</span>;
 
-<span class="macro">thread_local</span><span class="macro">!</span> {
-    <span class="kw">static</span> <span class="ident">ACTIVE</span>: <span class="ident">Cell</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">SchedulerPriv</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Cell</span>::<span class="ident">new</span>(<span class="ident">ptr</span>::<span class="ident">null</span>())
-}
+<span class="doccomment">/// How often ot check the remote queue first</span>
+<span class="kw">const</span> <span class="ident">REMOTE_FIRST_INTERVAL</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">31</span>;
+
+<span class="comment">// Tracks the current BasicScheduler</span>
+<span class="macro">scoped_thread_local</span><span class="macro">!</span>(<span class="kw">static</span> <span class="ident">CURRENT</span>: <span class="ident">Context</span>);
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="ident">BasicScheduler</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">P</span>: <span class="ident">Park</span>,
 {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">park</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BasicScheduler</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">unpark</span> <span class="op">=</span> <span class="ident">park</span>.<span class="ident">unpark</span>();
+        <span class="kw">let</span> <span class="ident">unpark</span> <span class="op">=</span> <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">park</span>.<span class="ident">unpark</span>());
 
         <span class="ident">BasicScheduler</span> {
-            <span class="ident">scheduler</span>: <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">SchedulerPriv</span> {
-                <span class="ident">queues</span>: <span class="ident">MpscQueues</span>::<span class="ident">new</span>(),
-                <span class="ident">unpark</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">unpark</span>),
+            <span class="ident">tasks</span>: <span class="prelude-val">Some</span>(<span class="ident">Tasks</span> {
+                <span class="ident">owned</span>: <span class="ident">LinkedList</span>::<span class="ident">new</span>(),
+                <span class="ident">queue</span>: <span class="ident">VecDeque</span>::<span class="ident">with_capacity</span>(<span class="ident">INITIAL_CAPACITY</span>),
             }),
-            <span class="ident">local</span>: <span class="ident">LocalState</span> { <span class="ident">tick</span>: <span class="number">0</span>, <span class="ident">park</span> },
+            <span class="ident">spawner</span>: <span class="ident">Spawner</span> {
+                <span class="ident">shared</span>: <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Shared</span> {
+                    <span class="ident">queue</span>: <span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">VecDeque</span>::<span class="ident">with_capacity</span>(<span class="ident">INITIAL_CAPACITY</span>)),
+                    <span class="ident">unpark</span>: <span class="ident">unpark</span> <span class="kw">as</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Unpark</span><span class="op">&gt;</span>,
+                }),
+            },
+            <span class="ident">tick</span>: <span class="number">0</span>,
+            <span class="ident">park</span>,
         }
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">spawner</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Spawner</span> {
-        <span class="ident">Spawner</span> {
-            <span class="ident">scheduler</span>: <span class="self">self</span>.<span class="ident">scheduler</span>.<span class="ident">clone</span>(),
-        }
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">spawner</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Spawner</span> {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">spawner</span>
     }
 
     <span class="doccomment">/// Spawns a future onto the thread pool</span>
@@ -419,73 +440,145 @@
         <span class="ident">F</span>: <span class="ident">Future</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">F</span>::<span class="ident">Output</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     {
-        <span class="kw">let</span> (<span class="ident">task</span>, <span class="ident">handle</span>) <span class="op">=</span> <span class="ident">task</span>::<span class="ident">joinable</span>(<span class="ident">future</span>);
-        <span class="self">self</span>.<span class="ident">scheduler</span>.<span class="ident">schedule</span>(<span class="ident">task</span>, <span class="bool-val">true</span>);
-        <span class="ident">handle</span>
+        <span class="self">self</span>.<span class="ident">spawner</span>.<span class="ident">spawn</span>(<span class="ident">future</span>)
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">block_on</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">future</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">F</span>::<span class="ident">Output</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">block_on</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">future</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">F</span>::<span class="ident">Output</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">Future</span>,
     {
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">runtime</span>;
-        <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">pin</span>::<span class="ident">Pin</span>;
-        <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">task</span>::<span class="ident">Context</span>;
-        <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">task</span>::<span class="ident">Poll</span>::<span class="ident">Ready</span>;
+        <span class="ident">enter</span>(<span class="self">self</span>, <span class="op">|</span><span class="ident">scheduler</span>, <span class="ident">context</span><span class="op">|</span> {
+            <span class="kw">let</span> <span class="ident">_enter</span> <span class="op">=</span> <span class="ident">runtime</span>::<span class="ident">enter</span>(<span class="bool-val">false</span>);
+            <span class="kw">let</span> <span class="ident">waker</span> <span class="op">=</span> <span class="ident">waker_ref</span>(<span class="kw-2">&amp;</span><span class="ident">scheduler</span>.<span class="ident">spawner</span>.<span class="ident">shared</span>);
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cx</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">task</span>::<span class="ident">Context</span>::<span class="ident">from_waker</span>(<span class="kw-2">&amp;</span><span class="ident">waker</span>);
 
-        <span class="kw">let</span> <span class="ident">local</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">local</span>;
-        <span class="kw">let</span> <span class="ident">scheduler</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">scheduler</span>;
+            <span class="macro">pin</span><span class="macro">!</span>(<span class="ident">future</span>);
 
-        <span class="kw">struct</span> <span class="ident">Guard</span> {
-            <span class="ident">old</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">SchedulerPriv</span>,
-        }
+            <span class="lifetime">&#39;outer</span>: <span class="kw">loop</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Ready</span>(<span class="ident">v</span>) <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">coop</span>::<span class="ident">budget</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">future</span>.<span class="ident">as_mut</span>().<span class="ident">poll</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">cx</span>)) {
+                    <span class="kw">return</span> <span class="ident">v</span>;
+                }
 
-        <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Guard</span> {
-            <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-                <span class="ident">ACTIVE</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cell</span><span class="op">|</span> <span class="ident">cell</span>.<span class="ident">set</span>(<span class="self">self</span>.<span class="ident">old</span>));
+                <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">MAX_TASKS_PER_TICK</span> {
+                    <span class="comment">// Get and increment the current tick</span>
+                    <span class="kw">let</span> <span class="ident">tick</span> <span class="op">=</span> <span class="ident">scheduler</span>.<span class="ident">tick</span>;
+                    <span class="ident">scheduler</span>.<span class="ident">tick</span> <span class="op">=</span> <span class="ident">scheduler</span>.<span class="ident">tick</span>.<span class="ident">wrapping_add</span>(<span class="number">1</span>);
+
+                    <span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">tick</span> <span class="op">%</span> <span class="ident">REMOTE_FIRST_INTERVAL</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+                        <span class="ident">scheduler</span>
+                            .<span class="ident">spawner</span>
+                            .<span class="ident">pop</span>()
+                            .<span class="ident">or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">context</span>.<span class="ident">tasks</span>.<span class="ident">borrow_mut</span>().<span class="ident">queue</span>.<span class="ident">pop_front</span>())
+                    } <span class="kw">else</span> {
+                        <span class="ident">context</span>
+                            .<span class="ident">tasks</span>
+                            .<span class="ident">borrow_mut</span>()
+                            .<span class="ident">queue</span>
+                            .<span class="ident">pop_front</span>()
+                            .<span class="ident">or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">scheduler</span>.<span class="ident">spawner</span>.<span class="ident">pop</span>())
+                    };
+
+                    <span class="kw">match</span> <span class="ident">next</span> {
+                        <span class="prelude-val">Some</span>(<span class="ident">task</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="ident">coop</span>::<span class="ident">budget</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">task</span>.<span class="ident">run</span>()),
+                        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="comment">// Park until the thread is signaled</span>
+                            <span class="ident">scheduler</span>.<span class="ident">park</span>.<span class="ident">park</span>().<span class="ident">ok</span>().<span class="ident">expect</span>(<span class="string">&quot;failed to park&quot;</span>);
+
+                            <span class="comment">// Try polling the `block_on` future next</span>
+                            <span class="kw">continue</span> <span class="lifetime">&#39;outer</span>;
+                        }
+                    }
+                }
+
+                <span class="comment">// Yield to the park, this drives the timer and pulls any pending</span>
+                <span class="comment">// I/O events.</span>
+                <span class="ident">scheduler</span>
+                    .<span class="ident">park</span>
+                    .<span class="ident">park_timeout</span>(<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">0</span>))
+                    .<span class="ident">ok</span>()
+                    .<span class="ident">expect</span>(<span class="string">&quot;failed to park&quot;</span>);
             }
-        }
-
-        <span class="comment">// Track the current scheduler</span>
-        <span class="kw">let</span> <span class="ident">_guard</span> <span class="op">=</span> <span class="ident">ACTIVE</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cell</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">guard</span> <span class="op">=</span> <span class="ident">Guard</span> { <span class="ident">old</span>: <span class="ident">cell</span>.<span class="ident">get</span>() };
-
-            <span class="ident">cell</span>.<span class="ident">set</span>(<span class="ident">scheduler</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">SchedulerPriv</span>);
-
-            <span class="ident">guard</span>
-        });
-
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">_enter</span> <span class="op">=</span> <span class="ident">runtime</span>::<span class="ident">enter</span>();
-
-        <span class="kw">let</span> <span class="ident">raw_waker</span> <span class="op">=</span> <span class="ident">RawWaker</span>::<span class="ident">new</span>(
-            <span class="ident">scheduler</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">SchedulerPriv</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> (),
-            <span class="kw-2">&amp;</span><span class="ident">RawWakerVTable</span>::<span class="ident">new</span>(<span class="ident">sched_clone_waker</span>, <span class="ident">sched_noop</span>, <span class="ident">sched_wake_by_ref</span>, <span class="ident">sched_noop</span>),
-        );
-
-        <span class="kw">let</span> <span class="ident">waker</span> <span class="op">=</span> <span class="ident">ManuallyDrop</span>::<span class="ident">new</span>(<span class="kw">unsafe</span> { <span class="ident">Waker</span>::<span class="ident">from_raw</span>(<span class="ident">raw_waker</span>) });
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cx</span> <span class="op">=</span> <span class="ident">Context</span>::<span class="ident">from_waker</span>(<span class="kw-2">&amp;</span><span class="ident">waker</span>);
-
-        <span class="comment">// `block_on` takes ownership of `f`. Once it is pinned here, the</span>
-        <span class="comment">// original `f` binding can no longer be accessed, making the</span>
-        <span class="comment">// pinning safe.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">future</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Pin</span>::<span class="ident">new_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">future</span>) };
-
-        <span class="kw">loop</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Ready</span>(<span class="ident">v</span>) <span class="op">=</span> <span class="ident">future</span>.<span class="ident">as_mut</span>().<span class="ident">poll</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">cx</span>) {
-                <span class="kw">return</span> <span class="ident">v</span>;
-            }
-
-            <span class="ident">scheduler</span>.<span class="ident">tick</span>(<span class="ident">local</span>);
-
-            <span class="comment">// Maintenance work</span>
-            <span class="kw">unsafe</span> {
-                <span class="comment">// safety: this function is safe to call only from the</span>
-                <span class="comment">// thread the basic scheduler is running on (which we are).</span>
-                <span class="ident">scheduler</span>.<span class="ident">queues</span>.<span class="ident">drain_pending_drop</span>();
-            }
-        }
+        })
     }
 }
+
+<span class="doccomment">/// Enter the scheduler context. This sets the queue and other necessary</span>
+<span class="doccomment">/// scheduler state in the thread-local</span>
+<span class="kw">fn</span> <span class="ident">enter</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">R</span>, <span class="ident">P</span><span class="op">&gt;</span>(<span class="ident">scheduler</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BasicScheduler</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+<span class="kw">where</span>
+    <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BasicScheduler</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="ident">Context</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>,
+    <span class="ident">P</span>: <span class="ident">Park</span>,
+{
+    <span class="comment">// Ensures the run queue is placed back in the `BasicScheduler` instance</span>
+    <span class="comment">// once `block_on` returns.`</span>
+    <span class="kw">struct</span> <span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">P</span>: <span class="ident">Park</span><span class="op">&gt;</span> {
+        <span class="ident">context</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span>,
+        <span class="ident">scheduler</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">BasicScheduler</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>,
+    }
+
+    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Park</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">P</span><span class="op">&gt;</span> {
+        <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+            <span class="kw">let</span> <span class="ident">Context</span> { <span class="ident">tasks</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">context</span>.<span class="ident">take</span>().<span class="ident">expect</span>(<span class="string">&quot;context missing&quot;</span>);
+            <span class="self">self</span>.<span class="ident">scheduler</span>.<span class="ident">tasks</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">tasks</span>.<span class="ident">into_inner</span>());
+        }
+    }
+
+    <span class="comment">// Remove `tasks` from `self` and place it in a `Context`.</span>
+    <span class="kw">let</span> <span class="ident">tasks</span> <span class="op">=</span> <span class="ident">scheduler</span>.<span class="ident">tasks</span>.<span class="ident">take</span>().<span class="ident">expect</span>(<span class="string">&quot;invalid state&quot;</span>);
+
+    <span class="kw">let</span> <span class="ident">guard</span> <span class="op">=</span> <span class="ident">Guard</span> {
+        <span class="ident">context</span>: <span class="prelude-val">Some</span>(<span class="ident">Context</span> {
+            <span class="ident">shared</span>: <span class="ident">scheduler</span>.<span class="ident">spawner</span>.<span class="ident">shared</span>.<span class="ident">clone</span>(),
+            <span class="ident">tasks</span>: <span class="ident">RefCell</span>::<span class="ident">new</span>(<span class="ident">tasks</span>),
+        }),
+        <span class="ident">scheduler</span>,
+    };
+
+    <span class="kw">let</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident">guard</span>.<span class="ident">context</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>();
+    <span class="kw">let</span> <span class="ident">scheduler</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">guard</span>.<span class="ident">scheduler</span>;
+
+    <span class="ident">CURRENT</span>.<span class="ident">set</span>(<span class="ident">context</span>, <span class="op">|</span><span class="op">|</span> <span class="ident">f</span>(<span class="ident">scheduler</span>, <span class="ident">context</span>))
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">BasicScheduler</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">P</span>: <span class="ident">Park</span>,
+{
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+        <span class="ident">enter</span>(<span class="self">self</span>, <span class="op">|</span><span class="ident">scheduler</span>, <span class="ident">context</span><span class="op">|</span> {
+            <span class="comment">// Loop required here to ensure borrow is dropped between iterations</span>
+            <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">while_let_loop</span>)]</span>
+            <span class="kw">loop</span> {
+                <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">context</span>.<span class="ident">tasks</span>.<span class="ident">borrow_mut</span>().<span class="ident">owned</span>.<span class="ident">pop_back</span>() {
+                    <span class="prelude-val">Some</span>(<span class="ident">task</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">task</span>,
+                    <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">break</span>,
+                };
+
+                <span class="ident">task</span>.<span class="ident">shutdown</span>();
+            }
+
+            <span class="comment">// Drain local queue</span>
+            <span class="kw">for</span> <span class="ident">task</span> <span class="kw">in</span> <span class="ident">context</span>.<span class="ident">tasks</span>.<span class="ident">borrow_mut</span>().<span class="ident">queue</span>.<span class="ident">drain</span>(..) {
+                <span class="ident">task</span>.<span class="ident">shutdown</span>();
+            }
+
+            <span class="comment">// Drain remote queue</span>
+            <span class="kw">for</span> <span class="ident">task</span> <span class="kw">in</span> <span class="ident">scheduler</span>.<span class="ident">spawner</span>.<span class="ident">shared</span>.<span class="ident">queue</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">drain</span>(..) {
+                <span class="ident">task</span>.<span class="ident">shutdown</span>();
+            }
+
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">context</span>.<span class="ident">tasks</span>.<span class="ident">borrow</span>().<span class="ident">owned</span>.<span class="ident">is_empty</span>());
+        });
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Park</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">BasicScheduler</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;BasicScheduler&quot;</span>).<span class="ident">finish</span>()
+    }
+}
+
+<span class="comment">// ===== impl Spawner =====</span>
 
 <span class="kw">impl</span> <span class="ident">Spawner</span> {
     <span class="doccomment">/// Spawns a future onto the thread pool</span>
@@ -495,179 +588,68 @@
         <span class="ident">F</span>::<span class="ident">Output</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     {
         <span class="kw">let</span> (<span class="ident">task</span>, <span class="ident">handle</span>) <span class="op">=</span> <span class="ident">task</span>::<span class="ident">joinable</span>(<span class="ident">future</span>);
-        <span class="self">self</span>.<span class="ident">scheduler</span>.<span class="ident">schedule</span>(<span class="ident">task</span>, <span class="bool-val">true</span>);
+        <span class="self">self</span>.<span class="ident">shared</span>.<span class="ident">schedule</span>(<span class="ident">task</span>);
         <span class="ident">handle</span>
     }
-}
 
-<span class="comment">// === impl SchedulerPriv ===</span>
-
-<span class="kw">impl</span> <span class="ident">SchedulerPriv</span> {
-    <span class="kw">fn</span> <span class="ident">tick</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">local</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">LocalState</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Park</span><span class="op">&gt;</span>) {
-        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">MAX_TASKS_PER_TICK</span> {
-            <span class="comment">// Get the current tick</span>
-            <span class="kw">let</span> <span class="ident">tick</span> <span class="op">=</span> <span class="ident">local</span>.<span class="ident">tick</span>;
-
-            <span class="comment">// Increment the tick</span>
-            <span class="ident">local</span>.<span class="ident">tick</span> <span class="op">=</span> <span class="ident">tick</span>.<span class="ident">wrapping_add</span>(<span class="number">1</span>);
-            <span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-                <span class="comment">// safety: this function is safe to call only from the</span>
-                <span class="comment">// thread the basic scheduler is running on. The `LocalState`</span>
-                <span class="comment">// parameter to this method implies that we are on that thread.</span>
-                <span class="self">self</span>.<span class="ident">queues</span>.<span class="ident">next_task</span>(<span class="ident">tick</span>)
-            };
-
-            <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">next</span> {
-                <span class="prelude-val">Some</span>(<span class="ident">task</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">task</span>,
-                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="ident">local</span>.<span class="ident">park</span>.<span class="ident">park</span>().<span class="ident">ok</span>().<span class="ident">expect</span>(<span class="string">&quot;failed to park&quot;</span>);
-                    <span class="kw">return</span>;
-                }
-            };
-
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">task</span>) <span class="op">=</span> <span class="ident">task</span>.<span class="ident">run</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="op">|</span><span class="op">|</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">into</span>())) {
-                <span class="kw">unsafe</span> {
-                    <span class="comment">// safety: this function is safe to call only from the</span>
-                    <span class="comment">// thread the basic scheduler is running on. The `LocalState`</span>
-                    <span class="comment">// parameter to this method implies that we are on that thread.</span>
-                    <span class="self">self</span>.<span class="ident">queues</span>.<span class="ident">push_local</span>(<span class="ident">task</span>);
-                }
-            }
-        }
-
-        <span class="ident">local</span>
-            .<span class="ident">park</span>
-            .<span class="ident">park_timeout</span>(<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">0</span>))
-            .<span class="ident">ok</span>()
-            .<span class="ident">expect</span>(<span class="string">&quot;failed to park&quot;</span>);
-    }
-
-    <span class="doccomment">/// Schedule the provided task on the scheduler.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If this scheduler is the `ACTIVE` scheduler, enqueue this task on the local queue, otherwise</span>
-    <span class="doccomment">/// the task is enqueued on the remote queue.</span>
-    <span class="kw">fn</span> <span class="ident">schedule</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">task</span>: <span class="ident">Task</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">spawn</span>: <span class="ident">bool</span>) {
-        <span class="kw">let</span> <span class="ident">is_current</span> <span class="op">=</span> <span class="ident">ACTIVE</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cell</span><span class="op">|</span> <span class="ident">cell</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">SchedulerPriv</span>);
-
-        <span class="kw">if</span> <span class="ident">is_current</span> {
-            <span class="kw">unsafe</span> {
-                <span class="comment">// safety: this function is safe to call only from the</span>
-                <span class="comment">// thread the basic scheduler is running on. If `is_current` is</span>
-                <span class="comment">// then we are on that thread.</span>
-                <span class="self">self</span>.<span class="ident">queues</span>.<span class="ident">push_local</span>(<span class="ident">task</span>)
-            };
-        } <span class="kw">else</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lock</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">queues</span>.<span class="ident">remote</span>();
-            <span class="ident">lock</span>.<span class="ident">schedule</span>(<span class="ident">task</span>, <span class="ident">spawn</span>);
-
-            <span class="comment">// while locked, call unpark</span>
-            <span class="self">self</span>.<span class="ident">unpark</span>.<span class="ident">unpark</span>();
-
-            <span class="ident">drop</span>(<span class="ident">lock</span>);
-        }
+    <span class="kw">fn</span> <span class="ident">pop</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">task</span>::<span class="ident">Notified</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Shared</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">shared</span>.<span class="ident">queue</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">pop_front</span>()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Schedule</span> <span class="kw">for</span> <span class="ident">SchedulerPriv</span> {
-    <span class="kw">fn</span> <span class="ident">bind</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">task</span>: <span class="kw-2">&amp;</span><span class="ident">Task</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="comment">// safety: `Queues::add_task` is only safe to call from the thread</span>
-            <span class="comment">// that owns the queues (the thread the scheduler is running on).</span>
-            <span class="comment">// `Scheduler::bind` is called when polling a task that</span>
-            <span class="comment">// doesn&#39;t have a scheduler set. We will only poll new tasks from</span>
-            <span class="comment">// the thread that the scheduler is running on. Therefore, this is</span>
-            <span class="comment">// safe to call.</span>
-            <span class="self">self</span>.<span class="ident">queues</span>.<span class="ident">add_task</span>(<span class="ident">task</span>);
-        }
-    }
-
-    <span class="kw">fn</span> <span class="ident">release</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">task</span>: <span class="ident">Task</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">queues</span>.<span class="ident">release_remote</span>(<span class="ident">task</span>);
-    }
-
-    <span class="kw">fn</span> <span class="ident">release_local</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">task</span>: <span class="kw-2">&amp;</span><span class="ident">Task</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="comment">// safety: `Scheduler::release_local` is only called from the</span>
-            <span class="comment">// thread that the scheduler is running on. The `Schedule` trait&#39;s</span>
-            <span class="comment">// contract is that releasing a task from another thread should call</span>
-            <span class="comment">// `release` rather than `release_local`.</span>
-            <span class="self">self</span>.<span class="ident">queues</span>.<span class="ident">release_local</span>(<span class="ident">task</span>);
-        }
-    }
-
-    <span class="kw">fn</span> <span class="ident">schedule</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">task</span>: <span class="ident">Task</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) {
-        <span class="ident">SchedulerPriv</span>::<span class="ident">schedule</span>(<span class="self">self</span>, <span class="ident">task</span>, <span class="bool-val">false</span>);
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">ScheduleSendOnly</span> <span class="kw">for</span> <span class="ident">SchedulerPriv</span> {}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">BasicScheduler</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">P</span>: <span class="ident">Park</span>,
-{
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="comment">// safety: the `Drop` impl owns the scheduler&#39;s queues. these fields</span>
-            <span class="comment">// will only be accessed when running the scheduler, and it can no</span>
-            <span class="comment">// longer be run, since we are in the process of dropping it.</span>
-
-            <span class="comment">// Shut down the task queues.</span>
-            <span class="self">self</span>.<span class="ident">scheduler</span>.<span class="ident">queues</span>.<span class="ident">shutdown</span>();
-        }
-
-        <span class="comment">// Wait until all tasks have been released.</span>
-        <span class="kw">loop</span> {
-            <span class="kw">unsafe</span> {
-                <span class="self">self</span>.<span class="ident">scheduler</span>.<span class="ident">queues</span>.<span class="ident">drain_pending_drop</span>();
-                <span class="self">self</span>.<span class="ident">scheduler</span>.<span class="ident">queues</span>.<span class="ident">drain_queues</span>();
-
-                <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">scheduler</span>.<span class="ident">queues</span>.<span class="ident">has_tasks_remaining</span>() {
-                    <span class="kw">break</span>;
-                }
-
-                <span class="self">self</span>.<span class="ident">local</span>.<span class="ident">park</span>.<span class="ident">park</span>().<span class="ident">ok</span>().<span class="ident">expect</span>(<span class="string">&quot;park failed&quot;</span>);
-            }
-        }
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">SchedulerPriv</span> {
+<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Spawner</span> {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-        <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Scheduler&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;queues&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">queues</span>)
-            .<span class="ident">finish</span>()
+        <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Spawner&quot;</span>).<span class="ident">finish</span>()
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">sched_clone_waker</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> ()) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RawWaker</span> {
-    <span class="kw">let</span> <span class="ident">s1</span> <span class="op">=</span> <span class="ident">ManuallyDrop</span>::<span class="ident">new</span>(<span class="ident">Arc</span>::<span class="ident">from_raw</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">SchedulerPriv</span>));
+<span class="comment">// ===== impl Shared =====</span>
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">redundant_clone</span>)]</span>
-    <span class="kw">let</span> <span class="ident">s2</span> <span class="op">=</span> <span class="ident">s1</span>.<span class="ident">clone</span>();
+<span class="kw">impl</span> <span class="ident">Schedule</span> <span class="kw">for</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Shared</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">bind</span>(<span class="ident">task</span>: <span class="ident">Task</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Shared</span><span class="op">&gt;</span> {
+        <span class="ident">CURRENT</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">maybe_cx</span><span class="op">|</span> {
+            <span class="kw">let</span> <span class="ident">cx</span> <span class="op">=</span> <span class="ident">maybe_cx</span>.<span class="ident">expect</span>(<span class="string">&quot;scheduler context missing&quot;</span>);
+            <span class="ident">cx</span>.<span class="ident">tasks</span>.<span class="ident">borrow_mut</span>().<span class="ident">owned</span>.<span class="ident">push_front</span>(<span class="ident">task</span>);
+            <span class="ident">cx</span>.<span class="ident">shared</span>.<span class="ident">clone</span>()
+        })
+    }
 
-    <span class="ident">RawWaker</span>::<span class="ident">new</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">s2</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">SchedulerPriv</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> (),
-        <span class="kw-2">&amp;</span><span class="ident">RawWakerVTable</span>::<span class="ident">new</span>(<span class="ident">sched_clone_waker</span>, <span class="ident">sched_wake</span>, <span class="ident">sched_wake_by_ref</span>, <span class="ident">sched_drop</span>),
-    )
+    <span class="kw">fn</span> <span class="ident">release</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">task</span>: <span class="kw-2">&amp;</span><span class="ident">Task</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ptr</span>::<span class="ident">NonNull</span>;
+
+        <span class="ident">CURRENT</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">maybe_cx</span><span class="op">|</span> {
+            <span class="kw">let</span> <span class="ident">cx</span> <span class="op">=</span> <span class="ident">maybe_cx</span>.<span class="ident">expect</span>(<span class="string">&quot;scheduler context missing&quot;</span>);
+
+            <span class="comment">// safety: the task is inserted in the list in `bind`.</span>
+            <span class="kw">unsafe</span> {
+                <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">NonNull</span>::<span class="ident">from</span>(<span class="ident">task</span>.<span class="ident">header</span>());
+                <span class="ident">cx</span>.<span class="ident">tasks</span>.<span class="ident">borrow_mut</span>().<span class="ident">owned</span>.<span class="ident">remove</span>(<span class="ident">ptr</span>)
+            }
+        })
+    }
+
+    <span class="kw">fn</span> <span class="ident">schedule</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">task</span>: <span class="ident">task</span>::<span class="ident">Notified</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) {
+        <span class="ident">CURRENT</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">maybe_cx</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">maybe_cx</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">cx</span>) <span class="kw">if</span> <span class="ident">Arc</span>::<span class="ident">ptr_eq</span>(<span class="self">self</span>, <span class="kw-2">&amp;</span><span class="ident">cx</span>.<span class="ident">shared</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">cx</span>.<span class="ident">tasks</span>.<span class="ident">borrow_mut</span>().<span class="ident">queue</span>.<span class="ident">push_back</span>(<span class="ident">task</span>);
+            }
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="self">self</span>.<span class="ident">queue</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">push_back</span>(<span class="ident">task</span>);
+                <span class="self">self</span>.<span class="ident">unpark</span>.<span class="ident">unpark</span>();
+            }
+        });
+    }
 }
 
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">sched_wake</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> ()) {
-    <span class="kw">let</span> <span class="ident">scheduler</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">from_raw</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">SchedulerPriv</span>);
-    <span class="ident">scheduler</span>.<span class="ident">unpark</span>.<span class="ident">unpark</span>();
-}
+<span class="kw">impl</span> <span class="ident">Wake</span> <span class="kw">for</span> <span class="ident">Shared</span> {
+    <span class="kw">fn</span> <span class="ident">wake</span>(<span class="self">self</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) {
+        <span class="ident">Wake</span>::<span class="ident">wake_by_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>)
+    }
 
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">sched_wake_by_ref</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> ()) {
-    <span class="kw">let</span> <span class="ident">scheduler</span> <span class="op">=</span> <span class="ident">ManuallyDrop</span>::<span class="ident">new</span>(<span class="ident">Arc</span>::<span class="ident">from_raw</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">SchedulerPriv</span>));
-    <span class="ident">scheduler</span>.<span class="ident">unpark</span>.<span class="ident">unpark</span>();
-}
-
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">sched_drop</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> ()) {
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">from_raw</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">SchedulerPriv</span>);
-}
-
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">sched_noop</span>(<span class="ident">_ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> ()) {
-    <span class="macro">unreachable</span><span class="macro">!</span>();
+    <span class="doccomment">/// Wake by reference</span>
+    <span class="kw">fn</span> <span class="ident">wake_by_ref</span>(<span class="ident">arc_self</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) {
+        <span class="ident">arc_self</span>.<span class="ident">unpark</span>.<span class="ident">unpark</span>();
+    }
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "tokio";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

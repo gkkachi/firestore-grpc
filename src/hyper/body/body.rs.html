@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.13.3/src/body/body.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>body.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../hyper/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.13.6/src/body/body.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>body.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../hyper/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -713,8 +713,9 @@
 <span class="kw">use</span> <span class="ident">http</span>::<span class="ident">HeaderMap</span>;
 <span class="kw">use</span> <span class="ident">http_body</span>::{<span class="ident">Body</span> <span class="kw">as</span> <span class="ident">HttpBody</span>, <span class="ident">SizeHint</span>};
 
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">common</span>::<span class="ident">sync_wrapper</span>::<span class="ident">SyncWrapper</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">common</span>::{<span class="ident">task</span>, <span class="ident">watch</span>, <span class="ident">Future</span>, <span class="ident">Never</span>, <span class="ident">Pin</span>, <span class="ident">Poll</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">proto</span>::<span class="ident">h2</span>::<span class="ident">bdp</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">proto</span>::<span class="ident">h2</span>::<span class="ident">ping</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">proto</span>::<span class="ident">DecodedLength</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">upgrade</span>::<span class="ident">OnUpgrade</span>;
 
@@ -740,17 +741,15 @@
         <span class="ident">rx</span>: <span class="ident">mpsc</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Bytes</span>, <span class="kw">crate</span>::<span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     },
     <span class="ident">H2</span> {
-        <span class="ident">bdp</span>: <span class="ident">bdp</span>::<span class="ident">Sampler</span>,
+        <span class="ident">ping</span>: <span class="ident">ping</span>::<span class="ident">Recorder</span>,
         <span class="ident">content_length</span>: <span class="ident">DecodedLength</span>,
         <span class="ident">recv</span>: <span class="ident">h2</span>::<span class="ident">RecvStream</span>,
     },
-    <span class="comment">// NOTE: This requires `Sync` because of how easy it is to use `await`</span>
-    <span class="comment">// while a borrow of a `Request&lt;Body&gt;` exists.</span>
-    <span class="comment">//</span>
-    <span class="comment">// See https://github.com/rust-lang/rust/issues/57017</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stream&quot;</span>)]</span>
     <span class="ident">Wrapped</span>(
-        <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Bytes</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">SyncWrapper</span><span class="op">&lt;</span>
+            <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Bytes</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="op">&gt;</span>,
     ),
 }
 
@@ -858,12 +857,12 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stream&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wrap_stream</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">O</span>, <span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">stream</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Body</span>
     <span class="kw">where</span>
-        <span class="ident">S</span>: <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">O</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">S</span>: <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">O</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">O</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Bytes</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">E</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     {
         <span class="kw">let</span> <span class="ident">mapped</span> <span class="op">=</span> <span class="ident">stream</span>.<span class="ident">map_ok</span>(<span class="ident">Into</span>::<span class="ident">into</span>).<span class="ident">map_err</span>(<span class="ident">Into</span>::<span class="ident">into</span>);
-        <span class="ident">Body</span>::<span class="ident">new</span>(<span class="ident">Kind</span>::<span class="ident">Wrapped</span>(<span class="ident">Box</span>::<span class="ident">pin</span>(<span class="ident">mapped</span>)))
+        <span class="ident">Body</span>::<span class="ident">new</span>(<span class="ident">Kind</span>::<span class="ident">Wrapped</span>(<span class="ident">SyncWrapper</span>::<span class="ident">new</span>(<span class="ident">Box</span>::<span class="ident">pin</span>(<span class="ident">mapped</span>))))
     }
 
     <span class="doccomment">/// Converts this `Body` into a `Future` of a pending HTTP upgrade.</span>
@@ -882,10 +881,10 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">h2</span>(
         <span class="ident">recv</span>: <span class="ident">h2</span>::<span class="ident">RecvStream</span>,
         <span class="ident">content_length</span>: <span class="ident">DecodedLength</span>,
-        <span class="ident">bdp</span>: <span class="ident">bdp</span>::<span class="ident">Sampler</span>,
+        <span class="ident">ping</span>: <span class="ident">ping</span>::<span class="ident">Recorder</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">Body</span>::<span class="ident">new</span>(<span class="ident">Kind</span>::<span class="ident">H2</span> {
-            <span class="ident">bdp</span>,
+            <span class="ident">ping</span>,
             <span class="ident">content_length</span>,
             <span class="ident">recv</span>,
         });
@@ -967,14 +966,14 @@
                 }
             }
             <span class="ident">Kind</span>::<span class="ident">H2</span> {
-                <span class="kw-2">ref</span> <span class="ident">bdp</span>,
+                <span class="kw-2">ref</span> <span class="ident">ping</span>,
                 <span class="ident">recv</span>: <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">h2</span>,
                 <span class="ident">content_length</span>: <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">len</span>,
             } <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="macro">ready</span><span class="macro">!</span>(<span class="ident">h2</span>.<span class="ident">poll_data</span>(<span class="ident">cx</span>)) {
                 <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">bytes</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">h2</span>.<span class="ident">flow_control</span>().<span class="ident">release_capacity</span>(<span class="ident">bytes</span>.<span class="ident">len</span>());
                     <span class="ident">len</span>.<span class="ident">sub_if</span>(<span class="ident">bytes</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>);
-                    <span class="ident">bdp</span>.<span class="ident">sample</span>(<span class="ident">bytes</span>.<span class="ident">len</span>());
+                    <span class="ident">ping</span>.<span class="ident">record_data</span>(<span class="ident">bytes</span>.<span class="ident">len</span>());
                     <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">bytes</span>)))
                 }
                 <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="kw">crate</span>::<span class="ident">Error</span>::<span class="ident">new_body</span>(<span class="ident">e</span>)))),
@@ -982,7 +981,7 @@
             },
 
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stream&quot;</span>)]</span>
-            <span class="ident">Kind</span>::<span class="ident">Wrapped</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="macro">ready</span><span class="macro">!</span>(<span class="ident">s</span>.<span class="ident">as_mut</span>().<span class="ident">poll_next</span>(<span class="ident">cx</span>)) {
+            <span class="ident">Kind</span>::<span class="ident">Wrapped</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="macro">ready</span><span class="macro">!</span>(<span class="ident">s</span>.<span class="ident">get_mut</span>().<span class="ident">as_mut</span>().<span class="ident">poll_next</span>(<span class="ident">cx</span>)) {
                 <span class="prelude-val">Some</span>(<span class="ident">res</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="prelude-val">Some</span>(<span class="ident">res</span>.<span class="ident">map_err</span>(<span class="kw">crate</span>::<span class="ident">Error</span>::<span class="ident">new_body</span>))),
                 <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="prelude-val">None</span>),
             },
@@ -999,7 +998,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Body</span> {
-    <span class="doccomment">/// Returns [`Body::empty()`](Body::empty).</span>
+    <span class="doccomment">/// Returns `Body::empty()`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Body</span> {
         <span class="ident">Body</span>::<span class="ident">empty</span>()
@@ -1023,9 +1022,14 @@
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">HeaderMap</span><span class="op">&gt;</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">kind</span> {
             <span class="ident">Kind</span>::<span class="ident">H2</span> {
-                <span class="ident">recv</span>: <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">h2</span>, ..
+                <span class="ident">recv</span>: <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">h2</span>,
+                <span class="kw-2">ref</span> <span class="ident">ping</span>,
+                ..
             } <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="macro">ready</span><span class="macro">!</span>(<span class="ident">h2</span>.<span class="ident">poll_trailers</span>(<span class="ident">cx</span>)) {
-                <span class="prelude-val">Ok</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">t</span>)),
+                <span class="prelude-val">Ok</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">ping</span>.<span class="ident">record_non_data</span>();
+                    <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">t</span>))
+                }
                 <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="prelude-val">Err</span>(<span class="kw">crate</span>::<span class="ident">Error</span>::<span class="ident">new_h2</span>(<span class="ident">e</span>))),
             },
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)),
@@ -1099,16 +1103,12 @@
 <span class="doccomment">/// This function requires enabling the `stream` feature in your</span>
 <span class="doccomment">/// `Cargo.toml`.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stream&quot;</span>)]</span>
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Bytes</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">for</span> <span class="ident">Body</span>
-{
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Bytes</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Body</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">from</span>(
-        <span class="ident">stream</span>: <span class="ident">Box</span><span class="op">&lt;</span>
-            <span class="kw">dyn</span> <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Bytes</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>,
-        <span class="op">&gt;</span>,
+        <span class="ident">stream</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Bytes</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Body</span> {
-        <span class="ident">Body</span>::<span class="ident">new</span>(<span class="ident">Kind</span>::<span class="ident">Wrapped</span>(<span class="ident">stream</span>.<span class="ident">into</span>()))
+        <span class="ident">Body</span>::<span class="ident">new</span>(<span class="ident">Kind</span>::<span class="ident">Wrapped</span>(<span class="ident">SyncWrapper</span>::<span class="ident">new</span>(<span class="ident">stream</span>.<span class="ident">into</span>())))
     }
 }
 
@@ -1262,17 +1262,17 @@
     <span class="kw">fn</span> <span class="ident">test_size_of</span>() {
         <span class="comment">// These are mostly to help catch *accidentally* increasing</span>
         <span class="comment">// the size by too much.</span>
-        <span class="macro">assert_eq</span><span class="macro">!</span>(
-            <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span>(),
-            <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="number">5</span> <span class="op">+</span> <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>(),
-            <span class="string">&quot;Body&quot;</span>
+
+        <span class="kw">let</span> <span class="ident">body_size</span> <span class="op">=</span> <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span>();
+        <span class="kw">let</span> <span class="ident">body_expected_size</span> <span class="op">=</span> <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="number">6</span>;
+        <span class="macro">assert</span><span class="macro">!</span>(
+            <span class="ident">body_size</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">body_expected_size</span>,
+            <span class="string">&quot;Body size = {} &lt;= {}&quot;</span>,
+            <span class="ident">body_size</span>,
+            <span class="ident">body_expected_size</span>,
         );
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(
-            <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span>(),
-            <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
-            <span class="string">&quot;Option&lt;Body&gt;&quot;</span>
-        );
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">body_size</span>, <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span><span class="op">&gt;</span>(), <span class="string">&quot;Option&lt;Body&gt;&quot;</span>);
 
         <span class="macro">assert_eq</span><span class="macro">!</span>(
             <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Sender</span><span class="op">&gt;</span>(),

@@ -16,10 +16,4 @@ implementors["tonic"] = [{"text":"impl&lt;VE:&nbsp;ValueEncoding&gt; <a class=\"
 implementors["tower_load"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html\" title=\"trait core::cmp::Ord\">Ord</a> for <a class=\"struct\" href=\"tower_load/pending_requests/struct.Count.html\" title=\"struct tower_load::pending_requests::Count\">Count</a>","synthetic":false,"types":["tower_load::pending_requests::Count"]}];
 implementors["tracing"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html\" title=\"trait core::cmp::Ord\">Ord</a> for <a class=\"struct\" href=\"tracing/level_filters/struct.LevelFilter.html\" title=\"struct tracing::level_filters::LevelFilter\">LevelFilter</a>","synthetic":false,"types":["tracing::level_filters::LevelFilter"]}];
 implementors["tracing_core"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html\" title=\"trait core::cmp::Ord\">Ord</a> for <a class=\"struct\" href=\"tracing_core/metadata/struct.Level.html\" title=\"struct tracing_core::metadata::Level\">Level</a>","synthetic":false,"types":["tracing_core::metadata::Level"]}];
-
-            if (window.register_implementors) {
-                window.register_implementors(implementors);
-            } else {
-                window.pending_implementors = implementors;
-            }
-        })()
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

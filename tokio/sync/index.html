@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `sync` mod in crate `tokio`."><meta name="keywords" content="rust, rustlang, rust-lang, sync"><title>tokio::sync - Rust</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../tokio/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a><p class='location'>Module sync</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li></ul></div><p class='location'><a href='../index.html'>tokio</a></p><script>window.sidebarCurrent = {name: 'sync', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../../src/tokio/sync/mod.rs.html#1-471' title='goto source code'>[src]</a></span><span class='in-band'>Module <a href='../index.html'>tokio</a>::<wbr><a class="mod" href=''>sync</a></span></h1><div class='docblock'><p>Synchronization primitives for use in asynchronous contexts.</p>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `sync` mod in crate `tokio`."><meta name="keywords" content="rust, rustlang, rust-lang, sync"><title>tokio::sync - Rust</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../tokio/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a><p class='location'>Module sync</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li></ul></div><p class='location'><a href='../index.html'>tokio</a></p><script>window.sidebarCurrent = {name: 'sync', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../../src/tokio/sync/mod.rs.html#1-482' title='goto source code'>[src]</a></span><span class='in-band'>Module <a href='../index.html'>tokio</a>::<wbr><a class="mod" href=''>sync</a></span></h1><div class='docblock'><p>Synchronization primitives for use in asynchronous contexts.</p>
 <p>Tokio programs tend to be organized as a set of <a href="crate::task">tasks</a> where each task
 operates independently and may be executed on separate physical threads. The
 synchronization primitives provided in this module permit these independent
@@ -20,7 +20,7 @@ patterns are best handled with different implementations.</p>
 <p>The [<code>oneshot</code> channel][oneshot] supports sending a <strong>single</strong> value from a
 single producer to a single consumer. This channel is usually used to send
 the result of a computation to a waiter.</p>
-<p><strong>Example:</strong> using a <code>oneshot</code> channel to receive the result of a
+<p><strong>Example:</strong> using a [<code>oneshot</code> channel][oneshot] to receive the result of a
 computation.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -102,7 +102,7 @@ given time. Properly setting this value is key in implementing robust
 programs as the channel capacity plays a critical part in handling back
 pressure.</p>
 <p>A common concurrency pattern for resource management is to spawn a task
-dedicated to managing that resource and using message passing betwen other
+dedicated to managing that resource and using message passing between other
 tasks to interact with the resource. The resource may be anything that may
 not be concurrently used. Some examples include a socket and program state.
 For example, if multiple tasks need to send data over a single socket, spawn
@@ -201,7 +201,7 @@ sent over the provided <code>oneshot</code> channel.</p>
     }
 }</pre></div>
 <h2 id="broadcast-channel" class="section-header"><a href="#broadcast-channel"><code>broadcast</code> channel</a></h2>
-<p>The [<code>broadcast</code> channel][broadcast] supports sending <strong>many</strong> values from
+<p>The <a href="crate::sync::broadcast"><code>broadcast</code> channel</a> supports sending <strong>many</strong> values from
 <strong>many</strong> producers to <strong>many</strong> consumers. Each consumer will receive
 <strong>each</strong> value. This channel can be used to implement &quot;fan out&quot; style
 patterns common with pub / sub or &quot;chat&quot; systems.</p>
@@ -231,17 +231,17 @@ has its use cases.</p>
     <span class="ident">tx</span>.<span class="ident">send</span>(<span class="number">20</span>).<span class="ident">unwrap</span>();
 }</pre></div>
 <h2 id="watch-channel" class="section-header"><a href="#watch-channel"><code>watch</code> channel</a></h2>
-<p>The [<code>watch</code> channel][watch] supports sending <strong>many</strong> values from a
-<strong>single</strong> producer to <strong>many</strong> consumers. However, only the <strong>most recent</strong>
-value is stored in the channel. Consumers are notified when a new value is
-sent, but there is no guarantee that consumers will see <strong>all</strong> values.</p>
-<p>The [<code>watch</code> channel] is similar to a [<code>broadcast</code> channel] with capacity 1.</p>
-<p>Use cases for the [<code>watch</code> channel] include broadcasting configuration
+<p>The <a href="crate::sync::watch"><code>watch</code> channel</a> supports sending <strong>many</strong> values from a <strong>single</strong>
+producer to <strong>many</strong> consumers. However, only the <strong>most recent</strong> value is
+stored in the channel. Consumers are notified when a new value is sent, but
+there is no guarantee that consumers will see <strong>all</strong> values.</p>
+<p>The <a href="crate::sync::watch"><code>watch</code> channel</a> is similar to a <a href="crate::sync::broadcast"><code>broadcast</code> channel</a> with capacity 1.</p>
+<p>Use cases for the <a href="crate::sync::watch"><code>watch</code> channel</a> include broadcasting configuration
 changes or signalling program state changes, such as transitioning to
 shutdown.</p>
-<p><strong>Example:</strong> use a <code>watch</code> channel to notify tasks of configuration changes.
-In this example, a configuration file is checked periodically. When the file
-changes, the configuration changes are signalled to consumers.</p>
+<p><strong>Example:</strong> use a <a href="crate::sync::watch"><code>watch</code> channel</a> to notify tasks of configuration
+changes. In this example, a configuration file is checked periodically. When
+the file changes, the configuration changes are signalled to consumers.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">tokio</span>::<span class="ident">sync</span>::<span class="ident">watch</span>;
@@ -393,14 +393,17 @@ value.</p>
 </td></tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table><tr class='module-item'><td><a class="struct" href="struct.Barrier.html" title='tokio::sync::Barrier struct'>Barrier</a></td><td class='docblock-short'><p>A barrier enables multiple threads to synchronize the beginning of some computation.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.BarrierWaitResult.html" title='tokio::sync::BarrierWaitResult struct'>BarrierWaitResult</a></td><td class='docblock-short'><p>A <code>BarrierWaitResult</code> is returned by <code>wait</code> when all threads in the <code>Barrier</code> have rendezvoused.</p>
-</td></tr><tr class='module-item'><td><a class="struct" href="struct.Mutex.html" title='tokio::sync::Mutex struct'>Mutex</a></td><td class='docblock-short'><p>An asynchronous mutual exclusion primitive useful for protecting shared data</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.Mutex.html" title='tokio::sync::Mutex struct'>Mutex</a></td><td class='docblock-short'><p>An asynchronous <code>Mutex</code>-like type.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.MutexGuard.html" title='tokio::sync::MutexGuard struct'>MutexGuard</a></td><td class='docblock-short'><p>A handle to a held <code>Mutex</code>.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.Notify.html" title='tokio::sync::Notify struct'>Notify</a></td><td class='docblock-short'><p>Notify a single task to wake up.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.OwnedMutexGuard.html" title='tokio::sync::OwnedMutexGuard struct'>OwnedMutexGuard</a></td><td class='docblock-short'><p>An owned handle to a held <code>Mutex</code>.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.OwnedSemaphorePermit.html" title='tokio::sync::OwnedSemaphorePermit struct'>OwnedSemaphorePermit</a></td><td class='docblock-short'><p>An owned permit from the semaphore.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.RwLock.html" title='tokio::sync::RwLock struct'>RwLock</a></td><td class='docblock-short'><p>An asynchronous reader-writer lock</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.RwLockReadGuard.html" title='tokio::sync::RwLockReadGuard struct'>RwLockReadGuard</a></td><td class='docblock-short'><p>RAII structure used to release the shared read access of a lock when
 dropped.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.RwLockWriteGuard.html" title='tokio::sync::RwLockWriteGuard struct'>RwLockWriteGuard</a></td><td class='docblock-short'><p>RAII structure used to release the exclusive write access of a lock when
 dropped.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.Semaphore.html" title='tokio::sync::Semaphore struct'>Semaphore</a></td><td class='docblock-short'><p>Counting semaphore performing asynchronous permit aquisition.</p>
-</td></tr><tr class='module-item'><td><a class="struct" href="struct.SemaphorePermit.html" title='tokio::sync::SemaphorePermit struct'>SemaphorePermit</a></td><td class='docblock-short'><p>A permit from the semaphore</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.SemaphorePermit.html" title='tokio::sync::SemaphorePermit struct'>SemaphorePermit</a></td><td class='docblock-short'><p>A permit from the semaphore.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.TryLockError.html" title='tokio::sync::TryLockError struct'>TryLockError</a></td><td class='docblock-short'><p>Error returned from the <a href="Mutex::try_lock"><code>Mutex::try_lock</code></a> function.</p>
 </td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "tokio";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script defer src="../../search-index.js"></script></body></html>

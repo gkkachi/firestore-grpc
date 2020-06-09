@@ -18,10 +18,4 @@ implementors["tonic"] = [{"text":"impl&lt;VE:&nbsp;<a class=\"trait\" href=\"htt
 implementors["tracing"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html\" title=\"trait core::hash::Hash\">Hash</a> for <a class=\"struct\" href=\"tracing/span/struct.Span.html\" title=\"struct tracing::span::Span\">Span</a>","synthetic":false,"types":["tracing::span::Span"]}];
 implementors["tracing_core"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html\" title=\"trait core::hash::Hash\">Hash</a> for <a class=\"struct\" href=\"tracing_core/callsite/struct.Identifier.html\" title=\"struct tracing_core::callsite::Identifier\">Identifier</a>","synthetic":false,"types":["tracing_core::callsite::Identifier"]},{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html\" title=\"trait core::hash::Hash\">Hash</a> for <a class=\"struct\" href=\"tracing_core/field/struct.Field.html\" title=\"struct tracing_core::field::Field\">Field</a>","synthetic":false,"types":["tracing_core::field::Field"]},{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html\" title=\"trait core::hash::Hash\">Hash</a> for <a class=\"struct\" href=\"tracing_core/span/struct.Id.html\" title=\"struct tracing_core::span::Id\">Id</a>","synthetic":false,"types":["tracing_core::span::Id"]}];
 implementors["webpki"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html\" title=\"trait core::hash::Hash\">Hash</a> for <a class=\"struct\" href=\"webpki/struct.DNSName.html\" title=\"struct webpki::DNSName\">DNSName</a>","synthetic":false,"types":["webpki::name::DNSName"]}];
-
-            if (window.register_implementors) {
-                window.register_implementors(implementors);
-            } else {
-                window.pending_implementors = implementors;
-            }
-        })()
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/pin-project-internal-0.4.8/src/project.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>project.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../pin_project_internal/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/pin-project-internal-0.4.20/src/project.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>project.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../pin_project_internal/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -258,6 +258,96 @@
 <span id="258">258</span>
 <span id="259">259</span>
 <span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">proc_macro2</span>::{<span class="ident">Span</span>, <span class="ident">TokenStream</span>};
 <span class="kw">use</span> <span class="ident">quote</span>::<span class="ident">ToTokens</span>;
@@ -266,23 +356,43 @@
     <span class="kw-2">*</span>,
 };
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::{
+    <span class="ident">determine_lifetime_name</span>, <span class="ident">insert_lifetime</span>, <span class="ident">parse_as_empty</span>, <span class="ident">ProjKind</span>, <span class="ident">SliceExt</span>, <span class="ident">VecExt</span>,
+};
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">attribute</span>(<span class="ident">args</span>: <span class="kw-2">&amp;</span><span class="ident">TokenStream</span>, <span class="ident">input</span>: <span class="ident">Stmt</span>, <span class="ident">mutability</span>: <span class="ident">Mutability</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
-    <span class="ident">parse_as_empty</span>(<span class="ident">args</span>)
-        .<span class="ident">and_then</span>(<span class="op">|</span>()<span class="op">|</span> <span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">mutability</span>))
-        .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">to_compile_error</span>())
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">attribute</span>(<span class="ident">args</span>: <span class="kw-2">&amp;</span><span class="ident">TokenStream</span>, <span class="ident">input</span>: <span class="ident">Stmt</span>, <span class="ident">kind</span>: <span class="ident">ProjKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+    <span class="ident">parse_as_empty</span>(<span class="ident">args</span>).<span class="ident">and_then</span>(<span class="op">|</span>()<span class="op">|</span> <span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">kind</span>)).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">to_compile_error</span>())
 }
 
-<span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">mut</span> <span class="ident">stmt</span>: <span class="ident">Stmt</span>, <span class="ident">mutability</span>: <span class="ident">Mutability</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream</span><span class="op">&gt;</span> {
-    <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">stmt</span> {
-        <span class="ident">Stmt</span>::<span class="ident">Expr</span>(<span class="ident">Expr</span>::<span class="ident">Match</span>(<span class="ident">expr</span>)) <span class="op">|</span> <span class="ident">Stmt</span>::<span class="ident">Semi</span>(<span class="ident">Expr</span>::<span class="ident">Match</span>(<span class="ident">expr</span>), <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="ident">Context</span>::<span class="ident">new</span>(<span class="ident">mutability</span>).<span class="ident">replace_expr_match</span>(<span class="ident">expr</span>)
+<span class="kw">fn</span> <span class="ident">replace_expr</span>(<span class="ident">expr</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Expr</span>, <span class="ident">kind</span>: <span class="ident">ProjKind</span>) {
+    <span class="kw">match</span> <span class="ident">expr</span> {
+        <span class="ident">Expr</span>::<span class="ident">Match</span>(<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Context</span>::<span class="ident">new</span>(<span class="ident">kind</span>).<span class="ident">replace_expr_match</span>(<span class="ident">expr</span>);
         }
-        <span class="ident">Stmt</span>::<span class="ident">Local</span>(<span class="ident">local</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Context</span>::<span class="ident">new</span>(<span class="ident">mutability</span>).<span class="ident">replace_local</span>(<span class="ident">local</span>)<span class="question-mark">?</span>,
-        <span class="ident">Stmt</span>::<span class="ident">Item</span>(<span class="ident">Item</span>::<span class="ident">Fn</span>(<span class="ident">item</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">replace_item_fn</span>(<span class="ident">item</span>, <span class="ident">mutability</span>)<span class="question-mark">?</span>,
-        <span class="ident">Stmt</span>::<span class="ident">Item</span>(<span class="ident">Item</span>::<span class="ident">Impl</span>(<span class="ident">item</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">replace_item_impl</span>(<span class="ident">item</span>, <span class="ident">mutability</span>),
-        <span class="ident">Stmt</span>::<span class="ident">Item</span>(<span class="ident">Item</span>::<span class="ident">Use</span>(<span class="ident">item</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">replace_item_use</span>(<span class="ident">item</span>, <span class="ident">mutability</span>)<span class="question-mark">?</span>,
+        <span class="ident">Expr</span>::<span class="ident">If</span>(<span class="ident">expr_if</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">expr_if</span> <span class="op">=</span> <span class="ident">expr_if</span>;
+            <span class="kw">while</span> <span class="kw">let</span> <span class="ident">Expr</span>::<span class="ident">Let</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">expr</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">expr_if</span>.<span class="ident">cond</span> {
+                <span class="ident">Context</span>::<span class="ident">new</span>(<span class="ident">kind</span>).<span class="ident">replace_expr_let</span>(<span class="ident">expr</span>);
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="kw">_</span>, <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">expr</span>)) <span class="op">=</span> <span class="ident">expr_if</span>.<span class="ident">else_branch</span> {
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Expr</span>::<span class="ident">If</span>(<span class="ident">new_expr_if</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">expr</span> {
+                        <span class="ident">expr_if</span> <span class="op">=</span> <span class="ident">new_expr_if</span>;
+                        <span class="kw">continue</span>;
+                    }
+                }
+                <span class="kw">break</span>;
+            }
+        }
+        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+    }
+}
+
+<span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">mut</span> <span class="ident">stmt</span>: <span class="ident">Stmt</span>, <span class="ident">kind</span>: <span class="ident">ProjKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream</span><span class="op">&gt;</span> {
+    <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">stmt</span> {
+        <span class="ident">Stmt</span>::<span class="ident">Expr</span>(<span class="ident">expr</span>) <span class="op">|</span> <span class="ident">Stmt</span>::<span class="ident">Semi</span>(<span class="ident">expr</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">replace_expr</span>(<span class="ident">expr</span>, <span class="ident">kind</span>),
+        <span class="ident">Stmt</span>::<span class="ident">Local</span>(<span class="ident">local</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Context</span>::<span class="ident">new</span>(<span class="ident">kind</span>).<span class="ident">replace_local</span>(<span class="ident">local</span>)<span class="question-mark">?</span>,
+        <span class="ident">Stmt</span>::<span class="ident">Item</span>(<span class="ident">Item</span>::<span class="ident">Fn</span>(<span class="ident">item</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">replace_item_fn</span>(<span class="ident">item</span>, <span class="ident">kind</span>)<span class="question-mark">?</span>,
+        <span class="ident">Stmt</span>::<span class="ident">Item</span>(<span class="ident">Item</span>::<span class="ident">Impl</span>(<span class="ident">item</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">replace_item_impl</span>(<span class="ident">item</span>, <span class="ident">kind</span>)<span class="question-mark">?</span>,
+        <span class="ident">Stmt</span>::<span class="ident">Item</span>(<span class="ident">Item</span>::<span class="ident">Use</span>(<span class="ident">item</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">replace_item_use</span>(<span class="ident">item</span>, <span class="ident">kind</span>)<span class="question-mark">?</span>,
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
     }
 
@@ -292,28 +402,30 @@
 <span class="kw">struct</span> <span class="ident">Context</span> {
     <span class="ident">register</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Ident</span>, <span class="ident">usize</span>)<span class="op">&gt;</span>,
     <span class="ident">replaced</span>: <span class="ident">bool</span>,
-    <span class="ident">mutability</span>: <span class="ident">Mutability</span>,
+    <span class="ident">kind</span>: <span class="ident">ProjKind</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Context</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">mutability</span>: <span class="ident">Mutability</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span> { <span class="ident">register</span>: <span class="prelude-val">None</span>, <span class="ident">replaced</span>: <span class="bool-val">false</span>, <span class="ident">mutability</span> }
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">kind</span>: <span class="ident">ProjKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">register</span>: <span class="prelude-val">None</span>, <span class="ident">replaced</span>: <span class="bool-val">false</span>, <span class="ident">kind</span> }
     }
 
     <span class="kw">fn</span> <span class="ident">update</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">Ident</span>, <span class="ident">len</span>: <span class="ident">usize</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">register</span>.<span class="ident">is_none</span>() {
-            <span class="self">self</span>.<span class="ident">register</span> <span class="op">=</span> <span class="prelude-val">Some</span>((<span class="ident">ident</span>.<span class="ident">clone</span>(), <span class="ident">len</span>));
-        }
+        <span class="self">self</span>.<span class="ident">register</span>.<span class="ident">get_or_insert_with</span>(<span class="op">|</span><span class="op">|</span> (<span class="ident">ident</span>.<span class="ident">clone</span>(), <span class="ident">len</span>));
     }
 
     <span class="kw">fn</span> <span class="ident">compare_paths</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">Ident</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">register</span> {
-            <span class="prelude-val">Some</span>((<span class="ident">i</span>, <span class="ident">l</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="ident">l</span> <span class="op">=</span><span class="op">=</span> <span class="ident">len</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">ident</span> <span class="op">=</span><span class="op">=</span> <span class="ident">i</span>,
+            <span class="prelude-val">Some</span>((<span class="ident">i</span>, <span class="ident">l</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="ident">l</span> <span class="op">=</span><span class="op">=</span> <span class="ident">len</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">i</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ident</span>,
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
         }
     }
 
     <span class="kw">fn</span> <span class="ident">replace_local</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">local</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Local</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">attr</span>) <span class="op">=</span> <span class="ident">local</span>.<span class="ident">attrs</span>.<span class="ident">find</span>(<span class="self">self</span>.<span class="ident">kind</span>.<span class="ident">method_name</span>()) {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">attr</span>, <span class="string">&quot;duplicate #[{}] attribute&quot;</span>, <span class="self">self</span>.<span class="ident">kind</span>.<span class="ident">method_name</span>()));
+        }
+
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">Expr</span>::<span class="ident">Match</span>(<span class="ident">expr</span>)) <span class="op">=</span> <span class="ident">local</span>.<span class="ident">init</span>.<span class="ident">as_mut</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">expr</span>)<span class="op">|</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">expr</span>) {
             <span class="self">self</span>.<span class="ident">replace_expr_match</span>(<span class="ident">expr</span>);
         }
@@ -334,8 +446,12 @@
         <span class="prelude-val">Ok</span>(())
     }
 
+    <span class="kw">fn</span> <span class="ident">replace_expr_let</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">expr</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ExprLet</span>) {
+        <span class="self">self</span>.<span class="ident">replace_pat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">expr</span>.<span class="ident">pat</span>, <span class="bool-val">true</span>)
+    }
+
     <span class="kw">fn</span> <span class="ident">replace_expr_match</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">expr</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ExprMatch</span>) {
-        <span class="ident">expr</span>.<span class="ident">arms</span>.<span class="ident">iter_mut</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">Arm</span> { <span class="ident">pat</span>, .. }<span class="op">|</span> <span class="self">self</span>.<span class="ident">replace_pat</span>(<span class="ident">pat</span>, <span class="bool-val">true</span>))
+        <span class="ident">expr</span>.<span class="ident">arms</span>.<span class="ident">iter_mut</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">arm</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">replace_pat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">arm</span>.<span class="ident">pat</span>, <span class="bool-val">true</span>))
     }
 
     <span class="kw">fn</span> <span class="ident">replace_pat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">pat</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Pat</span>, <span class="ident">allow_pat_path</span>: <span class="ident">bool</span>) {
@@ -371,7 +487,7 @@
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">register</span>.<span class="ident">is_none</span>() <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">compare_paths</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>.<span class="ident">segments</span>[<span class="number">0</span>].<span class="ident">ident</span>, <span class="ident">len</span>) {
             <span class="self">self</span>.<span class="ident">update</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>.<span class="ident">segments</span>[<span class="number">0</span>].<span class="ident">ident</span>, <span class="ident">len</span>);
             <span class="self">self</span>.<span class="ident">replaced</span> <span class="op">=</span> <span class="bool-val">true</span>;
-            <span class="ident">replace_ident</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">path</span>.<span class="ident">segments</span>[<span class="number">0</span>].<span class="ident">ident</span>, <span class="self">self</span>.<span class="ident">mutability</span>);
+            <span class="ident">replace_ident</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">path</span>.<span class="ident">segments</span>[<span class="number">0</span>].<span class="ident">ident</span>, <span class="self">self</span>.<span class="ident">kind</span>);
         }
     }
 }
@@ -391,20 +507,28 @@
     }
 }
 
-<span class="kw">fn</span> <span class="ident">replace_item_impl</span>(<span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ItemImpl</span>, <span class="ident">mutability</span>: <span class="ident">Mutability</span>) {
+<span class="kw">fn</span> <span class="ident">replace_ident</span>(<span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Ident</span>, <span class="ident">kind</span>: <span class="ident">ProjKind</span>) {
+    <span class="kw-2">*</span><span class="ident">ident</span> <span class="op">=</span> <span class="ident">kind</span>.<span class="ident">proj_ident</span>(<span class="ident">ident</span>);
+}
+
+<span class="kw">fn</span> <span class="ident">replace_item_impl</span>(<span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ItemImpl</span>, <span class="ident">kind</span>: <span class="ident">ProjKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">attr</span>) <span class="op">=</span> <span class="ident">item</span>.<span class="ident">attrs</span>.<span class="ident">find</span>(<span class="ident">kind</span>.<span class="ident">method_name</span>()) {
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">attr</span>, <span class="string">&quot;duplicate #[{}] attribute&quot;</span>, <span class="ident">kind</span>.<span class="ident">method_name</span>()));
+    }
+
     <span class="kw">let</span> <span class="ident">PathSegment</span> { <span class="ident">ident</span>, <span class="ident">arguments</span> } <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">item</span>.<span class="ident">self_ty</span> {
         <span class="ident">Type</span>::<span class="ident">Path</span>(<span class="ident">TypePath</span> { <span class="ident">qself</span>: <span class="prelude-val">None</span>, <span class="ident">path</span> }) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">path</span>.<span class="ident">segments</span>.<span class="ident">last_mut</span>().<span class="ident">unwrap</span>(),
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span>,
+        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(()),
     };
 
-    <span class="ident">replace_ident</span>(<span class="ident">ident</span>, <span class="ident">mutability</span>);
+    <span class="ident">replace_ident</span>(<span class="ident">ident</span>, <span class="ident">kind</span>);
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lifetime_name</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="ident">DEFAULT_LIFETIME_NAME</span>);
-    <span class="ident">determine_lifetime_name</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">lifetime_name</span>, <span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">generics</span>.<span class="ident">params</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lifetime_name</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;&#39;pin&quot;</span>);
+    <span class="ident">determine_lifetime_name</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">lifetime_name</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">item</span>.<span class="ident">generics</span>);
     <span class="ident">item</span>.<span class="ident">items</span>
         .<span class="ident">iter_mut</span>()
         .<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ImplItem</span>::<span class="ident">Method</span>(<span class="ident">i</span>) <span class="op">=</span> <span class="ident">i</span> { <span class="prelude-val">Some</span>(<span class="ident">i</span>) } <span class="kw">else</span> { <span class="prelude-val">None</span> })
-        .<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="ident">determine_lifetime_name</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">lifetime_name</span>, <span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">sig</span>.<span class="ident">generics</span>.<span class="ident">params</span>));
+        .<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="ident">determine_lifetime_name</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">lifetime_name</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">item</span>.<span class="ident">sig</span>.<span class="ident">generics</span>));
     <span class="kw">let</span> <span class="ident">lifetime</span> <span class="op">=</span> <span class="ident">Lifetime</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">lifetime_name</span>, <span class="ident">Span</span>::<span class="ident">call_site</span>());
 
     <span class="ident">insert_lifetime</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">item</span>.<span class="ident">generics</span>, <span class="ident">lifetime</span>.<span class="ident">clone</span>());
@@ -418,106 +542,162 @@
         }
         <span class="ident">PathArguments</span>::<span class="ident">Parenthesized</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
     }
+    <span class="prelude-val">Ok</span>(())
 }
 
-<span class="kw">fn</span> <span class="ident">replace_item_fn</span>(<span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ItemFn</span>, <span class="ident">mutability</span>: <span class="ident">Mutability</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">visitor</span> <span class="op">=</span> <span class="ident">FnVisitor</span> { <span class="ident">res</span>: <span class="prelude-val">Ok</span>(()), <span class="ident">mutability</span> };
+<span class="kw">fn</span> <span class="ident">replace_item_fn</span>(<span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ItemFn</span>, <span class="ident">kind</span>: <span class="ident">ProjKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">struct</span> <span class="ident">FnVisitor</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>);
+
+    <span class="kw">impl</span> <span class="ident">FnVisitor</span> {
+        <span class="kw">fn</span> <span class="ident">visit_stmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Stmt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+            <span class="kw">match</span> <span class="ident">node</span> {
+                <span class="ident">Stmt</span>::<span class="ident">Expr</span>(<span class="ident">expr</span>) <span class="op">|</span> <span class="ident">Stmt</span>::<span class="ident">Semi</span>(<span class="ident">expr</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">visit_expr</span>(<span class="ident">expr</span>),
+                <span class="ident">Stmt</span>::<span class="ident">Local</span>(<span class="ident">local</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">visit_mut</span>::<span class="ident">visit_local_mut</span>(<span class="self">self</span>, <span class="ident">local</span>);
+
+                    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prev</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+                    <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">kind</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">ProjKind</span>::<span class="ident">ALL</span> {
+                        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">attr</span>) <span class="op">=</span> <span class="ident">local</span>.<span class="ident">attrs</span>.<span class="ident">find_remove</span>(<span class="ident">kind</span>.<span class="ident">method_name</span>())<span class="question-mark">?</span> {
+                            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">prev</span>) <span class="op">=</span> <span class="ident">prev</span>.<span class="ident">replace</span>(<span class="ident">kind</span>) {
+                                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(
+                                    <span class="ident">attr</span>,
+                                    <span class="string">&quot;attributes `{}` and `{}` are mutually exclusive&quot;</span>,
+                                    <span class="ident">prev</span>.<span class="ident">method_name</span>(),
+                                    <span class="ident">kind</span>.<span class="ident">method_name</span>(),
+                                ));
+                            }
+                            <span class="ident">Context</span>::<span class="ident">new</span>(<span class="ident">kind</span>).<span class="ident">replace_local</span>(<span class="ident">local</span>)<span class="question-mark">?</span>;
+                        }
+                    }
+
+                    <span class="prelude-val">Ok</span>(())
+                }
+                <span class="comment">// Do not recurse into nested items.</span>
+                <span class="ident">Stmt</span>::<span class="ident">Item</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),
+            }
+        }
+
+        <span class="kw">fn</span> <span class="ident">visit_expr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+            <span class="ident">visit_mut</span>::<span class="ident">visit_expr_mut</span>(<span class="self">self</span>, <span class="ident">node</span>);
+            <span class="kw">match</span> <span class="ident">node</span> {
+                <span class="ident">Expr</span>::<span class="ident">Match</span>(<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prev</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+                    <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">kind</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">ProjKind</span>::<span class="ident">ALL</span> {
+                        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">attr</span>) <span class="op">=</span> <span class="ident">expr</span>.<span class="ident">attrs</span>.<span class="ident">find_remove</span>(<span class="ident">kind</span>.<span class="ident">method_name</span>())<span class="question-mark">?</span> {
+                            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">prev</span>) <span class="op">=</span> <span class="ident">prev</span>.<span class="ident">replace</span>(<span class="ident">kind</span>) {
+                                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(
+                                    <span class="ident">attr</span>,
+                                    <span class="string">&quot;attributes `{}` and `{}` are mutually exclusive&quot;</span>,
+                                    <span class="ident">prev</span>.<span class="ident">method_name</span>(),
+                                    <span class="ident">kind</span>.<span class="ident">method_name</span>(),
+                                ));
+                            }
+                        }
+                    }
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">kind</span>) <span class="op">=</span> <span class="ident">prev</span> {
+                        <span class="ident">replace_expr</span>(<span class="ident">node</span>, <span class="ident">kind</span>);
+                    }
+                }
+                <span class="ident">Expr</span>::<span class="ident">If</span>(<span class="ident">expr_if</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Expr</span>::<span class="ident">Let</span>(<span class="kw">_</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">expr_if</span>.<span class="ident">cond</span> {
+                        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prev</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+                        <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">kind</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">ProjKind</span>::<span class="ident">ALL</span> {
+                            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">attr</span>) <span class="op">=</span> <span class="ident">expr_if</span>.<span class="ident">attrs</span>.<span class="ident">find_remove</span>(<span class="ident">kind</span>.<span class="ident">method_name</span>())<span class="question-mark">?</span> {
+                                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">prev</span>) <span class="op">=</span> <span class="ident">prev</span>.<span class="ident">replace</span>(<span class="ident">kind</span>) {
+                                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(
+                                        <span class="ident">attr</span>,
+                                        <span class="string">&quot;attributes `{}` and `{}` are mutually exclusive&quot;</span>,
+                                        <span class="ident">prev</span>.<span class="ident">method_name</span>(),
+                                        <span class="ident">kind</span>.<span class="ident">method_name</span>(),
+                                    ));
+                                }
+                            }
+                        }
+                        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">kind</span>) <span class="op">=</span> <span class="ident">prev</span> {
+                            <span class="ident">replace_expr</span>(<span class="ident">node</span>, <span class="ident">kind</span>);
+                        }
+                    }
+                }
+                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            }
+            <span class="prelude-val">Ok</span>(())
+        }
+    }
+
+    <span class="kw">impl</span> <span class="ident">VisitMut</span> <span class="kw">for</span> <span class="ident">FnVisitor</span> {
+        <span class="kw">fn</span> <span class="ident">visit_stmt_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Stmt</span>) {
+            <span class="kw">if</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">is_err</span>() {
+                <span class="kw">return</span>;
+            }
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">visit_stmt</span>(<span class="ident">node</span>) {
+                <span class="self">self</span>.<span class="number">0</span> <span class="op">=</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>)
+            }
+        }
+
+        <span class="kw">fn</span> <span class="ident">visit_expr_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Expr</span>) {
+            <span class="kw">if</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">is_err</span>() {
+                <span class="kw">return</span>;
+            }
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">visit_expr</span>(<span class="ident">node</span>) {
+                <span class="self">self</span>.<span class="number">0</span> <span class="op">=</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>)
+            }
+        }
+
+        <span class="kw">fn</span> <span class="ident">visit_item_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Item</span>) {
+            <span class="comment">// Do not recurse into nested items.</span>
+        }
+    }
+
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">attr</span>) <span class="op">=</span> <span class="ident">item</span>.<span class="ident">attrs</span>.<span class="ident">find</span>(<span class="ident">kind</span>.<span class="ident">method_name</span>()) {
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">attr</span>, <span class="string">&quot;duplicate #[{}] attribute&quot;</span>, <span class="ident">kind</span>.<span class="ident">method_name</span>()));
+    }
+
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">visitor</span> <span class="op">=</span> <span class="ident">FnVisitor</span>(<span class="prelude-val">Ok</span>(()));
     <span class="ident">visitor</span>.<span class="ident">visit_block_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">item</span>.<span class="ident">block</span>);
-    <span class="ident">visitor</span>.<span class="ident">res</span>
+    <span class="ident">visitor</span>.<span class="number">0</span>
 }
 
-<span class="kw">fn</span> <span class="ident">replace_item_use</span>(<span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ItemUse</span>, <span class="ident">mutability</span>: <span class="ident">Mutability</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">visitor</span> <span class="op">=</span> <span class="ident">UseTreeVisitor</span> { <span class="ident">res</span>: <span class="prelude-val">Ok</span>(()), <span class="ident">mutability</span> };
+<span class="kw">fn</span> <span class="ident">replace_item_use</span>(<span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ItemUse</span>, <span class="ident">kind</span>: <span class="ident">ProjKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">struct</span> <span class="ident">UseTreeVisitor</span> {
+        <span class="ident">res</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>,
+        <span class="ident">kind</span>: <span class="ident">ProjKind</span>,
+    }
+
+    <span class="kw">impl</span> <span class="ident">VisitMut</span> <span class="kw">for</span> <span class="ident">UseTreeVisitor</span> {
+        <span class="kw">fn</span> <span class="ident">visit_use_tree_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">UseTree</span>) {
+            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">res</span>.<span class="ident">is_err</span>() {
+                <span class="kw">return</span>;
+            }
+
+            <span class="kw">match</span> <span class="ident">node</span> {
+                <span class="comment">// Desugar `use tree::&lt;name&gt;` into `tree::__&lt;name&gt;Projection`.</span>
+                <span class="ident">UseTree</span>::<span class="ident">Name</span>(<span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">replace_ident</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">name</span>.<span class="ident">ident</span>, <span class="self">self</span>.<span class="ident">kind</span>),
+                <span class="ident">UseTree</span>::<span class="ident">Glob</span>(<span class="ident">glob</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="self">self</span>.<span class="ident">res</span> <span class="op">=</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(
+                        <span class="ident">glob</span>,
+                        <span class="string">&quot;#[{}] attribute may not be used on glob imports&quot;</span>,
+                        <span class="self">self</span>.<span class="ident">kind</span>.<span class="ident">method_name</span>()
+                    ));
+                }
+                <span class="ident">UseTree</span>::<span class="ident">Rename</span>(<span class="ident">rename</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="self">self</span>.<span class="ident">res</span> <span class="op">=</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(
+                        <span class="ident">rename</span>,
+                        <span class="string">&quot;#[{}] attribute may not be used on renamed imports&quot;</span>,
+                        <span class="self">self</span>.<span class="ident">kind</span>.<span class="ident">method_name</span>()
+                    ));
+                }
+                <span class="ident">UseTree</span>::<span class="ident">Path</span>(<span class="kw">_</span>) <span class="op">|</span> <span class="ident">UseTree</span>::<span class="ident">Group</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">visit_mut</span>::<span class="ident">visit_use_tree_mut</span>(<span class="self">self</span>, <span class="ident">node</span>),
+            }
+        }
+    }
+
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">attr</span>) <span class="op">=</span> <span class="ident">item</span>.<span class="ident">attrs</span>.<span class="ident">find</span>(<span class="ident">kind</span>.<span class="ident">method_name</span>()) {
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">attr</span>, <span class="string">&quot;duplicate #[{}] attribute&quot;</span>, <span class="ident">kind</span>.<span class="ident">method_name</span>()));
+    }
+
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">visitor</span> <span class="op">=</span> <span class="ident">UseTreeVisitor</span> { <span class="ident">res</span>: <span class="prelude-val">Ok</span>(()), <span class="ident">kind</span> };
     <span class="ident">visitor</span>.<span class="ident">visit_item_use_mut</span>(<span class="ident">item</span>);
     <span class="ident">visitor</span>.<span class="ident">res</span>
-}
-
-<span class="kw">fn</span> <span class="ident">replace_ident</span>(<span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Ident</span>, <span class="ident">mutability</span>: <span class="ident">Mutability</span>) {
-    <span class="kw-2">*</span><span class="ident">ident</span> <span class="op">=</span> <span class="ident">proj_ident</span>(<span class="ident">ident</span>, <span class="ident">mutability</span>);
-}
-
-<span class="comment">// =================================================================================================</span>
-<span class="comment">// visitors</span>
-
-<span class="kw">struct</span> <span class="ident">FnVisitor</span> {
-    <span class="ident">res</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>,
-    <span class="ident">mutability</span>: <span class="ident">Mutability</span>,
-}
-
-<span class="kw">impl</span> <span class="ident">FnVisitor</span> {
-    <span class="doccomment">/// Returns the attribute name.</span>
-    <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">mutability</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Mutable</span> { <span class="string">&quot;project&quot;</span> } <span class="kw">else</span> { <span class="string">&quot;project_ref&quot;</span> }
-    }
-
-    <span class="kw">fn</span> <span class="ident">visit_stmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Stmt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">attr</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">node</span> {
-            <span class="ident">Stmt</span>::<span class="ident">Expr</span>(<span class="ident">Expr</span>::<span class="ident">Match</span>(<span class="ident">expr</span>)) <span class="op">|</span> <span class="ident">Stmt</span>::<span class="ident">Semi</span>(<span class="ident">Expr</span>::<span class="ident">Match</span>(<span class="ident">expr</span>), <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">expr</span>.<span class="ident">attrs</span>.<span class="ident">find_remove</span>(<span class="self">self</span>.<span class="ident">name</span>())<span class="question-mark">?</span>
-            }
-            <span class="ident">Stmt</span>::<span class="ident">Local</span>(<span class="ident">local</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">local</span>.<span class="ident">attrs</span>.<span class="ident">find_remove</span>(<span class="self">self</span>.<span class="ident">name</span>())<span class="question-mark">?</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(()),
-        };
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">attr</span>) <span class="op">=</span> <span class="ident">attr</span> {
-            <span class="ident">parse_as_empty</span>(<span class="kw-2">&amp;</span><span class="ident">attr</span>.<span class="ident">tokens</span>)<span class="question-mark">?</span>;
-            <span class="kw">match</span> <span class="ident">node</span> {
-                <span class="ident">Stmt</span>::<span class="ident">Expr</span>(<span class="ident">Expr</span>::<span class="ident">Match</span>(<span class="ident">expr</span>)) <span class="op">|</span> <span class="ident">Stmt</span>::<span class="ident">Semi</span>(<span class="ident">Expr</span>::<span class="ident">Match</span>(<span class="ident">expr</span>), <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="ident">Context</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">mutability</span>).<span class="ident">replace_expr_match</span>(<span class="ident">expr</span>)
-                }
-                <span class="ident">Stmt</span>::<span class="ident">Local</span>(<span class="ident">local</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Context</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">mutability</span>).<span class="ident">replace_local</span>(<span class="ident">local</span>)<span class="question-mark">?</span>,
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
-            }
-        }
-        <span class="prelude-val">Ok</span>(())
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">VisitMut</span> <span class="kw">for</span> <span class="ident">FnVisitor</span> {
-    <span class="kw">fn</span> <span class="ident">visit_stmt_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Stmt</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">res</span>.<span class="ident">is_err</span>() {
-            <span class="kw">return</span>;
-        }
-
-        <span class="ident">visit_mut</span>::<span class="ident">visit_stmt_mut</span>(<span class="self">self</span>, <span class="ident">node</span>);
-
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">visit_stmt</span>(<span class="ident">node</span>) {
-            <span class="self">self</span>.<span class="ident">res</span> <span class="op">=</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>)
-        }
-    }
-
-    <span class="kw">fn</span> <span class="ident">visit_item_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Item</span>) {
-        <span class="comment">// Do not recurse into nested items.</span>
-    }
-}
-
-<span class="kw">struct</span> <span class="ident">UseTreeVisitor</span> {
-    <span class="ident">res</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>,
-    <span class="ident">mutability</span>: <span class="ident">Mutability</span>,
-}
-
-<span class="kw">impl</span> <span class="ident">VisitMut</span> <span class="kw">for</span> <span class="ident">UseTreeVisitor</span> {
-    <span class="kw">fn</span> <span class="ident">visit_use_tree_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">UseTree</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">res</span>.<span class="ident">is_err</span>() {
-            <span class="kw">return</span>;
-        }
-
-        <span class="kw">match</span> <span class="ident">node</span> {
-            <span class="comment">// Desugar `use tree::&lt;name&gt;` into `tree::__&lt;name&gt;Projection`.</span>
-            <span class="ident">UseTree</span>::<span class="ident">Name</span>(<span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">replace_ident</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">name</span>.<span class="ident">ident</span>, <span class="self">self</span>.<span class="ident">mutability</span>),
-            <span class="ident">UseTree</span>::<span class="ident">Glob</span>(<span class="ident">glob</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">self</span>.<span class="ident">res</span> <span class="op">=</span>
-                    <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">glob</span>, <span class="string">&quot;#[project] attribute may not be used on glob imports&quot;</span>));
-            }
-            <span class="ident">UseTree</span>::<span class="ident">Rename</span>(<span class="ident">rename</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="comment">// TODO: Consider allowing the projected type to be renamed by `#[project] use Foo as Bar`.</span>
-                <span class="self">self</span>.<span class="ident">res</span> <span class="op">=</span>
-                    <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">rename</span>, <span class="string">&quot;#[project] attribute may not be used on renamed imports&quot;</span>));
-            }
-            <span class="ident">node</span> @ <span class="ident">UseTree</span>::<span class="ident">Path</span>(<span class="kw">_</span>) <span class="op">|</span> <span class="ident">node</span> @ <span class="ident">UseTree</span>::<span class="ident">Group</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">visit_mut</span>::<span class="ident">visit_use_tree_mut</span>(<span class="self">self</span>, <span class="ident">node</span>)
-            }
-        }
-    }
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "pin_project_internal";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-0.2.13/src/sync/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../tokio/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-0.2.21/src/sync/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../tokio/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -469,6 +469,17 @@
 <span id="469">469</span>
 <span id="470">470</span>
 <span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">loom</span>, <span class="ident">allow</span>(<span class="ident">dead_code</span>, <span class="ident">unreachable_pub</span>, <span class="ident">unused_imports</span>))]</span>
 
@@ -504,7 +515,7 @@
 <span class="doccomment">//! single producer to a single consumer. This channel is usually used to send</span>
 <span class="doccomment">//! the result of a computation to a waiter.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! **Example:** using a `oneshot` channel to receive the result of a</span>
+<span class="doccomment">//! **Example:** using a [`oneshot` channel][oneshot] to receive the result of a</span>
 <span class="doccomment">//! computation.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```</span>
@@ -598,7 +609,7 @@
 <span class="doccomment">//! pressure.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! A common concurrency pattern for resource management is to spawn a task</span>
-<span class="doccomment">//! dedicated to managing that resource and using message passing betwen other</span>
+<span class="doccomment">//! dedicated to managing that resource and using message passing between other</span>
 <span class="doccomment">//! tasks to interact with the resource. The resource may be anything that may</span>
 <span class="doccomment">//! not be concurrently used. Some examples include a socket and program state.</span>
 <span class="doccomment">//! For example, if multiple tasks need to send data over a single socket, spawn</span>
@@ -704,7 +715,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## `broadcast` channel</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! The [`broadcast` channel][broadcast] supports sending **many** values from</span>
+<span class="doccomment">//! The [`broadcast` channel] supports sending **many** values from</span>
 <span class="doccomment">//! **many** producers to **many** consumers. Each consumer will receive</span>
 <span class="doccomment">//! **each** value. This channel can be used to implement &quot;fan out&quot; style</span>
 <span class="doccomment">//! patterns common with pub / sub or &quot;chat&quot; systems.</span>
@@ -737,12 +748,14 @@
 <span class="doccomment">//! }</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
+<span class="doccomment">//! [`broadcast` channel]: crate::sync::broadcast</span>
+<span class="doccomment">//!</span>
 <span class="doccomment">//! ## `watch` channel</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! The [`watch` channel][watch] supports sending **many** values from a</span>
-<span class="doccomment">//! **single** producer to **many** consumers. However, only the **most recent**</span>
-<span class="doccomment">//! value is stored in the channel. Consumers are notified when a new value is</span>
-<span class="doccomment">//! sent, but there is no guarantee that consumers will see **all** values.</span>
+<span class="doccomment">//! The [`watch` channel] supports sending **many** values from a **single**</span>
+<span class="doccomment">//! producer to **many** consumers. However, only the **most recent** value is</span>
+<span class="doccomment">//! stored in the channel. Consumers are notified when a new value is sent, but</span>
+<span class="doccomment">//! there is no guarantee that consumers will see **all** values.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! The [`watch` channel] is similar to a [`broadcast` channel] with capacity 1.</span>
 <span class="doccomment">//!</span>
@@ -750,9 +763,9 @@
 <span class="doccomment">//! changes or signalling program state changes, such as transitioning to</span>
 <span class="doccomment">//! shutdown.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! **Example:** use a `watch` channel to notify tasks of configuration changes.</span>
-<span class="doccomment">//! In this example, a configuration file is checked periodically. When the file</span>
-<span class="doccomment">//! changes, the configuration changes are signalled to consumers.</span>
+<span class="doccomment">//! **Example:** use a [`watch` channel] to notify tasks of configuration</span>
+<span class="doccomment">//! changes. In this example, a configuration file is checked periodically. When</span>
+<span class="doccomment">//! the file changes, the configuration changes are signalled to consumers.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//! use tokio::sync::watch;</span>
@@ -865,6 +878,9 @@
 <span class="doccomment">//! }</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
+<span class="doccomment">//! [`watch` channel]: crate::sync::watch</span>
+<span class="doccomment">//! [`broadcast` channel]: crate::sync::broadcast</span>
+<span class="doccomment">//!</span>
 <span class="doccomment">//! # State synchronization</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! The remaining synchronization primitives focus on synchronizing state.</span>
@@ -897,19 +913,25 @@
 
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">broadcast</span>;
 
+    <span class="macro">cfg_unstable</span><span class="macro">!</span> {
+        <span class="kw">mod</span> <span class="ident">cancellation_token</span>;
+        <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cancellation_token</span>::{<span class="ident">CancellationToken</span>, <span class="ident">WaitForCancellationFuture</span>};
+    }
+
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">mpsc</span>;
 
     <span class="kw">mod</span> <span class="ident">mutex</span>;
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">mutex</span>::{<span class="ident">Mutex</span>, <span class="ident">MutexGuard</span>};
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">mutex</span>::{<span class="ident">Mutex</span>, <span class="ident">MutexGuard</span>, <span class="ident">TryLockError</span>, <span class="ident">OwnedMutexGuard</span>};
 
     <span class="kw">mod</span> <span class="ident">notify</span>;
     <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">notify</span>::<span class="ident">Notify</span>;
 
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">oneshot</span>;
 
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">batch_semaphore</span>;
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">semaphore_ll</span>;
     <span class="kw">mod</span> <span class="ident">semaphore</span>;
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">semaphore</span>::{<span class="ident">Semaphore</span>, <span class="ident">SemaphorePermit</span>};
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">semaphore</span>::{<span class="ident">Semaphore</span>, <span class="ident">SemaphorePermit</span>, <span class="ident">OwnedSemaphorePermit</span>};
 
     <span class="kw">mod</span> <span class="ident">rwlock</span>;
     <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">rwlock</span>::{<span class="ident">RwLock</span>, <span class="ident">RwLockReadGuard</span>, <span class="ident">RwLockWriteGuard</span>};

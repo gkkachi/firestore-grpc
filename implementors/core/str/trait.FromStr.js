@@ -5,10 +5,4 @@ implementors["log"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-
 implementors["proc_macro2"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/str/trait.FromStr.html\" title=\"trait core::str::FromStr\">FromStr</a> for <a class=\"struct\" href=\"proc_macro2/struct.TokenStream.html\" title=\"struct proc_macro2::TokenStream\">TokenStream</a>","synthetic":false,"types":["proc_macro2::TokenStream"]}];
 implementors["tonic"] = [{"text":"impl&lt;VE:&nbsp;ValueEncoding&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/str/trait.FromStr.html\" title=\"trait core::str::FromStr\">FromStr</a> for <a class=\"struct\" href=\"tonic/metadata/struct.MetadataKey.html\" title=\"struct tonic::metadata::MetadataKey\">MetadataKey</a>&lt;VE&gt;","synthetic":false,"types":["tonic::metadata::key::MetadataKey"]},{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/str/trait.FromStr.html\" title=\"trait core::str::FromStr\">FromStr</a> for <a class=\"struct\" href=\"tonic/metadata/struct.MetadataValue.html\" title=\"struct tonic::metadata::MetadataValue\">MetadataValue</a>&lt;Ascii&gt;","synthetic":false,"types":["tonic::metadata::value::MetadataValue"]}];
 implementors["tracing_core"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/str/trait.FromStr.html\" title=\"trait core::str::FromStr\">FromStr</a> for <a class=\"struct\" href=\"tracing_core/metadata/struct.Level.html\" title=\"struct tracing_core::metadata::Level\">Level</a>","synthetic":false,"types":["tracing_core::metadata::Level"]}];
-
-            if (window.register_implementors) {
-                window.register_implementors(implementors);
-            } else {
-                window.pending_implementors = implementors;
-            }
-        })()
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

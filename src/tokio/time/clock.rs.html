@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-0.2.13/src/time/clock.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>clock.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../tokio/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-0.2.21/src/time/clock.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>clock.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../tokio/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -162,18 +162,6 @@
 <span id="162">162</span>
 <span id="163">163</span>
 <span id="164">164</span>
-<span id="165">165</span>
-<span id="166">166</span>
-<span id="167">167</span>
-<span id="168">168</span>
-<span id="169">169</span>
-<span id="170">170</span>
-<span id="171">171</span>
-<span id="172">172</span>
-<span id="173">173</span>
-<span id="174">174</span>
-<span id="175">175</span>
-<span id="176">176</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Source of time abstraction.</span>
 <span class="doccomment">//!</span>
@@ -200,7 +188,7 @@
             <span class="ident">now</span>()
         }
 
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">is_frozen</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">is_paused</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
             <span class="bool-val">false</span>
         }
 
@@ -218,16 +206,16 @@
     <span class="doccomment">/// A handle to a source of time.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">Clock</span> {
-        <span class="ident">inner</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Inner</span><span class="op">&gt;</span>,
+        <span class="ident">inner</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">Inner</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     }
 
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
     <span class="kw">struct</span> <span class="ident">Inner</span> {
-        <span class="doccomment">/// Instant at which the clock was created</span>
-        <span class="ident">start</span>: <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span>,
+        <span class="doccomment">/// Instant to use as the clock&#39;s base instant.</span>
+        <span class="ident">base</span>: <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span>,
 
-        <span class="doccomment">/// Current, &quot;frozen&quot; time as an offset from `start`.</span>
-        <span class="ident">frozen</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="doccomment">/// Instant at which the clock was last unfrozen</span>
+        <span class="ident">unfrozen</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span><span class="op">&gt;</span>,
     }
 
     <span class="doccomment">/// Pause time</span>
@@ -242,11 +230,7 @@
     <span class="doccomment">/// runtime.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pause</span>() {
         <span class="kw">let</span> <span class="ident">clock</span> <span class="op">=</span> <span class="ident">context</span>::<span class="ident">clock</span>().<span class="ident">expect</span>(<span class="string">&quot;time cannot be frozen from outside the Tokio runtime&quot;</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">frozen</span> <span class="op">=</span> <span class="ident">clock</span>.<span class="ident">inner</span>.<span class="ident">frozen</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-        <span class="kw">if</span> <span class="ident">frozen</span>.<span class="ident">is_some</span>() {
-            <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;time is already frozen&quot;</span>);
-        }
-        <span class="kw-2">*</span><span class="ident">frozen</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">clock</span>.<span class="ident">inner</span>.<span class="ident">start</span>.<span class="ident">elapsed</span>());
+        <span class="ident">clock</span>.<span class="ident">pause</span>();
     }
 
     <span class="doccomment">/// Resume time</span>
@@ -260,13 +244,13 @@
     <span class="doccomment">/// runtime.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resume</span>() {
         <span class="kw">let</span> <span class="ident">clock</span> <span class="op">=</span> <span class="ident">context</span>::<span class="ident">clock</span>().<span class="ident">expect</span>(<span class="string">&quot;time cannot be frozen from outside the Tokio runtime&quot;</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">frozen</span> <span class="op">=</span> <span class="ident">clock</span>.<span class="ident">inner</span>.<span class="ident">frozen</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">inner</span> <span class="op">=</span> <span class="ident">clock</span>.<span class="ident">inner</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
 
-        <span class="kw">if</span> <span class="ident">frozen</span>.<span class="ident">is_none</span>() {
+        <span class="kw">if</span> <span class="ident">inner</span>.<span class="ident">unfrozen</span>.<span class="ident">is_some</span>() {
             <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;time is not frozen&quot;</span>);
         }
 
-        <span class="kw-2">*</span><span class="ident">frozen</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+        <span class="ident">inner</span>.<span class="ident">unfrozen</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span>::<span class="ident">now</span>());
     }
 
     <span class="doccomment">/// Advance time</span>
@@ -287,11 +271,7 @@
     <span class="doccomment">/// Return the current instant, factoring in frozen time.</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">now</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Instant</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">clock</span>) <span class="op">=</span> <span class="ident">context</span>::<span class="ident">clock</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">frozen</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="ident">clock</span>.<span class="ident">inner</span>.<span class="ident">frozen</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>() {
-                <span class="ident">Instant</span>::<span class="ident">from_std</span>(<span class="ident">clock</span>.<span class="ident">inner</span>.<span class="ident">start</span> <span class="op">+</span> <span class="ident">frozen</span>)
-            } <span class="kw">else</span> {
-                <span class="ident">Instant</span>::<span class="ident">from_std</span>(<span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span>::<span class="ident">now</span>())
-            }
+            <span class="ident">clock</span>.<span class="ident">now</span>()
         } <span class="kw">else</span> {
             <span class="ident">Instant</span>::<span class="ident">from_std</span>(<span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span>::<span class="ident">now</span>())
         }
@@ -301,53 +281,49 @@
         <span class="doccomment">/// Return a new `Clock` instance that uses the current execution context&#39;s</span>
         <span class="doccomment">/// source of time.</span>
         <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Clock</span> {
+            <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span>::<span class="ident">now</span>();
+
             <span class="ident">Clock</span> {
-                <span class="ident">inner</span>: <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Inner</span> {
-                    <span class="ident">start</span>: <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span>::<span class="ident">now</span>(),
-                    <span class="ident">frozen</span>: <span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="prelude-val">None</span>),
-                }),
+                <span class="ident">inner</span>: <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">Inner</span> {
+                    <span class="ident">base</span>: <span class="ident">now</span>,
+                    <span class="ident">unfrozen</span>: <span class="prelude-val">Some</span>(<span class="ident">now</span>),
+                })),
             }
         }
 
-        <span class="comment">// TODO: delete this. Some tests rely on this</span>
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">not</span>(<span class="ident">loom</span>)))]</span>
-        <span class="doccomment">/// Return a new `Clock` instance that uses the current execution context&#39;s</span>
-        <span class="doccomment">/// source of time.</span>
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new_frozen</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Clock</span> {
-            <span class="ident">Clock</span> {
-                <span class="ident">inner</span>: <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Inner</span> {
-                    <span class="ident">start</span>: <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span>::<span class="ident">now</span>(),
-                    <span class="ident">frozen</span>: <span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="prelude-val">Some</span>(<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">0</span>))),
-                }),
-            }
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">pause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+
+            <span class="kw">let</span> <span class="ident">elapsed</span> <span class="op">=</span> <span class="ident">inner</span>.<span class="ident">unfrozen</span>.<span class="ident">as_ref</span>().<span class="ident">expect</span>(<span class="string">&quot;time is already frozen&quot;</span>).<span class="ident">elapsed</span>();
+            <span class="ident">inner</span>.<span class="ident">base</span> <span class="op">+</span><span class="op">=</span> <span class="ident">elapsed</span>;
+            <span class="ident">inner</span>.<span class="ident">unfrozen</span> <span class="op">=</span> <span class="prelude-val">None</span>;
         }
 
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">is_frozen</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">frozen</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">is_some</span>()
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">is_paused</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+            <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+            <span class="ident">inner</span>.<span class="ident">unfrozen</span>.<span class="ident">is_none</span>()
         }
 
         <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">advance</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">duration</span>: <span class="ident">Duration</span>) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">frozen</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">frozen</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
 
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">elapsed</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="ident">frozen</span> {
-                <span class="kw-2">*</span><span class="ident">elapsed</span> <span class="op">+</span><span class="op">=</span> <span class="ident">duration</span>;
-            } <span class="kw">else</span> {
+            <span class="kw">if</span> <span class="ident">inner</span>.<span class="ident">unfrozen</span>.<span class="ident">is_some</span>() {
                 <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;time is not frozen&quot;</span>);
             }
-        }
 
-        <span class="comment">// TODO: delete this as well</span>
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">not</span>(<span class="ident">loom</span>)))]</span>
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">advanced</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Duration</span> {
-            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">frozen</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>()
+            <span class="ident">inner</span>.<span class="ident">base</span> <span class="op">+</span><span class="op">=</span> <span class="ident">duration</span>;
         }
 
         <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">now</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Instant</span> {
-            <span class="ident">Instant</span>::<span class="ident">from_std</span>(<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">frozen</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">frozen</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>() {
-                <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">start</span> <span class="op">+</span> <span class="ident">frozen</span>
-            } <span class="kw">else</span> {
-                <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span>::<span class="ident">now</span>()
-            })
+            <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">inner</span>.<span class="ident">base</span>;
+
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">unfrozen</span>) <span class="op">=</span> <span class="ident">inner</span>.<span class="ident">unfrozen</span> {
+                <span class="ident">ret</span> <span class="op">+</span><span class="op">=</span> <span class="ident">unfrozen</span>.<span class="ident">elapsed</span>();
+            }
+
+            <span class="ident">Instant</span>::<span class="ident">from_std</span>(<span class="ident">ret</span>)
         }
     }
 }

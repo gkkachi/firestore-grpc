@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `tokio` crate."><meta name="keywords" content="rust, rustlang, rust-lang, tokio"><title>tokio - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../dark.css"><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="shortcut icon" href="../favicon.ico"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../tokio/index.html'><div class='logo-container'><img src='../rust-logo.png' alt='logo'></div></a><p class='location'>Crate tokio</p><div class="sidebar-elems"><a id='all-types' href='all.html'><p>See all tokio's items</p></a><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#functions">Functions</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'tokio', ty: 'mod', relpath: '../'};</script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../src/tokio/lib.rs.html#1-392' title='goto source code'>[src]</a></span><span class='in-band'>Crate <a class="mod" href=''>tokio</a></span></h1><div class='docblock'><p>A runtime for writing reliable, asynchronous, and slim applications.</p>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `tokio` crate."><meta name="keywords" content="rust, rustlang, rust-lang, tokio"><title>tokio - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../dark.css"><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="shortcut icon" href="../favicon.ico"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../tokio/index.html'><div class='logo-container'><img src='../rust-logo.png' alt='logo'></div></a><p class='location'>Crate tokio</p><div class="sidebar-elems"><a id='all-types' href='all.html'><p>See all tokio's items</p></a><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#functions">Functions</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'tokio', ty: 'mod', relpath: '../'};</script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../src/tokio/lib.rs.html#1-435' title='goto source code'>[src]</a></span><span class='in-band'>Crate <a class="mod" href=''>tokio</a></span></h1><div class='docblock'><p>A runtime for writing reliable, asynchronous, and slim applications.</p>
 <p>Tokio is an event-driven, non-blocking I/O platform for writing asynchronous
 applications with the Rust programming language. At a high level, it
 provides a few major components:</p>
@@ -125,6 +125,40 @@ enable the basic <a href="runtime/index.html#basic-scheduler">single-threaded sc
 scheduler</a>, respectively. See the <a href="runtime/index.html#runtime-scheduler"><code>runtime</code> module
 documentation</a> for details. In addition, the &quot;macros&quot; feature
 flag enables the <code>#[tokio::main]</code> and <code>#[tokio::test]</code> attributes.</p>
+<h2 id="cpu-bound-tasks-and-blocking-code" class="section-header"><a href="#cpu-bound-tasks-and-blocking-code">CPU-bound tasks and blocking code</a></h2>
+<p>Tokio is able to concurrently run many tasks on a few threads by repeatedly
+swapping the currently running task on each thread. However, this kind of
+swapping can only happen at <code>.await</code> points, so code that spends a long time
+without reaching an <code>.await</code> will prevent other tasks from running. To
+combat this, Tokio provides two kinds of threads: Core threads and blocking
+threads. The core threads are where all asynchronous code runs, and Tokio
+will by default spawn one for each CPU core. The blocking threads are
+spawned on demand, and can be used to run blocking code that would otherwise
+block other tasks from running. Since it is not possible for Tokio to swap
+out blocking tasks, like it can do with asynchronous code, the upper limit
+on the number of blocking threads is very large. These limits can be
+configured on the <a href="crate::runtime::Builder"><code>Builder</code></a>.</p>
+<p>Two spawn a blocking task, you should use the <a href="crate::task::spawn_blocking()"><code>spawn_blocking</code></a> function.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#[<span class="ident">tokio</span>::<span class="ident">main</span>]</span>
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="comment">// This is running on a core thread.</span>
+
+    <span class="kw">let</span> <span class="ident">blocking_task</span> <span class="op">=</span> <span class="ident">tokio</span>::<span class="ident">task</span>::<span class="ident">spawn_blocking</span>(<span class="op">|</span><span class="op">|</span> {
+        <span class="comment">// This is running on a blocking thread.</span>
+        <span class="comment">// Blocking here is ok.</span>
+    });
+
+    <span class="comment">// We can wait for the blocking task like this:</span>
+    <span class="comment">// If the blocking task panics, the unwrap below will propagate the</span>
+    <span class="comment">// panic.</span>
+    <span class="ident">blocking_task</span>.<span class="kw">await</span>.<span class="ident">unwrap</span>();
+}</pre></div>
+<p>If your code is CPU-bound and you wish to limit the number of threads used
+to run it, you should run it on another thread pool such as <a href="https://docs.rs/rayon">rayon</a>. You
+can use an <a href="crate::sync::oneshot"><code>oneshot</code></a> channel to send the result back to Tokio when the
+rayon task finishes.</p>
 <h2 id="asynchronous-io" class="section-header"><a href="#asynchronous-io">Asynchronous IO</a></h2>
 <p>As well as scheduling and running tasks, Tokio provides everything you need
 to perform input and output asynchronously.</p>
@@ -189,6 +223,7 @@ the &quot;process&quot; feature flag).</li>
 </td></tr><tr class='module-item'><td><a class="mod" href="net/index.html" title='tokio::net mod'>net</a></td><td class='docblock-short'><p>TCP/UDP/Unix bindings for <code>tokio</code>.</p>
 </td></tr><tr class='module-item'><td><a class="mod" href="prelude/index.html" title='tokio::prelude mod'>prelude</a></td><td class='docblock-short'><p>A &quot;prelude&quot; for users of the <code>tokio</code> crate.</p>
 </td></tr><tr class='module-item'><td><a class="mod" href="runtime/index.html" title='tokio::runtime mod'>runtime</a></td><td class='docblock-short'><p>The Tokio runtime.</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="stream/index.html" title='tokio::stream mod'>stream</a></td><td class='docblock-short'><p>Stream utilities for Tokio.</p>
 </td></tr><tr class='module-item'><td><a class="mod" href="sync/index.html" title='tokio::sync mod'>sync</a></td><td class='docblock-short'><p>Synchronization primitives for use in asynchronous contexts.</p>
 </td></tr><tr class='module-item'><td><a class="mod" href="task/index.html" title='tokio::task mod'>task</a></td><td class='docblock-short'><p>Asynchronous green-threads.</p>
 </td></tr><tr class='module-item'><td><a class="mod" href="time/index.html" title='tokio::time mod'>time</a></td><td class='docblock-short'><p>Utilities for tracking time.</p>

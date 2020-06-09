@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-util-0.3.4/src/future/try_future/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../futures_util/index.html'><div class='logo-container'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-util-0.3.5/src/future/try_future/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../futures_util/index.html'><div class='logo-container'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -534,6 +534,84 @@
 <span id="534">534</span>
 <span id="535">535</span>
 <span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Futures</span>
 <span class="doccomment">//!</span>
@@ -551,65 +629,121 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;sink&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">futures_sink</span>::<span class="ident">Sink</span>;
 
+<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">assert_future</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">future</span>::{<span class="ident">Map</span>, <span class="ident">Inspect</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">fns</span>::{
+    <span class="ident">MapOkFn</span>, <span class="ident">map_ok_fn</span>, <span class="ident">MapErrFn</span>, <span class="ident">map_err_fn</span>, <span class="ident">MapOkOrElseFn</span>,
+    <span class="ident">map_ok_or_else_fn</span>, <span class="ident">IntoFn</span>, <span class="ident">UnwrapOrElseFn</span>, <span class="ident">unwrap_or_else_fn</span>, <span class="ident">InspectOkFn</span>, <span class="ident">inspect_ok_fn</span>, <span class="ident">InspectErrFn</span>,
+    <span class="ident">inspect_err_fn</span>, <span class="ident">into_fn</span>
+};
+
 <span class="comment">// Combinators</span>
-
-<span class="kw">mod</span> <span class="ident">and_then</span>;
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">and_then</span>::<span class="ident">AndThen</span>;
-
-<span class="kw">mod</span> <span class="ident">err_into</span>;
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">err_into</span>::<span class="ident">ErrInto</span>;
-
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;sink&quot;</span>)]</span>
-<span class="kw">mod</span> <span class="ident">flatten_sink</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;sink&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">flatten_sink</span>::<span class="ident">FlattenSink</span>;
-
-<span class="kw">mod</span> <span class="ident">inspect_ok</span>;
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">inspect_ok</span>::<span class="ident">InspectOk</span>;
-
-<span class="kw">mod</span> <span class="ident">inspect_err</span>;
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">inspect_err</span>::<span class="ident">InspectErr</span>;
-
 <span class="kw">mod</span> <span class="ident">into_future</span>;
+<span class="kw">mod</span> <span class="ident">try_flatten</span>;
+<span class="kw">mod</span> <span class="ident">try_flatten_err</span>;
+
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Future for the [`try_flatten`](TryFutureExt::try_flatten) method.</span>
+    <span class="ident">TryFlatten</span><span class="op">&lt;</span><span class="ident">Fut1</span>, <span class="ident">Fut2</span><span class="op">&gt;</span>(
+        <span class="ident">try_flatten</span>::<span class="ident">TryFlatten</span><span class="op">&lt;</span><span class="ident">Fut1</span>, <span class="ident">Fut2</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Future</span> <span class="op">+</span> <span class="ident">FusedFuture</span> <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">Fut1</span><span class="op">|</span> <span class="ident">try_flatten</span>::<span class="ident">TryFlatten</span>::<span class="ident">new</span>(<span class="ident">x</span>)]
+);
+
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Future for the [`try_flatten_err`](TryFutureExt::try_flatten_err) method.</span>
+    <span class="ident">TryFlattenErr</span><span class="op">&lt;</span><span class="ident">Fut1</span>, <span class="ident">Fut2</span><span class="op">&gt;</span>(
+        <span class="ident">try_flatten_err</span>::<span class="ident">TryFlattenErr</span><span class="op">&lt;</span><span class="ident">Fut1</span>, <span class="ident">Fut2</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Future</span> <span class="op">+</span> <span class="ident">FusedFuture</span> <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">Fut1</span><span class="op">|</span> <span class="ident">try_flatten_err</span>::<span class="ident">TryFlattenErr</span>::<span class="ident">new</span>(<span class="ident">x</span>)]
+);
+
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Future for the [`try_flatten_stream`](TryFutureExt::try_flatten_stream) method.</span>
+    <span class="ident">TryFlattenStream</span><span class="op">&lt;</span><span class="ident">Fut</span><span class="op">&gt;</span>(
+        <span class="ident">try_flatten</span>::<span class="ident">TryFlatten</span><span class="op">&lt;</span><span class="ident">Fut</span>, <span class="ident">Fut</span>::<span class="prelude-val">Ok</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Sink</span> <span class="op">+</span> <span class="ident">Stream</span> <span class="op">+</span> <span class="ident">FusedStream</span> <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">Fut</span><span class="op">|</span> <span class="ident">try_flatten</span>::<span class="ident">TryFlatten</span>::<span class="ident">new</span>(<span class="ident">x</span>)]
+    <span class="kw">where</span> <span class="ident">Fut</span>: <span class="ident">TryFuture</span>
+);
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;sink&quot;</span>)]</span>
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Sink for the [`flatten_sink`](TryFutureExt::flatten_sink) method.</span>
+    <span class="ident">FlattenSink</span><span class="op">&lt;</span><span class="ident">Fut</span>, <span class="ident">Si</span><span class="op">&gt;</span>(
+        <span class="ident">try_flatten</span>::<span class="ident">TryFlatten</span><span class="op">&lt;</span><span class="ident">Fut</span>, <span class="ident">Si</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Sink</span> <span class="op">+</span> <span class="ident">Stream</span> <span class="op">+</span> <span class="ident">FusedStream</span> <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">Fut</span><span class="op">|</span> <span class="ident">try_flatten</span>::<span class="ident">TryFlatten</span>::<span class="ident">new</span>(<span class="ident">x</span>)]
+);
+
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Future for the [`and_then`](TryFutureExt::and_then) method.</span>
+    <span class="ident">AndThen</span><span class="op">&lt;</span><span class="ident">Fut1</span>, <span class="ident">Fut2</span>, <span class="ident">F</span><span class="op">&gt;</span>(
+        <span class="ident">TryFlatten</span><span class="op">&lt;</span><span class="ident">MapOk</span><span class="op">&lt;</span><span class="ident">Fut1</span>, <span class="ident">F</span><span class="op">&gt;</span>, <span class="ident">Fut2</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Future</span> <span class="op">+</span> <span class="ident">FusedFuture</span> <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">Fut1</span>, <span class="ident">f</span>: <span class="ident">F</span><span class="op">|</span> <span class="ident">TryFlatten</span>::<span class="ident">new</span>(<span class="ident">MapOk</span>::<span class="ident">new</span>(<span class="ident">x</span>, <span class="ident">f</span>))]
+);
+
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Future for the [`or_else`](TryFutureExt::or_else) method.</span>
+    <span class="ident">OrElse</span><span class="op">&lt;</span><span class="ident">Fut1</span>, <span class="ident">Fut2</span>, <span class="ident">F</span><span class="op">&gt;</span>(
+        <span class="ident">TryFlattenErr</span><span class="op">&lt;</span><span class="ident">MapErr</span><span class="op">&lt;</span><span class="ident">Fut1</span>, <span class="ident">F</span><span class="op">&gt;</span>, <span class="ident">Fut2</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Future</span> <span class="op">+</span> <span class="ident">FusedFuture</span> <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">Fut1</span>, <span class="ident">f</span>: <span class="ident">F</span><span class="op">|</span> <span class="ident">TryFlattenErr</span>::<span class="ident">new</span>(<span class="ident">MapErr</span>::<span class="ident">new</span>(<span class="ident">x</span>, <span class="ident">f</span>))]
+);
+
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Future for the [`err_into`](TryFutureExt::err_into) method.</span>
+    <span class="ident">ErrInto</span><span class="op">&lt;</span><span class="ident">Fut</span>, <span class="ident">E</span><span class="op">&gt;</span>(
+        <span class="ident">MapErr</span><span class="op">&lt;</span><span class="ident">Fut</span>, <span class="ident">IntoFn</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Future</span> <span class="op">+</span> <span class="ident">FusedFuture</span> <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">Fut</span><span class="op">|</span> <span class="ident">MapErr</span>::<span class="ident">new</span>(<span class="ident">x</span>, <span class="ident">into_fn</span>())]
+);
+
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Future for the [`ok_into`](TryFutureExt::ok_into) method.</span>
+    <span class="ident">OkInto</span><span class="op">&lt;</span><span class="ident">Fut</span>, <span class="ident">E</span><span class="op">&gt;</span>(
+        <span class="ident">MapOk</span><span class="op">&lt;</span><span class="ident">Fut</span>, <span class="ident">IntoFn</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Future</span> <span class="op">+</span> <span class="ident">FusedFuture</span> <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">Fut</span><span class="op">|</span> <span class="ident">MapOk</span>::<span class="ident">new</span>(<span class="ident">x</span>, <span class="ident">into_fn</span>())]
+);
+
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Future for the [`inspect_ok`](super::TryFutureExt::inspect_ok) method.</span>
+    <span class="ident">InspectOk</span><span class="op">&lt;</span><span class="ident">Fut</span>, <span class="ident">F</span><span class="op">&gt;</span>(
+        <span class="ident">Inspect</span><span class="op">&lt;</span><span class="ident">IntoFuture</span><span class="op">&lt;</span><span class="ident">Fut</span><span class="op">&gt;</span>, <span class="ident">InspectOkFn</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Future</span> <span class="op">+</span> <span class="ident">FusedFuture</span> <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">Fut</span>, <span class="ident">f</span>: <span class="ident">F</span><span class="op">|</span> <span class="ident">Inspect</span>::<span class="ident">new</span>(<span class="ident">IntoFuture</span>::<span class="ident">new</span>(<span class="ident">x</span>), <span class="ident">inspect_ok_fn</span>(<span class="ident">f</span>))]
+);
+
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Future for the [`inspect_err`](super::TryFutureExt::inspect_err) method.</span>
+    <span class="ident">InspectErr</span><span class="op">&lt;</span><span class="ident">Fut</span>, <span class="ident">F</span><span class="op">&gt;</span>(
+        <span class="ident">Inspect</span><span class="op">&lt;</span><span class="ident">IntoFuture</span><span class="op">&lt;</span><span class="ident">Fut</span><span class="op">&gt;</span>, <span class="ident">InspectErrFn</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Future</span> <span class="op">+</span> <span class="ident">FusedFuture</span> <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">Fut</span>, <span class="ident">f</span>: <span class="ident">F</span><span class="op">|</span> <span class="ident">Inspect</span>::<span class="ident">new</span>(<span class="ident">IntoFuture</span>::<span class="ident">new</span>(<span class="ident">x</span>), <span class="ident">inspect_err_fn</span>(<span class="ident">f</span>))]
+);
+
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">into_future</span>::<span class="ident">IntoFuture</span>;
 
-<span class="kw">mod</span> <span class="ident">map_err</span>;
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">map_err</span>::<span class="ident">MapErr</span>;
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Future for the [`map_ok`](TryFutureExt::map_ok) method.</span>
+    <span class="ident">MapOk</span><span class="op">&lt;</span><span class="ident">Fut</span>, <span class="ident">F</span><span class="op">&gt;</span>(
+        <span class="ident">Map</span><span class="op">&lt;</span><span class="ident">IntoFuture</span><span class="op">&lt;</span><span class="ident">Fut</span><span class="op">&gt;</span>, <span class="ident">MapOkFn</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Future</span> <span class="op">+</span> <span class="ident">FusedFuture</span> <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">Fut</span>, <span class="ident">f</span>: <span class="ident">F</span><span class="op">|</span> <span class="ident">Map</span>::<span class="ident">new</span>(<span class="ident">IntoFuture</span>::<span class="ident">new</span>(<span class="ident">x</span>), <span class="ident">map_ok_fn</span>(<span class="ident">f</span>))]
+);
 
-<span class="kw">mod</span> <span class="ident">map_ok</span>;
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">map_ok</span>::<span class="ident">MapOk</span>;
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Future for the [`map_err`](TryFutureExt::map_err) method.</span>
+    <span class="ident">MapErr</span><span class="op">&lt;</span><span class="ident">Fut</span>, <span class="ident">F</span><span class="op">&gt;</span>(
+        <span class="ident">Map</span><span class="op">&lt;</span><span class="ident">IntoFuture</span><span class="op">&lt;</span><span class="ident">Fut</span><span class="op">&gt;</span>, <span class="ident">MapErrFn</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Future</span> <span class="op">+</span> <span class="ident">FusedFuture</span> <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">Fut</span>, <span class="ident">f</span>: <span class="ident">F</span><span class="op">|</span> <span class="ident">Map</span>::<span class="ident">new</span>(<span class="ident">IntoFuture</span>::<span class="ident">new</span>(<span class="ident">x</span>), <span class="ident">map_err_fn</span>(<span class="ident">f</span>))]
+);
 
-<span class="kw">mod</span> <span class="ident">map_ok_or_else</span>;
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">map_ok_or_else</span>::<span class="ident">MapOkOrElse</span>;
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Future for the [`map_ok_or_else`](TryFutureExt::map_ok_or_else) method.</span>
+    <span class="ident">MapOkOrElse</span><span class="op">&lt;</span><span class="ident">Fut</span>, <span class="ident">F</span>, <span class="ident">G</span><span class="op">&gt;</span>(
+        <span class="ident">Map</span><span class="op">&lt;</span><span class="ident">IntoFuture</span><span class="op">&lt;</span><span class="ident">Fut</span><span class="op">&gt;</span>, <span class="ident">MapOkOrElseFn</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">G</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Future</span> <span class="op">+</span> <span class="ident">FusedFuture</span> <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">Fut</span>, <span class="ident">f</span>: <span class="ident">F</span>, <span class="ident">g</span>: <span class="ident">G</span><span class="op">|</span> <span class="ident">Map</span>::<span class="ident">new</span>(<span class="ident">IntoFuture</span>::<span class="ident">new</span>(<span class="ident">x</span>), <span class="ident">map_ok_or_else_fn</span>(<span class="ident">f</span>, <span class="ident">g</span>))]
+);
 
-<span class="kw">mod</span> <span class="ident">or_else</span>;
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">or_else</span>::<span class="ident">OrElse</span>;
-
-<span class="kw">mod</span> <span class="ident">try_flatten_stream</span>;
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">try_flatten_stream</span>::<span class="ident">TryFlattenStream</span>;
-
-<span class="kw">mod</span> <span class="ident">unwrap_or_else</span>;
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/57411</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">unwrap_or_else</span>::<span class="ident">UnwrapOrElse</span>;
-
-<span class="comment">// Implementation details</span>
-
-<span class="kw">mod</span> <span class="ident">flatten_stream_sink</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="self">self</span>::<span class="ident">flatten_stream_sink</span>::<span class="ident">FlattenStreamSink</span>;
-
-<span class="kw">mod</span> <span class="ident">try_chain</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="self">self</span>::<span class="ident">try_chain</span>::{<span class="ident">TryChain</span>, <span class="ident">TryChainAction</span>};
+<span class="macro">delegate_all</span><span class="macro">!</span>(
+    <span class="doccomment">/// Future for the [`unwrap_or_else`](TryFutureExt::unwrap_or_else) method.</span>
+    <span class="ident">UnwrapOrElse</span><span class="op">&lt;</span><span class="ident">Fut</span>, <span class="ident">F</span><span class="op">&gt;</span>(
+        <span class="ident">Map</span><span class="op">&lt;</span><span class="ident">IntoFuture</span><span class="op">&lt;</span><span class="ident">Fut</span><span class="op">&gt;</span>, <span class="ident">UnwrapOrElseFn</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ): <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Future</span> <span class="op">+</span> <span class="ident">FusedFuture</span> <span class="op">+</span> <span class="ident">New</span>[<span class="op">|</span><span class="ident">x</span>: <span class="ident">Fut</span>, <span class="ident">f</span>: <span class="ident">F</span><span class="op">|</span> <span class="ident">Map</span>::<span class="ident">new</span>(<span class="ident">IntoFuture</span>::<span class="ident">new</span>(<span class="ident">x</span>), <span class="ident">unwrap_or_else_fn</span>(<span class="ident">f</span>))]
+);
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Fut</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">TryFuture</span><span class="op">&gt;</span> <span class="ident">TryFutureExt</span> <span class="kw">for</span> <span class="ident">Fut</span> {}
 
@@ -698,7 +832,7 @@
         <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="self">Self</span>::<span class="prelude-val">Ok</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>,
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
-        <span class="ident">MapOk</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>)
+        <span class="ident">assert_future</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">MapOk</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>))
     }
 
     <span class="doccomment">/// Maps this future&#39;s success value to a different value, and permits for error handling resulting in the same type.</span>
@@ -739,7 +873,7 @@
         <span class="ident">E</span>: <span class="ident">FnOnce</span>(<span class="self">Self</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>,
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
-        <span class="ident">MapOkOrElse</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">e</span>, <span class="ident">f</span>)
+        <span class="ident">assert_future</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">MapOkOrElse</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>, <span class="ident">e</span>))
     }
 
     <span class="doccomment">/// Maps this future&#39;s error value to a different value.</span>
@@ -786,7 +920,7 @@
         <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="self">Self</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">E</span>,
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
-        <span class="ident">MapErr</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>)
+        <span class="ident">assert_future</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="prelude-val">Ok</span>, <span class="ident">E</span><span class="op">&gt;</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">MapErr</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>))
     }
 
     <span class="doccomment">/// Maps this future&#39;s [`Error`](TryFuture::Error) to a new error type</span>
@@ -816,7 +950,17 @@
         <span class="self">Self</span>: <span class="ident">Sized</span>,
         <span class="self">Self</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>,
     {
-        <span class="ident">ErrInto</span>::<span class="ident">new</span>(<span class="self">self</span>)
+        <span class="ident">assert_future</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="prelude-val">Ok</span>, <span class="ident">E</span><span class="op">&gt;</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">ErrInto</span>::<span class="ident">new</span>(<span class="self">self</span>))
+    }
+
+    <span class="doccomment">/// Maps this future&#39;s [`Ok`](TryFuture::Ok) to a new type</span>
+    <span class="doccomment">/// using the [`Into`](std::convert::Into) trait.</span>
+    <span class="kw">fn</span> <span class="ident">ok_into</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OkInto</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">U</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="self">Self</span>: <span class="ident">Sized</span>,
+        <span class="self">Self</span>::<span class="prelude-val">Ok</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>,
+    {
+        <span class="ident">assert_future</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">OkInto</span>::<span class="ident">new</span>(<span class="self">self</span>))
     }
 
     <span class="doccomment">/// Executes another future after this one resolves successfully. The</span>
@@ -861,7 +1005,7 @@
         <span class="ident">Fut</span>: <span class="ident">TryFuture</span><span class="op">&lt;</span><span class="ident">Error</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span>,
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
-        <span class="ident">AndThen</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>)
+        <span class="ident">assert_future</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Fut</span>::<span class="prelude-val">Ok</span>, <span class="ident">Fut</span>::<span class="ident">Error</span><span class="op">&gt;</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">AndThen</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>))
     }
 
     <span class="doccomment">/// Executes another future if this one resolves to an error. The</span>
@@ -906,7 +1050,7 @@
         <span class="ident">Fut</span>: <span class="ident">TryFuture</span><span class="op">&lt;</span><span class="prelude-val">Ok</span> <span class="op">=</span> <span class="self">Self</span>::<span class="prelude-val">Ok</span><span class="op">&gt;</span>,
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
-        <span class="ident">OrElse</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>)
+        <span class="ident">assert_future</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Fut</span>::<span class="prelude-val">Ok</span>, <span class="ident">Fut</span>::<span class="ident">Error</span><span class="op">&gt;</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">OrElse</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>))
     }
 
     <span class="doccomment">/// Do something with the success value of a future before passing it on.</span>
@@ -932,7 +1076,7 @@
         <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="prelude-val">Ok</span>),
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
-        <span class="ident">InspectOk</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>)
+        <span class="ident">assert_future</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="prelude-val">Ok</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">InspectOk</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>))
     }
 
     <span class="doccomment">/// Do something with the error value of a future before passing it on.</span>
@@ -958,7 +1102,19 @@
         <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Error</span>),
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
-        <span class="ident">InspectErr</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>)
+        <span class="ident">assert_future</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="prelude-val">Ok</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">InspectErr</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>))
+    }
+
+    <span class="doccomment">/// Flatten the execution of this future when the successful result of this</span>
+    <span class="doccomment">/// future is another future.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This is equivalent to `future.and_then(|x| x)`.</span>
+    <span class="kw">fn</span> <span class="ident">try_flatten</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TryFlatten</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="prelude-val">Ok</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="self">Self</span>::<span class="prelude-val">Ok</span>: <span class="ident">TryFuture</span><span class="op">&lt;</span><span class="ident">Error</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span>,
+        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    {
+        <span class="ident">TryFlatten</span>::<span class="ident">new</span>(<span class="self">self</span>)
     }
 
     <span class="doccomment">/// Flatten the execution of this future when the successful result of this</span>
@@ -1021,7 +1177,7 @@
         <span class="self">Self</span>: <span class="ident">Sized</span>,
         <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="self">Self</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="prelude-val">Ok</span>,
     {
-        <span class="ident">UnwrapOrElse</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>)
+        <span class="ident">assert_future</span>::<span class="op">&lt;</span><span class="self">Self</span>::<span class="prelude-val">Ok</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">UnwrapOrElse</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">f</span>))
     }
 
     <span class="doccomment">/// Wraps a [`TryFuture`] into a future compatable with libraries using</span>
