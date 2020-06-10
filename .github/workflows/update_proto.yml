@@ -40,9 +40,7 @@ jobs:
       run: git push
     - name: Bump version
       run: cargo bump minor --git-tag
-    - name: Commit new version
-      run: git add . && git commit -m "New version"
     - name: Git push 2
-      run: git pull && git push
+      run: git push
     - name: publish
       run: cargo publish
