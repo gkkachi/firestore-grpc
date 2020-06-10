@@ -2,15 +2,13 @@ name: Update proto
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "0 0 * * 0"
 
 env:
-  CARGO_TERM_COLOR: always
-  GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-  CRATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
+  BRANCH_TO_PUSH: new-proto
 
 jobs:
-  build:
+  update-proro:
 
     runs-on: ubuntu-latest
 
@@ -21,26 +19,9 @@ jobs:
         git config --global user.name "GitHub Actions"
         git config --global user.email "github@s.k-kachi.net"
         git config --global push.default current
-        git remote set-url origin https://gkkachi:${GITHUB_TOKEN}@github.com/gkkachi/firestore-grpc.git
-        git checkout master
-    - name: Cargo setup
-      run: |
-        rustup update
-        cargo login ${CRATES_IO_TOKEN}
-        cargo install cargo-bump
+        git fetch origin release
+        git checkout -B ${BRANCH_TO_PUSH} origin/release
     - name: Update proto
       run: bash update.sh
-    - name: Commit proto
-      run: git add . && git commit -m "Update proto" || exit 0
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
-    - name: Git push 1
-      run: git push
-    - name: Bump version
-      run: cargo bump minor --git-tag
-    - name: Git push 2
-      run: git push
-    - name: publish
-      run: cargo publish
+    - name: Commit and push
+      run: git add . && git commit -m "Update proto" && git push -f || echo "Protos are up-to-date."

@@ -3,6 +3,7 @@ name: Rust
 on:
   push:
     branches: [ master ]
+    paths-ignore: [ '.github/**' ]
 
 jobs:
   build-and-deploy-docs:
