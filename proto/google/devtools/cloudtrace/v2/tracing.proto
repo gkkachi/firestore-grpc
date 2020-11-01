@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC.
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
 syntax = "proto3";
 
@@ -31,6 +30,7 @@ option java_multiple_files = true;
 option java_outer_classname = "TracingProto";
 option java_package = "com.google.devtools.cloudtrace.v2";
 option php_namespace = "Google\\Cloud\\Trace\\V2";
+option ruby_package = "Google::Cloud::Trace::V2";
 
 // This file describes an API for collecting and viewing traces and spans
 // within a trace.  A Trace is a collection of spans corresponding to a single
