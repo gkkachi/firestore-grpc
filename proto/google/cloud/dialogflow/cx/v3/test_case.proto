@@ -210,14 +210,11 @@ message TestCaseResult {
   // <TestCase ID>/results/<TestCaseResult ID>`.
   string name = 1;
 
-  // Optional. Environment where the test was run. If not set, it indicates the draft
+  // Environment where the test was run. If not set, it indicates the draft
   // environment.
-  string environment = 2 [
-    (google.api.field_behavior) = OPTIONAL,
-    (google.api.resource_reference) = {
-      type: "dialogflow.googleapis.com/Environment"
-    }
-  ];
+  string environment = 2 [(google.api.resource_reference) = {
+                            type: "dialogflow.googleapis.com/Environment"
+                          }];
 
   // The conversation turns uttered during the test case replay in chronological
   // order.
@@ -535,9 +532,9 @@ message UpdateTestCaseRequest {
   // Required. The test case to update.
   TestCase test_case = 1 [(google.api.field_behavior) = REQUIRED];
 
-  // Required. The mask to specify which fields should be updated. Only a test case's
-  // metadata and replayed_conversation_turns may be updated. The original
-  // test_case_conversation_turns may not be updated.
+  // Required. The mask to specify which fields should be updated. The
+  // [`creationTime`][google.cloud.dialogflow.cx.v3.TestCase.creation_time] and
+  // [`lastTestResult`][google.cloud.dialogflow.cx.v3.TestCase.last_test_result] cannot be updated.
   google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
