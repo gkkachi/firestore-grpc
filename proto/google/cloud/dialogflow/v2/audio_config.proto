@@ -337,6 +337,15 @@ message OutputAudioConfig {
   SynthesizeSpeechConfig synthesize_speech_config = 3;
 }
 
+// Configures speech transcription for [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile].
+message SpeechToTextConfig {
+  // Optional. The speech model used in speech to text.
+  // `SPEECH_MODEL_VARIANT_UNSPECIFIED`, `USE_BEST_AVAILABLE` will be treated as
+  // `USE_ENHANCED`. It can be overridden in [AnalyzeContentRequest][google.cloud.dialogflow.v2.AnalyzeContentRequest] and
+  // [StreamingAnalyzeContentRequest][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest] request.
+  SpeechModelVariant speech_model_variant = 1 [(google.api.field_behavior) = OPTIONAL];
+}
+
 // Audio encoding of the output audio format in Text-To-Speech.
 enum OutputAudioEncoding {
   // Not specified.
@@ -349,18 +358,15 @@ enum OutputAudioEncoding {
   // MP3 audio at 32kbps.
   OUTPUT_AUDIO_ENCODING_MP3 = 2;
 
+  // MP3 audio at 64kbps.
+  OUTPUT_AUDIO_ENCODING_MP3_64_KBPS = 4;
+
   // Opus encoded audio wrapped in an ogg container. The result will be a
   // file which can be played natively on Android, and in browsers (at least
   // Chrome and Firefox). The quality of the encoding is considerably higher
   // than MP3 while using approximately the same bitrate.
   OUTPUT_AUDIO_ENCODING_OGG_OPUS = 3;
-}
 
-// Configures speech transcription for [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile].
-message SpeechToTextConfig {
-  // Optional. The speech model used in speech to text.
-  // `SPEECH_MODEL_VARIANT_UNSPECIFIED`, `USE_BEST_AVAILABLE` will be treated as
-  // `USE_ENHANCED`. It can be overridden in [AnalyzeContentRequest][google.cloud.dialogflow.v2.AnalyzeContentRequest] and
-  // [StreamingAnalyzeContentRequest][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest] request.
-  SpeechModelVariant speech_model_variant = 1 [(google.api.field_behavior) = OPTIONAL];
+  // 8-bit samples that compand 14-bit audio samples using G.711 PCMU/mu-law.
+  OUTPUT_AUDIO_ENCODING_MULAW = 5;
 }
