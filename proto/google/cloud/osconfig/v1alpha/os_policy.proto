@@ -14,17 +14,35 @@
 
 syntax = "proto3";
 
-package google.cloud.osconfig.agentendpoint.v1;
+package google.cloud.osconfig.v1alpha;
 
 import "google/api/field_behavior.proto";
 
-option go_package = "google.golang.org/genproto/googleapis/cloud/osconfig/agentendpoint/v1;agentendpoint";
-option java_multiple_files = true;
+option csharp_namespace = "Google.Cloud.OsConfig.V1Alpha";
+option go_package = "google.golang.org/genproto/googleapis/cloud/osconfig/v1alpha;osconfig";
 option java_outer_classname = "OSPolicyProto";
-option java_package = "com.google.cloud.osconfig.agentendpoint.v1";
+option java_package = "com.google.cloud.osconfig.v1alpha";
+option java_multiple_files = true;
+option php_namespace = "Google\\Cloud\\OsConfig\\V1alpha";
+option ruby_package = "Google::Cloud::OsConfig::V1alpha";
 
-// An OS policy defines the desired state configuration for an instance.
+// An OS policy defines the desired state configuration for a VM.
 message OSPolicy {
+  // The `OSFilter` is used to specify the OS filtering criteria for the
+  // resource group.
+  message OSFilter {
+    // This should match OS short name emitted by the OS inventory agent.
+    // An empty value matches any OS.
+    string os_short_name = 1;
+
+    // This value should match the version emitted by the OS inventory
+    // agent.
+    // Prefix matches are supported if asterisk(*) is provided as the
+    // last character. For example, to match all versions with a major
+    // version of `7`, specify the following value for this field `7.*`
+    string os_version = 2;
+  }
+
   // An OS policy resource is used to define the desired state configuration
   // and provides a specific functionality like installing/removing packages,
   // executing a script etc.
@@ -64,7 +82,7 @@ message OSPolicy {
         // A Cloud Storage object.
         Gcs gcs = 2;
 
-        // A local path to use.
+        // A local path within the VM to use.
         string local_path = 3;
       }
 
@@ -84,15 +102,15 @@ message OSPolicy {
         File source = 1 [(google.api.field_behavior) = REQUIRED];
 
         // Whether dependencies should also be installed.
-        // install when false: `dpkg -i package`
-        // install when true: `apt-get update && apt-get -y install
+        // - install when false: `dpkg -i package`
+        // - install when true: `apt-get update && apt-get -y install
         // package.deb`
         bool pull_deps = 2;
       }
 
       // A package managed by APT.
-      // install: `apt-get update && apt-get -y install [name]`
-      // remove: `apt-get -y remove [name]`
+      // - install: `apt-get update && apt-get -y install [name]`
+      // - remove: `apt-get -y remove [name]`
       message APT {
         // Required. Package name.
         string name = 1 [(google.api.field_behavior) = REQUIRED];
@@ -104,31 +122,31 @@ message OSPolicy {
         File source = 1 [(google.api.field_behavior) = REQUIRED];
 
         // Whether dependencies should also be installed.
-        // install when false: `rpm --upgrade --replacepkgs package.rpm`
-        // install when true: `yum -y install package.rpm` or
+        // - install when false: `rpm --upgrade --replacepkgs package.rpm`
+        // - install when true: `yum -y install package.rpm` or
         // `zypper -y install package.rpm`
         bool pull_deps = 2;
       }
 
       // A package managed by YUM.
-      // install: `yum -y install package`
-      // remove: `yum -y remove package`
+      // - install: `yum -y install package`
+      // - remove: `yum -y remove package`
       message YUM {
         // Required. Package name.
         string name = 1 [(google.api.field_behavior) = REQUIRED];
       }
 
       // A package managed by Zypper.
-      // install: `zypper -y install package`
-      // remove: `zypper -y rm package`
+      // - install: `zypper -y install package`
+      // - remove: `zypper -y rm package`
       message Zypper {
         // Required. Package name.
         string name = 1 [(google.api.field_behavior) = REQUIRED];
       }
 
       // A package managed by GooGet.
-      // install: `googet -noconfirm install package`
-      // remove: `googet -noconfirm remove package`
+      // - install: `googet -noconfirm install package`
+      // - remove: `googet -noconfirm remove package`
       message GooGet {
         // Required. Package name.
         string name = 1 [(google.api.field_behavior) = REQUIRED];
@@ -141,8 +159,8 @@ message OSPolicy {
 
         // Additional properties to use during installation.
         // This should be in the format of Property=Setting.
-        // Appended to the defaults of "ACTION=INSTALL
-        // REBOOT=ReallySuppress".
+        // Appended to the defaults of `ACTION=INSTALL
+        // REBOOT=ReallySuppress`.
         repeated string properties = 2;
       }
 
@@ -160,7 +178,6 @@ message OSPolicy {
       }
 
       // Required. The desired state the agent should maintain for this package.
-      // The default is to ensure the package is installed.
       DesiredState desired_state = 1 [(google.api.field_behavior) = REQUIRED];
 
       // A system package.
@@ -192,7 +209,7 @@ message OSPolicy {
     message RepositoryResource {
       // Represents a single apt package repository. These will be added to
       // a repo file that will be managed at
-      // /etc/apt/sources.list.d/google_osconfig.list.
+      // `/etc/apt/sources.list.d/google_osconfig.list`.
       message AptRepository {
         // Type of archive.
         enum ArchiveType {
@@ -206,8 +223,7 @@ message OSPolicy {
           DEB_SRC = 2;
         }
 
-        // Required. Type of archive files in this repository. The default
-        // behavior is DEB.
+        // Required. Type of archive files in this repository.
         ArchiveType archive_type = 1 [(google.api.field_behavior) = REQUIRED];
 
         // Required. URI for this repository.
@@ -221,7 +237,7 @@ message OSPolicy {
         repeated string components = 4 [(google.api.field_behavior) = REQUIRED];
 
         // URI of the key file for this repository. The agent maintains a
-        // keyring at /etc/apt/trusted.gpg.d/osconfig_agent_managed.gpg.
+        // keyring at `/etc/apt/trusted.gpg.d/osconfig_agent_managed.gpg`.
         string gpg_key = 5;
       }
 
@@ -292,7 +308,32 @@ message OSPolicy {
       }
     }
 
-    // A resource that contains custom validation and enforcement steps.
+    // A resource that allows executing scripts on the VM.
+    //
+    // The `ExecResource` has 2 stages: `validate` and `enforce` and both stages
+    // accept a script as an argument to execute.
+    //
+    // When the `ExecResource` is applied by the agent, it first executes the
+    // script in the `validate` stage. The `validate` stage can signal that the
+    // `ExecResource` is already in the desired state by returning an exit code
+    // of `100`. If the `ExecResource` is not in the desired state, it should
+    // return an exit code of `101`. Any other exit code returned by this stage
+    // is considered an error.
+    //
+    // If the `ExecResource` is not in the desired state based on the exit code
+    // from the `validate` stage, the agent proceeds to execute the script from
+    // the `enforce` stage. If the `ExecResource` is already in the desired
+    // state, the `enforce` stage will not be run.
+    // Similar to `validate` stage, the `enforce` stage should return an exit
+    // code of `100` to indicate that the resource in now in its desired state.
+    // Any other exit code is considered an error.
+    //
+    // NOTE: An exit code of `100` was chosen over `0` (and `101` vs `1`) to
+    // have an explicit indicator of `in desired state`, `not in desired state`
+    // and errors. Because, for example, Powershell will always return an exit
+    // code of `0` unless an `exit` statement is provided in the script. So, for
+    // reasons of consistency and being explicit, exit codes `100` and `101`
+    // were chosen.
     message ExecResource {
       // A file or script to execute.
       message Exec {
@@ -322,6 +363,7 @@ message OSPolicy {
           File file = 1;
 
           // An inline script.
+          // The size of the script is limited to 1024 characters.
           string script = 2;
         }
 
@@ -330,14 +372,6 @@ message OSPolicy {
 
         // Required. The script interpreter to use.
         Interpreter interpreter = 4 [(google.api.field_behavior) = REQUIRED];
-
-        // Only recorded for enforce Exec.
-        // Path to an output file (that is created by this Exec) whose
-        // content will be recorded in OSPolicyResourceCompliance after a
-        // successful run. Absence or failure to read this file will result in
-        // this ExecResource being non-compliant. Output file size is limited to
-        // 100K bytes.
-        string output_file_path = 5;
       }
 
       // Required. What to run to validate this resource is in the desired
@@ -347,8 +381,8 @@ message OSPolicy {
       Exec validate = 1 [(google.api.field_behavior) = REQUIRED];
 
       // What to run to bring this resource into the desired state.
-      // A exit code of 100 indicates "success", any other exit code idicates a
-      // failure running enforce.
+      // An exit code of 100 indicates "success", any other exit code indicates
+      // a failure running enforce.
       Exec enforce = 2;
     }
 
@@ -376,10 +410,11 @@ message OSPolicy {
         File file = 1;
 
         // A a file with this content.
+        // The size of the content is limited to 1024 characters.
         string content = 2;
       }
 
-      // Required. The absolute path of the file.
+      // Required. The absolute path of the file within the VM.
       string path = 3 [(google.api.field_behavior) = REQUIRED];
 
       // Required. Desired state of the file.
@@ -426,6 +461,23 @@ message OSPolicy {
     }
   }
 
+  // Resource groups provide a mechanism to group OS policy resources.
+  //
+  // Resource groups enable OS policy authors to create a single OS policy
+  // to be applied to VMs running different operating Systems.
+  //
+  // When the OS policy is applied to a target VM, the appropriate resource
+  // group within the OS policy is selected based on the `OSFilter` specified
+  // within the resource group.
+  message ResourceGroup {
+    // Used to specify the OS filter for a resource group
+    OSFilter os_filter = 1;
+
+    // Required. List of resources configured for this resource group.
+    // The resources are executed in the exact order specified here.
+    repeated Resource resources = 2 [(google.api.field_behavior) = REQUIRED];
+  }
+
   // Policy mode
   enum Mode {
     // Invalid mode
@@ -440,4 +492,37 @@ message OSPolicy {
     // their desired state, and if not, enforces the desired state.
     ENFORCEMENT = 2;
   }
+
+  // Required. The id of the OS policy with the following restrictions:
+  //
+  // * Must contain only lowercase letters, numbers, and hyphens.
+  // * Must start with a letter.
+  // * Must be between 1-63 characters.
+  // * Must end with a number or a letter.
+  // * Must be unique within the assignment.
+  string id = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Policy description.
+  // Length of the description is limited to 1024 characters.
+  string description = 2;
+
+  // Required. Policy mode
+  Mode mode = 3 [(google.api.field_behavior) = REQUIRED];
+
+  // Required. List of resource groups for the policy.
+  // For a particular VM, resource groups are evaluated in the order specified
+  // and the first resource group that is applicable is selected and the rest
+  // are ignored.
+  //
+  // If none of the resource groups are applicable for a VM, the VM is
+  // considered to be non-compliant w.r.t this policy. This behavior can be
+  // toggled by the flag `allow_no_resource_group_match`
+  repeated ResourceGroup resource_groups = 4
+      [(google.api.field_behavior) = REQUIRED];
+
+  // This flag determines the OS policy compliance status when none of the
+  // resource groups within the policy are applicable for a VM. Set this value
+  // to `true` if the policy needs to be reported as compliant even if the
+  // policy has nothing to validate or enforce.
+  bool allow_no_resource_group_match = 5;
 }
