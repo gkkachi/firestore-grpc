@@ -14,7 +14,7 @@
 
 syntax = "proto3";
 
-package google.example.showcase.v1;
+package google.example.showcase.v1beta2;
 
 import "google/api/annotations.proto";
 import "google/api/client.proto";
@@ -22,10 +22,10 @@ import "google/api/client.proto";
 option go_package = "github.com/googleapis/gapic-showcase/server/genproto";
 option java_multiple_files = true;
 option java_outer_classname = "ComplicanceProto";
-option java_package = "com.google.example.showcase.v1";
+option java_package = "com.google.example.showcase.v1beta2";
 
 // This service is used to test that GAPICs can transcode proto3 requests to
-// REST format correctly for various types of HTTP annotations......
+// REST format correctly for various types of HTTP annotations...
 service Compliance {
   option (google.api.default_host) = "showcase.googleapis.com";
 
@@ -33,7 +33,7 @@ service Compliance {
   // sending the entire request object in the REST body.
   rpc RepeatDataBody(RepeatRequest) returns (RepeatResponse) {
     option (google.api.http) = {
-      post: "/v1/repeat:body"
+      post: "/v1beta2/repeat:body"
       body: "*"
     };
   }
@@ -43,7 +43,7 @@ service Compliance {
   // top-level, non-repeated fields can be sent this way.
   rpc RepeatDataBodyInfo(RepeatRequest) returns (RepeatResponse) {
     option (google.api.http) = {
-      post: "/v1/repeat:bodyinfo"
+      post: "/v1beta2/repeat:bodyinfo"
       body: "info"
     };
   }
@@ -52,7 +52,7 @@ service Compliance {
   // sending all request fields as query parameters.
   rpc RepeatDataQuery(RepeatRequest) returns (RepeatResponse) {
     option (google.api.http) = {
-      get: "/v1/repeat:query"
+      get: "/v1beta2/repeat:query"
     };
   }
 
@@ -61,21 +61,21 @@ service Compliance {
   // "/bar/{foo}" rather than "/{foo=bar/*}"), and the rest as query parameters.
   rpc RepeatDataSimplePath(RepeatRequest) returns (RepeatResponse) {
     option (google.api.http) = {
-      get: "/v1/repeat/{info.f_string}/{info.f_int32}/{info.f_double}/{info.f_bool}:simplepath"
+      get: "/v1beta2/repeat/{info.f_string}/{info.f_int32}/{info.f_double}/{info.f_bool}:simplepath"
     };
   }
 
   // Same as RepeatDataSimplePath, but with a path resource.
   rpc RepeatDataPathResource(RepeatRequest) returns (RepeatResponse) {
     option (google.api.http) = {
-      get: "/v1/repeat/{info.f_string=first/*}/{info.f_child.f_string=second/*}/bool/{info.f_bool}:pathresource"
+      get: "/v1beta2/repeat/{info.f_string=first/*}/{info.f_child.f_string=second/*}/bool/{info.f_bool}:pathresource"
     };
   }
 
   // Same as RepeatDataSimplePath, but with a trailing resource.
   rpc RepeatDataPathTrailingResource(RepeatRequest) returns (RepeatResponse) {
     option (google.api.http) = {
-      get: "/v1/repeat/{info.f_string=first/*}/{info.f_child.f_string=second/**}:pathtrailingresource"
+      get: "/v1beta2/repeat/{info.f_string=first/*}/{info.f_child.f_string=second/**}:pathtrailingresource"
     };
   }
 }
@@ -92,6 +92,7 @@ message RepeatResponse {
 
 // ComplianceData is a message used for testing REST transcoding of
 // different data types.
+// scalar types
 message ComplianceData {
   string f_string = 1;
 
