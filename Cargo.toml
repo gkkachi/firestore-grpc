@@ -14,9 +14,9 @@ keywords = ["firebase", "firestore", "grpc", "gcp"]
 [lib]
 
 [dependencies]
-tonic = { version = "0.1", features = ["tls", "tls-roots"] }
-prost = "0.6"
-prost-types = "0.6"
+tonic = { version = "0.6", features = ["tls", "tls-roots"] }
+prost = "0.9"
+prost-types = "0.9"
 
 [build-dependencies]
-tonic-build = "0.1"
+tonic-build = "0.6"
