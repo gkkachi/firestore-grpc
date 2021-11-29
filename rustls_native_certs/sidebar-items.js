@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["load_native_certs","Loads root certificates found in the platform's native certificate store."]]});
+initSidebarItems({"fn":[["load_native_certs","Loads root certificates found in the platform’s native certificate store."]]});

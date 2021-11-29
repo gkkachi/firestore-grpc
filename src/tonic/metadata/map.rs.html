@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tonic-0.1.1/src/metadata/map.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>map.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../tonic/index.html'><div class='logo-container'><img src='https://github.com/hyperium/tonic/raw/master/.github/assets/tonic-docs.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;tonic-0.1.1&#x2F;src&#x2F;metadata&#x2F;map.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>map.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../tonic/index.html'><div class='logo-container rust-logo'><img src='https:&#x2F;&#x2F;github.com&#x2F;hyperium&#x2F;tonic&#x2F;raw&#x2F;master&#x2F;.github&#x2F;assets&#x2F;tonic-docs.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -2725,16 +2725,15 @@
 <span id="2725">2725</span>
 <span id="2726">2726</span>
 <span id="2727">2727</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="self">self</span>::<span class="ident">as_encoding_agnostic_metadata_key</span>::<span class="ident">AsEncodingAgnosticMetadataKey</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="self">self</span>::<span class="ident">as_metadata_key</span>::<span class="ident">AsMetadataKey</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="self">self</span>::<span class="ident">into_metadata_key</span>::<span class="ident">IntoMetadataKey</span>;
+</pre><pre class="rust"><code><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident"><span class="self">self</span>::as_encoding_agnostic_metadata_key::AsEncodingAgnosticMetadataKey</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident"><span class="self">self</span>::as_metadata_key::AsMetadataKey</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident"><span class="self">self</span>::into_metadata_key::IntoMetadataKey</span>;
 
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">encoding</span>::{<span class="ident">Ascii</span>, <span class="ident">Binary</span>, <span class="ident">ValueEncoding</span>};
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">key</span>::{<span class="ident">InvalidMetadataKey</span>, <span class="ident">MetadataKey</span>};
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">value</span>::<span class="ident">MetadataValue</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::encoding</span>::{<span class="ident">Ascii</span>, <span class="ident">Binary</span>, <span class="ident">ValueEncoding</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::key</span>::{<span class="ident">InvalidMetadataKey</span>, <span class="ident">MetadataKey</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::value::MetadataValue</span>;
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
+<span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
 
 <span class="doccomment">/// A set of gRPC custom metadata entries.</span>
 <span class="doccomment">///</span>
@@ -2761,7 +2760,7 @@
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MetadataMap</span> {
-    <span class="ident">headers</span>: <span class="ident">http</span>::<span class="ident">HeaderMap</span>,
+    <span class="ident">headers</span>: <span class="ident">http::HeaderMap</span>,
 }
 
 <span class="doccomment">/// `MetadataMap` entry iterator.</span>
@@ -2770,7 +2769,7 @@
 <span class="doccomment">/// more than once if it has more than one associated value.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">inner</span>: <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">HeaderValue</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="ident">http::header::Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http::header::HeaderValue</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// Reference to a key and an associated value in a `MetadataMap`. It can point</span>
@@ -2799,13 +2798,13 @@
 <span class="doccomment">/// more than once if it has more than one associated value.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">inner</span>: <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">HeaderValue</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="ident">http::header::IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http::header::HeaderValue</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// A drain iterator of all values associated with a single metadata key.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ValueDrain</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">VE</span>: <span class="ident">ValueEncoding</span><span class="op">&gt;</span> {
-    <span class="ident">inner</span>: <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">ValueDrain</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">HeaderValue</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="ident">http::header::ValueDrain</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http::header::HeaderValue</span><span class="op">&gt;</span>,
     <span class="ident">phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>,
 }
 
@@ -2815,7 +2814,7 @@
 <span class="doccomment">/// has more than one associated value.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Keys</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">inner</span>: <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">Keys</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">HeaderValue</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="ident">http::header::Keys</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http::header::HeaderValue</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// Reference to a key in a `MetadataMap`. It can point</span>
@@ -2836,7 +2835,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Values</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="comment">// Need to use http::header::Iter and not http::header::Values to be able</span>
     <span class="comment">// to know if a value is binary or not.</span>
-    <span class="ident">inner</span>: <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">HeaderValue</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="ident">http::header::Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http::header::HeaderValue</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// Reference to a value in a `MetadataMap`. It can point</span>
@@ -2856,7 +2855,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ValuesMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="comment">// Need to use http::header::IterMut and not http::header::ValuesMut to be</span>
     <span class="comment">// able to know if a value is binary or not.</span>
-    <span class="ident">inner</span>: <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">HeaderValue</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="ident">http::header::IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http::header::HeaderValue</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// Reference to a value in a `MetadataMap`. It can point</span>
@@ -2872,14 +2871,14 @@
 <span class="doccomment">/// An iterator of all values associated with a single metadata key.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ValueIter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">VE</span>: <span class="ident">ValueEncoding</span><span class="op">&gt;</span> {
-    <span class="ident">inner</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">ValueIter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">HeaderValue</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">http::header::ValueIter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http::header::HeaderValue</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// An iterator of all values associated with a single metadata key.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ValueIterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">VE</span>: <span class="ident">ValueEncoding</span><span class="op">&gt;</span> {
-    <span class="ident">inner</span>: <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">ValueIterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">HeaderValue</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="ident">http::header::ValueIterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http::header::HeaderValue</span><span class="op">&gt;</span>,
     <span class="ident">phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>,
 }
 
@@ -2889,7 +2888,7 @@
 <span class="doccomment">/// `MetadataMap::get_all_bin`.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetAll</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">VE</span>: <span class="ident">ValueEncoding</span><span class="op">&gt;</span> {
-    <span class="ident">inner</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">GetAll</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">HeaderValue</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">http::header::GetAll</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http::header::HeaderValue</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>,
 }
 
@@ -2909,7 +2908,7 @@
 <span class="doccomment">/// This struct is returned as part of the `Entry` enum.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VacantEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">VE</span>: <span class="ident">ValueEncoding</span><span class="op">&gt;</span> {
-    <span class="ident">inner</span>: <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">VacantEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">HeaderValue</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="ident">http::header::VacantEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http::header::HeaderValue</span><span class="op">&gt;</span>,
     <span class="ident">phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>,
 }
 
@@ -2918,7 +2917,7 @@
 <span class="doccomment">/// This struct is returned as part of the `Entry` enum.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OccupiedEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">VE</span>: <span class="ident">ValueEncoding</span><span class="op">&gt;</span> {
-    <span class="ident">inner</span>: <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">OccupiedEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">HeaderValue</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="ident">http::header::OccupiedEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">http::header::HeaderValue</span><span class="op">&gt;</span>,
     <span class="ident">phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>,
 }
 
@@ -2952,11 +2951,11 @@
     <span class="doccomment">/// assert_eq!(0, map.capacity());</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">MetadataMap</span>::<span class="ident">with_capacity</span>(<span class="number">0</span>)
+        <span class="ident">MetadataMap::with_capacity</span>(<span class="number">0</span>)
     }
 
     <span class="doccomment">/// Convert an HTTP HeaderMap to a MetadataMap</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_headers</span>(<span class="ident">headers</span>: <span class="ident">http</span>::<span class="ident">HeaderMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_headers</span>(<span class="ident">headers</span>: <span class="ident">http::HeaderMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">MetadataMap</span> { <span class="ident">headers</span> }
     }
 
@@ -2973,12 +2972,12 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(http_map.get(&quot;x-host&quot;).unwrap(), &quot;example.com&quot;);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_headers</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">http</span>::<span class="ident">HeaderMap</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_headers</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">http::HeaderMap</span> {
         <span class="self">self</span>.<span class="ident">headers</span>
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">into_sanitized_headers</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">http</span>::<span class="ident">HeaderMap</span> {
-        <span class="kw">for</span> <span class="ident">r</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">GRPC_RESERVED_HEADERS</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">into_sanitized_headers</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">http::HeaderMap</span> {
+        <span class="kw">for</span> <span class="ident">r</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::GRPC_RESERVED_HEADERS</span> {
             <span class="self">self</span>.<span class="ident">headers</span>.<span class="ident">remove</span>(<span class="kw-2">*</span><span class="ident">r</span>);
         }
         <span class="self">self</span>.<span class="ident">headers</span>
@@ -3004,7 +3003,7 @@
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_capacity</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MetadataMap</span> {
         <span class="ident">MetadataMap</span> {
-            <span class="ident">headers</span>: <span class="ident">http</span>::<span class="ident">HeaderMap</span>::<span class="ident">with_capacity</span>(<span class="ident">capacity</span>),
+            <span class="ident">headers</span>: <span class="ident">http::HeaderMap::with_capacity</span>(<span class="ident">capacity</span>),
         }
     }
 
@@ -3669,11 +3668,11 @@
     {
         <span class="kw">match</span> <span class="ident">key</span>.<span class="ident">entry</span>(<span class="self">self</span>) {
             <span class="prelude-val">Ok</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="ident">entry</span> {
-                <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">OccupiedEntry</span> {
+                <span class="ident">http::header::Entry::Occupied</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Entry::Occupied</span>(<span class="ident">OccupiedEntry</span> {
                     <span class="ident">inner</span>: <span class="ident">e</span>,
                     <span class="ident">phantom</span>: <span class="ident">PhantomData</span>,
                 }),
-                <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">VacantEntry</span> {
+                <span class="ident">http::header::Entry::Vacant</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Entry::Vacant</span>(<span class="ident">VacantEntry</span> {
                     <span class="ident">inner</span>: <span class="ident">e</span>,
                     <span class="ident">phantom</span>: <span class="ident">PhantomData</span>,
                 }),
@@ -3949,18 +3948,18 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">KeyAndValueRef</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">next</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> {
             <span class="kw">let</span> (<span class="kw-2">ref</span> <span class="ident">name</span>, <span class="ident">value</span>) <span class="op">=</span> <span class="ident">item</span>;
-            <span class="kw">if</span> <span class="ident">Ascii</span>::<span class="ident">is_valid_key</span>(<span class="ident">name</span>.<span class="ident">as_str</span>()) {
-                <span class="ident">KeyAndValueRef</span>::<span class="ident">Ascii</span>(
-                    <span class="ident">MetadataKey</span>::<span class="ident">unchecked_from_header_name_ref</span>(<span class="ident">name</span>),
-                    <span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value_ref</span>(<span class="ident">value</span>),
+            <span class="kw">if</span> <span class="ident">Ascii::is_valid_key</span>(<span class="ident">name</span>.<span class="ident">as_str</span>()) {
+                <span class="ident">KeyAndValueRef::Ascii</span>(
+                    <span class="ident">MetadataKey::unchecked_from_header_name_ref</span>(<span class="ident">name</span>),
+                    <span class="ident">MetadataValue::unchecked_from_header_value_ref</span>(<span class="ident">value</span>),
                 )
             } <span class="kw">else</span> {
-                <span class="ident">KeyAndValueRef</span>::<span class="ident">Binary</span>(
-                    <span class="ident">MetadataKey</span>::<span class="ident">unchecked_from_header_name_ref</span>(<span class="ident">name</span>),
-                    <span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value_ref</span>(<span class="ident">value</span>),
+                <span class="ident">KeyAndValueRef::Binary</span>(
+                    <span class="ident">MetadataKey::unchecked_from_header_name_ref</span>(<span class="ident">name</span>),
+                    <span class="ident">MetadataValue::unchecked_from_header_value_ref</span>(<span class="ident">value</span>),
                 )
             }
         })
@@ -3979,18 +3978,18 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">KeyAndMutValueRef</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">next</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> {
             <span class="kw">let</span> (<span class="ident">name</span>, <span class="ident">value</span>) <span class="op">=</span> <span class="ident">item</span>;
-            <span class="kw">if</span> <span class="ident">Ascii</span>::<span class="ident">is_valid_key</span>(<span class="ident">name</span>.<span class="ident">as_str</span>()) {
-                <span class="ident">KeyAndMutValueRef</span>::<span class="ident">Ascii</span>(
-                    <span class="ident">MetadataKey</span>::<span class="ident">unchecked_from_header_name_ref</span>(<span class="ident">name</span>),
-                    <span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_mut_header_value_ref</span>(<span class="ident">value</span>),
+            <span class="kw">if</span> <span class="ident">Ascii::is_valid_key</span>(<span class="ident">name</span>.<span class="ident">as_str</span>()) {
+                <span class="ident">KeyAndMutValueRef::Ascii</span>(
+                    <span class="ident">MetadataKey::unchecked_from_header_name_ref</span>(<span class="ident">name</span>),
+                    <span class="ident">MetadataValue::unchecked_from_mut_header_value_ref</span>(<span class="ident">value</span>),
                 )
             } <span class="kw">else</span> {
-                <span class="ident">KeyAndMutValueRef</span>::<span class="ident">Binary</span>(
-                    <span class="ident">MetadataKey</span>::<span class="ident">unchecked_from_header_name_ref</span>(<span class="ident">name</span>),
-                    <span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_mut_header_value_ref</span>(<span class="ident">value</span>),
+                <span class="ident">KeyAndMutValueRef::Binary</span>(
+                    <span class="ident">MetadataKey::unchecked_from_header_name_ref</span>(<span class="ident">name</span>),
+                    <span class="ident">MetadataValue::unchecked_from_mut_header_value_ref</span>(<span class="ident">value</span>),
                 )
             }
         })
@@ -4009,10 +4008,10 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">VE</span>: <span class="ident">ValueEncoding</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">ValueDrain</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">VE</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>
             .<span class="ident">next</span>()
-            .<span class="ident">map</span>(<span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value</span>)
+            .<span class="ident">map</span>(<span class="ident">MetadataValue::unchecked_from_header_value</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
@@ -4028,12 +4027,12 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">Keys</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">KeyRef</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">next</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">key</span><span class="op">|</span> {
-            <span class="kw">if</span> <span class="ident">Ascii</span>::<span class="ident">is_valid_key</span>(<span class="ident">key</span>.<span class="ident">as_str</span>()) {
-                <span class="ident">KeyRef</span>::<span class="ident">Ascii</span>(<span class="ident">MetadataKey</span>::<span class="ident">unchecked_from_header_name_ref</span>(<span class="ident">key</span>))
+            <span class="kw">if</span> <span class="ident">Ascii::is_valid_key</span>(<span class="ident">key</span>.<span class="ident">as_str</span>()) {
+                <span class="ident">KeyRef::Ascii</span>(<span class="ident">MetadataKey::unchecked_from_header_name_ref</span>(<span class="ident">key</span>))
             } <span class="kw">else</span> {
-                <span class="ident">KeyRef</span>::<span class="ident">Binary</span>(<span class="ident">MetadataKey</span>::<span class="ident">unchecked_from_header_name_ref</span>(<span class="ident">key</span>))
+                <span class="ident">KeyRef::Binary</span>(<span class="ident">MetadataKey::unchecked_from_header_name_ref</span>(<span class="ident">key</span>))
             }
         })
     }
@@ -4050,13 +4049,13 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">Values</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">ValueRef</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">next</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> {
             <span class="kw">let</span> (<span class="kw-2">ref</span> <span class="ident">name</span>, <span class="ident">value</span>) <span class="op">=</span> <span class="ident">item</span>;
-            <span class="kw">if</span> <span class="ident">Ascii</span>::<span class="ident">is_valid_key</span>(<span class="ident">name</span>.<span class="ident">as_str</span>()) {
-                <span class="ident">ValueRef</span>::<span class="ident">Ascii</span>(<span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value_ref</span>(<span class="ident">value</span>))
+            <span class="kw">if</span> <span class="ident">Ascii::is_valid_key</span>(<span class="ident">name</span>.<span class="ident">as_str</span>()) {
+                <span class="ident">ValueRef::Ascii</span>(<span class="ident">MetadataValue::unchecked_from_header_value_ref</span>(<span class="ident">value</span>))
             } <span class="kw">else</span> {
-                <span class="ident">ValueRef</span>::<span class="ident">Binary</span>(<span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value_ref</span>(<span class="ident">value</span>))
+                <span class="ident">ValueRef::Binary</span>(<span class="ident">MetadataValue::unchecked_from_header_value_ref</span>(<span class="ident">value</span>))
             }
         })
     }
@@ -4071,13 +4070,13 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">ValuesMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">ValueRefMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">next</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> {
             <span class="kw">let</span> (<span class="ident">name</span>, <span class="ident">value</span>) <span class="op">=</span> <span class="ident">item</span>;
-            <span class="kw">if</span> <span class="ident">Ascii</span>::<span class="ident">is_valid_key</span>(<span class="ident">name</span>.<span class="ident">as_str</span>()) {
-                <span class="ident">ValueRefMut</span>::<span class="ident">Ascii</span>(<span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_mut_header_value_ref</span>(<span class="ident">value</span>))
+            <span class="kw">if</span> <span class="ident">Ascii::is_valid_key</span>(<span class="ident">name</span>.<span class="ident">as_str</span>()) {
+                <span class="ident">ValueRefMut::Ascii</span>(<span class="ident">MetadataValue::unchecked_from_mut_header_value_ref</span>(<span class="ident">value</span>))
             } <span class="kw">else</span> {
-                <span class="ident">ValueRefMut</span>::<span class="ident">Binary</span>(<span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_mut_header_value_ref</span>(<span class="ident">value</span>))
+                <span class="ident">ValueRefMut::Binary</span>(<span class="ident">MetadataValue::unchecked_from_mut_header_value_ref</span>(<span class="ident">value</span>))
             }
         })
     }
@@ -4095,11 +4094,11 @@
 {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">inner</span> {
             <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">inner</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">inner</span>
                 .<span class="ident">next</span>()
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value_ref</span>),
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_header_value_ref</span>),
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         }
     }
@@ -4116,11 +4115,11 @@
 <span class="kw">where</span>
     <span class="ident">VE</span>: <span class="lifetime">&#39;a</span>,
 {
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">inner</span> {
             <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">inner</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">inner</span>
                 .<span class="ident">next_back</span>()
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value_ref</span>),
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_header_value_ref</span>),
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         }
     }
@@ -4134,10 +4133,10 @@
 {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>
             .<span class="ident">next</span>()
-            .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_mut_header_value_ref</span>)
+            .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_mut_header_value_ref</span>)
     }
 }
 
@@ -4145,10 +4144,10 @@
 <span class="kw">where</span>
     <span class="ident">VE</span>: <span class="lifetime">&#39;a</span>,
 {
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>
             .<span class="ident">next_back</span>()
-            .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_mut_header_value_ref</span>)
+            .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_mut_header_value_ref</span>)
     }
 }
 
@@ -4186,7 +4185,7 @@
     <span class="doccomment">/// assert_eq!(map.get(&quot;x-hello&quot;).unwrap(), &quot;1&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">or_insert</span>(<span class="self">self</span>, <span class="ident">default</span>: <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">Entry</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="ident"><span class="self">self</span>::Entry</span>::<span class="kw-2">*</span>;
 
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">Occupied</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">e</span>.<span class="ident">into_mut</span>(),
@@ -4232,7 +4231,7 @@
         <span class="self">self</span>,
         <span class="ident">default</span>: <span class="ident">F</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">Entry</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="ident"><span class="self">self</span>::Entry</span>::<span class="kw-2">*</span>;
 
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">Occupied</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">e</span>.<span class="ident">into_mut</span>(),
@@ -4251,9 +4250,9 @@
     <span class="doccomment">/// assert_eq!(map.entry(&quot;x-hello&quot;).unwrap().key(), &quot;x-hello&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">MetadataKey</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">Entry</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="ident"><span class="self">self</span>::Entry</span>::<span class="kw-2">*</span>;
 
-        <span class="ident">MetadataKey</span>::<span class="ident">unchecked_from_header_name_ref</span>(<span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
+        <span class="ident">MetadataKey::unchecked_from_header_name_ref</span>(<span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
             <span class="ident">Vacant</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">e</span>.<span class="ident">inner</span>.<span class="ident">key</span>(),
             <span class="ident">Occupied</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">e</span>.<span class="ident">inner</span>.<span class="ident">key</span>(),
         })
@@ -4274,7 +4273,7 @@
     <span class="doccomment">/// assert_eq!(map.entry(&quot;x-hello&quot;).unwrap().key(), &quot;x-hello&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">MetadataKey</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span> {
-        <span class="ident">MetadataKey</span>::<span class="ident">unchecked_from_header_name_ref</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">key</span>())
+        <span class="ident">MetadataKey::unchecked_from_header_name_ref</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">key</span>())
     }
 
     <span class="doccomment">/// Take ownership of the key</span>
@@ -4290,7 +4289,7 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_key</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MetadataKey</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span> {
-        <span class="ident">MetadataKey</span>::<span class="ident">unchecked_from_header_name</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">into_key</span>())
+        <span class="ident">MetadataKey::unchecked_from_header_name</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">into_key</span>())
     }
 
     <span class="doccomment">/// Insert the value into the entry.</span>
@@ -4311,7 +4310,7 @@
     <span class="doccomment">/// assert_eq!(map.get(&quot;x-hello&quot;).unwrap(), &quot;world&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">insert</span>(<span class="self">self</span>, <span class="ident">value</span>: <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span> {
-        <span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_mut_header_value_ref</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">insert</span>(<span class="ident">value</span>.<span class="ident">inner</span>))
+        <span class="ident">MetadataValue::unchecked_from_mut_header_value_ref</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">insert</span>(<span class="ident">value</span>.<span class="ident">inner</span>))
     }
 
     <span class="doccomment">/// Insert the value into the entry.</span>
@@ -4357,7 +4356,7 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">MetadataKey</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span> {
-        <span class="ident">MetadataKey</span>::<span class="ident">unchecked_from_header_name_ref</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">key</span>())
+        <span class="ident">MetadataKey::unchecked_from_header_name_ref</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">key</span>())
     }
 
     <span class="doccomment">/// Get a reference to the first value in the entry.</span>
@@ -4384,7 +4383,7 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span> {
-        <span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value_ref</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">get</span>())
+        <span class="ident">MetadataValue::unchecked_from_header_value_ref</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">get</span>())
     }
 
     <span class="doccomment">/// Get a mutable reference to the first value in the entry.</span>
@@ -4409,7 +4408,7 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span> {
-        <span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_mut_header_value_ref</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">get_mut</span>())
+        <span class="ident">MetadataValue::unchecked_from_mut_header_value_ref</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">get_mut</span>())
     }
 
     <span class="doccomment">/// Converts the `OccupiedEntry` into a mutable reference to the **first**</span>
@@ -4436,7 +4435,7 @@
     <span class="doccomment">/// assert!(map.get(&quot;host&quot;).unwrap().is_sensitive());</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_mut</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span> {
-        <span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_mut_header_value_ref</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">into_mut</span>())
+        <span class="ident">MetadataValue::unchecked_from_mut_header_value_ref</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">into_mut</span>())
     }
 
     <span class="doccomment">/// Sets the value of the entry.</span>
@@ -4460,7 +4459,7 @@
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">insert</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">header_value</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">insert</span>(<span class="ident">value</span>.<span class="ident">inner</span>);
-        <span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value</span>(<span class="ident">header_value</span>)
+        <span class="ident">MetadataValue::unchecked_from_header_value</span>(<span class="ident">header_value</span>)
     }
 
     <span class="doccomment">/// Sets the value of the entry.</span>
@@ -4538,7 +4537,7 @@
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">remove</span>();
-        <span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value</span>(<span class="ident">value</span>)
+        <span class="ident">MetadataValue::unchecked_from_header_value</span>(<span class="ident">value</span>)
     }
 
     <span class="doccomment">/// Remove the entry from the map.</span>
@@ -4565,8 +4564,8 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove_entry</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">MetadataKey</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>, <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> (<span class="ident">name</span>, <span class="ident">value</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">remove_entry</span>();
         (
-            <span class="ident">MetadataKey</span>::<span class="ident">unchecked_from_header_name</span>(<span class="ident">name</span>),
-            <span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value</span>(<span class="ident">value</span>),
+            <span class="ident">MetadataKey::unchecked_from_header_name</span>(<span class="ident">name</span>),
+            <span class="ident">MetadataValue::unchecked_from_header_value</span>(<span class="ident">value</span>),
         )
     }
 
@@ -4577,7 +4576,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove_entry_mult</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">MetadataKey</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>, <span class="ident">ValueDrain</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">VE</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> (<span class="ident">name</span>, <span class="ident">value_drain</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">remove_entry_mult</span>();
         (
-            <span class="ident">MetadataKey</span>::<span class="ident">unchecked_from_header_name</span>(<span class="ident">name</span>),
+            <span class="ident">MetadataKey::unchecked_from_header_name</span>(<span class="ident">name</span>),
             <span class="ident">ValueDrain</span> {
                 <span class="ident">inner</span>: <span class="ident">value_drain</span>,
                 <span class="ident">phantom</span>: <span class="ident">PhantomData</span>,
@@ -4742,7 +4741,7 @@
 
 <span class="kw">mod</span> <span class="ident">into_metadata_key</span> {
     <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">MetadataMap</span>, <span class="ident">MetadataValue</span>, <span class="ident">ValueEncoding</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">metadata</span>::<span class="ident">key</span>::<span class="ident">MetadataKey</span>;
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::metadata::key::MetadataKey</span>;
 
     <span class="doccomment">/// A marker trait used to identify values that can be used as insert keys</span>
     <span class="doccomment">/// to a `MetadataMap`.</span>
@@ -4777,7 +4776,7 @@
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">insert</span>(<span class="self">self</span>.<span class="ident">inner</span>, <span class="ident">val</span>.<span class="ident">inner</span>)
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_header_value</span>)
         }
 
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
@@ -4799,7 +4798,7 @@
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">insert</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>, <span class="ident">val</span>.<span class="ident">inner</span>)
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_header_value</span>)
         }
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4819,17 +4818,17 @@
             <span class="ident">val</span>: <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
             <span class="comment">// Perform name validation</span>
-            <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">MetadataKey</span>::<span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>::<span class="ident">from_static</span>(<span class="self">self</span>);
+            <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">MetadataKey</span>::<span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="ident">::from_static</span>(<span class="self">self</span>);
 
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">insert</span>(<span class="ident">key</span>.<span class="ident">inner</span>, <span class="ident">val</span>.<span class="ident">inner</span>)
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_header_value</span>)
         }
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">append</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataMap</span>, <span class="ident">val</span>: <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
             <span class="comment">// Perform name validation</span>
-            <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">MetadataKey</span>::<span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span>::<span class="ident">from_static</span>(<span class="self">self</span>);
+            <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">MetadataKey</span>::<span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="ident">::from_static</span>(<span class="self">self</span>);
 
             <span class="ident">map</span>.<span class="ident">headers</span>.<span class="ident">append</span>(<span class="ident">key</span>.<span class="ident">inner</span>, <span class="ident">val</span>.<span class="ident">inner</span>)
         }
@@ -4840,8 +4839,8 @@
 
 <span class="kw">mod</span> <span class="ident">as_metadata_key</span> {
     <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">MetadataMap</span>, <span class="ident">MetadataValue</span>, <span class="ident">ValueEncoding</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">metadata</span>::<span class="ident">key</span>::{<span class="ident">InvalidMetadataKey</span>, <span class="ident">MetadataKey</span>};
-    <span class="kw">use</span> <span class="ident">http</span>::<span class="ident">header</span>::{<span class="ident">Entry</span>, <span class="ident">GetAll</span>, <span class="ident">HeaderValue</span>};
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::metadata::key</span>::{<span class="ident">InvalidMetadataKey</span>, <span class="ident">MetadataKey</span>};
+    <span class="kw">use</span> <span class="ident">http::header</span>::{<span class="ident">Entry</span>, <span class="ident">GetAll</span>, <span class="ident">HeaderValue</span>};
 
     <span class="doccomment">/// A marker trait used to identify values that can be used as search keys</span>
     <span class="doccomment">/// to a `MetadataMap`.</span>
@@ -4881,7 +4880,7 @@
         <span class="kw">fn</span> <span class="ident">get</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">get</span>(<span class="self">self</span>.<span class="ident">inner</span>)
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value_ref</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_header_value_ref</span>)
         }
 
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
@@ -4889,7 +4888,7 @@
         <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">get_mut</span>(<span class="self">self</span>.<span class="ident">inner</span>)
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_mut_header_value_ref</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_mut_header_value_ref</span>)
         }
 
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
@@ -4912,7 +4911,7 @@
         <span class="kw">fn</span> <span class="ident">remove</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">remove</span>(<span class="self">self</span>.<span class="ident">inner</span>)
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_header_value</span>)
         }
     }
 
@@ -4924,7 +4923,7 @@
         <span class="kw">fn</span> <span class="ident">get</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>)
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value_ref</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_header_value_ref</span>)
         }
 
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
@@ -4932,7 +4931,7 @@
         <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>)
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_mut_header_value_ref</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_mut_header_value_ref</span>)
         }
 
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
@@ -4955,7 +4954,7 @@
         <span class="kw">fn</span> <span class="ident">remove</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>)
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_header_value</span>)
         }
     }
 
@@ -4965,29 +4964,29 @@
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">get</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE</span>::<span class="ident">is_valid_key</span>(<span class="self">self</span>) {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE::is_valid_key</span>(<span class="self">self</span>) {
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">get</span>(<span class="self">self</span>)
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value_ref</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_header_value_ref</span>)
         }
 
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE</span>::<span class="ident">is_valid_key</span>(<span class="self">self</span>) {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE::is_valid_key</span>(<span class="self">self</span>) {
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">get_mut</span>(<span class="self">self</span>)
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_mut_header_value_ref</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_mut_header_value_ref</span>)
         }
 
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">get_all</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">GetAll</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">HeaderValue</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE</span>::<span class="ident">is_valid_key</span>(<span class="self">self</span>) {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE::is_valid_key</span>(<span class="self">self</span>) {
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
             <span class="prelude-val">Some</span>(<span class="ident">map</span>.<span class="ident">headers</span>.<span class="ident">get_all</span>(<span class="self">self</span>))
@@ -4999,12 +4998,12 @@
             <span class="self">self</span>,
             <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataMap</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Entry</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">HeaderValue</span><span class="op">&gt;</span>, <span class="ident">InvalidMetadataKey</span><span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE</span>::<span class="ident">is_valid_key</span>(<span class="self">self</span>) {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">InvalidMetadataKey</span>::<span class="ident">new</span>());
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE::is_valid_key</span>(<span class="self">self</span>) {
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">InvalidMetadataKey::new</span>());
             }
 
-            <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">HeaderName</span>::<span class="ident">from_bytes</span>(<span class="self">self</span>.<span class="ident">as_bytes</span>())
-                .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">InvalidMetadataKey</span>::<span class="ident">new</span>())<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">http::header::HeaderName::from_bytes</span>(<span class="self">self</span>.<span class="ident">as_bytes</span>())
+                .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">InvalidMetadataKey::new</span>())<span class="question-mark">?</span>;
             <span class="kw">let</span> <span class="ident">entry</span> <span class="op">=</span> <span class="ident">map</span>.<span class="ident">headers</span>.<span class="ident">entry</span>(<span class="ident">key</span>);
             <span class="prelude-val">Ok</span>(<span class="ident">entry</span>)
         }
@@ -5012,12 +5011,12 @@
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">remove</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE</span>::<span class="ident">is_valid_key</span>(<span class="self">self</span>) {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE::is_valid_key</span>(<span class="self">self</span>) {
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">remove</span>(<span class="self">self</span>)
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_header_value</span>)
         }
     }
 
@@ -5027,29 +5026,29 @@
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">get</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE</span>::<span class="ident">is_valid_key</span>(<span class="self">self</span>.<span class="ident">as_str</span>()) {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE::is_valid_key</span>(<span class="self">self</span>.<span class="ident">as_str</span>()) {
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">get</span>(<span class="self">self</span>.<span class="ident">as_str</span>())
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value_ref</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_header_value_ref</span>)
         }
 
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE</span>::<span class="ident">is_valid_key</span>(<span class="self">self</span>.<span class="ident">as_str</span>()) {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE::is_valid_key</span>(<span class="self">self</span>.<span class="ident">as_str</span>()) {
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">get_mut</span>(<span class="self">self</span>.<span class="ident">as_str</span>())
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_mut_header_value_ref</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_mut_header_value_ref</span>)
         }
 
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">get_all</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">GetAll</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">HeaderValue</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE</span>::<span class="ident">is_valid_key</span>(<span class="self">self</span>.<span class="ident">as_str</span>()) {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE::is_valid_key</span>(<span class="self">self</span>.<span class="ident">as_str</span>()) {
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
             <span class="prelude-val">Some</span>(<span class="ident">map</span>.<span class="ident">headers</span>.<span class="ident">get_all</span>(<span class="self">self</span>.<span class="ident">as_str</span>()))
@@ -5061,24 +5060,24 @@
             <span class="self">self</span>,
             <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataMap</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Entry</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">HeaderValue</span><span class="op">&gt;</span>, <span class="ident">InvalidMetadataKey</span><span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE</span>::<span class="ident">is_valid_key</span>(<span class="self">self</span>.<span class="ident">as_str</span>()) {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">InvalidMetadataKey</span>::<span class="ident">new</span>());
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE::is_valid_key</span>(<span class="self">self</span>.<span class="ident">as_str</span>()) {
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">InvalidMetadataKey::new</span>());
             }
 
-            <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">HeaderName</span>::<span class="ident">from_bytes</span>(<span class="self">self</span>.<span class="ident">as_bytes</span>())
-                .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">InvalidMetadataKey</span>::<span class="ident">new</span>())<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">http::header::HeaderName::from_bytes</span>(<span class="self">self</span>.<span class="ident">as_bytes</span>())
+                .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">InvalidMetadataKey::new</span>())<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(<span class="ident">map</span>.<span class="ident">headers</span>.<span class="ident">entry</span>(<span class="ident">key</span>))
         }
 
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">remove</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE</span>::<span class="ident">is_valid_key</span>(<span class="self">self</span>.<span class="ident">as_str</span>()) {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE::is_valid_key</span>(<span class="self">self</span>.<span class="ident">as_str</span>()) {
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">remove</span>(<span class="self">self</span>.<span class="ident">as_str</span>())
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_header_value</span>)
         }
     }
 
@@ -5088,29 +5087,29 @@
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">get</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE</span>::<span class="ident">is_valid_key</span>(<span class="self">self</span>) {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE::is_valid_key</span>(<span class="self">self</span>) {
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">get</span>(<span class="self">self</span>.<span class="ident">as_str</span>())
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value_ref</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_header_value_ref</span>)
         }
 
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE</span>::<span class="ident">is_valid_key</span>(<span class="self">self</span>) {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE::is_valid_key</span>(<span class="self">self</span>) {
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">get_mut</span>(<span class="self">self</span>.<span class="ident">as_str</span>())
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_mut_header_value_ref</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_mut_header_value_ref</span>)
         }
 
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">get_all</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">GetAll</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">HeaderValue</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE</span>::<span class="ident">is_valid_key</span>(<span class="self">self</span>) {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE::is_valid_key</span>(<span class="self">self</span>) {
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
             <span class="prelude-val">Some</span>(<span class="ident">map</span>.<span class="ident">headers</span>.<span class="ident">get_all</span>(<span class="self">self</span>.<span class="ident">as_str</span>()))
@@ -5122,24 +5121,24 @@
             <span class="self">self</span>,
             <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataMap</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Entry</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">HeaderValue</span><span class="op">&gt;</span>, <span class="ident">InvalidMetadataKey</span><span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE</span>::<span class="ident">is_valid_key</span>(<span class="self">self</span>) {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">InvalidMetadataKey</span>::<span class="ident">new</span>());
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE::is_valid_key</span>(<span class="self">self</span>) {
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">InvalidMetadataKey::new</span>());
             }
 
-            <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">HeaderName</span>::<span class="ident">from_bytes</span>(<span class="self">self</span>.<span class="ident">as_bytes</span>())
-                .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">InvalidMetadataKey</span>::<span class="ident">new</span>())<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">http::header::HeaderName::from_bytes</span>(<span class="self">self</span>.<span class="ident">as_bytes</span>())
+                .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">InvalidMetadataKey::new</span>())<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(<span class="ident">map</span>.<span class="ident">headers</span>.<span class="ident">entry</span>(<span class="ident">key</span>))
         }
 
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">remove</span>(<span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MetadataMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MetadataValue</span><span class="op">&lt;</span><span class="ident">VE</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE</span>::<span class="ident">is_valid_key</span>(<span class="self">self</span>) {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">VE::is_valid_key</span>(<span class="self">self</span>) {
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
             <span class="ident">map</span>.<span class="ident">headers</span>
                 .<span class="ident">remove</span>(<span class="self">self</span>.<span class="ident">as_str</span>())
-                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue</span>::<span class="ident">unchecked_from_header_value</span>)
+                .<span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="ident">MetadataValue::unchecked_from_header_value</span>)
         }
     }
 
@@ -5148,7 +5147,7 @@
 
 <span class="kw">mod</span> <span class="ident">as_encoding_agnostic_metadata_key</span> {
     <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">MetadataMap</span>, <span class="ident">ValueEncoding</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">metadata</span>::<span class="ident">key</span>::<span class="ident">MetadataKey</span>;
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::metadata::key::MetadataKey</span>;
 
     <span class="doccomment">/// A marker trait used to identify values that can be used as search keys</span>
     <span class="doccomment">/// to a `MetadataMap`, for operations that don&#39;t expose the actual value.</span>
@@ -5227,231 +5226,233 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_from_headers_takes_http_headers</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">http_map</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">HeaderMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">http_map</span> <span class="op">=</span> <span class="ident">http::HeaderMap::new</span>();
         <span class="ident">http_map</span>.<span class="ident">insert</span>(<span class="string">&quot;x-host&quot;</span>, <span class="string">&quot;example.com&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
 
-        <span class="kw">let</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap</span>::<span class="ident">from_headers</span>(<span class="ident">http_map</span>);
+        <span class="kw">let</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap::from_headers</span>(<span class="ident">http_map</span>);
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">map</span>.<span class="ident">get</span>(<span class="string">&quot;x-host&quot;</span>).<span class="ident">unwrap</span>(), <span class="string">&quot;example.com&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">map</span>.<span class="ident">get</span>(<span class="string">&quot;x-host&quot;</span>).<span class="ident">unwrap</span>(), <span class="string">&quot;example.com&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_to_headers_encoding</span>() {
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Code</span>;
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Status</span>;
+        <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Code</span>;
+        <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Status</span>;
         <span class="kw">let</span> <span class="ident">special_char_message</span> <span class="op">=</span> <span class="string">&quot;Beyond ascii \t\n\r🌶️💉💧🐮🍺&quot;</span>;
-        <span class="kw">let</span> <span class="ident">s1</span> <span class="op">=</span> <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">Unknown</span>, <span class="ident">special_char_message</span>);
+        <span class="kw">let</span> <span class="ident">s1</span> <span class="op">=</span> <span class="ident">Status::new</span>(<span class="ident">Code::Unknown</span>, <span class="ident">special_char_message</span>);
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">s1</span>.<span class="ident">message</span>(), <span class="ident">special_char_message</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">s1</span>.<span class="ident">message</span>(), <span class="ident">special_char_message</span>);
 
         <span class="kw">let</span> <span class="ident">s1_map</span> <span class="op">=</span> <span class="ident">s1</span>.<span class="ident">to_header_map</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">s2</span> <span class="op">=</span> <span class="ident">Status</span>::<span class="ident">from_header_map</span>(<span class="kw-2">&amp;</span><span class="ident">s1_map</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">s2</span> <span class="op">=</span> <span class="ident">Status::from_header_map</span>(<span class="kw-2">&amp;</span><span class="ident">s1_map</span>).<span class="ident">unwrap</span>();
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">s1</span>.<span class="ident">message</span>(), <span class="ident">s2</span>.<span class="ident">message</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">s1</span>.<span class="ident">message</span>(), <span class="ident">s2</span>.<span class="ident">message</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_iter_categorizes_ascii_entries</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap::new</span>();
 
         <span class="ident">map</span>.<span class="ident">insert</span>(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
-        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue</span>::<span class="ident">from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
-        <span class="ident">map</span>.<span class="ident">insert_bin</span>(<span class="string">&quot;x-number-bin&quot;</span>, <span class="ident">MetadataValue</span>::<span class="ident">from_bytes</span>(<span class="string">b&quot;123&quot;</span>));
+        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue::from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
+        <span class="ident">map</span>.<span class="ident">insert_bin</span>(<span class="string">&quot;x-number-bin&quot;</span>, <span class="ident">MetadataValue::from_bytes</span>(<span class="string">b&quot;123&quot;</span>));
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">found_x_word</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">for</span> <span class="ident">key_and_value</span> <span class="kw">in</span> <span class="ident">map</span>.<span class="ident">iter</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">KeyAndValueRef</span>::<span class="ident">Ascii</span>(<span class="kw-2">ref</span> <span class="ident">key</span>, <span class="kw-2">ref</span> <span class="ident">_value</span>) <span class="op">=</span> <span class="ident">key_and_value</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">KeyAndValueRef::Ascii</span>(<span class="kw-2">ref</span> <span class="ident">key</span>, <span class="kw-2">ref</span> <span class="ident">_value</span>) <span class="op">=</span> <span class="ident">key_and_value</span> {
                 <span class="kw">if</span> <span class="ident">key</span>.<span class="ident">as_str</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;x-word&quot;</span> {
                     <span class="ident">found_x_word</span> <span class="op">=</span> <span class="bool-val">true</span>;
                 } <span class="kw">else</span> {
                     <span class="comment">// Unexpected key</span>
-                    <span class="macro">assert</span><span class="macro">!</span>(<span class="bool-val">false</span>);
+                    <span class="macro">assert!</span>(<span class="bool-val">false</span>);
                 }
             }
         }
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">found_x_word</span>);
+        <span class="macro">assert!</span>(<span class="ident">found_x_word</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_iter_categorizes_binary_entries</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap::new</span>();
 
         <span class="ident">map</span>.<span class="ident">insert</span>(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
-        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue</span>::<span class="ident">from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
+        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue::from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">found_x_word_bin</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">for</span> <span class="ident">key_and_value</span> <span class="kw">in</span> <span class="ident">map</span>.<span class="ident">iter</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">KeyAndValueRef</span>::<span class="ident">Binary</span>(<span class="kw-2">ref</span> <span class="ident">key</span>, <span class="kw-2">ref</span> <span class="ident">_value</span>) <span class="op">=</span> <span class="ident">key_and_value</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">KeyAndValueRef::Binary</span>(<span class="kw-2">ref</span> <span class="ident">key</span>, <span class="kw-2">ref</span> <span class="ident">_value</span>) <span class="op">=</span> <span class="ident">key_and_value</span> {
                 <span class="kw">if</span> <span class="ident">key</span>.<span class="ident">as_str</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;x-word-bin&quot;</span> {
                     <span class="ident">found_x_word_bin</span> <span class="op">=</span> <span class="bool-val">true</span>;
                 } <span class="kw">else</span> {
                     <span class="comment">// Unexpected key</span>
-                    <span class="macro">assert</span><span class="macro">!</span>(<span class="bool-val">false</span>);
+                    <span class="macro">assert!</span>(<span class="bool-val">false</span>);
                 }
             }
         }
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">found_x_word_bin</span>);
+        <span class="macro">assert!</span>(<span class="ident">found_x_word_bin</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_iter_mut_categorizes_ascii_entries</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap::new</span>();
 
         <span class="ident">map</span>.<span class="ident">insert</span>(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
-        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue</span>::<span class="ident">from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
-        <span class="ident">map</span>.<span class="ident">insert_bin</span>(<span class="string">&quot;x-number-bin&quot;</span>, <span class="ident">MetadataValue</span>::<span class="ident">from_bytes</span>(<span class="string">b&quot;123&quot;</span>));
+        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue::from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
+        <span class="ident">map</span>.<span class="ident">insert_bin</span>(<span class="string">&quot;x-number-bin&quot;</span>, <span class="ident">MetadataValue::from_bytes</span>(<span class="string">b&quot;123&quot;</span>));
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">found_x_word</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">for</span> <span class="ident">key_and_value</span> <span class="kw">in</span> <span class="ident">map</span>.<span class="ident">iter_mut</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">KeyAndMutValueRef</span>::<span class="ident">Ascii</span>(<span class="kw-2">ref</span> <span class="ident">key</span>, <span class="kw-2">ref</span> <span class="ident">_value</span>) <span class="op">=</span> <span class="ident">key_and_value</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">KeyAndMutValueRef::Ascii</span>(<span class="kw-2">ref</span> <span class="ident">key</span>, <span class="kw-2">ref</span> <span class="ident">_value</span>) <span class="op">=</span> <span class="ident">key_and_value</span> {
                 <span class="kw">if</span> <span class="ident">key</span>.<span class="ident">as_str</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;x-word&quot;</span> {
                     <span class="ident">found_x_word</span> <span class="op">=</span> <span class="bool-val">true</span>;
                 } <span class="kw">else</span> {
                     <span class="comment">// Unexpected key</span>
-                    <span class="macro">assert</span><span class="macro">!</span>(<span class="bool-val">false</span>);
+                    <span class="macro">assert!</span>(<span class="bool-val">false</span>);
                 }
             }
         }
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">found_x_word</span>);
+        <span class="macro">assert!</span>(<span class="ident">found_x_word</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_iter_mut_categorizes_binary_entries</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap::new</span>();
 
         <span class="ident">map</span>.<span class="ident">insert</span>(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
-        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue</span>::<span class="ident">from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
+        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue::from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">found_x_word_bin</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">for</span> <span class="ident">key_and_value</span> <span class="kw">in</span> <span class="ident">map</span>.<span class="ident">iter_mut</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">KeyAndMutValueRef</span>::<span class="ident">Binary</span>(<span class="kw-2">ref</span> <span class="ident">key</span>, <span class="kw-2">ref</span> <span class="ident">_value</span>) <span class="op">=</span> <span class="ident">key_and_value</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">KeyAndMutValueRef::Binary</span>(<span class="kw-2">ref</span> <span class="ident">key</span>, <span class="kw-2">ref</span> <span class="ident">_value</span>) <span class="op">=</span> <span class="ident">key_and_value</span> {
                 <span class="kw">if</span> <span class="ident">key</span>.<span class="ident">as_str</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;x-word-bin&quot;</span> {
                     <span class="ident">found_x_word_bin</span> <span class="op">=</span> <span class="bool-val">true</span>;
                 } <span class="kw">else</span> {
                     <span class="comment">// Unexpected key</span>
-                    <span class="macro">assert</span><span class="macro">!</span>(<span class="bool-val">false</span>);
+                    <span class="macro">assert!</span>(<span class="bool-val">false</span>);
                 }
             }
         }
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">found_x_word_bin</span>);
+        <span class="macro">assert!</span>(<span class="ident">found_x_word_bin</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_keys_categorizes_ascii_entries</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap::new</span>();
 
         <span class="ident">map</span>.<span class="ident">insert</span>(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
-        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue</span>::<span class="ident">from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
-        <span class="ident">map</span>.<span class="ident">insert_bin</span>(<span class="string">&quot;x-number-bin&quot;</span>, <span class="ident">MetadataValue</span>::<span class="ident">from_bytes</span>(<span class="string">b&quot;123&quot;</span>));
+        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue::from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
+        <span class="ident">map</span>.<span class="ident">insert_bin</span>(<span class="string">&quot;x-number-bin&quot;</span>, <span class="ident">MetadataValue::from_bytes</span>(<span class="string">b&quot;123&quot;</span>));
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">found_x_word</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">for</span> <span class="ident">key</span> <span class="kw">in</span> <span class="ident">map</span>.<span class="ident">keys</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">KeyRef</span>::<span class="ident">Ascii</span>(<span class="ident">key</span>) <span class="op">=</span> <span class="ident">key</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">KeyRef::Ascii</span>(<span class="ident">key</span>) <span class="op">=</span> <span class="ident">key</span> {
                 <span class="kw">if</span> <span class="ident">key</span>.<span class="ident">as_str</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;x-word&quot;</span> {
                     <span class="ident">found_x_word</span> <span class="op">=</span> <span class="bool-val">true</span>;
                 } <span class="kw">else</span> {
                     <span class="comment">// Unexpected key</span>
-                    <span class="macro">assert</span><span class="macro">!</span>(<span class="bool-val">false</span>);
+                    <span class="macro">assert!</span>(<span class="bool-val">false</span>);
                 }
             }
         }
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">found_x_word</span>);
+        <span class="macro">assert!</span>(<span class="ident">found_x_word</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_keys_categorizes_binary_entries</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap::new</span>();
 
         <span class="ident">map</span>.<span class="ident">insert</span>(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
-        <span class="ident">map</span>.<span class="ident">insert_bin</span>(<span class="string">&quot;x-number-bin&quot;</span>, <span class="ident">MetadataValue</span>::<span class="ident">from_bytes</span>(<span class="string">b&quot;123&quot;</span>));
+        <span class="ident">map</span>.<span class="ident">insert_bin</span>(<span class="string">&quot;x-number-bin&quot;</span>, <span class="ident">MetadataValue::from_bytes</span>(<span class="string">b&quot;123&quot;</span>));
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">found_x_number_bin</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">for</span> <span class="ident">key</span> <span class="kw">in</span> <span class="ident">map</span>.<span class="ident">keys</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">KeyRef</span>::<span class="ident">Binary</span>(<span class="ident">key</span>) <span class="op">=</span> <span class="ident">key</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">KeyRef::Binary</span>(<span class="ident">key</span>) <span class="op">=</span> <span class="ident">key</span> {
                 <span class="kw">if</span> <span class="ident">key</span>.<span class="ident">as_str</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;x-number-bin&quot;</span> {
                     <span class="ident">found_x_number_bin</span> <span class="op">=</span> <span class="bool-val">true</span>;
                 } <span class="kw">else</span> {
                     <span class="comment">// Unexpected key</span>
-                    <span class="macro">assert</span><span class="macro">!</span>(<span class="bool-val">false</span>);
+                    <span class="macro">assert!</span>(<span class="bool-val">false</span>);
                 }
             }
         }
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">found_x_number_bin</span>);
+        <span class="macro">assert!</span>(<span class="ident">found_x_number_bin</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_values_categorizes_ascii_entries</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap::new</span>();
 
         <span class="ident">map</span>.<span class="ident">insert</span>(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
-        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue</span>::<span class="ident">from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
-        <span class="ident">map</span>.<span class="ident">insert_bin</span>(<span class="string">&quot;x-number-bin&quot;</span>, <span class="ident">MetadataValue</span>::<span class="ident">from_bytes</span>(<span class="string">b&quot;123&quot;</span>));
+        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue::from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
+        <span class="ident">map</span>.<span class="ident">insert_bin</span>(<span class="string">&quot;x-number-bin&quot;</span>, <span class="ident">MetadataValue::from_bytes</span>(<span class="string">b&quot;123&quot;</span>));
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">found_x_word</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">for</span> <span class="ident">value</span> <span class="kw">in</span> <span class="ident">map</span>.<span class="ident">values</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueRef</span>::<span class="ident">Ascii</span>(<span class="ident">value</span>) <span class="op">=</span> <span class="ident">value</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueRef::Ascii</span>(<span class="ident">value</span>) <span class="op">=</span> <span class="ident">value</span> {
                 <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">value</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;hello&quot;</span> {
                     <span class="ident">found_x_word</span> <span class="op">=</span> <span class="bool-val">true</span>;
                 } <span class="kw">else</span> {
                     <span class="comment">// Unexpected key</span>
-                    <span class="macro">assert</span><span class="macro">!</span>(<span class="bool-val">false</span>);
+                    <span class="macro">assert!</span>(<span class="bool-val">false</span>);
                 }
             }
         }
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">found_x_word</span>);
+        <span class="macro">assert!</span>(<span class="ident">found_x_word</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_values_categorizes_binary_entries</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap::new</span>();
 
         <span class="ident">map</span>.<span class="ident">insert</span>(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
-        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue</span>::<span class="ident">from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
+        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue::from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">found_x_word_bin</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">for</span> <span class="ident">value_ref</span> <span class="kw">in</span> <span class="ident">map</span>.<span class="ident">values</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueRef</span>::<span class="ident">Binary</span>(<span class="ident">value</span>) <span class="op">=</span> <span class="ident">value_ref</span> {
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">*</span><span class="ident">value</span>, <span class="string">&quot;goodbye&quot;</span>);
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueRef::Binary</span>(<span class="ident">value</span>) <span class="op">=</span> <span class="ident">value_ref</span> {
+                <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">value</span>, <span class="string">&quot;goodbye&quot;</span>);
                 <span class="ident">found_x_word_bin</span> <span class="op">=</span> <span class="bool-val">true</span>;
             }
         }
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">found_x_word_bin</span>);
+        <span class="macro">assert!</span>(<span class="ident">found_x_word_bin</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_values_mut_categorizes_ascii_entries</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap::new</span>();
 
         <span class="ident">map</span>.<span class="ident">insert</span>(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
-        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue</span>::<span class="ident">from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
-        <span class="ident">map</span>.<span class="ident">insert_bin</span>(<span class="string">&quot;x-number-bin&quot;</span>, <span class="ident">MetadataValue</span>::<span class="ident">from_bytes</span>(<span class="string">b&quot;123&quot;</span>));
+        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue::from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
+        <span class="ident">map</span>.<span class="ident">insert_bin</span>(<span class="string">&quot;x-number-bin&quot;</span>, <span class="ident">MetadataValue::from_bytes</span>(<span class="string">b&quot;123&quot;</span>));
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">found_x_word</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">for</span> <span class="ident">value_ref</span> <span class="kw">in</span> <span class="ident">map</span>.<span class="ident">values_mut</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueRefMut</span>::<span class="ident">Ascii</span>(<span class="ident">value</span>) <span class="op">=</span> <span class="ident">value_ref</span> {
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">*</span><span class="ident">value</span>, <span class="string">&quot;hello&quot;</span>);
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueRefMut::Ascii</span>(<span class="ident">value</span>) <span class="op">=</span> <span class="ident">value_ref</span> {
+                <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">value</span>, <span class="string">&quot;hello&quot;</span>);
                 <span class="ident">found_x_word</span> <span class="op">=</span> <span class="bool-val">true</span>;
             }
         }
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">found_x_word</span>);
+        <span class="macro">assert!</span>(<span class="ident">found_x_word</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_values_mut_categorizes_binary_entries</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">MetadataMap::new</span>();
 
         <span class="ident">map</span>.<span class="ident">insert</span>(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>());
-        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue</span>::<span class="ident">from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
+        <span class="ident">map</span>.<span class="ident">append_bin</span>(<span class="string">&quot;x-word-bin&quot;</span>, <span class="ident">MetadataValue::from_bytes</span>(<span class="string">b&quot;goodbye&quot;</span>));
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">found_x_word_bin</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">for</span> <span class="ident">value</span> <span class="kw">in</span> <span class="ident">map</span>.<span class="ident">values_mut</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueRefMut</span>::<span class="ident">Binary</span>(<span class="ident">value</span>) <span class="op">=</span> <span class="ident">value</span> {
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">*</span><span class="ident">value</span>, <span class="string">&quot;goodbye&quot;</span>);
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueRefMut::Binary</span>(<span class="ident">value</span>) <span class="op">=</span> <span class="ident">value</span> {
+                <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">value</span>, <span class="string">&quot;goodbye&quot;</span>);
                 <span class="ident">found_x_word_bin</span> <span class="op">=</span> <span class="bool-val">true</span>;
             }
         }
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">found_x_word_bin</span>);
+        <span class="macro">assert!</span>(<span class="ident">found_x_word_bin</span>);
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "tonic";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="tonic" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

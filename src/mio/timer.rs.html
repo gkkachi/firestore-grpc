@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/mio-0.6.22/src/timer.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>timer.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../mio/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;mio-0.6.23&#x2F;src&#x2F;timer.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>timer.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../mio/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -514,21 +514,20 @@
 <span id="514">514</span>
 <span id="515">515</span>
 <span id="516">516</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! Timer optimized for I/O related operations</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Timer optimized for I/O related operations</span>
 
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">deprecated</span>, <span class="ident">missing_debug_implementations</span>)]</span>
 
 <span class="kw">use</span> {<span class="ident">convert</span>, <span class="ident">io</span>, <span class="ident">Ready</span>, <span class="ident">Poll</span>, <span class="ident">PollOpt</span>, <span class="ident">Registration</span>, <span class="ident">SetReadiness</span>, <span class="ident">Token</span>};
-<span class="kw">use</span> <span class="ident">event</span>::<span class="ident">Evented</span>;
-<span class="kw">use</span> <span class="ident">lazycell</span>::<span class="ident">LazyCell</span>;
-<span class="kw">use</span> <span class="ident">slab</span>::<span class="ident">Slab</span>;
+<span class="kw">use</span> <span class="ident">event::Evented</span>;
+<span class="kw">use</span> <span class="ident">lazycell::LazyCell</span>;
+<span class="kw">use</span> <span class="ident">slab::Slab</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">cmp</span>, <span class="ident">error</span>, <span class="ident">fmt</span>, <span class="ident">u64</span>, <span class="ident">usize</span>, <span class="ident">iter</span>, <span class="ident">thread</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">atomic</span>::{<span class="ident">AtomicUsize</span>, <span class="ident">Ordering</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::{<span class="ident">Duration</span>, <span class="ident">Instant</span>};
+<span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
+<span class="kw">use</span> <span class="ident">std::sync::atomic</span>::{<span class="ident">AtomicUsize</span>, <span class="ident">Ordering</span>};
+<span class="kw">use</span> <span class="ident">std::time</span>::{<span class="ident">Duration</span>, <span class="ident">Instant</span>};
 
-<span class="kw">use</span> <span class="self">self</span>::<span class="ident">TimerErrorKind</span>::<span class="ident">TimerOverflow</span>;
+<span class="kw">use</span> <span class="ident"><span class="self">self</span>::TimerErrorKind::TimerOverflow</span>;
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="comment">// Size of each tick in milliseconds</span>
@@ -571,13 +570,13 @@
     <span class="ident">registration</span>: <span class="ident">Registration</span>,
     <span class="ident">set_readiness</span>: <span class="ident">SetReadiness</span>,
     <span class="ident">wakeup_state</span>: <span class="ident">WakeupState</span>,
-    <span class="ident">wakeup_thread</span>: <span class="ident">thread</span>::<span class="ident">JoinHandle</span><span class="op">&lt;</span>()<span class="op">&gt;</span>,
+    <span class="ident">wakeup_thread</span>: <span class="ident">thread::JoinHandle</span><span class="op">&lt;</span>()<span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Inner</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="comment">// 1. Set wakeup state to TERMINATE_THREAD (https://github.com/carllerche/mio/blob/master/src/timer.rs#L451)</span>
-        <span class="self">self</span>.<span class="ident">wakeup_state</span>.<span class="ident">store</span>(<span class="ident">TERMINATE_THREAD</span>, <span class="ident">Ordering</span>::<span class="ident">Release</span>);
+        <span class="self">self</span>.<span class="ident">wakeup_state</span>.<span class="ident">store</span>(<span class="ident">TERMINATE_THREAD</span>, <span class="ident">Ordering::Release</span>);
         <span class="comment">// 2. Wake him up</span>
         <span class="self">self</span>.<span class="ident">wakeup_thread</span>.<span class="ident">thread</span>().<span class="ident">unpark</span>();
     }
@@ -605,12 +604,12 @@
 
 <span class="kw">type</span> <span class="ident">Tick</span> <span class="op">=</span> <span class="ident">u64</span>;
 
-<span class="kw">const</span> <span class="ident">TICK_MAX</span>: <span class="ident">Tick</span> <span class="op">=</span> <span class="ident">u64</span>::<span class="ident">MAX</span>;
+<span class="kw">const</span> <span class="ident">TICK_MAX</span>: <span class="ident">Tick</span> <span class="op">=</span> <span class="ident">u64::MAX</span>;
 
 <span class="comment">// Manages communication with wakeup thread</span>
 <span class="kw">type</span> <span class="ident">WakeupState</span> <span class="op">=</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AtomicUsize</span><span class="op">&gt;</span>;
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> ::<span class="ident">std</span>::<span class="ident">result</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">TimerError</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">::std::result::Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">TimerError</span><span class="op">&gt;</span>;
 <span class="comment">// TODO: remove</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TimerResult</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>;
 
@@ -629,7 +628,7 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OldTimerResult</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>;
 
 <span class="kw">const</span> <span class="ident">TERMINATE_THREAD</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0</span>;
-<span class="kw">const</span> <span class="ident">EMPTY</span>: <span class="ident">Token</span> <span class="op">=</span> <span class="ident">Token</span>(<span class="ident">usize</span>::<span class="ident">MAX</span>);
+<span class="kw">const</span> <span class="ident">EMPTY</span>: <span class="ident">Token</span> <span class="op">=</span> <span class="ident">Token</span>(<span class="ident">usize::MAX</span>);
 
 <span class="kw">impl</span> <span class="ident">Builder</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tick_duration</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">duration</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Builder</span> {
@@ -648,14 +647,14 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="ident">Timer</span>::<span class="ident">new</span>(<span class="ident">convert</span>::<span class="ident">millis</span>(<span class="self">self</span>.<span class="ident">tick</span>), <span class="self">self</span>.<span class="ident">num_slots</span>, <span class="self">self</span>.<span class="ident">capacity</span>, <span class="ident">Instant</span>::<span class="ident">now</span>())
+        <span class="ident">Timer::new</span>(<span class="ident">convert::millis</span>(<span class="self">self</span>.<span class="ident">tick</span>), <span class="self">self</span>.<span class="ident">num_slots</span>, <span class="self">self</span>.<span class="ident">capacity</span>, <span class="ident">Instant::now</span>())
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Builder</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Builder</span> {
         <span class="ident">Builder</span> {
-            <span class="ident">tick</span>: <span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">100</span>),
+            <span class="ident">tick</span>: <span class="ident">Duration::from_millis</span>(<span class="number">100</span>),
             <span class="ident">num_slots</span>: <span class="number">256</span>,
             <span class="ident">capacity</span>: <span class="number">65_536</span>,
         }
@@ -667,18 +666,18 @@
         <span class="kw">let</span> <span class="ident">num_slots</span> <span class="op">=</span> <span class="ident">num_slots</span>.<span class="ident">next_power_of_two</span>();
         <span class="kw">let</span> <span class="ident">capacity</span> <span class="op">=</span> <span class="ident">capacity</span>.<span class="ident">next_power_of_two</span>();
         <span class="kw">let</span> <span class="ident">mask</span> <span class="op">=</span> (<span class="ident">num_slots</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">-</span> <span class="number">1</span>;
-        <span class="kw">let</span> <span class="ident">wheel</span> <span class="op">=</span> <span class="ident">iter</span>::<span class="ident">repeat</span>(<span class="ident">WheelEntry</span> { <span class="ident">next_tick</span>: <span class="ident">TICK_MAX</span>, <span class="ident">head</span>: <span class="ident">EMPTY</span> })
+        <span class="kw">let</span> <span class="ident">wheel</span> <span class="op">=</span> <span class="ident">iter::repeat</span>(<span class="ident">WheelEntry</span> { <span class="ident">next_tick</span>: <span class="ident">TICK_MAX</span>, <span class="ident">head</span>: <span class="ident">EMPTY</span> })
             .<span class="ident">take</span>(<span class="ident">num_slots</span>).<span class="ident">collect</span>();
 
         <span class="ident">Timer</span> {
             <span class="ident">tick_ms</span>,
-            <span class="ident">entries</span>: <span class="ident">Slab</span>::<span class="ident">with_capacity</span>(<span class="ident">capacity</span>),
+            <span class="ident">entries</span>: <span class="ident">Slab::with_capacity</span>(<span class="ident">capacity</span>),
             <span class="ident">wheel</span>,
             <span class="ident">start</span>,
             <span class="ident">tick</span>: <span class="number">0</span>,
             <span class="ident">next</span>: <span class="ident">EMPTY</span>,
             <span class="ident">mask</span>,
-            <span class="ident">inner</span>: <span class="ident">LazyCell</span>::<span class="ident">new</span>(),
+            <span class="ident">inner</span>: <span class="ident">LazyCell::new</span>(),
         }
     }
 
@@ -689,7 +688,7 @@
 
     <span class="kw">fn</span> <span class="ident">set_timeout_at</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">delay_from_start</span>: <span class="ident">Duration</span>, <span class="ident">state</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Timeout</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tick</span> <span class="op">=</span> <span class="ident">duration_to_tick</span>(<span class="ident">delay_from_start</span>, <span class="self">self</span>.<span class="ident">tick_ms</span>);
-        <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;setting timeout; delay={:?}; tick={:?}; current-tick={:?}&quot;</span>, <span class="ident">delay_from_start</span>, <span class="ident">tick</span>, <span class="self">self</span>.<span class="ident">tick</span>);
+        <span class="macro">trace!</span>(<span class="string">&quot;setting timeout; delay={:?}; tick={:?}; current-tick={:?}&quot;</span>, <span class="ident">delay_from_start</span>, <span class="ident">tick</span>, <span class="self">self</span>.<span class="ident">tick</span>);
 
         <span class="comment">// Always target at least 1 tick in the future</span>
         <span class="kw">if</span> <span class="ident">tick</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">tick</span> {
@@ -705,7 +704,7 @@
         <span class="kw">let</span> <span class="ident">curr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">wheel</span>[<span class="ident">slot</span>];
 
         <span class="comment">// Insert the new entry</span>
-        <span class="kw">let</span> <span class="ident">entry</span> <span class="op">=</span> <span class="ident">Entry</span>::<span class="ident">new</span>(<span class="ident">state</span>, <span class="ident">tick</span>, <span class="ident">curr</span>.<span class="ident">head</span>);
+        <span class="kw">let</span> <span class="ident">entry</span> <span class="op">=</span> <span class="ident">Entry::new</span>(<span class="ident">state</span>, <span class="ident">tick</span>, <span class="ident">curr</span>.<span class="ident">head</span>);
         <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">Token</span>(<span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">insert</span>(<span class="ident">entry</span>));
 
         <span class="kw">if</span> <span class="ident">curr</span>.<span class="ident">head</span> <span class="op">!</span><span class="op">=</span> <span class="ident">EMPTY</span> {
@@ -716,13 +715,13 @@
 
         <span class="comment">// Update the head slot</span>
         <span class="self">self</span>.<span class="ident">wheel</span>[<span class="ident">slot</span>] <span class="op">=</span> <span class="ident">WheelEntry</span> {
-            <span class="ident">next_tick</span>: <span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">tick</span>, <span class="ident">curr</span>.<span class="ident">next_tick</span>),
+            <span class="ident">next_tick</span>: <span class="ident">cmp::min</span>(<span class="ident">tick</span>, <span class="ident">curr</span>.<span class="ident">next_tick</span>),
             <span class="ident">head</span>: <span class="ident">token</span>,
         };
 
         <span class="self">self</span>.<span class="ident">schedule_readiness</span>(<span class="ident">tick</span>);
 
-        <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;inserted timeout; slot={}; token={:?}&quot;</span>, <span class="ident">slot</span>, <span class="ident">token</span>);
+        <span class="macro">trace!</span>(<span class="string">&quot;inserted timeout; slot={}; token={:?}&quot;</span>, <span class="ident">slot</span>, <span class="ident">token</span>);
 
         <span class="comment">// Return the new timeout</span>
         <span class="prelude-val">Ok</span>(<span class="ident">Timeout</span> {
@@ -752,7 +751,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">poll_to</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">target_tick</span>: <span class="ident">Tick</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;tick_to; target_tick={}; current_tick={}&quot;</span>, <span class="ident">target_tick</span>, <span class="self">self</span>.<span class="ident">tick</span>);
+        <span class="macro">trace!</span>(<span class="string">&quot;tick_to; target_tick={}; current_tick={}&quot;</span>, <span class="ident">target_tick</span>, <span class="self">self</span>.<span class="ident">tick</span>);
 
         <span class="kw">if</span> <span class="ident">target_tick</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">tick</span> {
             <span class="ident">target_tick</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tick</span>;
@@ -761,7 +760,7 @@
         <span class="kw">while</span> <span class="self">self</span>.<span class="ident">tick</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">target_tick</span> {
             <span class="kw">let</span> <span class="ident">curr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">next</span>;
 
-            <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;ticking; curr={:?}&quot;</span>, <span class="ident">curr</span>);
+            <span class="macro">trace!</span>(<span class="string">&quot;ticking; curr={:?}&quot;</span>, <span class="ident">curr</span>);
 
             <span class="kw">if</span> <span class="ident">curr</span> <span class="op">=</span><span class="op">=</span> <span class="ident">EMPTY</span> {
                 <span class="self">self</span>.<span class="ident">tick</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
@@ -787,7 +786,7 @@
                 <span class="kw">let</span> <span class="ident">links</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">entries</span>[<span class="ident">curr</span>.<span class="ident">into</span>()].<span class="ident">links</span>;
 
                 <span class="kw">if</span> <span class="ident">links</span>.<span class="ident">tick</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">tick</span> {
-                    <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;triggering; token={:?}&quot;</span>, <span class="ident">curr</span>);
+                    <span class="macro">trace!</span>(<span class="string">&quot;triggering; token={:?}&quot;</span>, <span class="ident">curr</span>);
 
                     <span class="comment">// Unlink will also advance self.next</span>
                     <span class="self">self</span>.<span class="ident">unlink</span>(<span class="kw-2">&amp;</span><span class="ident">links</span>, <span class="ident">curr</span>);
@@ -796,7 +795,7 @@
                     <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">remove</span>(<span class="ident">curr</span>.<span class="ident">into</span>()).<span class="ident">state</span>);
                 } <span class="kw">else</span> {
                     <span class="kw">let</span> <span class="ident">next_tick</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">wheel</span>[<span class="ident">slot</span>].<span class="ident">next_tick</span>;
-                    <span class="self">self</span>.<span class="ident">wheel</span>[<span class="ident">slot</span>].<span class="ident">next_tick</span> <span class="op">=</span> <span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">next_tick</span>, <span class="ident">links</span>.<span class="ident">tick</span>);
+                    <span class="self">self</span>.<span class="ident">wheel</span>[<span class="ident">slot</span>].<span class="ident">next_tick</span> <span class="op">=</span> <span class="ident">cmp::min</span>(<span class="ident">next_tick</span>, <span class="ident">links</span>.<span class="ident">tick</span>);
                     <span class="self">self</span>.<span class="ident">next</span> <span class="op">=</span> <span class="ident">links</span>.<span class="ident">next</span>;
                 }
             }
@@ -804,8 +803,8 @@
 
         <span class="comment">// No more timeouts to poll</span>
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">inner</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">borrow</span>() {
-            <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;unsetting readiness&quot;</span>);
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">inner</span>.<span class="ident">set_readiness</span>.<span class="ident">set_readiness</span>(<span class="ident">Ready</span>::<span class="ident">empty</span>());
+            <span class="macro">trace!</span>(<span class="string">&quot;unsetting readiness&quot;</span>);
+            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">inner</span>.<span class="ident">set_readiness</span>.<span class="ident">set_readiness</span>(<span class="ident">Ready::empty</span>());
 
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">tick</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">next_tick</span>() {
                 <span class="self">self</span>.<span class="ident">schedule_readiness</span>(<span class="ident">tick</span>);
@@ -816,7 +815,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">unlink</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">links</span>: <span class="kw-2">&amp;</span><span class="ident">EntryLinks</span>, <span class="ident">token</span>: <span class="ident">Token</span>) {
-       <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;unlinking timeout; slot={}; token={:?}&quot;</span>,
+       <span class="macro">trace!</span>(<span class="string">&quot;unlinking timeout; slot={}; token={:?}&quot;</span>,
                <span class="self">self</span>.<span class="ident">slot_for</span>(<span class="ident">links</span>.<span class="ident">tick</span>), <span class="ident">token</span>);
 
         <span class="kw">if</span> <span class="ident">links</span>.<span class="ident">prev</span> <span class="op">=</span><span class="op">=</span> <span class="ident">EMPTY</span> {
@@ -840,7 +839,7 @@
     <span class="kw">fn</span> <span class="ident">schedule_readiness</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">tick</span>: <span class="ident">Tick</span>) {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">inner</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">borrow</span>() {
             <span class="comment">// Coordinate setting readiness w/ the wakeup thread</span>
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">curr</span> <span class="op">=</span> <span class="ident">inner</span>.<span class="ident">wakeup_state</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Acquire</span>);
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">curr</span> <span class="op">=</span> <span class="ident">inner</span>.<span class="ident">wakeup_state</span>.<span class="ident">load</span>(<span class="ident">Ordering::Acquire</span>);
 
             <span class="kw">loop</span> {
                 <span class="kw">if</span> <span class="ident">curr</span> <span class="kw">as</span> <span class="ident">Tick</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">tick</span> {
@@ -849,13 +848,13 @@
                 }
 
                 <span class="comment">// Attempt to move the wakeup time forward</span>
-                <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;advancing the wakeup time; target={}; curr={}&quot;</span>, <span class="ident">tick</span>, <span class="ident">curr</span>);
-                <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="ident">inner</span>.<span class="ident">wakeup_state</span>.<span class="ident">compare_and_swap</span>(<span class="ident">curr</span>, <span class="ident">tick</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">Ordering</span>::<span class="ident">Release</span>);
+                <span class="macro">trace!</span>(<span class="string">&quot;advancing the wakeup time; target={}; curr={}&quot;</span>, <span class="ident">tick</span>, <span class="ident">curr</span>);
+                <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="ident">inner</span>.<span class="ident">wakeup_state</span>.<span class="ident">compare_and_swap</span>(<span class="ident">curr</span>, <span class="ident">tick</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">Ordering::Release</span>);
 
                 <span class="kw">if</span> <span class="ident">actual</span> <span class="op">=</span><span class="op">=</span> <span class="ident">curr</span> {
                     <span class="comment">// Signal to the wakeup thread that the wakeup time has</span>
                     <span class="comment">// been changed.</span>
-                    <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;unparking wakeup thread&quot;</span>);
+                    <span class="macro">trace!</span>(<span class="string">&quot;unparking wakeup thread&quot;</span>);
                     <span class="ident">inner</span>.<span class="ident">wakeup_thread</span>.<span class="ident">thread</span>().<span class="ident">unpark</span>();
                     <span class="kw">return</span>;
                 }
@@ -886,18 +885,18 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="ident">Builder</span>::<span class="ident">default</span>().<span class="ident">build</span>()
+        <span class="ident">Builder::default</span>().<span class="ident">build</span>()
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Evented</span> <span class="kw">for</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">register</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">poll</span>: <span class="kw-2">&amp;</span><span class="ident">Poll</span>, <span class="ident">token</span>: <span class="ident">Token</span>, <span class="ident">interest</span>: <span class="ident">Ready</span>, <span class="ident">opts</span>: <span class="ident">PollOpt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">register</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">poll</span>: <span class="kw-2">&amp;</span><span class="ident">Poll</span>, <span class="ident">token</span>: <span class="ident">Token</span>, <span class="ident">interest</span>: <span class="ident">Ready</span>, <span class="ident">opts</span>: <span class="ident">PollOpt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">borrow</span>().<span class="ident">is_some</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(<span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">Other</span>, <span class="string">&quot;timer already registered&quot;</span>));
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(<span class="ident">io::ErrorKind::Other</span>, <span class="string">&quot;timer already registered&quot;</span>));
         }
 
-        <span class="kw">let</span> (<span class="ident">registration</span>, <span class="ident">set_readiness</span>) <span class="op">=</span> <span class="ident">Registration</span>::<span class="ident">new</span>(<span class="ident">poll</span>, <span class="ident">token</span>, <span class="ident">interest</span>, <span class="ident">opts</span>);
-        <span class="kw">let</span> <span class="ident">wakeup_state</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">AtomicUsize</span>::<span class="ident">new</span>(<span class="ident">usize</span>::<span class="ident">MAX</span>));
+        <span class="kw">let</span> (<span class="ident">registration</span>, <span class="ident">set_readiness</span>) <span class="op">=</span> <span class="ident">Registration::new</span>(<span class="ident">poll</span>, <span class="ident">token</span>, <span class="ident">interest</span>, <span class="ident">opts</span>);
+        <span class="kw">let</span> <span class="ident">wakeup_state</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">AtomicUsize::new</span>(<span class="ident">usize::MAX</span>));
         <span class="kw">let</span> <span class="ident">thread_handle</span> <span class="op">=</span> <span class="ident">spawn_wakeup_thread</span>(
             <span class="ident">wakeup_state</span>.<span class="ident">clone</span>(),
             <span class="ident">set_readiness</span>.<span class="ident">clone</span>(),
@@ -917,33 +916,33 @@
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn</span> <span class="ident">reregister</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">poll</span>: <span class="kw-2">&amp;</span><span class="ident">Poll</span>, <span class="ident">token</span>: <span class="ident">Token</span>, <span class="ident">interest</span>: <span class="ident">Ready</span>, <span class="ident">opts</span>: <span class="ident">PollOpt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">reregister</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">poll</span>: <span class="kw-2">&amp;</span><span class="ident">Poll</span>, <span class="ident">token</span>: <span class="ident">Token</span>, <span class="ident">interest</span>: <span class="ident">Ready</span>, <span class="ident">opts</span>: <span class="ident">PollOpt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">borrow</span>() {
             <span class="prelude-val">Some</span>(<span class="ident">inner</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">inner</span>.<span class="ident">registration</span>.<span class="ident">update</span>(<span class="ident">poll</span>, <span class="ident">token</span>, <span class="ident">interest</span>, <span class="ident">opts</span>),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(<span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">Other</span>, <span class="string">&quot;receiver not registered&quot;</span>)),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(<span class="ident">io::ErrorKind::Other</span>, <span class="string">&quot;receiver not registered&quot;</span>)),
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">deregister</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">poll</span>: <span class="kw-2">&amp;</span><span class="ident">Poll</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">deregister</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">poll</span>: <span class="kw-2">&amp;</span><span class="ident">Poll</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">borrow</span>() {
             <span class="prelude-val">Some</span>(<span class="ident">inner</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">inner</span>.<span class="ident">registration</span>.<span class="ident">deregister</span>(<span class="ident">poll</span>),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(<span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">Other</span>, <span class="string">&quot;receiver not registered&quot;</span>)),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(<span class="ident">io::ErrorKind::Other</span>, <span class="string">&quot;receiver not registered&quot;</span>)),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Inner</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Inner</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Inner&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;registration&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">registration</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;wakeup_state&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">wakeup_state</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Relaxed</span>))
+            .<span class="ident">field</span>(<span class="string">&quot;wakeup_state&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">wakeup_state</span>.<span class="ident">load</span>(<span class="ident">Ordering::Relaxed</span>))
             .<span class="ident">finish</span>()
     }
 }
 
-<span class="kw">fn</span> <span class="ident">spawn_wakeup_thread</span>(<span class="ident">state</span>: <span class="ident">WakeupState</span>, <span class="ident">set_readiness</span>: <span class="ident">SetReadiness</span>, <span class="ident">start</span>: <span class="ident">Instant</span>, <span class="ident">tick_ms</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">thread</span>::<span class="ident">JoinHandle</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sleep_until_tick</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Acquire</span>) <span class="kw">as</span> <span class="ident">Tick</span>;
+<span class="kw">fn</span> <span class="ident">spawn_wakeup_thread</span>(<span class="ident">state</span>: <span class="ident">WakeupState</span>, <span class="ident">set_readiness</span>: <span class="ident">SetReadiness</span>, <span class="ident">start</span>: <span class="ident">Instant</span>, <span class="ident">tick_ms</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">thread::JoinHandle</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="ident">thread::spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sleep_until_tick</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">load</span>(<span class="ident">Ordering::Acquire</span>) <span class="kw">as</span> <span class="ident">Tick</span>;
 
         <span class="kw">loop</span> {
             <span class="kw">if</span> <span class="ident">sleep_until_tick</span> <span class="op">=</span><span class="op">=</span> <span class="ident">TERMINATE_THREAD</span> <span class="kw">as</span> <span class="ident">Tick</span> {
@@ -952,7 +951,7 @@
 
             <span class="kw">let</span> <span class="ident">now_tick</span> <span class="op">=</span> <span class="ident">current_tick</span>(<span class="ident">start</span>, <span class="ident">tick_ms</span>);
 
-            <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;wakeup thread: sleep_until_tick={:?}; now_tick={:?}&quot;</span>, <span class="ident">sleep_until_tick</span>, <span class="ident">now_tick</span>);
+            <span class="macro">trace!</span>(<span class="string">&quot;wakeup thread: sleep_until_tick={:?}; now_tick={:?}&quot;</span>, <span class="ident">sleep_until_tick</span>, <span class="ident">now_tick</span>);
 
             <span class="kw">if</span> <span class="ident">now_tick</span> <span class="op">&lt;</span> <span class="ident">sleep_until_tick</span> {
                 <span class="comment">// Calling park_timeout with u64::MAX leads to undefined</span>
@@ -961,24 +960,24 @@
                 <span class="comment">// on large values, simply use a blocking park.</span>
                 <span class="kw">match</span> <span class="ident">tick_ms</span>.<span class="ident">checked_mul</span>(<span class="ident">sleep_until_tick</span> <span class="op">-</span> <span class="ident">now_tick</span>) {
                     <span class="prelude-val">Some</span>(<span class="ident">sleep_duration</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;sleeping; tick_ms={}; now_tick={}; sleep_until_tick={}; duration={:?}&quot;</span>,
+                        <span class="macro">trace!</span>(<span class="string">&quot;sleeping; tick_ms={}; now_tick={}; sleep_until_tick={}; duration={:?}&quot;</span>,
                                <span class="ident">tick_ms</span>, <span class="ident">now_tick</span>, <span class="ident">sleep_until_tick</span>, <span class="ident">sleep_duration</span>);
-                        <span class="ident">thread</span>::<span class="ident">park_timeout</span>(<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="ident">sleep_duration</span>));
+                        <span class="ident">thread::park_timeout</span>(<span class="ident">Duration::from_millis</span>(<span class="ident">sleep_duration</span>));
                     }
                     <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;sleeping; tick_ms={}; now_tick={}; blocking sleep&quot;</span>,
+                        <span class="macro">trace!</span>(<span class="string">&quot;sleeping; tick_ms={}; now_tick={}; blocking sleep&quot;</span>,
                                <span class="ident">tick_ms</span>, <span class="ident">now_tick</span>);
-                        <span class="ident">thread</span>::<span class="ident">park</span>();
+                        <span class="ident">thread::park</span>();
                     }
                 }
-                <span class="ident">sleep_until_tick</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Acquire</span>) <span class="kw">as</span> <span class="ident">Tick</span>;
+                <span class="ident">sleep_until_tick</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">load</span>(<span class="ident">Ordering::Acquire</span>) <span class="kw">as</span> <span class="ident">Tick</span>;
             } <span class="kw">else</span> {
-                <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">compare_and_swap</span>(<span class="ident">sleep_until_tick</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">usize</span>::<span class="ident">MAX</span>, <span class="ident">Ordering</span>::<span class="ident">AcqRel</span>) <span class="kw">as</span> <span class="ident">Tick</span>;
+                <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">compare_and_swap</span>(<span class="ident">sleep_until_tick</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">usize::MAX</span>, <span class="ident">Ordering::AcqRel</span>) <span class="kw">as</span> <span class="ident">Tick</span>;
 
                 <span class="kw">if</span> <span class="ident">actual</span> <span class="op">=</span><span class="op">=</span> <span class="ident">sleep_until_tick</span> {
-                    <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;setting readiness from wakeup thread&quot;</span>);
-                    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">set_readiness</span>.<span class="ident">set_readiness</span>(<span class="ident">Ready</span>::<span class="ident">readable</span>());
-                    <span class="ident">sleep_until_tick</span> <span class="op">=</span> <span class="ident">usize</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">Tick</span>;
+                    <span class="macro">trace!</span>(<span class="string">&quot;setting readiness from wakeup thread&quot;</span>);
+                    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">set_readiness</span>.<span class="ident">set_readiness</span>(<span class="ident">Ready::readable</span>());
+                    <span class="ident">sleep_until_tick</span> <span class="op">=</span> <span class="ident">usize::MAX</span> <span class="kw">as</span> <span class="ident">Tick</span>;
                 } <span class="kw">else</span> {
                     <span class="ident">sleep_until_tick</span> <span class="op">=</span> <span class="ident">actual</span> <span class="kw">as</span> <span class="ident">Tick</span>;
                 }
@@ -989,7 +988,7 @@
 
 <span class="kw">fn</span> <span class="ident">duration_to_tick</span>(<span class="ident">elapsed</span>: <span class="ident">Duration</span>, <span class="ident">tick_ms</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Tick</span> {
     <span class="comment">// Calculate tick rounding up to the closest one</span>
-    <span class="kw">let</span> <span class="ident">elapsed_ms</span> <span class="op">=</span> <span class="ident">convert</span>::<span class="ident">millis</span>(<span class="ident">elapsed</span>);
+    <span class="kw">let</span> <span class="ident">elapsed_ms</span> <span class="op">=</span> <span class="ident">convert::millis</span>(<span class="ident">elapsed</span>);
     <span class="ident">elapsed_ms</span>.<span class="ident">saturating_add</span>(<span class="ident">tick_ms</span> <span class="op">/</span> <span class="number">2</span>) <span class="op">/</span> <span class="ident">tick_ms</span>
 }
 
@@ -1010,26 +1009,28 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">TimerError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">TimerError</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="comment">// `TimerError` will never be constructed.</span>
-        <span class="macro">unreachable</span><span class="macro">!</span>();
+        <span class="macro">unreachable!</span>();
     }
 }
 
-<span class="kw">impl</span> <span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">for</span> <span class="ident">TimerError</span> {
+<span class="kw">impl</span> <span class="ident">error::Error</span> <span class="kw">for</span> <span class="ident">TimerError</span> {
     <span class="kw">fn</span> <span class="ident">description</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="comment">// `TimerError` will never be constructed.</span>
-        <span class="macro">unreachable</span><span class="macro">!</span>();
+        <span class="macro">unreachable!</span>();
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">TimerErrorKind</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">TimerErrorKind</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">TimerOverflow</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">fmt</span>, <span class="string">&quot;TimerOverflow&quot;</span>),
+            <span class="ident">TimerOverflow</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;TimerOverflow&quot;</span>),
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "mio";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="mio" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
+</body></html>

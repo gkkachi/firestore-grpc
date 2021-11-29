@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tonic-0.1.1/src/status.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>status.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../tonic/index.html'><div class='logo-container'><img src='https://github.com/hyperium/tonic/raw/master/.github/assets/tonic-docs.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;tonic-0.1.1&#x2F;src&#x2F;status.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>status.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../tonic/index.html'><div class='logo-container rust-logo'><img src='https:&#x2F;&#x2F;github.com&#x2F;hyperium&#x2F;tonic&#x2F;raw&#x2F;master&#x2F;.github&#x2F;assets&#x2F;tonic-docs.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -703,11 +703,10 @@
 <span id="703">703</span>
 <span id="704">704</span>
 <span id="705">705</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">bytes</span>::<span class="ident">Bytes</span>;
-<span class="kw">use</span> <span class="ident">http</span>::<span class="ident">header</span>::{<span class="ident">HeaderMap</span>, <span class="ident">HeaderValue</span>};
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">bytes::Bytes</span>;
+<span class="kw">use</span> <span class="ident">http::header</span>::{<span class="ident">HeaderMap</span>, <span class="ident">HeaderValue</span>};
 <span class="kw">use</span> <span class="ident">percent_encoding</span>::{<span class="ident">percent_decode</span>, <span class="ident">percent_encode</span>, <span class="ident">EncodeSet</span>, <span class="ident">DEFAULT_ENCODE_SET</span>};
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">error</span>::<span class="ident">Error</span>, <span class="ident">fmt</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">error::Error</span>, <span class="ident">fmt</span>};
 <span class="kw">use</span> <span class="ident">tracing</span>::{<span class="ident">debug</span>, <span class="ident">trace</span>, <span class="ident">warn</span>};
 
 <span class="kw">const</span> <span class="ident">GRPC_STATUS_HEADER_CODE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;grpc-status&quot;</span>;
@@ -807,18 +806,18 @@
         <span class="ident">Status</span> {
             <span class="ident">code</span>,
             <span class="ident">message</span>: <span class="ident">message</span>.<span class="ident">into</span>(),
-            <span class="ident">details</span>: <span class="ident">Bytes</span>::<span class="ident">new</span>(),
+            <span class="ident">details</span>: <span class="ident">Bytes::new</span>(),
         }
     }
 
     <span class="doccomment">/// The operation completed successfully.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ok</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="prelude-val">Ok</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::Ok</span>, <span class="ident">message</span>)
     }
 
     <span class="doccomment">/// The operation was cancelled (typically by the caller).</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cancelled</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">Cancelled</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::Cancelled</span>, <span class="ident">message</span>)
     }
 
     <span class="doccomment">/// Unknown error. An example of where this error may be returned is if a</span>
@@ -826,7 +825,7 @@
     <span class="doccomment">/// that is not known in this address space. Also errors raised by APIs that</span>
     <span class="doccomment">/// do not return enough error information may be converted to this error.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unknown</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">Unknown</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::Unknown</span>, <span class="ident">message</span>)
     }
 
     <span class="doccomment">/// Client specified an invalid argument. Note that this differs from</span>
@@ -834,7 +833,7 @@
     <span class="doccomment">/// problematic regardless of the state of the system (e.g., a malformed file</span>
     <span class="doccomment">/// name).</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">invalid_argument</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">InvalidArgument</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::InvalidArgument</span>, <span class="ident">message</span>)
     }
 
     <span class="doccomment">/// Deadline expired before operation could complete. For operations that</span>
@@ -843,18 +842,18 @@
     <span class="doccomment">/// from a server could have been delayed long enough for the deadline to</span>
     <span class="doccomment">/// expire.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deadline_exceeded</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">DeadlineExceeded</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::DeadlineExceeded</span>, <span class="ident">message</span>)
     }
 
     <span class="doccomment">/// Some requested entity (e.g., file or directory) was not found.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">not_found</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">NotFound</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::NotFound</span>, <span class="ident">message</span>)
     }
 
     <span class="doccomment">/// Some entity that we attempted to create (e.g., file or directory) already</span>
     <span class="doccomment">/// exists.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">already_exists</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">AlreadyExists</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::AlreadyExists</span>, <span class="ident">message</span>)
     }
 
     <span class="doccomment">/// The caller does not have permission to execute the specified operation.</span>
@@ -863,13 +862,13 @@
     <span class="doccomment">/// `PermissionDenied` must not be used if the caller cannot be identified</span>
     <span class="doccomment">/// (use `Unauthenticated` instead for those errors).</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">permission_denied</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">PermissionDenied</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::PermissionDenied</span>, <span class="ident">message</span>)
     }
 
     <span class="doccomment">/// Some resource has been exhausted, perhaps a per-user quota, or perhaps</span>
     <span class="doccomment">/// the entire file system is out of space.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resource_exhausted</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">ResourceExhausted</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::ResourceExhausted</span>, <span class="ident">message</span>)
     }
 
     <span class="doccomment">/// Operation was rejected because the system is not in a state required for</span>
@@ -887,7 +886,7 @@
     <span class="doccomment">///     returned since the client should not retry unless they have first</span>
     <span class="doccomment">///     fixed up the directory by deleting files from it.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">failed_precondition</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">FailedPrecondition</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::FailedPrecondition</span>, <span class="ident">message</span>)
     }
 
     <span class="doccomment">/// The operation was aborted, typically due to a concurrency issue like</span>
@@ -896,7 +895,7 @@
     <span class="doccomment">/// See litmus test above for deciding between `FailedPrecondition`,</span>
     <span class="doccomment">/// `Aborted`, and `Unavailable`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">aborted</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">Aborted</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::Aborted</span>, <span class="ident">message</span>)
     }
 
     <span class="doccomment">/// Operation was attempted past the valid range. E.g., seeking or reading</span>
@@ -913,18 +912,18 @@
     <span class="doccomment">/// when it applies so that callers who are iterating through a space can</span>
     <span class="doccomment">/// easily look for an `OutOfRange` error to detect when they are done.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">out_of_range</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">OutOfRange</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::OutOfRange</span>, <span class="ident">message</span>)
     }
 
     <span class="doccomment">/// Operation is not implemented or not supported/enabled in this service.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unimplemented</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">Unimplemented</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::Unimplemented</span>, <span class="ident">message</span>)
     }
 
     <span class="doccomment">/// Internal errors. Means some invariants expected by underlying system has</span>
     <span class="doccomment">/// been broken. If you see one of these errors, something is very broken.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">internal</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">Internal</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::Internal</span>, <span class="ident">message</span>)
     }
 
     <span class="doccomment">/// The service is currently unavailable.  This is a most likely a transient</span>
@@ -933,23 +932,23 @@
     <span class="doccomment">/// See litmus test above for deciding between `FailedPrecondition`,</span>
     <span class="doccomment">/// `Aborted`, and `Unavailable`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unavailable</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">Unavailable</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::Unavailable</span>, <span class="ident">message</span>)
     }
 
     <span class="doccomment">/// Unrecoverable data loss or corruption.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">data_loss</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">DataLoss</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::DataLoss</span>, <span class="ident">message</span>)
     }
 
     <span class="doccomment">/// The request does not have valid authentication credentials for the</span>
     <span class="doccomment">/// operation.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unauthenticated</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">Unauthenticated</span>, <span class="ident">message</span>)
+        <span class="ident">Status::new</span>(<span class="ident">Code::Unauthenticated</span>, <span class="ident">message</span>)
     }
 
     <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;h2&quot;</span>), <span class="ident">allow</span>(<span class="ident">dead_code</span>))]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_error</span>(<span class="ident">err</span>: <span class="kw-2">&amp;</span>(<span class="kw">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-        <span class="ident">Status</span>::<span class="ident">try_from_error</span>(<span class="ident">err</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">Unknown</span>, <span class="ident">err</span>.<span class="ident">to_string</span>()))
+        <span class="ident">Status::try_from_error</span>(<span class="ident">err</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Status::new</span>(<span class="ident">Code::Unknown</span>, <span class="ident">err</span>.<span class="ident">to_string</span>()))
     }
 
     <span class="kw">fn</span> <span class="ident">try_from_error</span>(<span class="ident">err</span>: <span class="kw-2">&amp;</span>(<span class="kw">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Status</span><span class="op">&gt;</span> {
@@ -966,8 +965,8 @@
 
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;h2&quot;</span>)]</span>
             {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">h2</span>) <span class="op">=</span> <span class="ident">err</span>.<span class="ident">downcast_ref</span>::<span class="op">&lt;</span><span class="ident">h2</span>::<span class="ident">Error</span><span class="op">&gt;</span>() {
-                    <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">Status</span>::<span class="ident">from_h2_error</span>(<span class="ident">h2</span>));
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">h2</span>) <span class="op">=</span> <span class="ident">err</span>.<span class="ident">downcast_ref</span>::<span class="op">&lt;</span><span class="ident">h2::Error</span><span class="op">&gt;</span>() {
+                    <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">Status::from_h2_error</span>(<span class="ident">h2</span>));
                 }
             }
 
@@ -979,33 +978,33 @@
 
     <span class="comment">// FIXME: bubble this into `transport` and expose generic http2 reasons.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;h2&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">from_h2_error</span>(<span class="ident">err</span>: <span class="kw-2">&amp;</span><span class="ident">h2</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
+    <span class="kw">fn</span> <span class="ident">from_h2_error</span>(<span class="ident">err</span>: <span class="kw-2">&amp;</span><span class="ident">h2::Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
         <span class="comment">// See https://github.com/grpc/grpc/blob/3977c30/doc/PROTOCOL-HTTP2.md#errors</span>
         <span class="kw">let</span> <span class="ident">code</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">err</span>.<span class="ident">reason</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">h2</span>::<span class="ident">Reason</span>::<span class="ident">NO_ERROR</span>)
-            <span class="op">|</span> <span class="prelude-val">Some</span>(<span class="ident">h2</span>::<span class="ident">Reason</span>::<span class="ident">PROTOCOL_ERROR</span>)
-            <span class="op">|</span> <span class="prelude-val">Some</span>(<span class="ident">h2</span>::<span class="ident">Reason</span>::<span class="ident">INTERNAL_ERROR</span>)
-            <span class="op">|</span> <span class="prelude-val">Some</span>(<span class="ident">h2</span>::<span class="ident">Reason</span>::<span class="ident">FLOW_CONTROL_ERROR</span>)
-            <span class="op">|</span> <span class="prelude-val">Some</span>(<span class="ident">h2</span>::<span class="ident">Reason</span>::<span class="ident">SETTINGS_TIMEOUT</span>)
-            <span class="op">|</span> <span class="prelude-val">Some</span>(<span class="ident">h2</span>::<span class="ident">Reason</span>::<span class="ident">COMPRESSION_ERROR</span>)
-            <span class="op">|</span> <span class="prelude-val">Some</span>(<span class="ident">h2</span>::<span class="ident">Reason</span>::<span class="ident">CONNECT_ERROR</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Internal</span>,
-            <span class="prelude-val">Some</span>(<span class="ident">h2</span>::<span class="ident">Reason</span>::<span class="ident">REFUSED_STREAM</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Unavailable</span>,
-            <span class="prelude-val">Some</span>(<span class="ident">h2</span>::<span class="ident">Reason</span>::<span class="ident">CANCEL</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Cancelled</span>,
-            <span class="prelude-val">Some</span>(<span class="ident">h2</span>::<span class="ident">Reason</span>::<span class="ident">ENHANCE_YOUR_CALM</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">ResourceExhausted</span>,
-            <span class="prelude-val">Some</span>(<span class="ident">h2</span>::<span class="ident">Reason</span>::<span class="ident">INADEQUATE_SECURITY</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">PermissionDenied</span>,
+            <span class="prelude-val">Some</span>(<span class="ident">h2::Reason::NO_ERROR</span>)
+            <span class="op">|</span> <span class="prelude-val">Some</span>(<span class="ident">h2::Reason::PROTOCOL_ERROR</span>)
+            <span class="op">|</span> <span class="prelude-val">Some</span>(<span class="ident">h2::Reason::INTERNAL_ERROR</span>)
+            <span class="op">|</span> <span class="prelude-val">Some</span>(<span class="ident">h2::Reason::FLOW_CONTROL_ERROR</span>)
+            <span class="op">|</span> <span class="prelude-val">Some</span>(<span class="ident">h2::Reason::SETTINGS_TIMEOUT</span>)
+            <span class="op">|</span> <span class="prelude-val">Some</span>(<span class="ident">h2::Reason::COMPRESSION_ERROR</span>)
+            <span class="op">|</span> <span class="prelude-val">Some</span>(<span class="ident">h2::Reason::CONNECT_ERROR</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Internal</span>,
+            <span class="prelude-val">Some</span>(<span class="ident">h2::Reason::REFUSED_STREAM</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Unavailable</span>,
+            <span class="prelude-val">Some</span>(<span class="ident">h2::Reason::CANCEL</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Cancelled</span>,
+            <span class="prelude-val">Some</span>(<span class="ident">h2::Reason::ENHANCE_YOUR_CALM</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::ResourceExhausted</span>,
+            <span class="prelude-val">Some</span>(<span class="ident">h2::Reason::INADEQUATE_SECURITY</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::PermissionDenied</span>,
 
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Unknown</span>,
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Unknown</span>,
         };
 
-        <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">code</span>, <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;h2 protocol error: {}&quot;</span>, <span class="ident">err</span>))
+        <span class="ident">Status::new</span>(<span class="ident">code</span>, <span class="macro">format!</span>(<span class="string">&quot;h2 protocol error: {}&quot;</span>, <span class="ident">err</span>))
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;h2&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">to_h2_error</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">h2</span>::<span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">to_h2_error</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">h2::Error</span> {
         <span class="comment">// conservatively transform to h2 error codes...</span>
         <span class="kw">let</span> <span class="ident">reason</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">code</span> {
-            <span class="ident">Code</span>::<span class="ident">Cancelled</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">h2</span>::<span class="ident">Reason</span>::<span class="ident">CANCEL</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">h2</span>::<span class="ident">Reason</span>::<span class="ident">INTERNAL_ERROR</span>,
+            <span class="ident">Code::Cancelled</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">h2::Reason::CANCEL</span>,
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">h2::Reason::INTERNAL_ERROR</span>,
         };
 
         <span class="ident">reason</span>.<span class="ident">into</span>()
@@ -1015,12 +1014,12 @@
     <span class="kw">where</span>
         <span class="ident">E</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     {
-        <span class="ident">Status</span>::<span class="ident">from_error</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">err</span>.<span class="ident">into</span>())
+        <span class="ident">Status::from_error</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">err</span>.<span class="ident">into</span>())
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_header_map</span>(<span class="ident">header_map</span>: <span class="kw-2">&amp;</span><span class="ident">HeaderMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Status</span><span class="op">&gt;</span> {
         <span class="ident">header_map</span>.<span class="ident">get</span>(<span class="ident">GRPC_STATUS_HEADER_CODE</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">code</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">code</span> <span class="op">=</span> <span class="ident">Code</span>::<span class="ident">from_bytes</span>(<span class="ident">code</span>.<span class="ident">as_ref</span>());
+            <span class="kw">let</span> <span class="ident">code</span> <span class="op">=</span> <span class="ident">Code::from_bytes</span>(<span class="ident">code</span>.<span class="ident">as_ref</span>());
             <span class="kw">let</span> <span class="ident">error_message</span> <span class="op">=</span> <span class="ident">header_map</span>
                 .<span class="ident">get</span>(<span class="ident">GRPC_STATUS_MESSAGE_HEADER</span>)
                 .<span class="ident">map</span>(<span class="op">|</span><span class="ident">header</span><span class="op">|</span> {
@@ -1028,11 +1027,11 @@
                         .<span class="ident">decode_utf8</span>()
                         .<span class="ident">map</span>(<span class="op">|</span><span class="ident">cow</span><span class="op">|</span> <span class="ident">cow</span>.<span class="ident">to_string</span>())
                 })
-                .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">String</span>::<span class="ident">new</span>()));
+                .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">String::new</span>()));
             <span class="kw">let</span> <span class="ident">details</span> <span class="op">=</span> <span class="ident">header_map</span>
                 .<span class="ident">get</span>(<span class="ident">GRPC_STATUS_DETAILS_HEADER</span>)
-                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">h</span><span class="op">|</span> <span class="ident">Bytes</span>::<span class="ident">copy_from_slice</span>(<span class="ident">h</span>.<span class="ident">as_bytes</span>()))
-                .<span class="ident">unwrap_or_else</span>(<span class="ident">Bytes</span>::<span class="ident">new</span>);
+                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">h</span><span class="op">|</span> <span class="ident">Bytes::copy_from_slice</span>(<span class="ident">h</span>.<span class="ident">as_bytes</span>()))
+                .<span class="ident">unwrap_or_else</span>(<span class="ident">Bytes::new</span>);
             <span class="kw">match</span> <span class="ident">error_message</span> {
                 <span class="prelude-val">Ok</span>(<span class="ident">message</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Status</span> {
                     <span class="ident">code</span>,
@@ -1040,10 +1039,10 @@
                     <span class="ident">details</span>,
                 },
                 <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="macro">warn</span><span class="macro">!</span>(<span class="string">&quot;Error deserializing status message header: {}&quot;</span>, <span class="ident">err</span>);
+                    <span class="macro">warn!</span>(<span class="string">&quot;Error deserializing status message header: {}&quot;</span>, <span class="ident">err</span>);
                     <span class="ident">Status</span> {
-                        <span class="ident">code</span>: <span class="ident">Code</span>::<span class="ident">Unknown</span>,
-                        <span class="ident">message</span>: <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Error deserializing status message header: {}&quot;</span>, <span class="ident">err</span>),
+                        <span class="ident">code</span>: <span class="ident">Code::Unknown</span>,
+                        <span class="ident">message</span>: <span class="macro">format!</span>(<span class="string">&quot;Error deserializing status message header: {}&quot;</span>, <span class="ident">err</span>),
                         <span class="ident">details</span>,
                     }
                 }
@@ -1067,7 +1066,7 @@
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">to_header_map</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">HeaderMap</span>, <span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">header_map</span> <span class="op">=</span> <span class="ident">HeaderMap</span>::<span class="ident">with_capacity</span>(<span class="number">3</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">header_map</span> <span class="op">=</span> <span class="ident">HeaderMap::with_capacity</span>(<span class="number">3</span>);
         <span class="self">self</span>.<span class="ident">add_header</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">header_map</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">header_map</span>)
     }
@@ -1086,19 +1085,19 @@
                     .<span class="ident">to_string</span>()
                     .<span class="ident">into</span>()
             } <span class="kw">else</span> {
-                <span class="ident">Bytes</span>::<span class="ident">copy_from_slice</span>(<span class="self">self</span>.<span class="ident">message</span>().<span class="ident">as_bytes</span>())
+                <span class="ident">Bytes::copy_from_slice</span>(<span class="self">self</span>.<span class="ident">message</span>().<span class="ident">as_bytes</span>())
             };
 
             <span class="ident">header_map</span>.<span class="ident">insert</span>(
                 <span class="ident">GRPC_STATUS_MESSAGE_HEADER</span>,
-                <span class="ident">HeaderValue</span>::<span class="ident">from_maybe_shared</span>(<span class="ident">to_write</span>).<span class="ident">map_err</span>(<span class="ident">invalid_header_value_byte</span>)<span class="question-mark">?</span>,
+                <span class="ident">HeaderValue::from_maybe_shared</span>(<span class="ident">to_write</span>).<span class="ident">map_err</span>(<span class="ident">invalid_header_value_byte</span>)<span class="question-mark">?</span>,
             );
         }
 
         <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">details</span>.<span class="ident">is_empty</span>() {
             <span class="ident">header_map</span>.<span class="ident">insert</span>(
                 <span class="ident">GRPC_STATUS_DETAILS_HEADER</span>,
-                <span class="ident">HeaderValue</span>::<span class="ident">from_maybe_shared</span>(<span class="self">self</span>.<span class="ident">details</span>.<span class="ident">clone</span>())
+                <span class="ident">HeaderValue::from_maybe_shared</span>(<span class="self">self</span>.<span class="ident">details</span>.<span class="ident">clone</span>())
                     .<span class="ident">map_err</span>(<span class="ident">invalid_header_value_byte</span>)<span class="question-mark">?</span>,
             );
         }
@@ -1107,8 +1106,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Status</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Status</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="comment">// A manual impl to reduce the noise of frequently empty fields.</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Status&quot;</span>);
 
@@ -1126,37 +1125,37 @@
     }
 }
 
-<span class="kw">fn</span> <span class="ident">invalid_header_value_byte</span><span class="op">&lt;</span><span class="ident">Error</span>: <span class="ident">fmt</span>::<span class="ident">Display</span><span class="op">&gt;</span>(<span class="ident">err</span>: <span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
-    <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;Invalid header: {}&quot;</span>, <span class="ident">err</span>);
-    <span class="ident">Status</span>::<span class="ident">new</span>(
-        <span class="ident">Code</span>::<span class="ident">Internal</span>,
+<span class="kw">fn</span> <span class="ident">invalid_header_value_byte</span><span class="op">&lt;</span><span class="ident">Error</span>: <span class="ident">fmt::Display</span><span class="op">&gt;</span>(<span class="ident">err</span>: <span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
+    <span class="macro">debug!</span>(<span class="string">&quot;Invalid header: {}&quot;</span>, <span class="ident">err</span>);
+    <span class="ident">Status::new</span>(
+        <span class="ident">Code::Internal</span>,
         <span class="string">&quot;Couldn&#39;t serialize non-text grpc status header&quot;</span>.<span class="ident">to_string</span>(),
     )
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;h2&quot;</span>)]</span>
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">h2</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Status</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: <span class="ident">h2</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Status</span>::<span class="ident">from_h2_error</span>(<span class="kw-2">&amp;</span><span class="ident">err</span>)
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">h2::Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Status</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: <span class="ident">h2::Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">Status::from_h2_error</span>(<span class="kw-2">&amp;</span><span class="ident">err</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;h2&quot;</span>)]</span>
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Status</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">h2</span>::<span class="ident">Error</span> {
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Status</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">h2::Error</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">status</span>: <span class="ident">Status</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">status</span>.<span class="ident">to_h2_error</span>()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Status</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">_io</span>: <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="macro">unimplemented</span><span class="macro">!</span>()
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">std::io::Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Status</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">_io</span>: <span class="ident">std::io::Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="macro">unimplemented!</span>()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Status</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-        <span class="macro">write</span><span class="macro">!</span>(
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Status</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        <span class="macro">write!</span>(
             <span class="ident">f</span>,
             <span class="string">&quot;grpc-status: {:?}, grpc-message: {:?}&quot;</span>,
             <span class="self">self</span>.<span class="ident">code</span>(),
@@ -1172,36 +1171,36 @@
 <span class="doccomment">///</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">infer_grpc_status</span>(
     <span class="ident">trailers</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">HeaderMap</span><span class="op">&gt;</span>,
-    <span class="ident">status_code</span>: <span class="ident">http</span>::<span class="ident">StatusCode</span>,
+    <span class="ident">status_code</span>: <span class="ident">http::StatusCode</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Status</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">trailers</span>) <span class="op">=</span> <span class="ident">trailers</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">status</span>) <span class="op">=</span> <span class="ident">Status</span>::<span class="ident">from_header_map</span>(<span class="kw-2">&amp;</span><span class="ident">trailers</span>) {
-            <span class="kw">if</span> <span class="ident">status</span>.<span class="ident">code</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Code</span>::<span class="prelude-val">Ok</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">status</span>) <span class="op">=</span> <span class="ident">Status::from_header_map</span>(<span class="kw-2">&amp;</span><span class="ident">trailers</span>) {
+            <span class="kw">if</span> <span class="ident">status</span>.<span class="ident">code</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Code::Ok</span> {
                 <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
             } <span class="kw">else</span> {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">status</span>);
             }
         }
     }
-    <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;trailers missing grpc-status&quot;</span>);
+    <span class="macro">trace!</span>(<span class="string">&quot;trailers missing grpc-status&quot;</span>);
     <span class="kw">let</span> <span class="ident">code</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">status_code</span> {
         <span class="comment">// Borrowed from https://github.com/grpc/grpc/blob/master/doc/http-grpc-status-mapping.md</span>
-        <span class="ident">http</span>::<span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Internal</span>,
-        <span class="ident">http</span>::<span class="ident">StatusCode</span>::<span class="ident">UNAUTHORIZED</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Unauthenticated</span>,
-        <span class="ident">http</span>::<span class="ident">StatusCode</span>::<span class="ident">FORBIDDEN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">PermissionDenied</span>,
-        <span class="ident">http</span>::<span class="ident">StatusCode</span>::<span class="ident">NOT_FOUND</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Unimplemented</span>,
-        <span class="ident">http</span>::<span class="ident">StatusCode</span>::<span class="ident">TOO_MANY_REQUESTS</span>
-        <span class="op">|</span> <span class="ident">http</span>::<span class="ident">StatusCode</span>::<span class="ident">BAD_GATEWAY</span>
-        <span class="op">|</span> <span class="ident">http</span>::<span class="ident">StatusCode</span>::<span class="ident">SERVICE_UNAVAILABLE</span>
-        <span class="op">|</span> <span class="ident">http</span>::<span class="ident">StatusCode</span>::<span class="ident">GATEWAY_TIMEOUT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Unavailable</span>,
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Unknown</span>,
+        <span class="ident">http::StatusCode::BAD_REQUEST</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Internal</span>,
+        <span class="ident">http::StatusCode::UNAUTHORIZED</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Unauthenticated</span>,
+        <span class="ident">http::StatusCode::FORBIDDEN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::PermissionDenied</span>,
+        <span class="ident">http::StatusCode::NOT_FOUND</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Unimplemented</span>,
+        <span class="ident">http::StatusCode::TOO_MANY_REQUESTS</span>
+        <span class="op">|</span> <span class="ident">http::StatusCode::BAD_GATEWAY</span>
+        <span class="op">|</span> <span class="ident">http::StatusCode::SERVICE_UNAVAILABLE</span>
+        <span class="op">|</span> <span class="ident">http::StatusCode::GATEWAY_TIMEOUT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Unavailable</span>,
+        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Unknown</span>,
     };
 
-    <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(
+    <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="macro">format!</span>(
         <span class="string">&quot;grpc-status header missing, mapped from HTTP status code {}&quot;</span>,
         <span class="ident">status_code</span>.<span class="ident">as_u16</span>(),
     );
-    <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">code</span>, <span class="ident">msg</span>);
+    <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">Status::new</span>(<span class="ident">code</span>, <span class="ident">msg</span>);
     <span class="prelude-val">Err</span>(<span class="ident">status</span>)
 }
 
@@ -1212,90 +1211,90 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// If not known, returns `Code::Unknown` (surprise!).</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_i32</span>(<span class="ident">i</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Code</span> {
-        <span class="ident">Code</span>::<span class="ident">from</span>(<span class="ident">i</span>)
+        <span class="ident">Code::from</span>(<span class="ident">i</span>)
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_bytes</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Code</span> {
         <span class="kw">match</span> <span class="ident">bytes</span>.<span class="ident">len</span>() {
             <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">bytes</span>[<span class="number">0</span>] {
-                <span class="string">b&#39;0&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="prelude-val">Ok</span>,
-                <span class="string">b&#39;1&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Cancelled</span>,
-                <span class="string">b&#39;2&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Unknown</span>,
-                <span class="string">b&#39;3&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">InvalidArgument</span>,
-                <span class="string">b&#39;4&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">DeadlineExceeded</span>,
-                <span class="string">b&#39;5&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">NotFound</span>,
-                <span class="string">b&#39;6&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">AlreadyExists</span>,
-                <span class="string">b&#39;7&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">PermissionDenied</span>,
-                <span class="string">b&#39;8&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">ResourceExhausted</span>,
-                <span class="string">b&#39;9&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">FailedPrecondition</span>,
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">parse_err</span>(),
+                <span class="string">b&#39;0&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Ok</span>,
+                <span class="string">b&#39;1&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Cancelled</span>,
+                <span class="string">b&#39;2&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Unknown</span>,
+                <span class="string">b&#39;3&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::InvalidArgument</span>,
+                <span class="string">b&#39;4&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::DeadlineExceeded</span>,
+                <span class="string">b&#39;5&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::NotFound</span>,
+                <span class="string">b&#39;6&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::AlreadyExists</span>,
+                <span class="string">b&#39;7&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::PermissionDenied</span>,
+                <span class="string">b&#39;8&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::ResourceExhausted</span>,
+                <span class="string">b&#39;9&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::FailedPrecondition</span>,
+                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::parse_err</span>(),
             },
             <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> (<span class="ident">bytes</span>[<span class="number">0</span>], <span class="ident">bytes</span>[<span class="number">1</span>]) {
-                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;0&#39;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Aborted</span>,
-                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;1&#39;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">OutOfRange</span>,
-                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;2&#39;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Unimplemented</span>,
-                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;3&#39;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Internal</span>,
-                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;4&#39;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Unavailable</span>,
-                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;5&#39;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">DataLoss</span>,
-                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;6&#39;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Unauthenticated</span>,
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">parse_err</span>(),
+                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;0&#39;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Aborted</span>,
+                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;1&#39;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::OutOfRange</span>,
+                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;2&#39;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Unimplemented</span>,
+                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;3&#39;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Internal</span>,
+                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;4&#39;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Unavailable</span>,
+                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;5&#39;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::DataLoss</span>,
+                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;6&#39;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Unauthenticated</span>,
+                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::parse_err</span>(),
             },
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">parse_err</span>(),
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::parse_err</span>(),
         }
     }
 
     <span class="kw">fn</span> <span class="ident">to_header_value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Code</span>::<span class="prelude-val">Ok</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;0&quot;</span>),
-            <span class="ident">Code</span>::<span class="ident">Cancelled</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;1&quot;</span>),
-            <span class="ident">Code</span>::<span class="ident">Unknown</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;2&quot;</span>),
-            <span class="ident">Code</span>::<span class="ident">InvalidArgument</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;3&quot;</span>),
-            <span class="ident">Code</span>::<span class="ident">DeadlineExceeded</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;4&quot;</span>),
-            <span class="ident">Code</span>::<span class="ident">NotFound</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;5&quot;</span>),
-            <span class="ident">Code</span>::<span class="ident">AlreadyExists</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;6&quot;</span>),
-            <span class="ident">Code</span>::<span class="ident">PermissionDenied</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;7&quot;</span>),
-            <span class="ident">Code</span>::<span class="ident">ResourceExhausted</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;8&quot;</span>),
-            <span class="ident">Code</span>::<span class="ident">FailedPrecondition</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;9&quot;</span>),
-            <span class="ident">Code</span>::<span class="ident">Aborted</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;10&quot;</span>),
-            <span class="ident">Code</span>::<span class="ident">OutOfRange</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;11&quot;</span>),
-            <span class="ident">Code</span>::<span class="ident">Unimplemented</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;12&quot;</span>),
-            <span class="ident">Code</span>::<span class="ident">Internal</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;13&quot;</span>),
-            <span class="ident">Code</span>::<span class="ident">Unavailable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;14&quot;</span>),
-            <span class="ident">Code</span>::<span class="ident">DataLoss</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;15&quot;</span>),
-            <span class="ident">Code</span>::<span class="ident">Unauthenticated</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;16&quot;</span>),
+            <span class="ident">Code::Ok</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;0&quot;</span>),
+            <span class="ident">Code::Cancelled</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;1&quot;</span>),
+            <span class="ident">Code::Unknown</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;2&quot;</span>),
+            <span class="ident">Code::InvalidArgument</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;3&quot;</span>),
+            <span class="ident">Code::DeadlineExceeded</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;4&quot;</span>),
+            <span class="ident">Code::NotFound</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;5&quot;</span>),
+            <span class="ident">Code::AlreadyExists</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;6&quot;</span>),
+            <span class="ident">Code::PermissionDenied</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;7&quot;</span>),
+            <span class="ident">Code::ResourceExhausted</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;8&quot;</span>),
+            <span class="ident">Code::FailedPrecondition</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;9&quot;</span>),
+            <span class="ident">Code::Aborted</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;10&quot;</span>),
+            <span class="ident">Code::OutOfRange</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;11&quot;</span>),
+            <span class="ident">Code::Unimplemented</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;12&quot;</span>),
+            <span class="ident">Code::Internal</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;13&quot;</span>),
+            <span class="ident">Code::Unavailable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;14&quot;</span>),
+            <span class="ident">Code::DataLoss</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;15&quot;</span>),
+            <span class="ident">Code::Unauthenticated</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;16&quot;</span>),
 
-            <span class="ident">Code</span>::<span class="ident">__NonExhaustive</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;Code::__NonExhaustive&quot;</span>),
+            <span class="ident">Code::__NonExhaustive</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(<span class="string">&quot;Code::__NonExhaustive&quot;</span>),
         }
     }
 
     <span class="kw">fn</span> <span class="ident">parse_err</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Code</span> {
-        <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;error parsing grpc-status&quot;</span>);
-        <span class="ident">Code</span>::<span class="ident">Unknown</span>
+        <span class="macro">trace!</span>(<span class="string">&quot;error parsing grpc-status&quot;</span>);
+        <span class="ident">Code::Unknown</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Code</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">i</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">i</span> {
-            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="prelude-val">Ok</span>,
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Cancelled</span>,
-            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Unknown</span>,
-            <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">InvalidArgument</span>,
-            <span class="number">4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">DeadlineExceeded</span>,
-            <span class="number">5</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">NotFound</span>,
-            <span class="number">6</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">AlreadyExists</span>,
-            <span class="number">7</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">PermissionDenied</span>,
-            <span class="number">8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">ResourceExhausted</span>,
-            <span class="number">9</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">FailedPrecondition</span>,
-            <span class="number">10</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Aborted</span>,
-            <span class="number">11</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">OutOfRange</span>,
-            <span class="number">12</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Unimplemented</span>,
-            <span class="number">13</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Internal</span>,
-            <span class="number">14</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Unavailable</span>,
-            <span class="number">15</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">DataLoss</span>,
-            <span class="number">16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Unauthenticated</span>,
+            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Ok</span>,
+            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Cancelled</span>,
+            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Unknown</span>,
+            <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::InvalidArgument</span>,
+            <span class="number">4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::DeadlineExceeded</span>,
+            <span class="number">5</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::NotFound</span>,
+            <span class="number">6</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::AlreadyExists</span>,
+            <span class="number">7</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::PermissionDenied</span>,
+            <span class="number">8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::ResourceExhausted</span>,
+            <span class="number">9</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::FailedPrecondition</span>,
+            <span class="number">10</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Aborted</span>,
+            <span class="number">11</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::OutOfRange</span>,
+            <span class="number">12</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Unimplemented</span>,
+            <span class="number">13</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Internal</span>,
+            <span class="number">14</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Unavailable</span>,
+            <span class="number">15</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::DataLoss</span>,
+            <span class="number">16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Unauthenticated</span>,
 
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code</span>::<span class="ident">Unknown</span>,
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Code::Unknown</span>,
         }
     }
 }
@@ -1303,111 +1302,113 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Error</span>;
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Error</span>;
 
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
     <span class="kw">struct</span> <span class="ident">Nested</span>(<span class="ident">Error</span>);
 
-    <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Nested</span> {
-        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-            <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;nested error: {}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
+    <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Nested</span> {
+        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+            <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;nested error: {}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
         }
     }
 
-    <span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">for</span> <span class="ident">Nested</span> {
-        <span class="kw">fn</span> <span class="ident">source</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>(<span class="kw">dyn</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)<span class="op">&gt;</span> {
+    <span class="kw">impl</span> <span class="ident">std::error::Error</span> <span class="kw">for</span> <span class="ident">Nested</span> {
+        <span class="kw">fn</span> <span class="ident">source</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>(<span class="kw">dyn</span> <span class="ident">std::error::Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)<span class="op">&gt;</span> {
             <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="number">0</span>)
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">from_error_status</span>() {
-        <span class="kw">let</span> <span class="ident">orig</span> <span class="op">=</span> <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">OutOfRange</span>, <span class="string">&quot;weeaboo&quot;</span>);
-        <span class="kw">let</span> <span class="ident">found</span> <span class="op">=</span> <span class="ident">Status</span>::<span class="ident">from_error</span>(<span class="kw-2">&amp;</span><span class="ident">orig</span>);
+        <span class="kw">let</span> <span class="ident">orig</span> <span class="op">=</span> <span class="ident">Status::new</span>(<span class="ident">Code::OutOfRange</span>, <span class="string">&quot;weeaboo&quot;</span>);
+        <span class="kw">let</span> <span class="ident">found</span> <span class="op">=</span> <span class="ident">Status::from_error</span>(<span class="kw-2">&amp;</span><span class="ident">orig</span>);
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">orig</span>.<span class="ident">code</span>(), <span class="ident">found</span>.<span class="ident">code</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">orig</span>.<span class="ident">message</span>(), <span class="ident">found</span>.<span class="ident">message</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">orig</span>.<span class="ident">code</span>(), <span class="ident">found</span>.<span class="ident">code</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">orig</span>.<span class="ident">message</span>(), <span class="ident">found</span>.<span class="ident">message</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">from_error_unknown</span>() {
         <span class="kw">let</span> <span class="ident">orig</span>: <span class="ident">Error</span> <span class="op">=</span> <span class="string">&quot;peek-a-boo&quot;</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">found</span> <span class="op">=</span> <span class="ident">Status</span>::<span class="ident">from_error</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">orig</span>);
+        <span class="kw">let</span> <span class="ident">found</span> <span class="op">=</span> <span class="ident">Status::from_error</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">orig</span>);
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">found</span>.<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">Unknown</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">found</span>.<span class="ident">message</span>(), <span class="ident">orig</span>.<span class="ident">to_string</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">found</span>.<span class="ident">code</span>(), <span class="ident">Code::Unknown</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">found</span>.<span class="ident">message</span>(), <span class="ident">orig</span>.<span class="ident">to_string</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">from_error_nested</span>() {
-        <span class="kw">let</span> <span class="ident">orig</span> <span class="op">=</span> <span class="ident">Nested</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">OutOfRange</span>, <span class="string">&quot;weeaboo&quot;</span>)));
-        <span class="kw">let</span> <span class="ident">found</span> <span class="op">=</span> <span class="ident">Status</span>::<span class="ident">from_error</span>(<span class="kw-2">&amp;</span><span class="ident">orig</span>);
+        <span class="kw">let</span> <span class="ident">orig</span> <span class="op">=</span> <span class="ident">Nested</span>(<span class="ident">Box::new</span>(<span class="ident">Status::new</span>(<span class="ident">Code::OutOfRange</span>, <span class="string">&quot;weeaboo&quot;</span>)));
+        <span class="kw">let</span> <span class="ident">found</span> <span class="op">=</span> <span class="ident">Status::from_error</span>(<span class="kw-2">&amp;</span><span class="ident">orig</span>);
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">found</span>.<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">OutOfRange</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">found</span>.<span class="ident">message</span>(), <span class="string">&quot;weeaboo&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">found</span>.<span class="ident">code</span>(), <span class="ident">Code::OutOfRange</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">found</span>.<span class="ident">message</span>(), <span class="string">&quot;weeaboo&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;h2&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">from_error_h2</span>() {
-        <span class="kw">let</span> <span class="ident">orig</span> <span class="op">=</span> <span class="ident">h2</span>::<span class="ident">Error</span>::<span class="ident">from</span>(<span class="ident">h2</span>::<span class="ident">Reason</span>::<span class="ident">CANCEL</span>);
-        <span class="kw">let</span> <span class="ident">found</span> <span class="op">=</span> <span class="ident">Status</span>::<span class="ident">from_error</span>(<span class="kw-2">&amp;</span><span class="ident">orig</span>);
+        <span class="kw">let</span> <span class="ident">orig</span> <span class="op">=</span> <span class="ident">h2::Error::from</span>(<span class="ident">h2::Reason::CANCEL</span>);
+        <span class="kw">let</span> <span class="ident">found</span> <span class="op">=</span> <span class="ident">Status::from_error</span>(<span class="kw-2">&amp;</span><span class="ident">orig</span>);
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">found</span>.<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">Cancelled</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">found</span>.<span class="ident">code</span>(), <span class="ident">Code::Cancelled</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;h2&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">to_h2_error</span>() {
-        <span class="kw">let</span> <span class="ident">orig</span> <span class="op">=</span> <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">Code</span>::<span class="ident">Cancelled</span>, <span class="string">&quot;stop eet!&quot;</span>);
+        <span class="kw">let</span> <span class="ident">orig</span> <span class="op">=</span> <span class="ident">Status::new</span>(<span class="ident">Code::Cancelled</span>, <span class="string">&quot;stop eet!&quot;</span>);
         <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">orig</span>.<span class="ident">to_h2_error</span>();
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">err</span>.<span class="ident">reason</span>(), <span class="prelude-val">Some</span>(<span class="ident">h2</span>::<span class="ident">Reason</span>::<span class="ident">CANCEL</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">reason</span>(), <span class="prelude-val">Some</span>(<span class="ident">h2::Reason::CANCEL</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">code_from_i32</span>() {
         <span class="comment">// This for loop should catch if we ever add a new variant and don&#39;t</span>
         <span class="comment">// update From&lt;i32&gt;.</span>
-        <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..(<span class="ident">Code</span>::<span class="ident">__NonExhaustive</span> <span class="kw">as</span> <span class="ident">i32</span>) {
-            <span class="kw">let</span> <span class="ident">code</span> <span class="op">=</span> <span class="ident">Code</span>::<span class="ident">from</span>(<span class="ident">i</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
+        <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..(<span class="ident">Code::__NonExhaustive</span> <span class="kw">as</span> <span class="ident">i32</span>) {
+            <span class="kw">let</span> <span class="ident">code</span> <span class="op">=</span> <span class="ident">Code::from</span>(<span class="ident">i</span>);
+            <span class="macro">assert_eq!</span>(
                 <span class="ident">i</span>, <span class="ident">code</span> <span class="kw">as</span> <span class="ident">i32</span>,
                 <span class="string">&quot;Code::from({}) returned {:?} which is {}&quot;</span>,
                 <span class="ident">i</span>, <span class="ident">code</span>, <span class="ident">code</span> <span class="kw">as</span> <span class="ident">i32</span>,
             );
         }
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Code</span>::<span class="ident">from</span>(<span class="op">-</span><span class="number">1</span>), <span class="ident">Code</span>::<span class="ident">Unknown</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Code</span>::<span class="ident">from</span>(<span class="ident">Code</span>::<span class="ident">__NonExhaustive</span> <span class="kw">as</span> <span class="ident">i32</span>), <span class="ident">Code</span>::<span class="ident">Unknown</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Code::from</span>(<span class="op">-</span><span class="number">1</span>), <span class="ident">Code::Unknown</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Code::from</span>(<span class="ident">Code::__NonExhaustive</span> <span class="kw">as</span> <span class="ident">i32</span>), <span class="ident">Code::Unknown</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">constructors</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Status</span>::<span class="ident">ok</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="prelude-val">Ok</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Status</span>::<span class="ident">cancelled</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">Cancelled</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Status</span>::<span class="ident">unknown</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">Unknown</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Status</span>::<span class="ident">invalid_argument</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">InvalidArgument</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Status</span>::<span class="ident">deadline_exceeded</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">DeadlineExceeded</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Status</span>::<span class="ident">not_found</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">NotFound</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Status</span>::<span class="ident">already_exists</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">AlreadyExists</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Status</span>::<span class="ident">permission_denied</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">PermissionDenied</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(
-            <span class="ident">Status</span>::<span class="ident">resource_exhausted</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(),
-            <span class="ident">Code</span>::<span class="ident">ResourceExhausted</span>
+        <span class="macro">assert_eq!</span>(<span class="ident">Status::ok</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code::Ok</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Status::cancelled</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code::Cancelled</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Status::unknown</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code::Unknown</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Status::invalid_argument</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code::InvalidArgument</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Status::deadline_exceeded</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code::DeadlineExceeded</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Status::not_found</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code::NotFound</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Status::already_exists</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code::AlreadyExists</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Status::permission_denied</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code::PermissionDenied</span>);
+        <span class="macro">assert_eq!</span>(
+            <span class="ident">Status::resource_exhausted</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(),
+            <span class="ident">Code::ResourceExhausted</span>
         );
-        <span class="macro">assert_eq</span><span class="macro">!</span>(
-            <span class="ident">Status</span>::<span class="ident">failed_precondition</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(),
-            <span class="ident">Code</span>::<span class="ident">FailedPrecondition</span>
+        <span class="macro">assert_eq!</span>(
+            <span class="ident">Status::failed_precondition</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(),
+            <span class="ident">Code::FailedPrecondition</span>
         );
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Status</span>::<span class="ident">aborted</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">Aborted</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Status</span>::<span class="ident">out_of_range</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">OutOfRange</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Status</span>::<span class="ident">unimplemented</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">Unimplemented</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Status</span>::<span class="ident">internal</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">Internal</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Status</span>::<span class="ident">unavailable</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">Unavailable</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Status</span>::<span class="ident">data_loss</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">DataLoss</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Status</span>::<span class="ident">unauthenticated</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code</span>::<span class="ident">Unauthenticated</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Status::aborted</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code::Aborted</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Status::out_of_range</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code::OutOfRange</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Status::unimplemented</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code::Unimplemented</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Status::internal</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code::Internal</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Status::unavailable</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code::Unavailable</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Status::data_loss</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code::DataLoss</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Status::unauthenticated</span>(<span class="string">&quot;&quot;</span>).<span class="ident">code</span>(), <span class="ident">Code::Unauthenticated</span>);
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "tonic";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="tonic" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
+</body></html>

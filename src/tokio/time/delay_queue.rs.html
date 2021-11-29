@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-0.2.21/src/time/delay_queue.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>delay_queue.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../tokio/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;tokio-0.2.25&#x2F;src&#x2F;time&#x2F;delay_queue.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>delay_queue.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../tokio/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -885,22 +885,29 @@
 <span id="885">885</span>
 <span id="886">886</span>
 <span id="887">887</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! A queue of delayed elements.</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+</pre><pre class="rust"><code><span class="doccomment">//! A queue of delayed elements.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! See [`DelayQueue`] for more details.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! [`DelayQueue`]: struct@DelayQueue</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">time</span>::<span class="ident">wheel</span>::{<span class="self">self</span>, <span class="ident">Wheel</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">time</span>::{<span class="ident">delay_until</span>, <span class="ident">Delay</span>, <span class="ident">Duration</span>, <span class="ident">Error</span>, <span class="ident">Instant</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::time::wheel</span>::{<span class="self">self</span>, <span class="ident">Wheel</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::time</span>::{<span class="ident">delay_until</span>, <span class="ident">Delay</span>, <span class="ident">Duration</span>, <span class="ident">Error</span>, <span class="ident">Instant</span>};
 
-<span class="kw">use</span> <span class="ident">slab</span>::<span class="ident">Slab</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">cmp</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">future</span>::<span class="ident">Future</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">pin</span>::<span class="ident">Pin</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">task</span>::{<span class="self">self</span>, <span class="ident">Poll</span>};
+<span class="kw">use</span> <span class="ident">slab::Slab</span>;
+<span class="kw">use</span> <span class="ident">std::cmp</span>;
+<span class="kw">use</span> <span class="ident">std::future::Future</span>;
+<span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
+<span class="kw">use</span> <span class="ident">std::pin::Pin</span>;
+<span class="kw">use</span> <span class="ident">std::task</span>::{<span class="self">self</span>, <span class="ident">Poll</span>};
 
 <span class="doccomment">/// A queue of delayed elements.</span>
 <span class="doccomment">///</span>
@@ -915,13 +922,13 @@
 <span class="doccomment">/// which it should be yielded back.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Once delays have been configured, the `DelayQueue` is used via its</span>
-<span class="doccomment">/// [`Stream`] implementation. [`poll`] is called. If an entry has reached its</span>
+<span class="doccomment">/// [`Stream`] implementation. [`poll_expired`] is called. If an entry has reached its</span>
 <span class="doccomment">/// deadline, it is returned. If not, `Poll::Pending` indicating that the</span>
 <span class="doccomment">/// current task will be notified once the deadline has been reached.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # `Stream` implementation</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Items are retrieved from the queue via [`Stream::poll`]. If no delays have</span>
+<span class="doccomment">/// Items are retrieved from the queue via [`DelayQueue::poll_expired`]. If no delays have</span>
 <span class="doccomment">/// expired, no items are returned. In this case, `NotReady` is returned and the</span>
 <span class="doccomment">/// current task is registered to be notified once the next item&#39;s delay has</span>
 <span class="doccomment">/// expired.</span>
@@ -999,17 +1006,17 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`insert`]: #method.insert</span>
-<span class="doccomment">/// [`insert_at`]: #method.insert_at</span>
+<span class="doccomment">/// [`insert`]: method@Self::insert</span>
+<span class="doccomment">/// [`insert_at`]: method@Self::insert_at</span>
 <span class="doccomment">/// [`Key`]: struct@Key</span>
 <span class="doccomment">/// [`Stream`]: https://docs.rs/futures/0.1/futures/stream/trait.Stream.html</span>
-<span class="doccomment">/// [`poll`]: #method.poll</span>
-<span class="doccomment">/// [`Stream::poll`]: #method.poll</span>
+<span class="doccomment">/// [`poll_expired`]: method@Self::poll_expired</span>
+<span class="doccomment">/// [`Stream::poll_expired`]: method@Self::poll_expired</span>
 <span class="doccomment">/// [`DelayQueue`]: struct@DelayQueue</span>
 <span class="doccomment">/// [`delay_for`]: fn@super::delay_for</span>
-<span class="doccomment">/// [`slab`]: https://docs.rs/slab</span>
-<span class="doccomment">/// [`capacity`]: #method.capacity</span>
-<span class="doccomment">/// [`reserve`]: #method.reserve</span>
+<span class="doccomment">/// [`slab`]: slab</span>
+<span class="doccomment">/// [`capacity`]: method@Self::capacity</span>
+<span class="doccomment">/// [`reserve`]: method@Self::reserve</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DelayQueue</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Stores data associated with entries</span>
@@ -1026,7 +1033,7 @@
     <span class="ident">delay</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Delay</span><span class="op">&gt;</span>,
 
     <span class="doccomment">/// Wheel polling state</span>
-    <span class="ident">poll</span>: <span class="ident">wheel</span>::<span class="ident">Poll</span>,
+    <span class="ident">poll</span>: <span class="ident">wheel::Poll</span>,
 
     <span class="doccomment">/// Instant at which the timer starts</span>
     <span class="ident">start</span>: <span class="ident">Instant</span>,
@@ -1034,9 +1041,9 @@
 
 <span class="doccomment">/// An entry in `DelayQueue` that has expired and removed.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Values are returned by [`DelayQueue::poll`].</span>
+<span class="doccomment">/// Values are returned by [`DelayQueue::poll_expired`].</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`DelayQueue::poll`]: method@DelayQueue::poll</span>
+<span class="doccomment">/// [`DelayQueue::poll_expired`]: method@DelayQueue::poll_expired</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Expired</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// The data stored in the queue</span>
@@ -1102,7 +1109,7 @@
     <span class="doccomment">/// let delay_queue: DelayQueue&lt;u32&gt; = DelayQueue::new();</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DelayQueue</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="ident">DelayQueue</span>::<span class="ident">with_capacity</span>(<span class="number">0</span>)
+        <span class="ident">DelayQueue::with_capacity</span>(<span class="number">0</span>)
     }
 
     <span class="doccomment">/// Creates a new, empty, `DelayQueue` with the specified capacity.</span>
@@ -1132,12 +1139,12 @@
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_capacity</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DelayQueue</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">DelayQueue</span> {
-            <span class="ident">wheel</span>: <span class="ident">Wheel</span>::<span class="ident">new</span>(),
-            <span class="ident">slab</span>: <span class="ident">Slab</span>::<span class="ident">with_capacity</span>(<span class="ident">capacity</span>),
-            <span class="ident">expired</span>: <span class="ident">Stack</span>::<span class="ident">default</span>(),
+            <span class="ident">wheel</span>: <span class="ident">Wheel::new</span>(),
+            <span class="ident">slab</span>: <span class="ident">Slab::with_capacity</span>(<span class="ident">capacity</span>),
+            <span class="ident">expired</span>: <span class="ident">Stack::default</span>(),
             <span class="ident">delay</span>: <span class="prelude-val">None</span>,
-            <span class="ident">poll</span>: <span class="ident">wheel</span>::<span class="ident">Poll</span>::<span class="ident">new</span>(<span class="number">0</span>),
-            <span class="ident">start</span>: <span class="ident">Instant</span>::<span class="ident">now</span>(),
+            <span class="ident">poll</span>: <span class="ident">wheel::Poll::new</span>(<span class="number">0</span>),
+            <span class="ident">start</span>: <span class="ident">Instant::now</span>(),
         }
     }
 
@@ -1148,12 +1155,12 @@
     <span class="doccomment">/// of a `Duration`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// `value` is stored in the queue until `when` is reached. At which point,</span>
-    <span class="doccomment">/// `value` will be returned from [`poll`]. If `when` has already been</span>
+    <span class="doccomment">/// `value` will be returned from [`poll_expired`]. If `when` has already been</span>
     <span class="doccomment">/// reached, then `value` is immediately made available to poll.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The return value represents the insertion and is used at an argument to</span>
     <span class="doccomment">/// [`remove`] and [`reset`]. Note that [`Key`] is token and is reused once</span>
-    <span class="doccomment">/// `value` is removed from the queue either by calling [`poll`] after</span>
+    <span class="doccomment">/// `value` is removed from the queue either by calling [`poll_expired`] after</span>
     <span class="doccomment">/// `when` is reached or by calling [`remove`]. At this point, the caller</span>
     <span class="doccomment">/// must take care to not use the returned [`Key`] again as it may reference</span>
     <span class="doccomment">/// a different item in the queue.</span>
@@ -1183,13 +1190,13 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`poll`]: #method.poll</span>
-    <span class="doccomment">/// [`remove`]: #method.remove</span>
-    <span class="doccomment">/// [`reset`]: #method.reset</span>
+    <span class="doccomment">/// [`poll_expired`]: method@Self::poll_expired</span>
+    <span class="doccomment">/// [`remove`]: method@Self::remove</span>
+    <span class="doccomment">/// [`reset`]: method@Self::reset</span>
     <span class="doccomment">/// [`Key`]: struct@Key</span>
     <span class="doccomment">/// [type]: #</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">insert_at</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">T</span>, <span class="ident">when</span>: <span class="ident">Instant</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Key</span> {
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">slab</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">MAX_ENTRIES</span>, <span class="string">&quot;max entries exceeded&quot;</span>);
+        <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">slab</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">MAX_ENTRIES</span>, <span class="string">&quot;max entries exceeded&quot;</span>);
 
         <span class="comment">// Normalize the deadline. Values cannot be set to expire in the past.</span>
         <span class="kw">let</span> <span class="ident">when</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">normalize_deadline</span>(<span class="ident">when</span>);
@@ -1214,7 +1221,7 @@
         };
 
         <span class="kw">if</span> <span class="ident">should_set_delay</span> {
-            <span class="kw">let</span> <span class="ident">delay_time</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">start</span> <span class="op">+</span> <span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="ident">when</span>);
+            <span class="kw">let</span> <span class="ident">delay_time</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">start</span> <span class="op">+</span> <span class="ident">Duration::from_millis</span>(<span class="ident">when</span>);
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">delay</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">delay</span> {
                 <span class="ident">delay</span>.<span class="ident">reset</span>(<span class="ident">delay_time</span>);
             } <span class="kw">else</span> {
@@ -1222,7 +1229,7 @@
             }
         }
 
-        <span class="ident">Key</span>::<span class="ident">new</span>(<span class="ident">key</span>)
+        <span class="ident">Key::new</span>(<span class="ident">key</span>)
     }
 
     <span class="doccomment">/// Attempts to pull out the next value of the delay queue, registering the</span>
@@ -1230,19 +1237,19 @@
     <span class="doccomment">/// None if the queue is exhausted.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">poll_expired</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">task</span>::<span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
+        <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">task::Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Expired</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="macro">ready</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">poll_idx</span>(<span class="ident">cx</span>));
-        <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="ident">item</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">result</span><span class="op">|</span> {
+        <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="macro">ready!</span>(<span class="self">self</span>.<span class="ident">poll_idx</span>(<span class="ident">cx</span>));
+        <span class="ident">Poll::Ready</span>(<span class="ident">item</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">result</span><span class="op">|</span> {
             <span class="ident">result</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">idx</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">slab</span>.<span class="ident">remove</span>(<span class="ident">idx</span>);
-                <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">next</span>.<span class="ident">is_none</span>());
-                <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">prev</span>.<span class="ident">is_none</span>());
+                <span class="macro">debug_assert!</span>(<span class="ident">data</span>.<span class="ident">next</span>.<span class="ident">is_none</span>());
+                <span class="macro">debug_assert!</span>(<span class="ident">data</span>.<span class="ident">prev</span>.<span class="ident">is_none</span>());
 
                 <span class="ident">Expired</span> {
-                    <span class="ident">key</span>: <span class="ident">Key</span>::<span class="ident">new</span>(<span class="ident">idx</span>),
+                    <span class="ident">key</span>: <span class="ident">Key::new</span>(<span class="ident">idx</span>),
                     <span class="ident">data</span>: <span class="ident">data</span>.<span class="ident">inner</span>,
-                    <span class="ident">deadline</span>: <span class="self">self</span>.<span class="ident">start</span> <span class="op">+</span> <span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="ident">data</span>.<span class="ident">when</span>),
+                    <span class="ident">deadline</span>: <span class="self">self</span>.<span class="ident">start</span> <span class="op">+</span> <span class="ident">Duration::from_millis</span>(<span class="ident">data</span>.<span class="ident">when</span>),
                 }
             })
         }))
@@ -1255,12 +1262,12 @@
     <span class="doccomment">/// instead of an `Instant`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// `value` is stored in the queue until `when` is reached. At which point,</span>
-    <span class="doccomment">/// `value` will be returned from [`poll`]. If `when` has already been</span>
+    <span class="doccomment">/// `value` will be returned from [`poll_expired`]. If `when` has already been</span>
     <span class="doccomment">/// reached, then `value` is immediately made available to poll.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The return value represents the insertion and is used at an argument to</span>
     <span class="doccomment">/// [`remove`] and [`reset`]. Note that [`Key`] is token and is reused once</span>
-    <span class="doccomment">/// `value` is removed from the queue either by calling [`poll`] after</span>
+    <span class="doccomment">/// `value` is removed from the queue either by calling [`poll_expired`] after</span>
     <span class="doccomment">/// `when` is reached or by calling [`remove`]. At this point, the caller</span>
     <span class="doccomment">/// must take care to not use the returned [`Key`] again as it may reference</span>
     <span class="doccomment">/// a different item in the queue.</span>
@@ -1291,27 +1298,43 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`poll`]: #method.poll</span>
-    <span class="doccomment">/// [`remove`]: #method.remove</span>
-    <span class="doccomment">/// [`reset`]: #method.reset</span>
+    <span class="doccomment">/// [`poll_expired`]: method@Self::poll_expired</span>
+    <span class="doccomment">/// [`remove`]: method@Self::remove</span>
+    <span class="doccomment">/// [`reset`]: method@Self::reset</span>
     <span class="doccomment">/// [`Key`]: struct@Key</span>
     <span class="doccomment">/// [type]: #</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">insert</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">T</span>, <span class="ident">timeout</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Key</span> {
-        <span class="self">self</span>.<span class="ident">insert_at</span>(<span class="ident">value</span>, <span class="ident">Instant</span>::<span class="ident">now</span>() <span class="op">+</span> <span class="ident">timeout</span>)
+        <span class="self">self</span>.<span class="ident">insert_at</span>(<span class="ident">value</span>, <span class="ident">Instant::now</span>() <span class="op">+</span> <span class="ident">timeout</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">insert_idx</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">when</span>: <span class="ident">u64</span>, <span class="ident">key</span>: <span class="ident">usize</span>) {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">wheel</span>::{<span class="ident">InsertError</span>, <span class="ident">Stack</span>};
+        <span class="kw">use</span> <span class="ident"><span class="self">self</span>::wheel</span>::{<span class="ident">InsertError</span>, <span class="ident">Stack</span>};
 
         <span class="comment">// Register the deadline with the timer wheel</span>
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">wheel</span>.<span class="ident">insert</span>(<span class="ident">when</span>, <span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">slab</span>) {
             <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {}
-            <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">InsertError</span>::<span class="ident">Elapsed</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">InsertError::Elapsed</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">slab</span>[<span class="ident">key</span>].<span class="ident">expired</span> <span class="op">=</span> <span class="bool-val">true</span>;
                 <span class="comment">// The delay is already expired, store it in the expired queue</span>
                 <span class="self">self</span>.<span class="ident">expired</span>.<span class="ident">push</span>(<span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">slab</span>);
             }
-            <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">err</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;invalid deadline; err={:?}&quot;</span>, <span class="ident">err</span>),
+            <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">err</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;invalid deadline; err={:?}&quot;</span>, <span class="ident">err</span>),
+        }
+    }
+
+    <span class="doccomment">/// Removes the key fom the expired queue or the timer wheel</span>
+    <span class="doccomment">/// depending on its expiration status</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">/// Panics if the key is not contained in the expired queue or the wheel</span>
+    <span class="kw">fn</span> <span class="ident">remove_key</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">Key</span>) {
+        <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::time::wheel::Stack</span>;
+
+        <span class="comment">// Special case the `expired` queue</span>
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">slab</span>[<span class="ident">key</span>.<span class="ident">index</span>].<span class="ident">expired</span> {
+            <span class="self">self</span>.<span class="ident">expired</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>.<span class="ident">index</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">slab</span>);
+        } <span class="kw">else</span> {
+            <span class="self">self</span>.<span class="ident">wheel</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>.<span class="ident">index</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">slab</span>);
         }
     }
 
@@ -1344,21 +1367,13 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">Key</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Expired</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">time</span>::<span class="ident">wheel</span>::<span class="ident">Stack</span>;
-
-        <span class="comment">// Special case the `expired` queue</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">slab</span>[<span class="ident">key</span>.<span class="ident">index</span>].<span class="ident">expired</span> {
-            <span class="self">self</span>.<span class="ident">expired</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>.<span class="ident">index</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">slab</span>);
-        } <span class="kw">else</span> {
-            <span class="self">self</span>.<span class="ident">wheel</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>.<span class="ident">index</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">slab</span>);
-        }
-
+        <span class="self">self</span>.<span class="ident">remove_key</span>(<span class="ident">key</span>);
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">slab</span>.<span class="ident">remove</span>(<span class="ident">key</span>.<span class="ident">index</span>);
 
         <span class="ident">Expired</span> {
-            <span class="ident">key</span>: <span class="ident">Key</span>::<span class="ident">new</span>(<span class="ident">key</span>.<span class="ident">index</span>),
+            <span class="ident">key</span>: <span class="ident">Key::new</span>(<span class="ident">key</span>.<span class="ident">index</span>),
             <span class="ident">data</span>: <span class="ident">data</span>.<span class="ident">inner</span>,
-            <span class="ident">deadline</span>: <span class="self">self</span>.<span class="ident">start</span> <span class="op">+</span> <span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="ident">data</span>.<span class="ident">when</span>),
+            <span class="ident">deadline</span>: <span class="self">self</span>.<span class="ident">start</span> <span class="op">+</span> <span class="ident">Duration::from_millis</span>(<span class="ident">data</span>.<span class="ident">when</span>),
         }
     }
 
@@ -1396,7 +1411,7 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset_at</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">Key</span>, <span class="ident">when</span>: <span class="ident">Instant</span>) {
-        <span class="self">self</span>.<span class="ident">wheel</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>.<span class="ident">index</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">slab</span>);
+        <span class="self">self</span>.<span class="ident">remove_key</span>(<span class="ident">key</span>);
 
         <span class="comment">// Normalize the deadline. Values cannot be set to expire in the past.</span>
         <span class="kw">let</span> <span class="ident">when</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">normalize_deadline</span>(<span class="ident">when</span>);
@@ -1414,7 +1429,7 @@
     <span class="kw">fn</span> <span class="ident">next_deadline</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Instant</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">wheel</span>
             .<span class="ident">poll_at</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">poll_at</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">start</span> <span class="op">+</span> <span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="ident">poll_at</span>))
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">poll_at</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">start</span> <span class="op">+</span> <span class="ident">Duration::from_millis</span>(<span class="ident">poll_at</span>))
     }
 
     <span class="doccomment">/// Sets the delay of the item associated with `key` to expire after</span>
@@ -1453,16 +1468,16 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">Key</span>, <span class="ident">timeout</span>: <span class="ident">Duration</span>) {
-        <span class="self">self</span>.<span class="ident">reset_at</span>(<span class="ident">key</span>, <span class="ident">Instant</span>::<span class="ident">now</span>() <span class="op">+</span> <span class="ident">timeout</span>);
+        <span class="self">self</span>.<span class="ident">reset_at</span>(<span class="ident">key</span>, <span class="ident">Instant::now</span>() <span class="op">+</span> <span class="ident">timeout</span>);
     }
 
     <span class="doccomment">/// Clears the queue, removing all items.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// After calling `clear`, [`poll`] will return `Ok(Ready(None))`.</span>
+    <span class="doccomment">/// After calling `clear`, [`poll_expired`] will return `Ok(Ready(None))`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that this method has no effect on the allocated capacity.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`poll`]: #method.poll</span>
+    <span class="doccomment">/// [`poll_expired`]: method@Self::poll_expired</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -1485,8 +1500,8 @@
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">slab</span>.<span class="ident">clear</span>();
-        <span class="self">self</span>.<span class="ident">expired</span> <span class="op">=</span> <span class="ident">Stack</span>::<span class="ident">default</span>();
-        <span class="self">self</span>.<span class="ident">wheel</span> <span class="op">=</span> <span class="ident">Wheel</span>::<span class="ident">new</span>();
+        <span class="self">self</span>.<span class="ident">expired</span> <span class="op">=</span> <span class="ident">Stack::default</span>();
+        <span class="self">self</span>.<span class="ident">wheel</span> <span class="op">=</span> <span class="ident">Wheel::new</span>();
         <span class="self">self</span>.<span class="ident">delay</span> <span class="op">=</span> <span class="prelude-val">None</span>;
     }
 
@@ -1589,24 +1604,24 @@
     <span class="doccomment">/// should be returned.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// A slot should be returned when the associated deadline has been reached.</span>
-    <span class="kw">fn</span> <span class="ident">poll_idx</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">task</span>::<span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">wheel</span>::<span class="ident">Stack</span>;
+    <span class="kw">fn</span> <span class="ident">poll_idx</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">task::Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">use</span> <span class="ident"><span class="self">self</span>::wheel::Stack</span>;
 
         <span class="kw">let</span> <span class="ident">expired</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">expired</span>.<span class="ident">pop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">slab</span>);
 
         <span class="kw">if</span> <span class="ident">expired</span>.<span class="ident">is_some</span>() {
-            <span class="kw">return</span> <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="ident">expired</span>.<span class="ident">map</span>(<span class="prelude-val">Ok</span>));
+            <span class="kw">return</span> <span class="ident">Poll::Ready</span>(<span class="ident">expired</span>.<span class="ident">map</span>(<span class="prelude-val">Ok</span>));
         }
 
         <span class="kw">loop</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">delay</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">delay</span> {
                 <span class="kw">if</span> <span class="op">!</span><span class="ident">delay</span>.<span class="ident">is_elapsed</span>() {
-                    <span class="macro">ready</span><span class="macro">!</span>(<span class="ident">Pin</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">delay</span>).<span class="ident">poll</span>(<span class="ident">cx</span>));
+                    <span class="macro">ready!</span>(<span class="ident">Pin::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">delay</span>).<span class="ident">poll</span>(<span class="ident">cx</span>));
                 }
 
-                <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">time</span>::<span class="ident">ms</span>(<span class="ident">delay</span>.<span class="ident">deadline</span>() <span class="op">-</span> <span class="self">self</span>.<span class="ident">start</span>, <span class="kw">crate</span>::<span class="ident">time</span>::<span class="ident">Round</span>::<span class="ident">Down</span>);
+                <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::time::ms</span>(<span class="ident">delay</span>.<span class="ident">deadline</span>() <span class="op">-</span> <span class="self">self</span>.<span class="ident">start</span>, <span class="ident"><span class="kw">crate</span>::time::Round::Down</span>);
 
-                <span class="self">self</span>.<span class="ident">poll</span> <span class="op">=</span> <span class="ident">wheel</span>::<span class="ident">Poll</span>::<span class="ident">new</span>(<span class="ident">now</span>);
+                <span class="self">self</span>.<span class="ident">poll</span> <span class="op">=</span> <span class="ident">wheel::Poll::new</span>(<span class="ident">now</span>);
             }
 
             <span class="comment">// We poll the wheel to get the next value out before finding the next deadline.</span>
@@ -1615,11 +1630,11 @@
             <span class="self">self</span>.<span class="ident">delay</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">next_deadline</span>().<span class="ident">map</span>(<span class="ident">delay_until</span>);
 
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">idx</span>) <span class="op">=</span> <span class="ident">wheel_idx</span> {
-                <span class="kw">return</span> <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">idx</span>)));
+                <span class="kw">return</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">idx</span>)));
             }
 
             <span class="kw">if</span> <span class="self">self</span>.<span class="ident">delay</span>.<span class="ident">is_none</span>() {
-                <span class="kw">return</span> <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="prelude-val">None</span>);
+                <span class="kw">return</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>);
             }
         }
     }
@@ -1628,10 +1643,10 @@
         <span class="kw">let</span> <span class="ident">when</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">when</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">start</span> {
             <span class="number">0</span>
         } <span class="kw">else</span> {
-            <span class="kw">crate</span>::<span class="ident">time</span>::<span class="ident">ms</span>(<span class="ident">when</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">start</span>, <span class="kw">crate</span>::<span class="ident">time</span>::<span class="ident">Round</span>::<span class="ident">Up</span>)
+            <span class="ident"><span class="kw">crate</span>::time::ms</span>(<span class="ident">when</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">start</span>, <span class="ident"><span class="kw">crate</span>::time::Round::Up</span>)
         };
 
-        <span class="ident">cmp</span>::<span class="ident">max</span>(<span class="ident">when</span>, <span class="self">self</span>.<span class="ident">wheel</span>.<span class="ident">elapsed</span>())
+        <span class="ident">cmp::max</span>(<span class="ident">when</span>, <span class="self">self</span>.<span class="ident">wheel</span>.<span class="ident">elapsed</span>())
     }
 }
 
@@ -1640,22 +1655,22 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">DelayQueue</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DelayQueue</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="ident">DelayQueue</span>::<span class="ident">new</span>()
+        <span class="ident">DelayQueue::new</span>()
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stream&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">futures_core</span>::<span class="ident">Stream</span> <span class="kw">for</span> <span class="ident">DelayQueue</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">futures_core::Stream</span> <span class="kw">for</span> <span class="ident">DelayQueue</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="comment">// DelayQueue seems much more specific, where a user may care that it</span>
     <span class="comment">// has reached capacity, so return those errors instead of panicking.</span>
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Expired</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">poll_next</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">task</span>::<span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="ident">DelayQueue</span>::<span class="ident">poll_expired</span>(<span class="self">self</span>.<span class="ident">get_mut</span>(), <span class="ident">cx</span>)
+    <span class="kw">fn</span> <span class="ident">poll_next</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">task::Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="ident">DelayQueue::poll_expired</span>(<span class="self">self</span>.<span class="ident">get_mut</span>(), <span class="ident">cx</span>)
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">wheel</span>::<span class="ident">Stack</span> <span class="kw">for</span> <span class="ident">Stack</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">wheel::Stack</span> <span class="kw">for</span> <span class="ident">Stack</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Owned</span> <span class="op">=</span> <span class="ident">usize</span>;
     <span class="kw">type</span> <span class="ident">Borrowed</span> <span class="op">=</span> <span class="ident">usize</span>;
     <span class="kw">type</span> <span class="ident">Store</span> <span class="op">=</span> <span class="ident">Slab</span><span class="op">&lt;</span><span class="ident">Data</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>;
@@ -1664,10 +1679,10 @@
         <span class="self">self</span>.<span class="ident">head</span>.<span class="ident">is_none</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">item</span>: <span class="self">Self</span>::<span class="ident">Owned</span>, <span class="ident">store</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Store</span>) {
+    <span class="kw">fn</span> <span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">item</span>: <span class="ident"><span class="self">Self</span>::Owned</span>, <span class="ident">store</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident"><span class="self">Self</span>::Store</span>) {
         <span class="comment">// Ensure the entry is not already in a stack.</span>
-        <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">store</span>[<span class="ident">item</span>].<span class="ident">next</span>.<span class="ident">is_none</span>());
-        <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">store</span>[<span class="ident">item</span>].<span class="ident">prev</span>.<span class="ident">is_none</span>());
+        <span class="macro">debug_assert!</span>(<span class="ident">store</span>[<span class="ident">item</span>].<span class="ident">next</span>.<span class="ident">is_none</span>());
+        <span class="macro">debug_assert!</span>(<span class="ident">store</span>[<span class="ident">item</span>].<span class="ident">prev</span>.<span class="ident">is_none</span>());
 
         <span class="comment">// Remove the old head entry</span>
         <span class="kw">let</span> <span class="ident">old</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">head</span>.<span class="ident">take</span>();
@@ -1680,7 +1695,7 @@
         <span class="self">self</span>.<span class="ident">head</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">item</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">pop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">store</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Store</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Owned</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">pop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">store</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident"><span class="self">Self</span>::Store</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Owned</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">idx</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">head</span> {
             <span class="self">self</span>.<span class="ident">head</span> <span class="op">=</span> <span class="ident">store</span>[<span class="ident">idx</span>].<span class="ident">next</span>;
 
@@ -1689,7 +1704,7 @@
             }
 
             <span class="ident">store</span>[<span class="ident">idx</span>].<span class="ident">next</span> <span class="op">=</span> <span class="prelude-val">None</span>;
-            <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">store</span>[<span class="ident">idx</span>].<span class="ident">prev</span>.<span class="ident">is_none</span>());
+            <span class="macro">debug_assert!</span>(<span class="ident">store</span>[<span class="ident">idx</span>].<span class="ident">prev</span>.<span class="ident">is_none</span>());
 
             <span class="prelude-val">Some</span>(<span class="ident">idx</span>)
         } <span class="kw">else</span> {
@@ -1697,18 +1712,18 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Borrowed</span>, <span class="ident">store</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Store</span>) {
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">store</span>.<span class="ident">contains</span>(<span class="kw-2">*</span><span class="ident">item</span>));
+    <span class="kw">fn</span> <span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Borrowed</span>, <span class="ident">store</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident"><span class="self">Self</span>::Store</span>) {
+        <span class="macro">assert!</span>(<span class="ident">store</span>.<span class="ident">contains</span>(<span class="kw-2">*</span><span class="ident">item</span>));
 
         <span class="comment">// Ensure that the entry is in fact contained by the stack</span>
-        <span class="macro">debug_assert</span><span class="macro">!</span>({
+        <span class="macro">debug_assert!</span>({
             <span class="comment">// This walks the full linked list even if an entry is found.</span>
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">next</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">head</span>;
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">contains</span> <span class="op">=</span> <span class="bool-val">false</span>;
 
             <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">idx</span>) <span class="op">=</span> <span class="ident">next</span> {
                 <span class="kw">if</span> <span class="ident">idx</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">item</span> {
-                    <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">contains</span>);
+                    <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">contains</span>);
                     <span class="ident">contains</span> <span class="op">=</span> <span class="bool-val">true</span>;
                 }
 
@@ -1732,7 +1747,7 @@
         <span class="ident">store</span>[<span class="kw-2">*</span><span class="ident">item</span>].<span class="ident">prev</span> <span class="op">=</span> <span class="prelude-val">None</span>;
     }
 
-    <span class="kw">fn</span> <span class="ident">when</span>(<span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Borrowed</span>, <span class="ident">store</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Store</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+    <span class="kw">fn</span> <span class="ident">when</span>(<span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Borrowed</span>, <span class="ident">store</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Store</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
         <span class="ident">store</span>[<span class="kw-2">*</span><span class="ident">item</span>].<span class="ident">when</span>
     }
 }
@@ -1773,5 +1788,7 @@
         <span class="self">self</span>.<span class="ident">deadline</span>
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "tokio";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="tokio" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

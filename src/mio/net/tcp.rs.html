@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/mio-0.6.22/src/net/tcp.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>tcp.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../mio/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;mio-0.6.23&#x2F;src&#x2F;net&#x2F;tcp.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>tcp.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../mio/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -735,8 +735,7 @@
 <span id="735">735</span>
 <span id="736">736</span>
 <span id="737">737</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! Primitives for working with TCP</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Primitives for working with TCP</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! The types provided in this module are non-blocking by default and are</span>
 <span class="doccomment">//! designed to be portable across all supported Mio platforms. As long as the</span>
@@ -745,17 +744,17 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">/// [portability guidelines]: ../struct.Poll.html#portability</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::{<span class="ident">Read</span>, <span class="ident">Write</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">net</span>::{<span class="self">self</span>, <span class="ident">SocketAddr</span>, <span class="ident">SocketAddrV4</span>, <span class="ident">SocketAddrV6</span>, <span class="ident">Ipv4Addr</span>, <span class="ident">Ipv6Addr</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Duration</span>;
+<span class="kw">use</span> <span class="ident">std::fmt</span>;
+<span class="kw">use</span> <span class="ident">std::io</span>::{<span class="ident">Read</span>, <span class="ident">Write</span>};
+<span class="kw">use</span> <span class="ident">std::net</span>::{<span class="self">self</span>, <span class="ident">SocketAddr</span>, <span class="ident">SocketAddrV4</span>, <span class="ident">SocketAddrV6</span>, <span class="ident">Ipv4Addr</span>, <span class="ident">Ipv6Addr</span>};
+<span class="kw">use</span> <span class="ident">std::time::Duration</span>;
 
-<span class="kw">use</span> <span class="ident">net2</span>::<span class="ident">TcpBuilder</span>;
-<span class="kw">use</span> <span class="ident">iovec</span>::<span class="ident">IoVec</span>;
+<span class="kw">use</span> <span class="ident">net2::TcpBuilder</span>;
+<span class="kw">use</span> <span class="ident">iovec::IoVec</span>;
 
 <span class="kw">use</span> {<span class="ident">io</span>, <span class="ident">sys</span>, <span class="ident">Ready</span>, <span class="ident">Poll</span>, <span class="ident">PollOpt</span>, <span class="ident">Token</span>};
-<span class="kw">use</span> <span class="ident">event</span>::<span class="ident">Evented</span>;
-<span class="kw">use</span> <span class="ident">poll</span>::<span class="ident">SelectorId</span>;
+<span class="kw">use</span> <span class="ident">event::Evented</span>;
+<span class="kw">use</span> <span class="ident">poll::SelectorId</span>;
 
 <span class="comment">/*
  *
@@ -799,20 +798,20 @@
 <span class="doccomment">/// # }</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TcpStream</span> {
-    <span class="ident">sys</span>: <span class="ident">sys</span>::<span class="ident">TcpStream</span>,
+    <span class="ident">sys</span>: <span class="ident">sys::TcpStream</span>,
     <span class="ident">selector_id</span>: <span class="ident">SelectorId</span>,
 }
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">net</span>::<span class="ident">Shutdown</span>;
+<span class="kw">use</span> <span class="ident">std::net::Shutdown</span>;
 
 <span class="comment">// TODO: remove when fuchsia&#39;s set_nonblocking is fixed in libstd</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;fuchsia&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">set_nonblocking</span>(<span class="ident">stream</span>: <span class="kw-2">&amp;</span><span class="ident">net</span>::<span class="ident">TcpStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="ident">sys</span>::<span class="ident">set_nonblock</span>(
-        ::<span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">unix</span>::<span class="ident">io</span>::<span class="ident">AsRawFd</span>::<span class="ident">as_raw_fd</span>(<span class="ident">stream</span>))
+<span class="kw">fn</span> <span class="ident">set_nonblocking</span>(<span class="ident">stream</span>: <span class="kw-2">&amp;</span><span class="ident">net::TcpStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="ident">sys::set_nonblock</span>(
+        <span class="ident">::std::os::unix::io::AsRawFd::as_raw_fd</span>(<span class="ident">stream</span>))
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;fuchsia&quot;</span>))]</span>
-<span class="kw">fn</span> <span class="ident">set_nonblocking</span>(<span class="ident">stream</span>: <span class="kw-2">&amp;</span><span class="ident">net</span>::<span class="ident">TcpStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">set_nonblocking</span>(<span class="ident">stream</span>: <span class="kw-2">&amp;</span><span class="ident">net::TcpStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="ident">stream</span>.<span class="ident">set_nonblocking</span>(<span class="bool-val">true</span>)
 }
 
@@ -827,17 +826,17 @@
     <span class="doccomment">/// `net2::TcpBuilder` to configure a socket and then pass its socket to</span>
     <span class="doccomment">/// `TcpStream::connect_stream` to transfer ownership into mio and schedule</span>
     <span class="doccomment">/// the connect operation.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connect</span>(<span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TcpStream</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connect</span>(<span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">TcpStream</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">sock</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">addr</span> {
-            <span class="ident">SocketAddr</span>::<span class="ident">V4</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TcpBuilder</span>::<span class="ident">new_v4</span>(),
-            <span class="ident">SocketAddr</span>::<span class="ident">V6</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TcpBuilder</span>::<span class="ident">new_v6</span>(),
+            <span class="ident">SocketAddr::V4</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TcpBuilder::new_v4</span>(),
+            <span class="ident">SocketAddr::V6</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TcpBuilder::new_v6</span>(),
         }<span class="question-mark">?</span>;
         <span class="comment">// Required on Windows for a future `connect_overlapped` operation to be</span>
         <span class="comment">// executed successfully.</span>
-        <span class="kw">if</span> <span class="macro">cfg</span><span class="macro">!</span>(<span class="ident">windows</span>) {
+        <span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">windows</span>) {
             <span class="ident">sock</span>.<span class="ident">bind</span>(<span class="kw-2">&amp;</span><span class="ident">inaddr_any</span>(<span class="ident">addr</span>))<span class="question-mark">?</span>;
         }
-        <span class="ident">TcpStream</span>::<span class="ident">connect_stream</span>(<span class="ident">sock</span>.<span class="ident">to_tcp_stream</span>()<span class="question-mark">?</span>, <span class="ident">addr</span>)
+        <span class="ident">TcpStream::connect_stream</span>(<span class="ident">sock</span>.<span class="ident">to_tcp_stream</span>()<span class="question-mark">?</span>, <span class="ident">addr</span>)
     }
 
     <span class="doccomment">/// Creates a new `TcpStream` from the pending socket inside the given</span>
@@ -858,11 +857,11 @@
     <span class="doccomment">///   loop. Note that on Windows you must `bind` a socket before it can be</span>
     <span class="doccomment">///   connected, so if a custom `TcpBuilder` is used it should be bound</span>
     <span class="doccomment">///   (perhaps to `INADDR_ANY`) before this method is called.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connect_stream</span>(<span class="ident">stream</span>: <span class="ident">net</span>::<span class="ident">TcpStream</span>,
-                          <span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TcpStream</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connect_stream</span>(<span class="ident">stream</span>: <span class="ident">net::TcpStream</span>,
+                          <span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">TcpStream</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="ident">TcpStream</span> {
-            <span class="ident">sys</span>: <span class="ident">sys</span>::<span class="ident">TcpStream</span>::<span class="ident">connect</span>(<span class="ident">stream</span>, <span class="ident">addr</span>)<span class="question-mark">?</span>,
-            <span class="ident">selector_id</span>: <span class="ident">SelectorId</span>::<span class="ident">new</span>(),
+            <span class="ident">sys</span>: <span class="ident">sys::TcpStream::connect</span>(<span class="ident">stream</span>, <span class="ident">addr</span>)<span class="question-mark">?</span>,
+            <span class="ident">selector_id</span>: <span class="ident">SelectorId::new</span>(),
         })
     }
 
@@ -876,22 +875,22 @@
     <span class="doccomment">/// Note that the TCP stream here will not have `connect` called on it, so</span>
     <span class="doccomment">/// it should already be connected via some other means (be it manually, the</span>
     <span class="doccomment">/// net2 crate, or the standard library).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_stream</span>(<span class="ident">stream</span>: <span class="ident">net</span>::<span class="ident">TcpStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TcpStream</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_stream</span>(<span class="ident">stream</span>: <span class="ident">net::TcpStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">TcpStream</span><span class="op">&gt;</span> {
         <span class="ident">set_nonblocking</span>(<span class="kw-2">&amp;</span><span class="ident">stream</span>)<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(<span class="ident">TcpStream</span> {
-            <span class="ident">sys</span>: <span class="ident">sys</span>::<span class="ident">TcpStream</span>::<span class="ident">from_stream</span>(<span class="ident">stream</span>),
-            <span class="ident">selector_id</span>: <span class="ident">SelectorId</span>::<span class="ident">new</span>(),
+            <span class="ident">sys</span>: <span class="ident">sys::TcpStream::from_stream</span>(<span class="ident">stream</span>),
+            <span class="ident">selector_id</span>: <span class="ident">SelectorId::new</span>(),
         })
     }
 
     <span class="doccomment">/// Returns the socket address of the remote peer of this TCP connection.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peer_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SocketAddr</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peer_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">SocketAddr</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">peer_addr</span>()
     }
 
     <span class="doccomment">/// Returns the socket address of the local half of this TCP connection.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SocketAddr</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">SocketAddr</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">local_addr</span>()
     }
 
@@ -901,7 +900,7 @@
     <span class="doccomment">/// object references. Both handles will read and write the same stream of</span>
     <span class="doccomment">/// data, and options set on one stream will be propagated to the other</span>
     <span class="doccomment">/// stream.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TcpStream</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">TcpStream</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">try_clone</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
             <span class="ident">TcpStream</span> {
                 <span class="ident">sys</span>: <span class="ident">s</span>,
@@ -915,7 +914,7 @@
     <span class="doccomment">/// This function will cause all pending and future I/O on the specified</span>
     <span class="doccomment">/// portions to return immediately with an appropriate value (see the</span>
     <span class="doccomment">/// documentation of `Shutdown`).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shutdown</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">how</span>: <span class="ident">Shutdown</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shutdown</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">how</span>: <span class="ident">Shutdown</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">shutdown</span>(<span class="ident">how</span>)
     }
 
@@ -926,7 +925,7 @@
     <span class="doccomment">/// small amount of data. When not set, data is buffered until there is a</span>
     <span class="doccomment">/// sufficient amount to send out, thereby avoiding the frequent sending of</span>
     <span class="doccomment">/// small packets.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_nodelay</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">nodelay</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_nodelay</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">nodelay</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">set_nodelay</span>(<span class="ident">nodelay</span>)
     }
 
@@ -935,7 +934,7 @@
     <span class="doccomment">/// For more information about this option, see [`set_nodelay`][link].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [link]: #method.set_nodelay</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">nodelay</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">nodelay</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">nodelay</span>()
     }
 
@@ -943,7 +942,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Changes the size of the operating system&#39;s receive buffer associated</span>
     <span class="doccomment">/// with the socket.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_recv_buffer_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_recv_buffer_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">set_recv_buffer_size</span>(<span class="ident">size</span>)
     }
 
@@ -953,7 +952,7 @@
     <span class="doccomment">/// [`set_recv_buffer_size`][link].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [link]: #method.set_recv_buffer_size</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recv_buffer_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recv_buffer_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">recv_buffer_size</span>()
     }
 
@@ -961,7 +960,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Changes the size of the operating system&#39;s send buffer associated with</span>
     <span class="doccomment">/// the socket.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_send_buffer_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_send_buffer_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">set_send_buffer_size</span>(<span class="ident">size</span>)
     }
 
@@ -971,7 +970,7 @@
     <span class="doccomment">/// [`set_send_buffer_size`][link].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [link]: #method.set_send_buffer_size</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_buffer_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_buffer_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">send_buffer_size</span>()
     }
 
@@ -987,7 +986,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Some platforms specify this value in seconds, so sub-second</span>
     <span class="doccomment">/// specifications may be omitted.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_keepalive</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">keepalive</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_keepalive</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">keepalive</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">set_keepalive</span>(<span class="ident">keepalive</span>)
     }
 
@@ -997,7 +996,7 @@
     <span class="doccomment">/// For more information about this option, see [`set_keepalive`][link].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [link]: #method.set_keepalive</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">keepalive</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">keepalive</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">keepalive</span>()
     }
 
@@ -1005,7 +1004,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This value sets the time-to-live field that is used in every packet sent</span>
     <span class="doccomment">/// from this socket.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_ttl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ttl</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_ttl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ttl</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">set_ttl</span>(<span class="ident">ttl</span>)
     }
 
@@ -1014,7 +1013,7 @@
     <span class="doccomment">/// For more information about this option, see [`set_ttl`][link].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [link]: #method.set_ttl</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ttl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ttl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">ttl</span>()
     }
 
@@ -1026,7 +1025,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// If this is set to `false` then the socket can be used to send and</span>
     <span class="doccomment">/// receive packets from an IPv4-mapped IPv6 address.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_only_v6</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">only_v6</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_only_v6</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">only_v6</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">set_only_v6</span>(<span class="ident">only_v6</span>)
     }
 
@@ -1035,12 +1034,12 @@
     <span class="doccomment">/// For more information about this option, see [`set_only_v6`][link].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [link]: #method.set_only_v6</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">only_v6</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">only_v6</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">only_v6</span>()
     }
 
     <span class="doccomment">/// Sets the value for the `SO_LINGER` option on this socket.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_linger</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dur</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_linger</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dur</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">set_linger</span>(<span class="ident">dur</span>)
     }
 
@@ -1049,26 +1048,26 @@
     <span class="doccomment">/// For more information about this option, see [`set_linger`][link].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [link]: #method.set_linger</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">linger</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">linger</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">linger</span>()
     }
 
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.6.9&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use set_keepalive&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;with-deprecated&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_keepalive_ms</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">keepalive</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_keepalive_ms</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">keepalive</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">set_keepalive</span>(<span class="ident">keepalive</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> {
-            <span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">v</span>))
+            <span class="ident">Duration::from_millis</span>(<span class="ident">u64::from</span>(<span class="ident">v</span>))
         }))
     }
 
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.6.9&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use keepalive&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;with-deprecated&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">keepalive_ms</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">keepalive_ms</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">keepalive</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> {
             <span class="ident">v</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> {
-                ::<span class="ident">convert</span>::<span class="ident">millis</span>(<span class="ident">v</span>) <span class="kw">as</span> <span class="ident">u32</span>
+                <span class="ident">::convert::millis</span>(<span class="ident">v</span>) <span class="kw">as</span> <span class="ident">u32</span>
             })
         })
     }
@@ -1078,7 +1077,7 @@
     <span class="doccomment">/// This will retrieve the stored error in the underlying socket, clearing</span>
     <span class="doccomment">/// the field in the process. This can be useful for checking errors between</span>
     <span class="doccomment">/// calls.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_error</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_error</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">io::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">take_error</span>()
     }
 
@@ -1088,7 +1087,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Successive calls return the same data. This is accomplished by passing</span>
     <span class="doccomment">/// `MSG_PEEK` as a flag to the underlying recv system call.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">peek</span>(<span class="ident">buf</span>)
     }
 
@@ -1106,7 +1105,7 @@
     <span class="doccomment">/// a &quot;would block&quot; error is returned. This operation does not block.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// On Unix this corresponds to the `readv` syscall.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_bufs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">IoVec</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_bufs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">IoVec</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">readv</span>(<span class="ident">bufs</span>)
     }
 
@@ -1124,78 +1123,78 @@
     <span class="doccomment">/// &quot;would block&quot; error is returned. This operation does not block.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// On Unix this corresponds to the `writev` syscall.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_bufs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">IoVec</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_bufs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">IoVec</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">writev</span>(<span class="ident">bufs</span>)
     }
 }
 
 <span class="kw">fn</span> <span class="ident">inaddr_any</span>(<span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SocketAddr</span> {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">other</span> {
-        <span class="ident">SocketAddr</span>::<span class="ident">V4</span>(..) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="kw">let</span> <span class="ident">any</span> <span class="op">=</span> <span class="ident">Ipv4Addr</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);
-            <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">SocketAddrV4</span>::<span class="ident">new</span>(<span class="ident">any</span>, <span class="number">0</span>);
-            <span class="ident">SocketAddr</span>::<span class="ident">V4</span>(<span class="ident">addr</span>)
+        <span class="ident">SocketAddr::V4</span>(..) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw">let</span> <span class="ident">any</span> <span class="op">=</span> <span class="ident">Ipv4Addr::new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);
+            <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">SocketAddrV4::new</span>(<span class="ident">any</span>, <span class="number">0</span>);
+            <span class="ident">SocketAddr::V4</span>(<span class="ident">addr</span>)
         }
-        <span class="ident">SocketAddr</span>::<span class="ident">V6</span>(..) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="kw">let</span> <span class="ident">any</span> <span class="op">=</span> <span class="ident">Ipv6Addr</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);
-            <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">SocketAddrV6</span>::<span class="ident">new</span>(<span class="ident">any</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);
-            <span class="ident">SocketAddr</span>::<span class="ident">V6</span>(<span class="ident">addr</span>)
+        <span class="ident">SocketAddr::V6</span>(..) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw">let</span> <span class="ident">any</span> <span class="op">=</span> <span class="ident">Ipv6Addr::new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);
+            <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">SocketAddrV6::new</span>(<span class="ident">any</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);
+            <span class="ident">SocketAddr::V6</span>(<span class="ident">addr</span>)
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Read</span> <span class="kw">for</span> <span class="ident">TcpStream</span> {
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         (<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sys</span>).<span class="ident">read</span>(<span class="ident">buf</span>)
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Read</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">TcpStream</span> {
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         (<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sys</span>).<span class="ident">read</span>(<span class="ident">buf</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="ident">TcpStream</span> {
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         (<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sys</span>).<span class="ident">write</span>(<span class="ident">buf</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         (<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sys</span>).<span class="ident">flush</span>()
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">TcpStream</span> {
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         (<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sys</span>).<span class="ident">write</span>(<span class="ident">buf</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         (<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sys</span>).<span class="ident">flush</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Evented</span> <span class="kw">for</span> <span class="ident">TcpStream</span> {
     <span class="kw">fn</span> <span class="ident">register</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">poll</span>: <span class="kw-2">&amp;</span><span class="ident">Poll</span>, <span class="ident">token</span>: <span class="ident">Token</span>,
-                <span class="ident">interest</span>: <span class="ident">Ready</span>, <span class="ident">opts</span>: <span class="ident">PollOpt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+                <span class="ident">interest</span>: <span class="ident">Ready</span>, <span class="ident">opts</span>: <span class="ident">PollOpt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">selector_id</span>.<span class="ident">associate_selector</span>(<span class="ident">poll</span>)<span class="question-mark">?</span>;
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">register</span>(<span class="ident">poll</span>, <span class="ident">token</span>, <span class="ident">interest</span>, <span class="ident">opts</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">reregister</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">poll</span>: <span class="kw-2">&amp;</span><span class="ident">Poll</span>, <span class="ident">token</span>: <span class="ident">Token</span>,
-                  <span class="ident">interest</span>: <span class="ident">Ready</span>, <span class="ident">opts</span>: <span class="ident">PollOpt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+                  <span class="ident">interest</span>: <span class="ident">Ready</span>, <span class="ident">opts</span>: <span class="ident">PollOpt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">reregister</span>(<span class="ident">poll</span>, <span class="ident">token</span>, <span class="ident">interest</span>, <span class="ident">opts</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">deregister</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">poll</span>: <span class="kw-2">&amp;</span><span class="ident">Poll</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">deregister</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">poll</span>: <span class="kw-2">&amp;</span><span class="ident">Poll</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">deregister</span>(<span class="ident">poll</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">TcpStream</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-        <span class="ident">fmt</span>::<span class="ident">Debug</span>::<span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sys</span>, <span class="ident">f</span>)
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">TcpStream</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        <span class="ident">fmt::Debug::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sys</span>, <span class="ident">f</span>)
     }
 }
 
@@ -1236,7 +1235,7 @@
 <span class="doccomment">/// # }</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TcpListener</span> {
-    <span class="ident">sys</span>: <span class="ident">sys</span>::<span class="ident">TcpListener</span>,
+    <span class="ident">sys</span>: <span class="ident">sys::TcpListener</span>,
     <span class="ident">selector_id</span>: <span class="ident">SelectorId</span>,
 }
 
@@ -1255,15 +1254,15 @@
     <span class="doccomment">/// socket is desired then the `net2::TcpBuilder` methods can be used in</span>
     <span class="doccomment">/// combination with the `TcpListener::from_listener` method to transfer</span>
     <span class="doccomment">/// ownership into mio.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bind</span>(<span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TcpListener</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bind</span>(<span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">TcpListener</span><span class="op">&gt;</span> {
         <span class="comment">// Create the socket</span>
         <span class="kw">let</span> <span class="ident">sock</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">addr</span> {
-            <span class="ident">SocketAddr</span>::<span class="ident">V4</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TcpBuilder</span>::<span class="ident">new_v4</span>(),
-            <span class="ident">SocketAddr</span>::<span class="ident">V6</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TcpBuilder</span>::<span class="ident">new_v6</span>(),
+            <span class="ident">SocketAddr::V4</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TcpBuilder::new_v4</span>(),
+            <span class="ident">SocketAddr::V6</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TcpBuilder::new_v6</span>(),
         }<span class="question-mark">?</span>;
 
         <span class="comment">// Set SO_REUSEADDR, but only on Unix (mirrors what libstd does)</span>
-        <span class="kw">if</span> <span class="macro">cfg</span><span class="macro">!</span>(<span class="ident">unix</span>) {
+        <span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">unix</span>) {
             <span class="ident">sock</span>.<span class="ident">reuse_address</span>(<span class="bool-val">true</span>)<span class="question-mark">?</span>;
         }
 
@@ -1273,17 +1272,17 @@
         <span class="comment">// listen</span>
         <span class="kw">let</span> <span class="ident">listener</span> <span class="op">=</span> <span class="ident">sock</span>.<span class="ident">listen</span>(<span class="number">1024</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">TcpListener</span> {
-            <span class="ident">sys</span>: <span class="ident">sys</span>::<span class="ident">TcpListener</span>::<span class="ident">new</span>(<span class="ident">listener</span>)<span class="question-mark">?</span>,
-            <span class="ident">selector_id</span>: <span class="ident">SelectorId</span>::<span class="ident">new</span>(),
+            <span class="ident">sys</span>: <span class="ident">sys::TcpListener::new</span>(<span class="ident">listener</span>)<span class="question-mark">?</span>,
+            <span class="ident">selector_id</span>: <span class="ident">SelectorId::new</span>(),
         })
     }
 
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.6.13&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use from_std instead&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;with-deprecated&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_listener</span>(<span class="ident">listener</span>: <span class="ident">net</span>::<span class="ident">TcpListener</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddr</span>)
-                         <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TcpListener</span><span class="op">&gt;</span> {
-        <span class="ident">TcpListener</span>::<span class="ident">from_std</span>(<span class="ident">listener</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_listener</span>(<span class="ident">listener</span>: <span class="ident">net::TcpListener</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddr</span>)
+                         <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">TcpListener</span><span class="op">&gt;</span> {
+        <span class="ident">TcpListener::from_std</span>(<span class="ident">listener</span>)
     }
 
     <span class="doccomment">/// Creates a new `TcpListener` from an instance of a</span>
@@ -1295,11 +1294,11 @@
     <span class="doccomment">/// loop.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The address provided must be the address that the listener is bound to.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_std</span>(<span class="ident">listener</span>: <span class="ident">net</span>::<span class="ident">TcpListener</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TcpListener</span><span class="op">&gt;</span> {
-        <span class="ident">sys</span>::<span class="ident">TcpListener</span>::<span class="ident">new</span>(<span class="ident">listener</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_std</span>(<span class="ident">listener</span>: <span class="ident">net::TcpListener</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">TcpListener</span><span class="op">&gt;</span> {
+        <span class="ident">sys::TcpListener::new</span>(<span class="ident">listener</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
             <span class="ident">TcpListener</span> {
                 <span class="ident">sys</span>: <span class="ident">s</span>,
-                <span class="ident">selector_id</span>: <span class="ident">SelectorId</span>::<span class="ident">new</span>(),
+                <span class="ident">selector_id</span>: <span class="ident">SelectorId::new</span>(),
             }
         })
     }
@@ -1313,9 +1312,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// If an accepted stream is returned, the remote address of the peer is</span>
     <span class="doccomment">/// returned along with it.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">accept</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">TcpStream</span>, <span class="ident">SocketAddr</span>)<span class="op">&gt;</span> {
-        <span class="kw">let</span> (<span class="ident">s</span>, <span class="ident">a</span>) <span class="op">=</span> <span class="macro">try</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">accept_std</span>());
-        <span class="prelude-val">Ok</span>((<span class="ident">TcpStream</span>::<span class="ident">from_stream</span>(<span class="ident">s</span>)<span class="question-mark">?</span>, <span class="ident">a</span>))
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">accept</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">TcpStream</span>, <span class="ident">SocketAddr</span>)<span class="op">&gt;</span> {
+        <span class="kw">let</span> (<span class="ident">s</span>, <span class="ident">a</span>) <span class="op">=</span> <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">accept_std</span>());
+        <span class="prelude-val">Ok</span>((<span class="ident">TcpStream::from_stream</span>(<span class="ident">s</span>)<span class="question-mark">?</span>, <span class="ident">a</span>))
     }
 
     <span class="doccomment">/// Accepts a new `std::net::TcpStream`.</span>
@@ -1323,12 +1322,12 @@
     <span class="doccomment">/// This method is the same as `accept`, except that it returns a TCP socket</span>
     <span class="doccomment">/// *in blocking mode* which isn&#39;t bound to `mio`. This can be later then</span>
     <span class="doccomment">/// converted to a `mio` type, if necessary.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">accept_std</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">net</span>::<span class="ident">TcpStream</span>, <span class="ident">SocketAddr</span>)<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">accept_std</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">net::TcpStream</span>, <span class="ident">SocketAddr</span>)<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">accept</span>()
     }
 
     <span class="doccomment">/// Returns the local socket address of this listener.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SocketAddr</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">SocketAddr</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">local_addr</span>()
     }
 
@@ -1337,7 +1336,7 @@
     <span class="doccomment">/// The returned `TcpListener` is a reference to the same socket that this</span>
     <span class="doccomment">/// object references. Both handles can be used to accept incoming</span>
     <span class="doccomment">/// connections and options set on one listener will affect the other.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TcpListener</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">TcpListener</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">try_clone</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
             <span class="ident">TcpListener</span> {
                 <span class="ident">sys</span>: <span class="ident">s</span>,
@@ -1350,7 +1349,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This value sets the time-to-live field that is used in every packet sent</span>
     <span class="doccomment">/// from this socket.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_ttl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ttl</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_ttl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ttl</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">set_ttl</span>(<span class="ident">ttl</span>)
     }
 
@@ -1359,7 +1358,7 @@
     <span class="doccomment">/// For more information about this option, see [`set_ttl`][link].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [link]: #method.set_ttl</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ttl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ttl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">ttl</span>()
     }
 
@@ -1371,7 +1370,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// If this is set to `false` then the socket can be used to send and</span>
     <span class="doccomment">/// receive packets from an IPv4-mapped IPv6 address.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_only_v6</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">only_v6</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_only_v6</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">only_v6</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">set_only_v6</span>(<span class="ident">only_v6</span>)
     }
 
@@ -1380,7 +1379,7 @@
     <span class="doccomment">/// For more information about this option, see [`set_only_v6`][link].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [link]: #method.set_only_v6</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">only_v6</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">only_v6</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">only_v6</span>()
     }
 
@@ -1389,31 +1388,31 @@
     <span class="doccomment">/// This will retrieve the stored error in the underlying socket, clearing</span>
     <span class="doccomment">/// the field in the process. This can be useful for checking errors between</span>
     <span class="doccomment">/// calls.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_error</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_error</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">io::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">take_error</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Evented</span> <span class="kw">for</span> <span class="ident">TcpListener</span> {
     <span class="kw">fn</span> <span class="ident">register</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">poll</span>: <span class="kw-2">&amp;</span><span class="ident">Poll</span>, <span class="ident">token</span>: <span class="ident">Token</span>,
-                <span class="ident">interest</span>: <span class="ident">Ready</span>, <span class="ident">opts</span>: <span class="ident">PollOpt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+                <span class="ident">interest</span>: <span class="ident">Ready</span>, <span class="ident">opts</span>: <span class="ident">PollOpt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">selector_id</span>.<span class="ident">associate_selector</span>(<span class="ident">poll</span>)<span class="question-mark">?</span>;
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">register</span>(<span class="ident">poll</span>, <span class="ident">token</span>, <span class="ident">interest</span>, <span class="ident">opts</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">reregister</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">poll</span>: <span class="kw-2">&amp;</span><span class="ident">Poll</span>, <span class="ident">token</span>: <span class="ident">Token</span>,
-                  <span class="ident">interest</span>: <span class="ident">Ready</span>, <span class="ident">opts</span>: <span class="ident">PollOpt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+                  <span class="ident">interest</span>: <span class="ident">Ready</span>, <span class="ident">opts</span>: <span class="ident">PollOpt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">reregister</span>(<span class="ident">poll</span>, <span class="ident">token</span>, <span class="ident">interest</span>, <span class="ident">opts</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">deregister</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">poll</span>: <span class="kw-2">&amp;</span><span class="ident">Poll</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">deregister</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">poll</span>: <span class="kw-2">&amp;</span><span class="ident">Poll</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">deregister</span>(<span class="ident">poll</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">TcpListener</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-        <span class="ident">fmt</span>::<span class="ident">Debug</span>::<span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sys</span>, <span class="ident">f</span>)
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">TcpListener</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        <span class="ident">fmt::Debug::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sys</span>, <span class="ident">f</span>)
     }
 }
 
@@ -1424,7 +1423,7 @@
  */</span>
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">unix</span>, <span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;fuchsia&quot;</span>)))]</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">unix</span>::<span class="ident">io</span>::{<span class="ident">IntoRawFd</span>, <span class="ident">AsRawFd</span>, <span class="ident">FromRawFd</span>, <span class="ident">RawFd</span>};
+<span class="kw">use</span> <span class="ident">std::os::unix::io</span>::{<span class="ident">IntoRawFd</span>, <span class="ident">AsRawFd</span>, <span class="ident">FromRawFd</span>, <span class="ident">RawFd</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">unix</span>, <span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;fuchsia&quot;</span>)))]</span>
 <span class="kw">impl</span> <span class="ident">IntoRawFd</span> <span class="kw">for</span> <span class="ident">TcpStream</span> {
@@ -1444,8 +1443,8 @@
 <span class="kw">impl</span> <span class="ident">FromRawFd</span> <span class="kw">for</span> <span class="ident">TcpStream</span> {
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_fd</span>(<span class="ident">fd</span>: <span class="ident">RawFd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TcpStream</span> {
         <span class="ident">TcpStream</span> {
-            <span class="ident">sys</span>: <span class="ident">FromRawFd</span>::<span class="ident">from_raw_fd</span>(<span class="ident">fd</span>),
-            <span class="ident">selector_id</span>: <span class="ident">SelectorId</span>::<span class="ident">new</span>(),
+            <span class="ident">sys</span>: <span class="ident">FromRawFd::from_raw_fd</span>(<span class="ident">fd</span>),
+            <span class="ident">selector_id</span>: <span class="ident">SelectorId::new</span>(),
         }
     }
 }
@@ -1468,10 +1467,12 @@
 <span class="kw">impl</span> <span class="ident">FromRawFd</span> <span class="kw">for</span> <span class="ident">TcpListener</span> {
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_fd</span>(<span class="ident">fd</span>: <span class="ident">RawFd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TcpListener</span> {
         <span class="ident">TcpListener</span> {
-            <span class="ident">sys</span>: <span class="ident">FromRawFd</span>::<span class="ident">from_raw_fd</span>(<span class="ident">fd</span>),
-            <span class="ident">selector_id</span>: <span class="ident">SelectorId</span>::<span class="ident">new</span>(),
+            <span class="ident">sys</span>: <span class="ident">FromRawFd::from_raw_fd</span>(<span class="ident">fd</span>),
+            <span class="ident">selector_id</span>: <span class="ident">SelectorId::new</span>(),
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "mio";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="mio" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>
