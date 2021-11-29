@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["error","Error types"],["future","Future types"]],"struct":[["Buffer","Adds a buffer in front of an inner service."],["BufferLayer","Buffer requests with a bounded buffer"]]});
+initSidebarItems({"mod":[["error","Error types for the `Buffer` middleware."],["future","Future types for the `Buffer` middleware."]],"struct":[["Buffer","Adds an mpsc buffer in front of an inner service."],["BufferLayer","Adds an mpsc buffer in front of an inner service."]]});

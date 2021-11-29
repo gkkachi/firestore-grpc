@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ResponseFuture","Future eventually completed with the response to the original request."]]});
+initSidebarItems({"struct":[["ResponseFuture","Future that completes when the buffered service eventually services the submitted request."]]});

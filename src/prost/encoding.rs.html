@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;prost-0.6.1&#x2F;src&#x2F;encoding.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>encoding.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../prost/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;prost-0.9.0&#x2F;src&#x2F;encoding.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>encoding.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../prost/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1648,18 +1648,153 @@
 <span id="1648">1648</span>
 <span id="1649">1649</span>
 <span id="1650">1650</span>
+<span id="1651">1651</span>
+<span id="1652">1652</span>
+<span id="1653">1653</span>
+<span id="1654">1654</span>
+<span id="1655">1655</span>
+<span id="1656">1656</span>
+<span id="1657">1657</span>
+<span id="1658">1658</span>
+<span id="1659">1659</span>
+<span id="1660">1660</span>
+<span id="1661">1661</span>
+<span id="1662">1662</span>
+<span id="1663">1663</span>
+<span id="1664">1664</span>
+<span id="1665">1665</span>
+<span id="1666">1666</span>
+<span id="1667">1667</span>
+<span id="1668">1668</span>
+<span id="1669">1669</span>
+<span id="1670">1670</span>
+<span id="1671">1671</span>
+<span id="1672">1672</span>
+<span id="1673">1673</span>
+<span id="1674">1674</span>
+<span id="1675">1675</span>
+<span id="1676">1676</span>
+<span id="1677">1677</span>
+<span id="1678">1678</span>
+<span id="1679">1679</span>
+<span id="1680">1680</span>
+<span id="1681">1681</span>
+<span id="1682">1682</span>
+<span id="1683">1683</span>
+<span id="1684">1684</span>
+<span id="1685">1685</span>
+<span id="1686">1686</span>
+<span id="1687">1687</span>
+<span id="1688">1688</span>
+<span id="1689">1689</span>
+<span id="1690">1690</span>
+<span id="1691">1691</span>
+<span id="1692">1692</span>
+<span id="1693">1693</span>
+<span id="1694">1694</span>
+<span id="1695">1695</span>
+<span id="1696">1696</span>
+<span id="1697">1697</span>
+<span id="1698">1698</span>
+<span id="1699">1699</span>
+<span id="1700">1700</span>
+<span id="1701">1701</span>
+<span id="1702">1702</span>
+<span id="1703">1703</span>
+<span id="1704">1704</span>
+<span id="1705">1705</span>
+<span id="1706">1706</span>
+<span id="1707">1707</span>
+<span id="1708">1708</span>
+<span id="1709">1709</span>
+<span id="1710">1710</span>
+<span id="1711">1711</span>
+<span id="1712">1712</span>
+<span id="1713">1713</span>
+<span id="1714">1714</span>
+<span id="1715">1715</span>
+<span id="1716">1716</span>
+<span id="1717">1717</span>
+<span id="1718">1718</span>
+<span id="1719">1719</span>
+<span id="1720">1720</span>
+<span id="1721">1721</span>
+<span id="1722">1722</span>
+<span id="1723">1723</span>
+<span id="1724">1724</span>
+<span id="1725">1725</span>
+<span id="1726">1726</span>
+<span id="1727">1727</span>
+<span id="1728">1728</span>
+<span id="1729">1729</span>
+<span id="1730">1730</span>
+<span id="1731">1731</span>
+<span id="1732">1732</span>
+<span id="1733">1733</span>
+<span id="1734">1734</span>
+<span id="1735">1735</span>
+<span id="1736">1736</span>
+<span id="1737">1737</span>
+<span id="1738">1738</span>
+<span id="1739">1739</span>
+<span id="1740">1740</span>
+<span id="1741">1741</span>
+<span id="1742">1742</span>
+<span id="1743">1743</span>
+<span id="1744">1744</span>
+<span id="1745">1745</span>
+<span id="1746">1746</span>
+<span id="1747">1747</span>
+<span id="1748">1748</span>
+<span id="1749">1749</span>
+<span id="1750">1750</span>
+<span id="1751">1751</span>
+<span id="1752">1752</span>
+<span id="1753">1753</span>
+<span id="1754">1754</span>
+<span id="1755">1755</span>
+<span id="1756">1756</span>
+<span id="1757">1757</span>
+<span id="1758">1758</span>
+<span id="1759">1759</span>
+<span id="1760">1760</span>
+<span id="1761">1761</span>
+<span id="1762">1762</span>
+<span id="1763">1763</span>
+<span id="1764">1764</span>
+<span id="1765">1765</span>
+<span id="1766">1766</span>
+<span id="1767">1767</span>
+<span id="1768">1768</span>
+<span id="1769">1769</span>
+<span id="1770">1770</span>
+<span id="1771">1771</span>
+<span id="1772">1772</span>
+<span id="1773">1773</span>
+<span id="1774">1774</span>
+<span id="1775">1775</span>
+<span id="1776">1776</span>
+<span id="1777">1777</span>
+<span id="1778">1778</span>
+<span id="1779">1779</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Utility functions and types for encoding and decoding Protobuf types.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Meant to be used only from `Message` implementations.</span>
 
-<span class="kw">use</span> <span class="ident">std::cmp::min</span>;
-<span class="kw">use</span> <span class="ident">std::convert::TryFrom</span>;
-<span class="kw">use</span> <span class="ident">std::mem</span>;
-<span class="kw">use</span> <span class="ident">std::str</span>;
-<span class="kw">use</span> <span class="ident">std::u32</span>;
-<span class="kw">use</span> <span class="ident">std::usize</span>;
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::implicit_hasher</span>, <span class="ident">clippy::ptr_arg</span>)]</span>
 
-<span class="kw">use</span> <span class="ident">::bytes</span>::{<span class="ident">buf::ext::BufExt</span>, <span class="ident">Buf</span>, <span class="ident">BufMut</span>};
+<span class="kw">use</span> <span class="ident">alloc::collections::BTreeMap</span>;
+<span class="kw">use</span> <span class="ident">alloc::format</span>;
+<span class="kw">use</span> <span class="ident">alloc::string::String</span>;
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
+<span class="kw">use</span> <span class="ident">core::cmp::min</span>;
+<span class="kw">use</span> <span class="ident">core::convert::TryFrom</span>;
+<span class="kw">use</span> <span class="ident">core::mem</span>;
+<span class="kw">use</span> <span class="ident">core::str</span>;
+<span class="kw">use</span> <span class="ident">core::u32</span>;
+<span class="kw">use</span> <span class="ident">core::usize</span>;
+
+<span class="kw">use</span> <span class="ident">::bytes</span>::{<span class="ident">Buf</span>, <span class="ident">BufMut</span>, <span class="ident">Bytes</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::DecodeError</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Message</span>;
@@ -1671,54 +1806,35 @@
 <span class="kw">where</span>
     <span class="ident">B</span>: <span class="ident">BufMut</span>,
 {
-    <span class="comment">// Safety notes:</span>
-    <span class="comment">//</span>
-    <span class="comment">// - advance_mut is unsafe because it could cause uninitialized memory to be</span>
-    <span class="comment">//   advanced over. The use here is safe since each byte which is advanced over</span>
-    <span class="comment">//   has been written to in the previous loop iteration.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">i</span>;
-    <span class="lifetime">&#39;outer</span>: <span class="kw">loop</span> {
-        <span class="ident">i</span> <span class="op">=</span> <span class="number">0</span>;
-
-        <span class="kw">for</span> <span class="ident">byte</span> <span class="kw">in</span> <span class="ident">buf</span>.<span class="ident">bytes_mut</span>() {
-            <span class="ident">i</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
-            <span class="kw">if</span> <span class="ident">value</span> <span class="op">&lt;</span> <span class="number">0x80</span> {
-                <span class="kw-2">*</span><span class="ident">byte</span> <span class="op">=</span> <span class="ident">mem::MaybeUninit::new</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="ident">u8</span>);
-                <span class="kw">break</span> <span class="lifetime">&#39;outer</span>;
-            } <span class="kw">else</span> {
-                <span class="kw-2">*</span><span class="ident">byte</span> <span class="op">=</span> <span class="ident">mem::MaybeUninit::new</span>(((<span class="ident">value</span> <span class="op">&amp;</span> <span class="number">0x7F</span>) <span class="op">|</span> <span class="number">0x80</span>) <span class="kw">as</span> <span class="ident">u8</span>);
-                <span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span><span class="op">=</span> <span class="number">7</span>;
-            }
+    <span class="kw">loop</span> {
+        <span class="kw">if</span> <span class="ident">value</span> <span class="op">&lt;</span> <span class="number">0x80</span> {
+            <span class="ident">buf</span>.<span class="ident">put_u8</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="ident">u8</span>);
+            <span class="kw">break</span>;
+        } <span class="kw">else</span> {
+            <span class="ident">buf</span>.<span class="ident">put_u8</span>(((<span class="ident">value</span> <span class="op">&amp;</span> <span class="number">0x7F</span>) <span class="op">|</span> <span class="number">0x80</span>) <span class="kw">as</span> <span class="ident">u8</span>);
+            <span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span><span class="op">=</span> <span class="number">7</span>;
         }
-
-        <span class="kw">unsafe</span> {
-            <span class="ident">buf</span>.<span class="ident">advance_mut</span>(<span class="ident">i</span>);
-        }
-        <span class="macro">debug_assert!</span>(<span class="ident">buf</span>.<span class="ident">has_remaining_mut</span>());
-    }
-
-    <span class="kw">unsafe</span> {
-        <span class="ident">buf</span>.<span class="ident">advance_mut</span>(<span class="ident">i</span>);
     }
 }
 
 <span class="doccomment">/// Decodes a LEB128-encoded variable length integer from the buffer.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">decode_varint</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span>, <span class="ident">DecodeError</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">B</span>: <span class="ident">Buf</span>,
 {
-    <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">buf</span>.<span class="ident">bytes</span>();
+    <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">buf</span>.<span class="ident">chunk</span>();
     <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">len</span>();
     <span class="kw">if</span> <span class="ident">len</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">DecodeError::new</span>(<span class="string">&quot;invalid varint&quot;</span>));
     }
 
-    <span class="kw">let</span> <span class="ident">byte</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">0</span>) };
+    <span class="kw">let</span> <span class="ident">byte</span> <span class="op">=</span> <span class="ident">bytes</span>[<span class="number">0</span>];
     <span class="kw">if</span> <span class="ident">byte</span> <span class="op">&lt;</span> <span class="number">0x80</span> {
         <span class="ident">buf</span>.<span class="ident">advance</span>(<span class="number">1</span>);
         <span class="prelude-val">Ok</span>(<span class="ident">u64::from</span>(<span class="ident">byte</span>))
     } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">len</span> <span class="op">&gt;</span> <span class="number">10</span> <span class="op">|</span><span class="op">|</span> <span class="ident">bytes</span>[<span class="ident">len</span> <span class="op">-</span> <span class="number">1</span>] <span class="op">&lt;</span> <span class="number">0x80</span> {
-        <span class="kw">let</span> (<span class="ident">value</span>, <span class="ident">advance</span>) <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">decode_varint_slice</span>(<span class="ident">bytes</span>) }<span class="question-mark">?</span>;
+        <span class="kw">let</span> (<span class="ident">value</span>, <span class="ident">advance</span>) <span class="op">=</span> <span class="ident">decode_varint_slice</span>(<span class="ident">bytes</span>)<span class="question-mark">?</span>;
         <span class="ident">buf</span>.<span class="ident">advance</span>(<span class="ident">advance</span>);
         <span class="prelude-val">Ok</span>(<span class="ident">value</span>)
     } <span class="kw">else</span> {
@@ -1729,7 +1845,8 @@
 <span class="doccomment">/// Decodes a LEB128-encoded variable length integer from the slice, returning the value and the</span>
 <span class="doccomment">/// number of bytes read.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Based loosely on [`ReadVarint64FromArray`][1].</span>
+<span class="doccomment">/// Based loosely on [`ReadVarint64FromArray`][1] with a varint overflow check from</span>
+<span class="doccomment">/// [`ConsumeVarint`][2].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ## Safety</span>
 <span class="doccomment">///</span>
@@ -1737,31 +1854,36 @@
 <span class="doccomment">/// element in bytes is &lt; `0x80`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [1]: https://github.com/google/protobuf/blob/3.3.x/src/google/protobuf/io/coded_stream.cc#L365-L406</span>
+<span class="doccomment">/// [2]: https://github.com/protocolbuffers/protobuf-go/blob/v1.27.1/encoding/protowire/wire.go#L358</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">decode_varint_slice</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">u64</span>, <span class="ident">usize</span>), <span class="ident">DecodeError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">decode_varint_slice</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">u64</span>, <span class="ident">usize</span>), <span class="ident">DecodeError</span><span class="op">&gt;</span> {
     <span class="comment">// Fully unrolled varint decoding loop. Splitting into 32-bit pieces gives better performance.</span>
+
+    <span class="comment">// Use assertions to ensure memory safety, but it should always be optimized after inline.</span>
+    <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">bytes</span>.<span class="ident">is_empty</span>());
+    <span class="macro">assert!</span>(<span class="ident">bytes</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">10</span> <span class="op">|</span><span class="op">|</span> <span class="ident">bytes</span>[<span class="ident">bytes</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>] <span class="op">&lt;</span> <span class="number">0x80</span>);
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">b</span>: <span class="ident">u8</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">part0</span>: <span class="ident">u32</span>;
-    <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">0</span>);
+    <span class="ident">b</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">0</span>) };
     <span class="ident">part0</span> <span class="op">=</span> <span class="ident">u32::from</span>(<span class="ident">b</span>);
     <span class="kw">if</span> <span class="ident">b</span> <span class="op">&lt;</span> <span class="number">0x80</span> {
         <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="ident">u64::from</span>(<span class="ident">part0</span>), <span class="number">1</span>));
     };
     <span class="ident">part0</span> <span class="op">-</span><span class="op">=</span> <span class="number">0x80</span>;
-    <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">1</span>);
+    <span class="ident">b</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">1</span>) };
     <span class="ident">part0</span> <span class="op">+</span><span class="op">=</span> <span class="ident">u32::from</span>(<span class="ident">b</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>;
     <span class="kw">if</span> <span class="ident">b</span> <span class="op">&lt;</span> <span class="number">0x80</span> {
         <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="ident">u64::from</span>(<span class="ident">part0</span>), <span class="number">2</span>));
     };
     <span class="ident">part0</span> <span class="op">-</span><span class="op">=</span> <span class="number">0x80</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>;
-    <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">2</span>);
+    <span class="ident">b</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">2</span>) };
     <span class="ident">part0</span> <span class="op">+</span><span class="op">=</span> <span class="ident">u32::from</span>(<span class="ident">b</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">14</span>;
     <span class="kw">if</span> <span class="ident">b</span> <span class="op">&lt;</span> <span class="number">0x80</span> {
         <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="ident">u64::from</span>(<span class="ident">part0</span>), <span class="number">3</span>));
     };
     <span class="ident">part0</span> <span class="op">-</span><span class="op">=</span> <span class="number">0x80</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">14</span>;
-    <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">3</span>);
+    <span class="ident">b</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">3</span>) };
     <span class="ident">part0</span> <span class="op">+</span><span class="op">=</span> <span class="ident">u32::from</span>(<span class="ident">b</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">21</span>;
     <span class="kw">if</span> <span class="ident">b</span> <span class="op">&lt;</span> <span class="number">0x80</span> {
         <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="ident">u64::from</span>(<span class="ident">part0</span>), <span class="number">4</span>));
@@ -1770,25 +1892,25 @@
     <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">u64::from</span>(<span class="ident">part0</span>);
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">part1</span>: <span class="ident">u32</span>;
-    <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">4</span>);
+    <span class="ident">b</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">4</span>) };
     <span class="ident">part1</span> <span class="op">=</span> <span class="ident">u32::from</span>(<span class="ident">b</span>);
     <span class="kw">if</span> <span class="ident">b</span> <span class="op">&lt;</span> <span class="number">0x80</span> {
         <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="ident">value</span> <span class="op">+</span> (<span class="ident">u64::from</span>(<span class="ident">part1</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">28</span>), <span class="number">5</span>));
     };
     <span class="ident">part1</span> <span class="op">-</span><span class="op">=</span> <span class="number">0x80</span>;
-    <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">5</span>);
+    <span class="ident">b</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">5</span>) };
     <span class="ident">part1</span> <span class="op">+</span><span class="op">=</span> <span class="ident">u32::from</span>(<span class="ident">b</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>;
     <span class="kw">if</span> <span class="ident">b</span> <span class="op">&lt;</span> <span class="number">0x80</span> {
         <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="ident">value</span> <span class="op">+</span> (<span class="ident">u64::from</span>(<span class="ident">part1</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">28</span>), <span class="number">6</span>));
     };
     <span class="ident">part1</span> <span class="op">-</span><span class="op">=</span> <span class="number">0x80</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>;
-    <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">6</span>);
+    <span class="ident">b</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">6</span>) };
     <span class="ident">part1</span> <span class="op">+</span><span class="op">=</span> <span class="ident">u32::from</span>(<span class="ident">b</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">14</span>;
     <span class="kw">if</span> <span class="ident">b</span> <span class="op">&lt;</span> <span class="number">0x80</span> {
         <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="ident">value</span> <span class="op">+</span> (<span class="ident">u64::from</span>(<span class="ident">part1</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">28</span>), <span class="number">7</span>));
     };
     <span class="ident">part1</span> <span class="op">-</span><span class="op">=</span> <span class="number">0x80</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">14</span>;
-    <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">7</span>);
+    <span class="ident">b</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">7</span>) };
     <span class="ident">part1</span> <span class="op">+</span><span class="op">=</span> <span class="ident">u32::from</span>(<span class="ident">b</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">21</span>;
     <span class="kw">if</span> <span class="ident">b</span> <span class="op">&lt;</span> <span class="number">0x80</span> {
         <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="ident">value</span> <span class="op">+</span> (<span class="ident">u64::from</span>(<span class="ident">part1</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">28</span>), <span class="number">8</span>));
@@ -1797,25 +1919,33 @@
     <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">value</span> <span class="op">+</span> ((<span class="ident">u64::from</span>(<span class="ident">part1</span>)) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">28</span>);
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">part2</span>: <span class="ident">u32</span>;
-    <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">8</span>);
+    <span class="ident">b</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">8</span>) };
     <span class="ident">part2</span> <span class="op">=</span> <span class="ident">u32::from</span>(<span class="ident">b</span>);
     <span class="kw">if</span> <span class="ident">b</span> <span class="op">&lt;</span> <span class="number">0x80</span> {
         <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="ident">value</span> <span class="op">+</span> (<span class="ident">u64::from</span>(<span class="ident">part2</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">56</span>), <span class="number">9</span>));
     };
     <span class="ident">part2</span> <span class="op">-</span><span class="op">=</span> <span class="number">0x80</span>;
-    <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">9</span>);
+    <span class="ident">b</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">bytes</span>.<span class="ident">get_unchecked</span>(<span class="number">9</span>) };
     <span class="ident">part2</span> <span class="op">+</span><span class="op">=</span> <span class="ident">u32::from</span>(<span class="ident">b</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>;
-    <span class="kw">if</span> <span class="ident">b</span> <span class="op">&lt;</span> <span class="number">0x80</span> {
+    <span class="comment">// Check for u64::MAX overflow. See [`ConsumeVarint`][1] for details.</span>
+    <span class="comment">// [1]: https://github.com/protocolbuffers/protobuf-go/blob/v1.27.1/encoding/protowire/wire.go#L358</span>
+    <span class="kw">if</span> <span class="ident">b</span> <span class="op">&lt;</span> <span class="number">0x02</span> {
         <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="ident">value</span> <span class="op">+</span> (<span class="ident">u64::from</span>(<span class="ident">part2</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">56</span>), <span class="number">10</span>));
     };
 
-    <span class="comment">// We have overrun the maximum size of a varint (10 bytes). Assume the data is corrupt.</span>
+    <span class="comment">// We have overrun the maximum size of a varint (10 bytes) or the final byte caused an overflow.</span>
+    <span class="comment">// Assume the data is corrupt.</span>
     <span class="prelude-val">Err</span>(<span class="ident">DecodeError::new</span>(<span class="string">&quot;invalid varint&quot;</span>))
 }
 
 <span class="doccomment">/// Decodes a LEB128-encoded variable length integer from the buffer, advancing the buffer as</span>
 <span class="doccomment">/// necessary.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Contains a varint overflow check from [`ConsumeVarint`][1].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [1]: https://github.com/protocolbuffers/protobuf-go/blob/v1.27.1/encoding/protowire/wire.go#L358</span>
 <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">never</span>)]</span>
+<span class="attribute">#[<span class="ident">cold</span>]</span>
 <span class="kw">fn</span> <span class="ident">decode_varint_slow</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span>, <span class="ident">DecodeError</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">B</span>: <span class="ident">Buf</span>,
@@ -1825,7 +1955,13 @@
         <span class="kw">let</span> <span class="ident">byte</span> <span class="op">=</span> <span class="ident">buf</span>.<span class="ident">get_u8</span>();
         <span class="ident">value</span> <span class="op">|</span><span class="op">=</span> <span class="ident">u64::from</span>(<span class="ident">byte</span> <span class="op">&amp;</span> <span class="number">0x7F</span>) <span class="op">&lt;</span><span class="op">&lt;</span> (<span class="ident">count</span> <span class="op">*</span> <span class="number">7</span>);
         <span class="kw">if</span> <span class="ident">byte</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0x7F</span> {
-            <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">value</span>);
+            <span class="comment">// Check for u64::MAX overflow. See [`ConsumeVarint`][1] for details.</span>
+            <span class="comment">// [1]: https://github.com/protocolbuffers/protobuf-go/blob/v1.27.1/encoding/protowire/wire.go#L358</span>
+            <span class="kw">if</span> <span class="ident">count</span> <span class="op">=</span><span class="op">=</span> <span class="number">9</span> <span class="op">&amp;&amp;</span> <span class="ident">byte</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0x02</span> {
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">DecodeError::new</span>(<span class="string">&quot;invalid varint&quot;</span>));
+            } <span class="kw">else</span> {
+                <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">value</span>);
+            }
         }
     }
 
@@ -1901,6 +2037,7 @@
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;no-recursion-limit&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::unnecessary_wraps</span>)]</span> <span class="comment">// needed in other features</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">limit_reached</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">DecodeError</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(())
     }
@@ -1956,7 +2093,7 @@
 <span class="kw">where</span>
     <span class="ident">B</span>: <span class="ident">BufMut</span>,
 {
-    <span class="macro">debug_assert!</span>(<span class="ident">tag</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">MIN_TAG</span> <span class="op">&amp;&amp;</span> <span class="ident">tag</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">MAX_TAG</span>);
+    <span class="macro">debug_assert!</span>((<span class="ident">MIN_TAG</span>..<span class="op">=</span><span class="ident">MAX_TAG</span>).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">tag</span>));
     <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> (<span class="ident">tag</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">3</span>) <span class="op">|</span> <span class="ident">wire_type</span> <span class="kw">as</span> <span class="ident">u32</span>;
     <span class="ident">encode_varint</span>(<span class="ident">u64::from</span>(<span class="ident">key</span>), <span class="ident">buf</span>);
 }
@@ -2031,7 +2168,12 @@
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">skip_field</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="ident">wire_type</span>: <span class="ident">WireType</span>, <span class="ident">tag</span>: <span class="ident">u32</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">B</span>, <span class="ident">ctx</span>: <span class="ident">DecodeContext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">DecodeError</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">skip_field</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(
+    <span class="ident">wire_type</span>: <span class="ident">WireType</span>,
+    <span class="ident">tag</span>: <span class="ident">u32</span>,
+    <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">B</span>,
+    <span class="ident">ctx</span>: <span class="ident">DecodeContext</span>,
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">DecodeError</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">B</span>: <span class="ident">Buf</span>,
 {
@@ -2188,7 +2330,7 @@
 
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
             <span class="kw">mod</span> <span class="ident">test</span> {
-                <span class="kw">use</span> <span class="ident">quickcheck</span>::{<span class="ident">quickcheck</span>, <span class="ident">TestResult</span>};
+                <span class="kw">use</span> <span class="ident">proptest::prelude</span>::<span class="kw-2">*</span>;
 
                 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::encoding</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">proto_ty</span>::<span class="kw-2">*</span>;
                 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::encoding::test</span>::{
@@ -2196,20 +2338,23 @@
                     <span class="ident">check_type</span>,
                 };
 
-                <span class="macro">quickcheck!</span> {
-                    <span class="kw">fn</span> <span class="ident">check</span>(<span class="ident">value</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>, <span class="ident">tag</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestResult</span> {
+                <span class="macro">proptest!</span> {
+                    <span class="attribute">#[<span class="ident">test</span>]</span>
+                    <span class="kw">fn</span> <span class="ident">check</span>(<span class="ident">value</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>, <span class="ident">tag</span> <span class="kw">in</span> <span class="ident">MIN_TAG</span>..<span class="op">=</span><span class="ident">MAX_TAG</span>) {
                         <span class="ident">check_type</span>(<span class="ident">value</span>, <span class="ident">tag</span>, <span class="ident">WireType::Varint</span>,
-                                   <span class="ident">encode</span>, <span class="ident">merge</span>, <span class="ident">encoded_len</span>)
+                                   <span class="ident">encode</span>, <span class="ident">merge</span>, <span class="ident">encoded_len</span>)<span class="question-mark">?</span>;
                     }
-                    <span class="kw">fn</span> <span class="ident">check_repeated</span>(<span class="ident">value</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span>, <span class="ident">tag</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestResult</span> {
+                    <span class="attribute">#[<span class="ident">test</span>]</span>
+                    <span class="kw">fn</span> <span class="ident">check_repeated</span>(<span class="ident">value</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span>, <span class="ident">tag</span> <span class="kw">in</span> <span class="ident">MIN_TAG</span>..<span class="op">=</span><span class="ident">MAX_TAG</span>) {
                         <span class="ident">check_collection_type</span>(<span class="ident">value</span>, <span class="ident">tag</span>, <span class="ident">WireType::Varint</span>,
                                               <span class="ident">encode_repeated</span>, <span class="ident">merge_repeated</span>,
-                                              <span class="ident">encoded_len_repeated</span>)
+                                              <span class="ident">encoded_len_repeated</span>)<span class="question-mark">?</span>;
                     }
-                    <span class="kw">fn</span> <span class="ident">check_packed</span>(<span class="ident">value</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span>, <span class="ident">tag</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestResult</span> {
+                    <span class="attribute">#[<span class="ident">test</span>]</span>
+                    <span class="kw">fn</span> <span class="ident">check_packed</span>(<span class="ident">value</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span>, <span class="ident">tag</span> <span class="kw">in</span> <span class="ident">MIN_TAG</span>..<span class="op">=</span><span class="ident">MAX_TAG</span>) {
                         <span class="ident">check_type</span>(<span class="ident">value</span>, <span class="ident">tag</span>, <span class="ident">WireType::LengthDelimited</span>,
                                    <span class="ident">encode_packed</span>, <span class="ident">merge_repeated</span>,
-                                   <span class="ident">encoded_len_packed</span>)
+                                   <span class="ident">encoded_len_packed</span>)<span class="question-mark">?</span>;
                     }
                 }
             }
@@ -2225,20 +2370,20 @@
 <span class="macro">varint!</span>(<span class="ident">u32</span>, <span class="ident">uint32</span>);
 <span class="macro">varint!</span>(<span class="ident">u64</span>, <span class="ident">uint64</span>);
 <span class="macro">varint!</span>(<span class="ident">i32</span>, <span class="ident">sint32</span>,
-        <span class="ident">to_uint64</span>(<span class="ident">value</span>) {
-            ((<span class="ident">value</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>) <span class="op">^</span> (<span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">31</span>)) <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="ident">u64</span>
-        },
-        <span class="ident">from_uint64</span>(<span class="ident">value</span>) {
-            <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u32</span>;
-            ((<span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">i32</span>) <span class="op">^</span> (<span class="op">-</span>((<span class="ident">value</span> <span class="op">&amp;</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">i32</span>))
-        });
+<span class="ident">to_uint64</span>(<span class="ident">value</span>) {
+    ((<span class="ident">value</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>) <span class="op">^</span> (<span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">31</span>)) <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="ident">u64</span>
+},
+<span class="ident">from_uint64</span>(<span class="ident">value</span>) {
+    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u32</span>;
+    ((<span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">i32</span>) <span class="op">^</span> (<span class="op">-</span>((<span class="ident">value</span> <span class="op">&amp;</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">i32</span>))
+});
 <span class="macro">varint!</span>(<span class="ident">i64</span>, <span class="ident">sint64</span>,
-        <span class="ident">to_uint64</span>(<span class="ident">value</span>) {
-            ((<span class="ident">value</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>) <span class="op">^</span> (<span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">63</span>)) <span class="kw">as</span> <span class="ident">u64</span>
-        },
-        <span class="ident">from_uint64</span>(<span class="ident">value</span>) {
-            ((<span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">i64</span>) <span class="op">^</span> (<span class="op">-</span>((<span class="ident">value</span> <span class="op">&amp;</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">i64</span>))
-        });
+<span class="ident">to_uint64</span>(<span class="ident">value</span>) {
+    ((<span class="ident">value</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>) <span class="op">^</span> (<span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">63</span>)) <span class="kw">as</span> <span class="ident">u64</span>
+},
+<span class="ident">from_uint64</span>(<span class="ident">value</span>) {
+    ((<span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">i64</span>) <span class="op">^</span> (<span class="op">-</span>((<span class="ident">value</span> <span class="op">&amp;</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">i64</span>))
+});
 
 <span class="doccomment">/// Macro which emits a module containing a set of encoding functions for a</span>
 <span class="doccomment">/// fixed width numeric type.</span>
@@ -2320,25 +2465,28 @@
 
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
             <span class="kw">mod</span> <span class="ident">test</span> {
-                <span class="kw">use</span> <span class="ident">quickcheck</span>::{<span class="ident">quickcheck</span>, <span class="ident">TestResult</span>};
+                <span class="kw">use</span> <span class="ident">proptest::prelude</span>::<span class="kw-2">*</span>;
 
                 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::test</span>::{<span class="ident">check_collection_type</span>, <span class="ident">check_type</span>};
                 <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
-                <span class="macro">quickcheck!</span> {
-                    <span class="kw">fn</span> <span class="ident">check</span>(<span class="ident">value</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>, <span class="ident">tag</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestResult</span> {
+                <span class="macro">proptest!</span> {
+                    <span class="attribute">#[<span class="ident">test</span>]</span>
+                    <span class="kw">fn</span> <span class="ident">check</span>(<span class="ident">value</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>, <span class="ident">tag</span> <span class="kw">in</span> <span class="ident">MIN_TAG</span>..<span class="op">=</span><span class="ident">MAX_TAG</span>) {
                         <span class="ident">check_type</span>(<span class="ident">value</span>, <span class="ident">tag</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">wire_type</span>,
-                                   <span class="ident">encode</span>, <span class="ident">merge</span>, <span class="ident">encoded_len</span>)
+                                   <span class="ident">encode</span>, <span class="ident">merge</span>, <span class="ident">encoded_len</span>)<span class="question-mark">?</span>;
                     }
-                    <span class="kw">fn</span> <span class="ident">check_repeated</span>(<span class="ident">value</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span>, <span class="ident">tag</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestResult</span> {
+                    <span class="attribute">#[<span class="ident">test</span>]</span>
+                    <span class="kw">fn</span> <span class="ident">check_repeated</span>(<span class="ident">value</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span>, <span class="ident">tag</span> <span class="kw">in</span> <span class="ident">MIN_TAG</span>..<span class="op">=</span><span class="ident">MAX_TAG</span>) {
                         <span class="ident">check_collection_type</span>(<span class="ident">value</span>, <span class="ident">tag</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">wire_type</span>,
                                               <span class="ident">encode_repeated</span>, <span class="ident">merge_repeated</span>,
-                                              <span class="ident">encoded_len_repeated</span>)
+                                              <span class="ident">encoded_len_repeated</span>)<span class="question-mark">?</span>;
                     }
-                    <span class="kw">fn</span> <span class="ident">check_packed</span>(<span class="ident">value</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span>, <span class="ident">tag</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestResult</span> {
+                    <span class="attribute">#[<span class="ident">test</span>]</span>
+                    <span class="kw">fn</span> <span class="ident">check_packed</span>(<span class="ident">value</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span>, <span class="ident">tag</span> <span class="kw">in</span> <span class="ident">MIN_TAG</span>..<span class="op">=</span><span class="ident">MAX_TAG</span>) {
                         <span class="ident">check_type</span>(<span class="ident">value</span>, <span class="ident">tag</span>, <span class="ident">WireType::LengthDelimited</span>,
                                    <span class="ident">encode_packed</span>, <span class="ident">merge_repeated</span>,
-                                   <span class="ident">encoded_len_packed</span>)
+                                   <span class="ident">encoded_len_packed</span>)<span class="question-mark">?</span>;
                     }
                 }
             }
@@ -2428,26 +2576,6 @@
                     .<span class="ident">map</span>(<span class="op">|</span><span class="ident">value</span><span class="op">|</span> <span class="ident">encoded_len_varint</span>(<span class="ident">value</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">+</span> <span class="ident">value</span>.<span class="ident">len</span>())
                     .<span class="ident">sum</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>()
         }
-
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-        <span class="kw">mod</span> <span class="ident">test</span> {
-            <span class="kw">use</span> <span class="ident">quickcheck</span>::{<span class="ident">quickcheck</span>, <span class="ident">TestResult</span>};
-
-            <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::test</span>::{<span class="ident">check_collection_type</span>, <span class="ident">check_type</span>};
-            <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-
-            <span class="macro">quickcheck!</span> {
-                <span class="kw">fn</span> <span class="ident">check</span>(<span class="ident">value</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>, <span class="ident">tag</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestResult</span> {
-                    <span class="ident"><span class="kw">super</span>::test::check_type</span>(<span class="ident">value</span>, <span class="ident">tag</span>, <span class="ident">WireType::LengthDelimited</span>,
-                                            <span class="ident">encode</span>, <span class="ident">merge</span>, <span class="ident">encoded_len</span>)
-                }
-                <span class="kw">fn</span> <span class="ident">check_repeated</span>(<span class="ident">value</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span>, <span class="ident">tag</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestResult</span> {
-                    <span class="ident"><span class="kw">super</span>::test::check_collection_type</span>(<span class="ident">value</span>, <span class="ident">tag</span>, <span class="ident">WireType::LengthDelimited</span>,
-                                                       <span class="ident">encode_repeated</span>, <span class="ident">merge_repeated</span>,
-                                                       <span class="ident">encoded_len_repeated</span>)
-                }
-            }
-        }
     };
 }
 
@@ -2509,27 +2637,121 @@
     }
 
     <span class="macro">length_delimited!</span>(<span class="ident">String</span>);
+
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+    <span class="kw">mod</span> <span class="ident">test</span> {
+        <span class="kw">use</span> <span class="ident">proptest::prelude</span>::<span class="kw-2">*</span>;
+
+        <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::test</span>::{<span class="ident">check_collection_type</span>, <span class="ident">check_type</span>};
+        <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+
+        <span class="macro">proptest!</span> {
+            <span class="attribute">#[<span class="ident">test</span>]</span>
+            <span class="kw">fn</span> <span class="ident">check</span>(<span class="ident">value</span>: <span class="ident">String</span>, <span class="ident">tag</span> <span class="kw">in</span> <span class="ident">MIN_TAG</span>..<span class="op">=</span><span class="ident">MAX_TAG</span>) {
+                <span class="ident"><span class="kw">super</span>::test::check_type</span>(<span class="ident">value</span>, <span class="ident">tag</span>, <span class="ident">WireType::LengthDelimited</span>,
+                                        <span class="ident">encode</span>, <span class="ident">merge</span>, <span class="ident">encoded_len</span>)<span class="question-mark">?</span>;
+            }
+            <span class="attribute">#[<span class="ident">test</span>]</span>
+            <span class="kw">fn</span> <span class="ident">check_repeated</span>(<span class="ident">value</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">tag</span> <span class="kw">in</span> <span class="ident">MIN_TAG</span>..<span class="op">=</span><span class="ident">MAX_TAG</span>) {
+                <span class="ident"><span class="kw">super</span>::test::check_collection_type</span>(<span class="ident">value</span>, <span class="ident">tag</span>, <span class="ident">WireType::LengthDelimited</span>,
+                                                   <span class="ident">encode_repeated</span>, <span class="ident">merge_repeated</span>,
+                                                   <span class="ident">encoded_len_repeated</span>)<span class="question-mark">?</span>;
+            }
+        }
+    }
+}
+
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">BytesAdapter</span>: <span class="ident">sealed::BytesAdapter</span> {}
+
+<span class="kw">mod</span> <span class="ident">sealed</span> {
+    <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Buf</span>, <span class="ident">BufMut</span>};
+
+    <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">BytesAdapter</span>: <span class="ident">Default</span> <span class="op">+</span> <span class="ident">Sized</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> {
+        <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span>;
+
+        <span class="doccomment">/// Replace contents of this buffer with the contents of another buffer.</span>
+        <span class="kw">fn</span> <span class="ident">replace_with</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="ident">B</span>)
+        <span class="kw">where</span>
+            <span class="ident">B</span>: <span class="ident">Buf</span>;
+
+        <span class="doccomment">/// Appends this buffer to the (contents of) other buffer.</span>
+        <span class="kw">fn</span> <span class="ident">append_to</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">B</span>)
+        <span class="kw">where</span>
+            <span class="ident">B</span>: <span class="ident">BufMut</span>;
+
+        <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+            <span class="self">self</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span>
+        }
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">BytesAdapter</span> <span class="kw">for</span> <span class="ident">Bytes</span> {}
+
+<span class="kw">impl</span> <span class="ident">sealed::BytesAdapter</span> <span class="kw">for</span> <span class="ident">Bytes</span> {
+    <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+        <span class="ident">Buf::remaining</span>(<span class="self">self</span>)
+    }
+
+    <span class="kw">fn</span> <span class="ident">replace_with</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">buf</span>: <span class="ident">B</span>)
+    <span class="kw">where</span>
+        <span class="ident">B</span>: <span class="ident">Buf</span>,
+    {
+        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">buf</span>.<span class="ident">copy_to_bytes</span>(<span class="ident">buf</span>.<span class="ident">remaining</span>());
+    }
+
+    <span class="kw">fn</span> <span class="ident">append_to</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">B</span>)
+    <span class="kw">where</span>
+        <span class="ident">B</span>: <span class="ident">BufMut</span>,
+    {
+        <span class="ident">buf</span>.<span class="ident">put</span>(<span class="self">self</span>.<span class="ident">clone</span>())
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">BytesAdapter</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {}
+
+<span class="kw">impl</span> <span class="ident">sealed::BytesAdapter</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+        <span class="ident">Vec::len</span>(<span class="self">self</span>)
+    }
+
+    <span class="kw">fn</span> <span class="ident">replace_with</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="ident">B</span>)
+    <span class="kw">where</span>
+        <span class="ident">B</span>: <span class="ident">Buf</span>,
+    {
+        <span class="self">self</span>.<span class="ident">clear</span>();
+        <span class="self">self</span>.<span class="ident">reserve</span>(<span class="ident">buf</span>.<span class="ident">remaining</span>());
+        <span class="self">self</span>.<span class="ident">put</span>(<span class="ident">buf</span>);
+    }
+
+    <span class="kw">fn</span> <span class="ident">append_to</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">B</span>)
+    <span class="kw">where</span>
+        <span class="ident">B</span>: <span class="ident">BufMut</span>,
+    {
+        <span class="ident">buf</span>.<span class="ident">put</span>(<span class="self">self</span>.<span class="ident">as_slice</span>())
+    }
 }
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">bytes</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="ident">tag</span>: <span class="ident">u32</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">B</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span>(<span class="ident">tag</span>: <span class="ident">u32</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">B</span>)
     <span class="kw">where</span>
+        <span class="ident">A</span>: <span class="ident">BytesAdapter</span>,
         <span class="ident">B</span>: <span class="ident">BufMut</span>,
     {
         <span class="ident">encode_key</span>(<span class="ident">tag</span>, <span class="ident">WireType::LengthDelimited</span>, <span class="ident">buf</span>);
         <span class="ident">encode_varint</span>(<span class="ident">value</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>, <span class="ident">buf</span>);
-        <span class="ident">buf</span>.<span class="ident">put_slice</span>(<span class="ident">value</span>);
+        <span class="ident">value</span>.<span class="ident">append_to</span>(<span class="ident">buf</span>);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">merge</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">merge</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span>(
         <span class="ident">wire_type</span>: <span class="ident">WireType</span>,
-        <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
+        <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">A</span>,
         <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">B</span>,
         <span class="ident">_ctx</span>: <span class="ident">DecodeContext</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">DecodeError</span><span class="op">&gt;</span>
     <span class="kw">where</span>
+        <span class="ident">A</span>: <span class="ident">BytesAdapter</span>,
         <span class="ident">B</span>: <span class="ident">Buf</span>,
     {
         <span class="ident">check_wire_type</span>(<span class="ident">WireType::LengthDelimited</span>, <span class="ident">wire_type</span>)<span class="question-mark">?</span>;
@@ -2547,13 +2769,49 @@
         <span class="comment">// &gt; last value it sees.</span>
         <span class="comment">//</span>
         <span class="comment">// [1]: https://developers.google.com/protocol-buffers/docs/encoding#optional</span>
-        <span class="ident">value</span>.<span class="ident">clear</span>();
-        <span class="ident">value</span>.<span class="ident">reserve</span>(<span class="ident">len</span>);
-        <span class="ident">value</span>.<span class="ident">put</span>(<span class="ident">buf</span>.<span class="ident">take</span>(<span class="ident">len</span>));
+        <span class="ident">value</span>.<span class="ident">replace_with</span>(<span class="ident">buf</span>.<span class="ident">copy_to_bytes</span>(<span class="ident">len</span>));
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="macro">length_delimited!</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>);
+    <span class="macro">length_delimited!</span>(<span class="kw">impl</span> <span class="ident">BytesAdapter</span>);
+
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+    <span class="kw">mod</span> <span class="ident">test</span> {
+        <span class="kw">use</span> <span class="ident">proptest::prelude</span>::<span class="kw-2">*</span>;
+
+        <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::test</span>::{<span class="ident">check_collection_type</span>, <span class="ident">check_type</span>};
+        <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+
+        <span class="macro">proptest!</span> {
+            <span class="attribute">#[<span class="ident">test</span>]</span>
+            <span class="kw">fn</span> <span class="ident">check_vec</span>(<span class="ident">value</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">tag</span> <span class="kw">in</span> <span class="ident">MIN_TAG</span>..<span class="op">=</span><span class="ident">MAX_TAG</span>) {
+                <span class="ident"><span class="kw">super</span>::test::check_type</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">value</span>, <span class="ident">tag</span>, <span class="ident">WireType::LengthDelimited</span>,
+                                                            <span class="ident">encode</span>, <span class="ident">merge</span>, <span class="ident">encoded_len</span>)<span class="question-mark">?</span>;
+            }
+
+            <span class="attribute">#[<span class="ident">test</span>]</span>
+            <span class="kw">fn</span> <span class="ident">check_bytes</span>(<span class="ident">value</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">tag</span> <span class="kw">in</span> <span class="ident">MIN_TAG</span>..<span class="op">=</span><span class="ident">MAX_TAG</span>) {
+                <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">Bytes::from</span>(<span class="ident">value</span>);
+                <span class="ident"><span class="kw">super</span>::test::check_type</span>::<span class="op">&lt;</span><span class="ident">Bytes</span>, <span class="ident">Bytes</span><span class="op">&gt;</span>(<span class="ident">value</span>, <span class="ident">tag</span>, <span class="ident">WireType::LengthDelimited</span>,
+                                                        <span class="ident">encode</span>, <span class="ident">merge</span>, <span class="ident">encoded_len</span>)<span class="question-mark">?</span>;
+            }
+
+            <span class="attribute">#[<span class="ident">test</span>]</span>
+            <span class="kw">fn</span> <span class="ident">check_repeated_vec</span>(<span class="ident">value</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tag</span> <span class="kw">in</span> <span class="ident">MIN_TAG</span>..<span class="op">=</span><span class="ident">MAX_TAG</span>) {
+                <span class="ident"><span class="kw">super</span>::test::check_collection_type</span>(<span class="ident">value</span>, <span class="ident">tag</span>, <span class="ident">WireType::LengthDelimited</span>,
+                                                   <span class="ident">encode_repeated</span>, <span class="ident">merge_repeated</span>,
+                                                   <span class="ident">encoded_len_repeated</span>)<span class="question-mark">?</span>;
+            }
+
+            <span class="attribute">#[<span class="ident">test</span>]</span>
+            <span class="kw">fn</span> <span class="ident">check_repeated_bytes</span>(<span class="ident">value</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tag</span> <span class="kw">in</span> <span class="ident">MIN_TAG</span>..<span class="op">=</span><span class="ident">MAX_TAG</span>) {
+                <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">value</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="ident">Bytes::from</span>).<span class="ident">collect</span>();
+                <span class="ident"><span class="kw">super</span>::test::check_collection_type</span>(<span class="ident">value</span>, <span class="ident">tag</span>, <span class="ident">WireType::LengthDelimited</span>,
+                                                   <span class="ident">encode_repeated</span>, <span class="ident">merge_repeated</span>,
+                                                   <span class="ident">encoded_len_repeated</span>)<span class="question-mark">?</span>;
+            }
+        }
+    }
 }
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">message</span> {
@@ -2731,10 +2989,8 @@
 <span class="doccomment">/// generic over `HashMap` and `BTreeMap`.</span>
 <span class="macro">macro_rules!</span> <span class="ident">map</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">map_ty</span>:<span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="ident">std::collections</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">map_ty</span>;
-        <span class="kw">use</span> <span class="ident">std::hash::Hash</span>;
-
         <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::encoding</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="ident">core::hash::Hash</span>;
 
         <span class="doccomment">/// Generic protobuf map encode function.</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span>, <span class="ident">B</span>, <span class="ident">KE</span>, <span class="ident">KL</span>, <span class="ident">VE</span>, <span class="ident">VL</span><span class="op">&gt;</span>(
@@ -2916,7 +3172,9 @@
     };
 }
 
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">hash_map</span> {
+    <span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
     <span class="macro">map!</span>(<span class="ident">HashMap</span>);
 }
 
@@ -2926,13 +3184,13 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
-    <span class="kw">use</span> <span class="ident">std::borrow::Borrow</span>;
-    <span class="kw">use</span> <span class="ident">std::fmt::Debug</span>;
-    <span class="kw">use</span> <span class="ident">std::io::Cursor</span>;
-    <span class="kw">use</span> <span class="ident">std::u64</span>;
+    <span class="kw">use</span> <span class="ident">alloc::string::ToString</span>;
+    <span class="kw">use</span> <span class="ident">core::borrow::Borrow</span>;
+    <span class="kw">use</span> <span class="ident">core::fmt::Debug</span>;
+    <span class="kw">use</span> <span class="ident">core::u64</span>;
 
     <span class="kw">use</span> <span class="ident">::bytes</span>::{<span class="ident">Bytes</span>, <span class="ident">BytesMut</span>};
-    <span class="kw">use</span> <span class="ident">quickcheck::TestResult</span>;
+    <span class="kw">use</span> <span class="ident">proptest</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">test_runner::TestCaseResult</span>};
 
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::encoding</span>::<span class="kw-2">*</span>;
 
@@ -2943,14 +3201,12 @@
         <span class="ident">encode</span>: <span class="kw">fn</span>(<span class="ident">u32</span>, <span class="kw-2">&amp;</span><span class="ident">B</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BytesMut</span>),
         <span class="ident">merge</span>: <span class="kw">fn</span>(<span class="ident">WireType</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Bytes</span>, <span class="ident">DecodeContext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">DecodeError</span><span class="op">&gt;</span>,
         <span class="ident">encoded_len</span>: <span class="kw">fn</span>(<span class="ident">u32</span>, <span class="kw-2">&amp;</span><span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestResult</span>
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestCaseResult</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Default</span> <span class="op">+</span> <span class="ident">PartialEq</span> <span class="op">+</span> <span class="ident">Borrow</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
         <span class="ident">B</span>: <span class="question-mark">?</span><span class="ident">Sized</span>,
     {
-        <span class="kw">if</span> <span class="ident">tag</span> <span class="op">&gt;</span> <span class="ident">MAX_TAG</span> <span class="op">|</span><span class="op">|</span> <span class="ident">tag</span> <span class="op">&lt;</span> <span class="ident">MIN_TAG</span> {
-            <span class="kw">return</span> <span class="ident">TestResult::discard</span>();
-        }
+        <span class="macro">prop_assume!</span>(<span class="ident">MIN_TAG</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">tag</span> <span class="op">&amp;&amp;</span> <span class="ident">tag</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">MAX_TAG</span>);
 
         <span class="kw">let</span> <span class="ident">expected_len</span> <span class="op">=</span> <span class="ident">encoded_len</span>(<span class="ident">tag</span>, <span class="ident">value</span>.<span class="ident">borrow</span>());
 
@@ -2959,78 +3215,69 @@
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">buf</span>.<span class="ident">freeze</span>();
 
-        <span class="kw">if</span> <span class="ident">buf</span>.<span class="ident">remaining</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">expected_len</span> {
-            <span class="kw">return</span> <span class="ident">TestResult::error</span>(<span class="macro">format!</span>(
-                <span class="string">&quot;encoded_len wrong; expected: {}, actual: {}&quot;</span>,
-                <span class="ident">expected_len</span>,
-                <span class="ident">buf</span>.<span class="ident">remaining</span>()
-            ));
-        }
+        <span class="macro">prop_assert_eq!</span>(
+            <span class="ident">buf</span>.<span class="ident">remaining</span>(),
+            <span class="ident">expected_len</span>,
+            <span class="string">&quot;encoded_len wrong; expected: {}, actual: {}&quot;</span>,
+            <span class="ident">expected_len</span>,
+            <span class="ident">buf</span>.<span class="ident">remaining</span>()
+        );
 
         <span class="kw">if</span> <span class="op">!</span><span class="ident">buf</span>.<span class="ident">has_remaining</span>() {
             <span class="comment">// Short circuit for empty packed values.</span>
-            <span class="kw">return</span> <span class="ident">TestResult::passed</span>();
+            <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
         }
 
-        <span class="kw">let</span> (<span class="ident">decoded_tag</span>, <span class="ident">decoded_wire_type</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">decode_key</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>) {
-            <span class="prelude-val">Ok</span>(<span class="ident">key</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">key</span>,
-            <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">TestResult::error</span>(<span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">error</span>)),
-        };
+        <span class="kw">let</span> (<span class="ident">decoded_tag</span>, <span class="ident">decoded_wire_type</span>) <span class="op">=</span>
+            <span class="ident">decode_key</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">error</span><span class="op">|</span> <span class="ident">TestCaseError::fail</span>(<span class="ident">error</span>.<span class="ident">to_string</span>()))<span class="question-mark">?</span>;
+        <span class="macro">prop_assert_eq!</span>(
+            <span class="ident">tag</span>,
+            <span class="ident">decoded_tag</span>,
+            <span class="string">&quot;decoded tag does not match; expected: {}, actual: {}&quot;</span>,
+            <span class="ident">tag</span>,
+            <span class="ident">decoded_tag</span>
+        );
 
-        <span class="kw">if</span> <span class="ident">tag</span> <span class="op">!</span><span class="op">=</span> <span class="ident">decoded_tag</span> {
-            <span class="kw">return</span> <span class="ident">TestResult::error</span>(<span class="macro">format!</span>(
-                <span class="string">&quot;decoded tag does not match; expected: {}, actual: {}&quot;</span>,
-                <span class="ident">tag</span>, <span class="ident">decoded_tag</span>
-            ));
-        }
-
-        <span class="kw">if</span> <span class="ident">wire_type</span> <span class="op">!</span><span class="op">=</span> <span class="ident">decoded_wire_type</span> {
-            <span class="kw">return</span> <span class="ident">TestResult::error</span>(<span class="macro">format!</span>(
-                <span class="string">&quot;decoded wire type does not match; expected: {:?}, actual: {:?}&quot;</span>,
-                <span class="ident">wire_type</span>, <span class="ident">decoded_wire_type</span>
-            ));
-        }
+        <span class="macro">prop_assert_eq!</span>(
+            <span class="ident">wire_type</span>,
+            <span class="ident">decoded_wire_type</span>,
+            <span class="string">&quot;decoded wire type does not match; expected: {:?}, actual: {:?}&quot;</span>,
+            <span class="ident">wire_type</span>,
+            <span class="ident">decoded_wire_type</span>,
+        );
 
         <span class="kw">match</span> <span class="ident">wire_type</span> {
-            <span class="ident">WireType::SixtyFourBit</span> <span class="kw">if</span> <span class="ident">buf</span>.<span class="ident">remaining</span>() <span class="op">!</span><span class="op">=</span> <span class="number">8</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">return</span> <span class="ident">TestResult::error</span>(<span class="macro">format!</span>(
-                    <span class="string">&quot;64bit wire type illegal remaining: {}, tag: {}&quot;</span>,
-                    <span class="ident">buf</span>.<span class="ident">remaining</span>(),
-                    <span class="ident">tag</span>
-                ));
-            }
-            <span class="ident">WireType::ThirtyTwoBit</span> <span class="kw">if</span> <span class="ident">buf</span>.<span class="ident">remaining</span>() <span class="op">!</span><span class="op">=</span> <span class="number">4</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">return</span> <span class="ident">TestResult::error</span>(<span class="macro">format!</span>(
-                    <span class="string">&quot;32bit wire type illegal remaining: {}, tag: {}&quot;</span>,
-                    <span class="ident">buf</span>.<span class="ident">remaining</span>(),
-                    <span class="ident">tag</span>
-                ));
-            }
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> (),
-        }
+            <span class="ident">WireType::SixtyFourBit</span> <span class="kw">if</span> <span class="ident">buf</span>.<span class="ident">remaining</span>() <span class="op">!</span><span class="op">=</span> <span class="number">8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">TestCaseError::fail</span>(<span class="macro">format!</span>(
+                <span class="string">&quot;64bit wire type illegal remaining: {}, tag: {}&quot;</span>,
+                <span class="ident">buf</span>.<span class="ident">remaining</span>(),
+                <span class="ident">tag</span>
+            ))),
+            <span class="ident">WireType::ThirtyTwoBit</span> <span class="kw">if</span> <span class="ident">buf</span>.<span class="ident">remaining</span>() <span class="op">!</span><span class="op">=</span> <span class="number">4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">TestCaseError::fail</span>(<span class="macro">format!</span>(
+                <span class="string">&quot;32bit wire type illegal remaining: {}, tag: {}&quot;</span>,
+                <span class="ident">buf</span>.<span class="ident">remaining</span>(),
+                <span class="ident">tag</span>
+            ))),
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),
+        }<span class="question-mark">?</span>;
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">roundtrip_value</span> <span class="op">=</span> <span class="ident">T::default</span>();
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=</span> <span class="ident">merge</span>(
+        <span class="ident">merge</span>(
             <span class="ident">wire_type</span>,
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">roundtrip_value</span>,
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>,
             <span class="ident">DecodeContext::default</span>(),
-        ) {
-            <span class="kw">return</span> <span class="ident">TestResult::error</span>(<span class="ident">error</span>.<span class="ident">to_string</span>());
-        };
+        )
+        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">error</span><span class="op">|</span> <span class="ident">TestCaseError::fail</span>(<span class="ident">error</span>.<span class="ident">to_string</span>()))<span class="question-mark">?</span>;
 
-        <span class="kw">if</span> <span class="ident">buf</span>.<span class="ident">has_remaining</span>() {
-            <span class="kw">return</span> <span class="ident">TestResult::error</span>(<span class="macro">format!</span>(
-                <span class="string">&quot;expected buffer to be empty, remaining: {}&quot;</span>,
-                <span class="ident">buf</span>.<span class="ident">remaining</span>()
-            ));
-        }
+        <span class="macro">prop_assert!</span>(
+            <span class="op">!</span><span class="ident">buf</span>.<span class="ident">has_remaining</span>(),
+            <span class="string">&quot;expected buffer to be empty, remaining: {}&quot;</span>,
+            <span class="ident">buf</span>.<span class="ident">remaining</span>()
+        );
 
-        <span class="kw">if</span> <span class="ident">value</span> <span class="op">=</span><span class="op">=</span> <span class="ident">roundtrip_value</span> {
-            <span class="ident">TestResult::passed</span>()
-        } <span class="kw">else</span> {
-            <span class="ident">TestResult::failed</span>()
-        }
+        <span class="macro">prop_assert_eq!</span>(<span class="ident">value</span>, <span class="ident">roundtrip_value</span>);
+
+        <span class="prelude-val">Ok</span>(())
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">check_collection_type</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">B</span>, <span class="ident">E</span>, <span class="ident">M</span>, <span class="ident">L</span><span class="op">&gt;</span>(
@@ -3040,7 +3287,7 @@
         <span class="ident">encode</span>: <span class="ident">E</span>,
         <span class="kw-2">mut</span> <span class="ident">merge</span>: <span class="ident">M</span>,
         <span class="ident">encoded_len</span>: <span class="ident">L</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestResult</span>
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestCaseResult</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Default</span> <span class="op">+</span> <span class="ident">PartialEq</span> <span class="op">+</span> <span class="ident">Borrow</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
         <span class="ident">B</span>: <span class="question-mark">?</span><span class="ident">Sized</span>,
@@ -3048,9 +3295,7 @@
         <span class="ident">M</span>: <span class="ident">FnMut</span>(<span class="ident">WireType</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Bytes</span>, <span class="ident">DecodeContext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">DecodeError</span><span class="op">&gt;</span>,
         <span class="ident">L</span>: <span class="ident">FnOnce</span>(<span class="ident">u32</span>, <span class="kw-2">&amp;</span><span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span>,
     {
-        <span class="kw">if</span> <span class="ident">tag</span> <span class="op">&gt;</span> <span class="ident">MAX_TAG</span> <span class="op">|</span><span class="op">|</span> <span class="ident">tag</span> <span class="op">&lt;</span> <span class="ident">MIN_TAG</span> {
-            <span class="kw">return</span> <span class="ident">TestResult::discard</span>();
-        }
+        <span class="macro">prop_assume!</span>(<span class="ident">MIN_TAG</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">tag</span> <span class="op">&amp;&amp;</span> <span class="ident">tag</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">MAX_TAG</span>);
 
         <span class="kw">let</span> <span class="ident">expected_len</span> <span class="op">=</span> <span class="ident">encoded_len</span>(<span class="ident">tag</span>, <span class="ident">value</span>.<span class="ident">borrow</span>());
 
@@ -3059,61 +3304,58 @@
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">buf</span>.<span class="ident">freeze</span>();
 
-        <span class="kw">if</span> <span class="ident">buf</span>.<span class="ident">remaining</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">expected_len</span> {
-            <span class="kw">return</span> <span class="ident">TestResult::error</span>(<span class="macro">format!</span>(
-                <span class="string">&quot;encoded_len wrong; expected: {}, actual: {}&quot;</span>,
-                <span class="ident">expected_len</span>,
-                <span class="ident">buf</span>.<span class="ident">remaining</span>()
-            ));
-        }
+        <span class="macro">prop_assert_eq!</span>(
+            <span class="ident">buf</span>.<span class="ident">remaining</span>(),
+            <span class="ident">expected_len</span>,
+            <span class="string">&quot;encoded_len wrong; expected: {}, actual: {}&quot;</span>,
+            <span class="ident">expected_len</span>,
+            <span class="ident">buf</span>.<span class="ident">remaining</span>()
+        );
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">roundtrip_value</span> <span class="op">=</span> <span class="ident">Default::default</span>();
         <span class="kw">while</span> <span class="ident">buf</span>.<span class="ident">has_remaining</span>() {
-            <span class="kw">let</span> (<span class="ident">decoded_tag</span>, <span class="ident">decoded_wire_type</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">decode_key</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>) {
-                <span class="prelude-val">Ok</span>(<span class="ident">key</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">key</span>,
-                <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">TestResult::error</span>(<span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">error</span>)),
-            };
+            <span class="kw">let</span> (<span class="ident">decoded_tag</span>, <span class="ident">decoded_wire_type</span>) <span class="op">=</span>
+                <span class="ident">decode_key</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">error</span><span class="op">|</span> <span class="ident">TestCaseError::fail</span>(<span class="ident">error</span>.<span class="ident">to_string</span>()))<span class="question-mark">?</span>;
 
-            <span class="kw">if</span> <span class="ident">tag</span> <span class="op">!</span><span class="op">=</span> <span class="ident">decoded_tag</span> {
-                <span class="kw">return</span> <span class="ident">TestResult::error</span>(<span class="macro">format!</span>(
-                    <span class="string">&quot;decoded tag does not match; expected: {}, actual: {}&quot;</span>,
-                    <span class="ident">tag</span>, <span class="ident">decoded_tag</span>
-                ));
-            }
+            <span class="macro">prop_assert_eq!</span>(
+                <span class="ident">tag</span>,
+                <span class="ident">decoded_tag</span>,
+                <span class="string">&quot;decoded tag does not match; expected: {}, actual: {}&quot;</span>,
+                <span class="ident">tag</span>,
+                <span class="ident">decoded_tag</span>
+            );
 
-            <span class="kw">if</span> <span class="ident">wire_type</span> <span class="op">!</span><span class="op">=</span> <span class="ident">decoded_wire_type</span> {
-                <span class="kw">return</span> <span class="ident">TestResult::error</span>(<span class="macro">format!</span>(
-                    <span class="string">&quot;decoded wire type does not match; expected: {:?}, actual: {:?}&quot;</span>,
-                    <span class="ident">wire_type</span>, <span class="ident">decoded_wire_type</span>
-                ));
-            }
+            <span class="macro">prop_assert_eq!</span>(
+                <span class="ident">wire_type</span>,
+                <span class="ident">decoded_wire_type</span>,
+                <span class="string">&quot;decoded wire type does not match; expected: {:?}, actual: {:?}&quot;</span>,
+                <span class="ident">wire_type</span>,
+                <span class="ident">decoded_wire_type</span>
+            );
 
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=</span> <span class="ident">merge</span>(
+            <span class="ident">merge</span>(
                 <span class="ident">wire_type</span>,
                 <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">roundtrip_value</span>,
                 <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>,
                 <span class="ident">DecodeContext::default</span>(),
-            ) {
-                <span class="kw">return</span> <span class="ident">TestResult::error</span>(<span class="ident">error</span>.<span class="ident">to_string</span>());
-            };
+            )
+            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">error</span><span class="op">|</span> <span class="ident">TestCaseError::fail</span>(<span class="ident">error</span>.<span class="ident">to_string</span>()))<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if</span> <span class="ident">value</span> <span class="op">=</span><span class="op">=</span> <span class="ident">roundtrip_value</span> {
-            <span class="ident">TestResult::passed</span>()
-        } <span class="kw">else</span> {
-            <span class="ident">TestResult::failed</span>()
-        }
+        <span class="macro">prop_assert_eq!</span>(<span class="ident">value</span>, <span class="ident">roundtrip_value</span>);
+
+        <span class="prelude-val">Ok</span>(())
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">string_merge_invalid_utf8</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">String::new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">Cursor::new</span>(<span class="string">b&quot;\x02\x80\x80&quot;</span>);
+        <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="string">b&quot;\x02\x80\x80&quot;</span>;
 
         <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">string::merge</span>(
             <span class="ident">WireType::LengthDelimited</span>,
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">s</span>,
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>,
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..],
             <span class="ident">DecodeContext::default</span>(),
         );
         <span class="ident">r</span>.<span class="ident">expect_err</span>(<span class="string">&quot;must be an error&quot;</span>);
@@ -3123,6 +3365,9 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">varint</span>() {
         <span class="kw">fn</span> <span class="ident">check</span>(<span class="ident">value</span>: <span class="ident">u64</span>, <span class="kw-2">mut</span> <span class="ident">encoded</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) {
+            <span class="comment">// TODO(rust-lang/rust-clippy#5494)</span>
+            <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::clone_double_ref</span>)]</span>
+
             <span class="comment">// Small buffer.</span>
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="number">1</span>);
             <span class="ident">encode_varint</span>(<span class="ident">value</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>);
@@ -3138,7 +3383,6 @@
             <span class="kw">let</span> <span class="ident">roundtrip_value</span> <span class="op">=</span> <span class="ident">decode_varint</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">encoded</span>.<span class="ident">clone</span>()).<span class="ident">expect</span>(<span class="string">&quot;decoding failed&quot;</span>);
             <span class="macro">assert_eq!</span>(<span class="ident">value</span>, <span class="ident">roundtrip_value</span>);
 
-            <span class="macro">println!</span>(<span class="string">&quot;encoding {:?}&quot;</span>, <span class="ident">encoded</span>);
             <span class="kw">let</span> <span class="ident">roundtrip_value</span> <span class="op">=</span> <span class="ident">decode_varint_slow</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">encoded</span>).<span class="ident">expect</span>(<span class="string">&quot;slow decoding failed&quot;</span>);
             <span class="macro">assert_eq!</span>(<span class="ident">value</span>, <span class="ident">roundtrip_value</span>);
         }
@@ -3198,9 +3442,20 @@
         );
     }
 
-    <span class="doccomment">/// This big bowl o&#39; macro soup generates a quickcheck encoding test for each</span>
-    <span class="doccomment">/// combination of map type, scalar map key, and value type.</span>
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">varint_overflow</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">u64_max_plus_one</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span>
+            <span class="kw-2">&amp;</span>[<span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0x02</span>];
+
+        <span class="ident">decode_varint</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">u64_max_plus_one</span>).<span class="ident">expect_err</span>(<span class="string">&quot;decoding u64::MAX + 1 succeeded&quot;</span>);
+        <span class="ident">decode_varint_slow</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">u64_max_plus_one</span>)
+            .<span class="ident">expect_err</span>(<span class="string">&quot;slow decoding u64::MAX + 1 succeeded&quot;</span>);
+    }
+
+    <span class="doccomment">/// This big bowl o&#39; macro soup generates an encoding property test for each combination of map</span>
+    <span class="doccomment">/// type, scalar map key, and value type.</span>
     <span class="doccomment">/// TODO: these tests take a long time to compile, can this be improved?</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
     <span class="macro">macro_rules!</span> <span class="ident">map_tests</span> {
         (<span class="ident">keys</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">keys</span>:<span class="ident">tt</span>,
          <span class="ident">vals</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">vals</span>:<span class="ident">tt</span>) <span class="op">=</span><span class="op">&gt;</span> {
@@ -3219,7 +3474,8 @@
             $(
                 <span class="kw">mod</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">key_proto</span> {
                     <span class="kw">use</span> <span class="ident">std::collections</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">map_type</span>;
-                    <span class="kw">use</span> <span class="ident">quickcheck</span>::{<span class="ident">quickcheck</span>, <span class="ident">TestResult</span>};
+
+                    <span class="kw">use</span> <span class="ident">proptest::prelude</span>::<span class="kw-2">*</span>;
 
                     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::encoding</span>::<span class="kw-2">*</span>;
                     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::encoding::test::check_collection_type</span>;
@@ -3234,8 +3490,9 @@
                   (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">key_ty</span>:<span class="ident">ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">key_proto</span>:<span class="ident">ident</span>),
                   [$((<span class="macro-nonterminal">$</span><span class="macro-nonterminal">val_ty</span>:<span class="ident">ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val_proto</span>:<span class="ident">ident</span>)),<span class="kw-2">*</span>]) <span class="op">=</span><span class="op">&gt;</span> {
             $(
-                <span class="macro">quickcheck!</span> {
-                    <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val_proto</span>(<span class="ident">values</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">map_type</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">key_ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val_ty</span><span class="op">&gt;</span>, <span class="ident">tag</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestResult</span> {
+                <span class="macro">proptest!</span> {
+                    <span class="attribute">#[<span class="ident">test</span>]</span>
+                    <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val_proto</span>(<span class="ident">values</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">map_type</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">key_ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val_ty</span><span class="op">&gt;</span>, <span class="ident">tag</span> <span class="kw">in</span> <span class="ident">MIN_TAG</span>..<span class="op">=</span><span class="ident">MAX_TAG</span>) {
                         <span class="ident">check_collection_type</span>(<span class="ident">values</span>, <span class="ident">tag</span>, <span class="ident">WireType::LengthDelimited</span>,
                                               <span class="op">|</span><span class="ident">tag</span>, <span class="ident">values</span>, <span class="ident">buf</span><span class="op">|</span> {
                                                   <span class="macro-nonterminal">$</span><span class="macro-nonterminal">mod_name::encode</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">key_proto::encode</span>,
@@ -3259,44 +3516,45 @@
                                                                          <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val_proto::encoded_len</span>,
                                                                          <span class="ident">tag</span>,
                                                                          <span class="ident">values</span>)
-                                              })
+                                              })<span class="question-mark">?</span>;
                     }
                 }
              )<span class="op">*</span>
         };
     }
 
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
     <span class="macro">map_tests!</span>(<span class="ident">keys</span>: [
-                   (<span class="ident">i32</span>, <span class="ident">int32</span>),
-                   (<span class="ident">i64</span>, <span class="ident">int64</span>),
-                   (<span class="ident">u32</span>, <span class="ident">uint32</span>),
-                   (<span class="ident">u64</span>, <span class="ident">uint64</span>),
-                   (<span class="ident">i32</span>, <span class="ident">sint32</span>),
-                   (<span class="ident">i64</span>, <span class="ident">sint64</span>),
-                   (<span class="ident">u32</span>, <span class="ident">fixed32</span>),
-                   (<span class="ident">u64</span>, <span class="ident">fixed64</span>),
-                   (<span class="ident">i32</span>, <span class="ident">sfixed32</span>),
-                   (<span class="ident">i64</span>, <span class="ident">sfixed64</span>),
-                   (<span class="ident">bool</span>, <span class="ident">bool</span>),
-                   (<span class="ident">String</span>, <span class="ident">string</span>)
-               ],
-               <span class="ident">vals</span>: [
-                   (<span class="ident">f32</span>, <span class="ident">float</span>),
-                   (<span class="ident">f64</span>, <span class="ident">double</span>),
-                   (<span class="ident">i32</span>, <span class="ident">int32</span>),
-                   (<span class="ident">i64</span>, <span class="ident">int64</span>),
-                   (<span class="ident">u32</span>, <span class="ident">uint32</span>),
-                   (<span class="ident">u64</span>, <span class="ident">uint64</span>),
-                   (<span class="ident">i32</span>, <span class="ident">sint32</span>),
-                   (<span class="ident">i64</span>, <span class="ident">sint64</span>),
-                   (<span class="ident">u32</span>, <span class="ident">fixed32</span>),
-                   (<span class="ident">u64</span>, <span class="ident">fixed64</span>),
-                   (<span class="ident">i32</span>, <span class="ident">sfixed32</span>),
-                   (<span class="ident">i64</span>, <span class="ident">sfixed64</span>),
-                   (<span class="ident">bool</span>, <span class="ident">bool</span>),
-                   (<span class="ident">String</span>, <span class="ident">string</span>),
-                   (<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">bytes</span>)
-               ]);
+        (<span class="ident">i32</span>, <span class="ident">int32</span>),
+        (<span class="ident">i64</span>, <span class="ident">int64</span>),
+        (<span class="ident">u32</span>, <span class="ident">uint32</span>),
+        (<span class="ident">u64</span>, <span class="ident">uint64</span>),
+        (<span class="ident">i32</span>, <span class="ident">sint32</span>),
+        (<span class="ident">i64</span>, <span class="ident">sint64</span>),
+        (<span class="ident">u32</span>, <span class="ident">fixed32</span>),
+        (<span class="ident">u64</span>, <span class="ident">fixed64</span>),
+        (<span class="ident">i32</span>, <span class="ident">sfixed32</span>),
+        (<span class="ident">i64</span>, <span class="ident">sfixed64</span>),
+        (<span class="ident">bool</span>, <span class="ident">bool</span>),
+        (<span class="ident">String</span>, <span class="ident">string</span>)
+    ],
+    <span class="ident">vals</span>: [
+        (<span class="ident">f32</span>, <span class="ident">float</span>),
+        (<span class="ident">f64</span>, <span class="ident">double</span>),
+        (<span class="ident">i32</span>, <span class="ident">int32</span>),
+        (<span class="ident">i64</span>, <span class="ident">int64</span>),
+        (<span class="ident">u32</span>, <span class="ident">uint32</span>),
+        (<span class="ident">u64</span>, <span class="ident">uint64</span>),
+        (<span class="ident">i32</span>, <span class="ident">sint32</span>),
+        (<span class="ident">i64</span>, <span class="ident">sint64</span>),
+        (<span class="ident">u32</span>, <span class="ident">fixed32</span>),
+        (<span class="ident">u64</span>, <span class="ident">fixed64</span>),
+        (<span class="ident">i32</span>, <span class="ident">sfixed32</span>),
+        (<span class="ident">i64</span>, <span class="ident">sfixed64</span>),
+        (<span class="ident">bool</span>, <span class="ident">bool</span>),
+        (<span class="ident">String</span>, <span class="ident">string</span>),
+        (<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">bytes</span>)
+    ]);
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="prost" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>

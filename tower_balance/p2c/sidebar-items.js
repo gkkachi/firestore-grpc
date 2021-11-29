@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["Balance","Distributes requests across inner services using the Power of Two Choices."],["BalanceLayer","Efficiently distributes requests across an arbitrary number of services"],["BalanceMake","Makes `Balancer`s given an inner service that makes `Discover`s."],["MakeFuture","Makes a balancer instance."]]});

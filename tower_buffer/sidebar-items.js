@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["error","Error types"],["future","Future types"]],"struct":[["Buffer","Adds a buffer in front of an inner service."],["BufferLayer","Buffer requests with a bounded buffer"]]});

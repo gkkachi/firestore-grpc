@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;rustls-0.16.0&#x2F;src&#x2F;client&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../rustls/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;rustls-0.19.1&#x2F;src&#x2F;client&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../rustls/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -727,39 +727,123 @@
 <span id="727">727</span>
 <span id="728">728</span>
 <span id="729">729</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::enums::CipherSuite</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::enums</span>::{<span class="ident">AlertDescription</span>, <span class="ident">HandshakeType</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::session</span>::{<span class="ident">Session</span>, <span class="ident">SessionCommon</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::keylog</span>::{<span class="ident">KeyLog</span>, <span class="ident">NoKeyLog</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::suites</span>::{<span class="ident">SupportedCipherSuite</span>, <span class="ident">ALL_CIPHERSUITES</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::handshake::CertificatePayload</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::enums::SignatureScheme</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::enums</span>::{<span class="ident">ContentType</span>, <span class="ident">ProtocolVersion</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::handshake::ClientExtension</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::message::Message</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::verify</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::anchors</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::sign</span>;
+<span id="730">730</span>
+<span id="731">731</span>
+<span id="732">732</span>
+<span id="733">733</span>
+<span id="734">734</span>
+<span id="735">735</span>
+<span id="736">736</span>
+<span id="737">737</span>
+<span id="738">738</span>
+<span id="739">739</span>
+<span id="740">740</span>
+<span id="741">741</span>
+<span id="742">742</span>
+<span id="743">743</span>
+<span id="744">744</span>
+<span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::anchors</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error::TLSError</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::key</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::vecbuf::WriteV</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::keylog</span>::{<span class="ident">KeyLog</span>, <span class="ident">NoKeyLog</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;logging&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::log::trace</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::enums::CipherSuite</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::enums::SignatureScheme</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::enums</span>::{<span class="ident">AlertDescription</span>, <span class="ident">HandshakeType</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::enums</span>::{<span class="ident">ContentType</span>, <span class="ident">ProtocolVersion</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::handshake::CertificatePayload</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::handshake::ClientExtension</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::message::Message</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::session</span>::{<span class="ident">MiddleboxCCS</span>, <span class="ident">Session</span>, <span class="ident">SessionCommon</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::sign</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::suites</span>::{<span class="ident">SupportedCipherSuite</span>, <span class="ident">ALL_CIPHERSUITES</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::verify</span>;
 
-<span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
-<span class="kw">use</span> <span class="ident">std::io</span>;
 <span class="kw">use</span> <span class="ident">std::fmt</span>;
+<span class="kw">use</span> <span class="ident">std::io</span>::{<span class="self">self</span>, <span class="ident">IoSlice</span>};
 <span class="kw">use</span> <span class="ident">std::mem</span>;
+<span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
 
 <span class="kw">use</span> <span class="ident">sct</span>;
 <span class="kw">use</span> <span class="ident">webpki</span>;
 
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">mod</span> <span class="ident">hs</span>;
-<span class="kw">mod</span> <span class="ident">tls12</span>;
-<span class="kw">mod</span> <span class="ident">tls13</span>;
 <span class="kw">mod</span> <span class="ident">common</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">handy</span>;
+<span class="kw">mod</span> <span class="ident">tls12</span>;
+<span class="kw">mod</span> <span class="ident">tls13</span>;
 
 <span class="doccomment">/// A trait for the ability to store client session data.</span>
 <span class="doccomment">/// The keys and values are opaque.</span>
@@ -772,7 +856,7 @@
 <span class="doccomment">/// in the type system to allow implementations freedom in</span>
 <span class="doccomment">/// how to achieve interior mutability.  `Mutex` is a common</span>
 <span class="doccomment">/// choice.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">StoresClientSessions</span> : <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">StoresClientSessions</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
     <span class="doccomment">/// Stores a new `value` for `key`.  Returns `true`</span>
     <span class="doccomment">/// if the value was stored.</span>
     <span class="kw">fn</span> <span class="ident">put</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">value</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
@@ -784,7 +868,7 @@
 
 <span class="doccomment">/// A trait for the ability to choose a certificate chain and</span>
 <span class="doccomment">/// private key for the purposes of client authentication.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ResolvesClientCert</span> : <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ResolvesClientCert</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
     <span class="doccomment">/// With the server-supplied acceptable issuers in `acceptable_issuers`,</span>
     <span class="doccomment">/// the server&#39;s supported signature schemes in `sigschemes`,</span>
     <span class="doccomment">/// return a certificate chain and signing key to authenticate.</span>
@@ -796,10 +880,11 @@
     <span class="doccomment">/// Return None to continue the handshake without any client</span>
     <span class="doccomment">/// authentication.  The server may reject the handshake later</span>
     <span class="doccomment">/// if it requires authentication.</span>
-    <span class="kw">fn</span> <span class="ident">resolve</span>(<span class="kw-2">&amp;</span><span class="self">self</span>,
-               <span class="ident">acceptable_issuers</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>[<span class="ident">u8</span>]],
-               <span class="ident">sigschemes</span>: <span class="kw-2">&amp;</span>[<span class="ident">SignatureScheme</span>])
-               <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sign::CertifiedKey</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">resolve</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">acceptable_issuers</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>[<span class="ident">u8</span>]],
+        <span class="ident">sigschemes</span>: <span class="kw-2">&amp;</span>[<span class="ident">SignatureScheme</span>],
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sign::CertifiedKey</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// Return true if any certificates at all are available.</span>
     <span class="kw">fn</span> <span class="ident">has_certs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
@@ -868,7 +953,9 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">ClientConfig</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident"><span class="self">Self</span>::new</span>() }
+    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::new</span>()
+    }
 }
 
 <span class="kw">impl</span> <span class="ident">ClientConfig</span> {
@@ -878,8 +965,17 @@
     <span class="doccomment">/// The default session persistence provider stores up to 32</span>
     <span class="doccomment">/// items in memory.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ClientConfig</span> {
+        <span class="ident">ClientConfig::with_ciphersuites</span>(<span class="kw-2">&amp;</span><span class="ident">ALL_CIPHERSUITES</span>)
+    }
+
+    <span class="doccomment">/// Make a `ClientConfig` with a custom set of ciphersuites,</span>
+    <span class="doccomment">/// no root certificates, no ALPN protocols, and no client auth.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The default session persistence provider stores up to 32</span>
+    <span class="doccomment">/// items in memory.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_ciphersuites</span>(<span class="ident">ciphersuites</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">SupportedCipherSuite</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ClientConfig</span> {
         <span class="ident">ClientConfig</span> {
-            <span class="ident">ciphersuites</span>: <span class="ident">ALL_CIPHERSUITES</span>.<span class="ident">to_vec</span>(),
+            <span class="ident">ciphersuites</span>: <span class="ident">ciphersuites</span>.<span class="ident">to_vec</span>(),
             <span class="ident">root_store</span>: <span class="ident">anchors::RootCertStore::empty</span>(),
             <span class="ident">alpn_protocols</span>: <span class="ident">Vec::new</span>(),
             <span class="ident">session_persistence</span>: <span class="ident">handy::ClientSessionMemoryCache::new</span>(<span class="number">32</span>),
@@ -900,7 +996,11 @@
     <span class="doccomment">/// versions *and* at least one ciphersuite for this version is</span>
     <span class="doccomment">/// also configured.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">supports_version</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">ProtocolVersion</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">versions</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">v</span>) <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ciphersuites</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">cs</span><span class="op">|</span> <span class="ident">cs</span>.<span class="ident">usable_for_version</span>(<span class="ident">v</span>))
+        <span class="self">self</span>.<span class="ident">versions</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">v</span>)
+            <span class="op">&amp;&amp;</span> <span class="self">self</span>
+                .<span class="ident">ciphersuites</span>
+                .<span class="ident">iter</span>()
+                .<span class="ident">any</span>(<span class="op">|</span><span class="ident">cs</span><span class="op">|</span> <span class="ident">cs</span>.<span class="ident">usable_for_version</span>(<span class="ident">v</span>))
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
@@ -914,7 +1014,8 @@
     <span class="doccomment">/// preferred, the last is the least preferred.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_protocols</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">protocols</span>: <span class="kw-2">&amp;</span>[<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>]) {
         <span class="self">self</span>.<span class="ident">alpn_protocols</span>.<span class="ident">clear</span>();
-        <span class="self">self</span>.<span class="ident">alpn_protocols</span>.<span class="ident">extend_from_slice</span>(<span class="ident">protocols</span>);
+        <span class="self">self</span>.<span class="ident">alpn_protocols</span>
+            .<span class="ident">extend_from_slice</span>(<span class="ident">protocols</span>);
     }
 
     <span class="doccomment">/// Sets persistence layer to `persist`.</span>
@@ -944,11 +1045,14 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// `cert_chain` is a vector of DER-encoded certificates,</span>
     <span class="doccomment">/// `key_der` is a DER-encoded RSA or ECDSA private key.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_single_client_cert</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-                                  <span class="ident">cert_chain</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">key::Certificate</span><span class="op">&gt;</span>,
-                                  <span class="ident">key_der</span>: <span class="ident">key::PrivateKey</span>) {
-        <span class="kw">let</span> <span class="ident">resolver</span> <span class="op">=</span> <span class="ident">handy::AlwaysResolvesClientCert::new</span>(<span class="ident">cert_chain</span>, <span class="kw-2">&amp;</span><span class="ident">key_der</span>);
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_single_client_cert</span>(
+        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="ident">cert_chain</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">key::Certificate</span><span class="op">&gt;</span>,
+        <span class="ident">key_der</span>: <span class="ident">key::PrivateKey</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">resolver</span> <span class="op">=</span> <span class="ident">handy::AlwaysResolvesClientCert::new</span>(<span class="ident">cert_chain</span>, <span class="kw-2">&amp;</span><span class="ident">key_der</span>)<span class="question-mark">?</span>;
         <span class="self">self</span>.<span class="ident">client_auth_cert_resolver</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">resolver</span>);
+        <span class="prelude-val">Ok</span>(())
     }
 
     <span class="doccomment">/// Access configuration options whose use is dangerous and requires</span>
@@ -964,19 +1068,18 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">danger</span> {
     <span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
 
-    <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::ClientConfig</span>;
     <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::verify::ServerCertVerifier</span>;
+    <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::ClientConfig</span>;
 
     <span class="doccomment">/// Accessor for dangerous configuration options.</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DangerousClientConfig</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="doccomment">/// The underlying ClientConfig</span>
-        <span class="kw">pub</span> <span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">ClientConfig</span>
+        <span class="kw">pub</span> <span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">ClientConfig</span>,
     }
 
     <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">DangerousClientConfig</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="doccomment">/// Overrides the default `ServerCertVerifier` with something else.</span>
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_certificate_verifier</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-                                        <span class="ident">verifier</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerCertVerifier</span><span class="op">&gt;</span>) {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_certificate_verifier</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">verifier</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ServerCertVerifier</span><span class="op">&gt;</span>) {
             <span class="self">self</span>.<span class="ident">cfg</span>.<span class="ident">verifier</span> <span class="op">=</span> <span class="ident">verifier</span>;
         }
     }
@@ -1006,15 +1109,15 @@
 
     <span class="kw">fn</span> <span class="ident">is_enabled</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">state</span> {
-            <span class="ident">EarlyDataState::Ready</span> <span class="op">|</span> <span class="ident">EarlyDataState::Accepted</span>  <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>
+            <span class="ident">EarlyDataState::Ready</span> <span class="op">|</span> <span class="ident">EarlyDataState::Accepted</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
         }
     }
 
     <span class="kw">fn</span> <span class="ident">is_accepted</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">state</span> {
             <span class="ident">EarlyDataState::Accepted</span> <span class="op">|</span> <span class="ident">EarlyDataState::AcceptedFinished</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
         }
     }
 
@@ -1055,11 +1158,10 @@
                 };
 
                 <span class="prelude-val">Ok</span>(<span class="ident">take</span>)
-            },
-            <span class="ident">EarlyDataState::Rejected</span>
-                <span class="op">|</span> <span class="ident">EarlyDataState::AcceptedFinished</span> <span class="op">=</span><span class="op">&gt;</span> {
+            }
+            <span class="ident">EarlyDataState::Rejected</span> <span class="op">|</span> <span class="ident">EarlyDataState::AcceptedFinished</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="prelude-val">Err</span>(<span class="ident">io::Error::from</span>(<span class="ident">io::ErrorKind::InvalidInput</span>))
-            },
+            }
         }
     }
 
@@ -1100,7 +1202,7 @@
     <span class="kw">pub</span> <span class="ident">alpn_protocol</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">common</span>: <span class="ident">SessionCommon</span>,
     <span class="kw">pub</span> <span class="ident">error</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TLSError</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">state</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">hs::State</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">state</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">hs::NextState</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">server_cert_chain</span>: <span class="ident">CertificatePayload</span>,
     <span class="kw">pub</span> <span class="ident">early_data</span>: <span class="ident">EarlyData</span>,
     <span class="kw">pub</span> <span class="ident">resumption_ciphersuite</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">SupportedCipherSuite</span><span class="op">&gt;</span>,
@@ -1108,7 +1210,8 @@
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">ClientSessionImpl</span> {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ClientSessionImpl&quot;</span>).<span class="ident">finish</span>()
+        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ClientSessionImpl&quot;</span>)
+            .<span class="ident">finish</span>()
     }
 }
 
@@ -1177,29 +1280,32 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">process_msg</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">msg</span>: <span class="ident">Message</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
         <span class="comment">// TLS1.3: drop CCS at any time during handshaking</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">is_tls13</span>()
-            <span class="op">&amp;&amp;</span> <span class="ident">msg</span>.<span class="ident">is_content_type</span>(<span class="ident">ContentType::ChangeCipherSpec</span>)
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">is_handshaking</span>() {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">MiddleboxCCS::Drop</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">filter_tls13_ccs</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>)<span class="question-mark">?</span> {
             <span class="macro">trace!</span>(<span class="string">&quot;Dropping CCS&quot;</span>);
             <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
         }
 
         <span class="comment">// Decrypt if demanded by current state.</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">peer_encrypting</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">record_layer</span>.<span class="ident">is_decrypting</span>() {
             <span class="kw">let</span> <span class="ident">dm</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">decrypt_incoming</span>(<span class="ident">msg</span>)<span class="question-mark">?</span>;
             <span class="ident">msg</span> <span class="op">=</span> <span class="ident">dm</span>;
         }
 
         <span class="comment">// For handshake messages, we need to join them before parsing</span>
         <span class="comment">// and processing.</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">handshake_joiner</span>.<span class="ident">want_message</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>) {
+        <span class="kw">if</span> <span class="self">self</span>
+            .<span class="ident">common</span>
+            .<span class="ident">handshake_joiner</span>
+            .<span class="ident">want_message</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>)
+        {
             <span class="self">self</span>.<span class="ident">common</span>
                 .<span class="ident">handshake_joiner</span>
                 .<span class="ident">take_message</span>(<span class="ident">msg</span>)
                 .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
-                            <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">send_fatal_alert</span>(<span class="ident">AlertDescription::DecodeError</span>);
-                            <span class="ident">TLSError::CorruptMessagePayload</span>(<span class="ident">ContentType::Handshake</span>)
-                            })<span class="question-mark">?</span>;
+                    <span class="self">self</span>.<span class="ident">common</span>
+                        .<span class="ident">send_fatal_alert</span>(<span class="ident">AlertDescription::DecodeError</span>);
+                    <span class="ident">TLSError::CorruptMessagePayload</span>(<span class="ident">ContentType::Handshake</span>)
+                })<span class="question-mark">?</span>;
             <span class="kw">return</span> <span class="self">self</span>.<span class="ident">process_new_handshake_messages</span>();
         }
 
@@ -1217,42 +1323,57 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">process_new_handshake_messages</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
-        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">msg</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">handshake_joiner</span>.<span class="ident">frames</span>.<span class="ident">pop_front</span>() {
+        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">msg</span>) <span class="op">=</span> <span class="self">self</span>
+            .<span class="ident">common</span>
+            .<span class="ident">handshake_joiner</span>
+            .<span class="ident">frames</span>
+            .<span class="ident">pop_front</span>()
+        {
             <span class="self">self</span>.<span class="ident">process_main_protocol</span>(<span class="ident">msg</span>)<span class="question-mark">?</span>;
         }
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn</span> <span class="ident">queue_unexpected_alert</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">send_fatal_alert</span>(<span class="ident">AlertDescription::UnexpectedMessage</span>);
-    }
-
     <span class="kw">fn</span> <span class="ident">reject_renegotiation_attempt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">send_warning_alert</span>(<span class="ident">AlertDescription::NoRenegotiation</span>);
+        <span class="self">self</span>.<span class="ident">common</span>
+            .<span class="ident">send_warning_alert</span>(<span class="ident">AlertDescription::NoRenegotiation</span>);
         <span class="prelude-val">Ok</span>(())
     }
 
+    <span class="kw">fn</span> <span class="ident">queue_unexpected_alert</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+        <span class="self">self</span>.<span class="ident">common</span>
+            .<span class="ident">send_fatal_alert</span>(<span class="ident">AlertDescription::UnexpectedMessage</span>);
+    }
+
+    <span class="kw">fn</span> <span class="ident">maybe_send_unexpected_alert</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">rc</span>: <span class="ident">hs::NextStateOrError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">hs::NextStateOrError</span> {
+        <span class="kw">match</span> <span class="ident">rc</span> {
+            <span class="prelude-val">Err</span>(<span class="ident">TLSError::InappropriateMessage</span> { .. })
+            <span class="op">|</span> <span class="prelude-val">Err</span>(<span class="ident">TLSError::InappropriateHandshakeMessage</span> { .. }) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="self">self</span>.<span class="ident">queue_unexpected_alert</span>();
+            }
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+        };
+        <span class="ident">rc</span>
+    }
+
     <span class="doccomment">/// Process `msg`.  First, we get the current state.  Then we ask what messages</span>
-    <span class="doccomment">/// that state expects, enforced via a `Expectation`.  Finally, we ask the handler</span>
+    <span class="doccomment">/// that state expects, enforced via `check_message`.  Finally, we ask the handler</span>
     <span class="doccomment">/// to handle the message.</span>
     <span class="kw">fn</span> <span class="ident">process_main_protocol</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">msg</span>: <span class="ident">Message</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
         <span class="comment">// For TLS1.2, outside of the handshake, send rejection alerts for</span>
         <span class="comment">// renegotation requests.  These can occur any time.</span>
-        <span class="kw">if</span> <span class="ident">msg</span>.<span class="ident">is_handshake_type</span>(<span class="ident">HandshakeType::HelloRequest</span>) <span class="op">&amp;&amp;</span>
-            <span class="op">!</span><span class="self">self</span>.<span class="ident">common</span>.<span class="ident">is_tls13</span>() <span class="op">&amp;&amp;</span>
-            <span class="op">!</span><span class="self">self</span>.<span class="ident">is_handshaking</span>() {
+        <span class="kw">if</span> <span class="ident">msg</span>.<span class="ident">is_handshake_type</span>(<span class="ident">HandshakeType::HelloRequest</span>)
+            <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">common</span>.<span class="ident">is_tls13</span>()
+            <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">is_handshaking</span>()
+        {
             <span class="kw">return</span> <span class="self">self</span>.<span class="ident">reject_renegotiation_attempt</span>();
         }
 
         <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">take</span>().<span class="ident">unwrap</span>();
-        <span class="ident">state</span>
-            .<span class="ident">check_message</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>)
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> {
-                <span class="self">self</span>.<span class="ident">queue_unexpected_alert</span>();
-                <span class="ident">err</span>
-            })<span class="question-mark">?</span>;
-        <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">state</span>.<span class="ident">handle</span>(<span class="self">self</span>, <span class="ident">msg</span>)<span class="question-mark">?</span>);
+        <span class="kw">let</span> <span class="ident">maybe_next_state</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">handle</span>(<span class="self">self</span>, <span class="ident">msg</span>);
+        <span class="kw">let</span> <span class="ident">next_state</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">maybe_send_unexpected_alert</span>(<span class="ident">maybe_next_state</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">next_state</span>);
 
         <span class="prelude-val">Ok</span>(())
     }
@@ -1266,7 +1387,12 @@
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">TLSError::CorruptMessage</span>);
         }
 
-        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">msg</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">message_deframer</span>.<span class="ident">frames</span>.<span class="ident">pop_front</span>() {
+        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">msg</span>) <span class="op">=</span> <span class="self">self</span>
+            .<span class="ident">common</span>
+            .<span class="ident">message_deframer</span>
+            .<span class="ident">frames</span>
+            .<span class="ident">pop_front</span>()
+        {
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">process_msg</span>(<span class="ident">msg</span>) {
                 <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {}
                 <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> {
@@ -1284,16 +1410,18 @@
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-        <span class="kw">for</span> <span class="ident">cert</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">server_cert_chain</span> {
-            <span class="ident">r</span>.<span class="ident">push</span>(<span class="ident">cert</span>.<span class="ident">clone</span>());
-        }
-
-        <span class="prelude-val">Some</span>(<span class="ident">r</span>)
+        <span class="prelude-val">Some</span>(
+            <span class="self">self</span>.<span class="ident">server_cert_chain</span>
+                .<span class="ident">iter</span>()
+                .<span class="ident">cloned</span>()
+                .<span class="ident">collect</span>(),
+        )
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_alpn_protocol</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">alpn_protocol</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="ident">AsRef::as_ref</span>)
+        <span class="self">self</span>.<span class="ident">alpn_protocol</span>
+            .<span class="ident">as_ref</span>()
+            .<span class="ident">map</span>(<span class="ident">AsRef::as_ref</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_protocol_version</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ProtocolVersion</span><span class="op">&gt;</span> {
@@ -1305,10 +1433,34 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_early_data</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">early_data</span>.<span class="ident">check_write</span>(<span class="ident">data</span>.<span class="ident">len</span>())
+        <span class="self">self</span>.<span class="ident">early_data</span>
+            .<span class="ident">check_write</span>(<span class="ident">data</span>.<span class="ident">len</span>())
             .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">sz</span><span class="op">|</span> {
-                <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">send_early_plaintext</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>[..<span class="ident">sz</span>])
+                <span class="prelude-val">Ok</span>(<span class="self">self</span>
+                    .<span class="ident">common</span>
+                    .<span class="ident">send_early_plaintext</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>[..<span class="ident">sz</span>]))
             })
+    }
+
+    <span class="kw">fn</span> <span class="ident">export_keying_material</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">output</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>],
+        <span class="ident">label</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
+        <span class="ident">context</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">state</span>
+            .<span class="ident">as_ref</span>()
+            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">TLSError::HandshakeNotComplete</span>)
+            .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">st</span><span class="op">|</span> <span class="ident">st</span>.<span class="ident">export_keying_material</span>(<span class="ident">output</span>, <span class="ident">label</span>, <span class="ident">context</span>))
+    }
+
+    <span class="kw">fn</span> <span class="ident">send_some_plaintext</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">st</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">take</span>();
+        <span class="ident">st</span>.<span class="ident">as_mut</span>()
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">st</span><span class="op">|</span> <span class="ident">st</span>.<span class="ident">perhaps_write_key_update</span>(<span class="self">self</span>));
+        <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">st</span>;
+
+        <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">send_some_plaintext</span>(<span class="ident">buf</span>)
     }
 }
 
@@ -1375,10 +1527,6 @@
         <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">common</span>.<span class="ident">write_tls</span>(<span class="ident">wr</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">writev_tls</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">wr</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">WriteV</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">common</span>.<span class="ident">writev_tls</span>(<span class="ident">wr</span>)
-    }
-
     <span class="kw">fn</span> <span class="ident">process_new_packets</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">process_new_packets</span>()
     }
@@ -1415,22 +1563,36 @@
         <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">get_protocol_version</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">export_keying_material</span>(<span class="kw-2">&amp;</span><span class="self">self</span>,
-                              <span class="ident">output</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>],
-                              <span class="ident">label</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-                              <span class="ident">context</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">common</span>.<span class="ident">export_keying_material</span>(<span class="ident">output</span>, <span class="ident">label</span>, <span class="ident">context</span>)
+    <span class="kw">fn</span> <span class="ident">export_keying_material</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">output</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>],
+        <span class="ident">label</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
+        <span class="ident">context</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">imp</span>
+            .<span class="ident">export_keying_material</span>(<span class="ident">output</span>, <span class="ident">label</span>, <span class="ident">context</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">get_negotiated_ciphersuite</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">SupportedCipherSuite</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">get_negotiated_ciphersuite</span>().<span class="ident">or</span>(<span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">resumption_ciphersuite</span>)
+        <span class="self">self</span>.<span class="ident">imp</span>
+            .<span class="ident">get_negotiated_ciphersuite</span>()
+            .<span class="ident">or</span>(<span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">resumption_ciphersuite</span>)
     }
-
 }
 
 <span class="kw">impl</span> <span class="ident">io::Read</span> <span class="kw">for</span> <span class="ident">ClientSession</span> {
-    <span class="doccomment">/// Obtain plaintext data received from the peer over</span>
-    <span class="doccomment">/// this TLS connection.</span>
+    <span class="doccomment">/// Obtain plaintext data received from the peer over this TLS connection.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If the peer closes the TLS session cleanly, this fails with an error of</span>
+    <span class="doccomment">/// kind ErrorKind::ConnectionAborted once all the pending data has been read.</span>
+    <span class="doccomment">/// No further data can be received on that connection, so the underlying TCP</span>
+    <span class="doccomment">/// connection should closed too.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Note that support close notify varies in peer TLS libraries: many do not</span>
+    <span class="doccomment">/// support it and uncleanly close the TCP connection (this might be</span>
+    <span class="doccomment">/// vulnerable to truncation attacks depending on the application protocol).</span>
+    <span class="doccomment">/// This means applications using rustls must both handle ErrorKind::ConnectionAborted</span>
+    <span class="doccomment">/// from this function, *and* unexpected closure of the underlying TCP connection.</span>
     <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">common</span>.<span class="ident">read</span>(<span class="ident">buf</span>)
     }
@@ -1448,7 +1610,15 @@
     <span class="doccomment">/// writing much data before it can be sent will</span>
     <span class="doccomment">/// cause excess memory usage.</span>
     <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">common</span>.<span class="ident">send_some_plaintext</span>(<span class="ident">buf</span>)
+        <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">send_some_plaintext</span>(<span class="ident">buf</span>))
+    }
+
+    <span class="kw">fn</span> <span class="ident">write_vectored</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="ident">IoSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sz</span> <span class="op">=</span> <span class="number">0</span>;
+        <span class="kw">for</span> <span class="ident">buf</span> <span class="kw">in</span> <span class="ident">bufs</span> {
+            <span class="ident">sz</span> <span class="op">+</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">send_some_plaintext</span>(<span class="ident">buf</span>);
+        }
+        <span class="prelude-val">Ok</span>(<span class="ident">sz</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
