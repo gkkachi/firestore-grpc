@@ -1,14 +1,14 @@
-name: Publish on crates.io
+name: Update proto
 
 on:
   push:
-    branches: [ 'release' ]
+    branches: [ master ]
 
 env:
   CRATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
 
 jobs:
-  publish:
+  update-proto:
 
     runs-on: ubuntu-latest
 

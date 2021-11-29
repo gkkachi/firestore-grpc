@@ -3,11 +3,9 @@ name: Update proto
 on:
   schedule:
     - cron: "0 0 * * 0"
-  push:
-    branches: [ master ]
 
 jobs:
-  update-proro:
+  update-proto:
 
     runs-on: ubuntu-latest
 
@@ -18,27 +16,18 @@ jobs:
         git config --global user.name "GitHub Actions"
         git config --global user.email "github@s.k-kachi.net"
         git config --global push.default current
-    - name: Cargo setup
+        git fetch origin master
+        git checkout -B master origin/master
+    - name: Update proto
       run: |
-        rustup update
-        cargo install cargo-bump
-    - name: Update proto on release branch
-      run: |
-        git fetch origin release
-        git checkout -B release origin/release
         bash update.sh
         git add .
         git commit -m "Update proto" && echo "NEW_PROTOS_RELEASE=true" >> $GITHUB_ENV || echo "Protos are up-to-date."
-    - name: Push to release branch
+    - name: Push
       if: ${{ env.NEW_PROTOS_RELEASE }}
       run: |
+        rustup update
+        cargo install cargo-bump
         cargo bump minor --git-tag
         git push
         git push origin --tags
-    - name: Update proto on master branch
-      run: |
-        git fetch origin master
-        git checkout -B master origin/master
-        bash update.sh
-        git add .
-        git commit -m "Update proto" && git push || echo "Protos are up-to-date."
