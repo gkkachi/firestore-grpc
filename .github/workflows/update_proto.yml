@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: "0 0 * * 0"
 
+env:
+  CRATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
+
 jobs:
   update-proto:
 
@@ -31,3 +34,21 @@ jobs:
         cargo bump minor --git-tag
         git push
         git push origin --tags
+    - name: Cargo setup
+      run: |
+        rustup update
+        rustup component add rustfmt
+        cargo login ${CRATES_IO_TOKEN}
+    - name: Publish
+      run: cargo publish
+    - name: Setup documents
+      run: |
+        cargo doc --lib
+        echo '<!DOCTYPE html><html><head><meta http-equiv=refresh content="0; URL=firestore_grpc/index.html"><title>x</title></head><body>x</body></html>' > target/doc/index.html
+    - name: Deploy documents
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: target/doc
+
