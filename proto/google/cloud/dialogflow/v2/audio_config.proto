@@ -30,36 +30,6 @@ option java_outer_classname = "AudioConfigProto";
 option java_package = "com.google.cloud.dialogflow.v2";
 option objc_class_prefix = "DF";
 
-// Hints for the speech recognizer to help with recognition in a specific
-// conversation state.
-message SpeechContext {
-  // Optional. A list of strings containing words and phrases that the speech
-  // recognizer should recognize with higher likelihood.
-  //
-  // This list can be used to:
-  //
-  // * improve accuracy for words and phrases you expect the user to say,
-  //   e.g. typical commands for your Dialogflow agent
-  // * add additional words to the speech recognizer vocabulary
-  // * ...
-  //
-  // See the [Cloud Speech
-  // documentation](https://cloud.google.com/speech-to-text/quotas) for usage
-  // limits.
-  repeated string phrases = 1;
-
-  // Optional. Boost for this context compared to other contexts:
-  //
-  // * If the boost is positive, Dialogflow will increase the probability that
-  //   the phrases in this context are recognized over similar sounding phrases.
-  // * If the boost is unspecified or non-positive, Dialogflow will not apply
-  //   any boost.
-  //
-  // Dialogflow recommends that you use boosts in the range (0, 20] and that you
-  // find a value that fits your use case with binary search.
-  float boost = 2;
-}
-
 // Audio encoding of the audio content sent in the conversational query request.
 // Refer to the
 // [Cloud Speech API
@@ -107,6 +77,36 @@ enum AudioEncoding {
   // is replaced with a single byte containing the block length. Only Speex
   // wideband is supported. `sample_rate_hertz` must be 16000.
   AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE = 7;
+}
+
+// Hints for the speech recognizer to help with recognition in a specific
+// conversation state.
+message SpeechContext {
+  // Optional. A list of strings containing words and phrases that the speech
+  // recognizer should recognize with higher likelihood.
+  //
+  // This list can be used to:
+  //
+  // * improve accuracy for words and phrases you expect the user to say,
+  //   e.g. typical commands for your Dialogflow agent
+  // * add additional words to the speech recognizer vocabulary
+  // * ...
+  //
+  // See the [Cloud Speech
+  // documentation](https://cloud.google.com/speech-to-text/quotas) for usage
+  // limits.
+  repeated string phrases = 1;
+
+  // Optional. Boost for this context compared to other contexts:
+  //
+  // * If the boost is positive, Dialogflow will increase the probability that
+  //   the phrases in this context are recognized over similar sounding phrases.
+  // * If the boost is unspecified or non-positive, Dialogflow will not apply
+  //   any boost.
+  //
+  // Dialogflow recommends that you use boosts in the range (0, 20] and that you
+  // find a value that fits your use case with binary search.
+  float boost = 2;
 }
 
 // Information for a word recognized by the speech recognizer.
@@ -340,11 +340,14 @@ message OutputAudioConfig {
 
 // Configures speech transcription for [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile].
 message SpeechToTextConfig {
-  // Optional. The speech model used in speech to text.
+  // The speech model used in speech to text.
   // `SPEECH_MODEL_VARIANT_UNSPECIFIED`, `USE_BEST_AVAILABLE` will be treated as
   // `USE_ENHANCED`. It can be overridden in [AnalyzeContentRequest][google.cloud.dialogflow.v2.AnalyzeContentRequest] and
   // [StreamingAnalyzeContentRequest][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest] request.
-  SpeechModelVariant speech_model_variant = 1 [(google.api.field_behavior) = OPTIONAL];
+  // If enhanced model variant is specified and an enhanced
+  // version of the specified model for the language does not exist, then it
+  // would emit an error.
+  SpeechModelVariant speech_model_variant = 1;
 }
 
 // Audio encoding of the output audio format in Text-To-Speech.
