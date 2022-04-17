@@ -17,11 +17,11 @@
 <div class="item-spacer"></div>    fn <a href="#method.record_error" class="fnname">record_error</a>(&amp;mut self, field: &amp;<a class="struct" href="struct.Field.html" title="struct tracing::field::Field">Field</a>, value: &amp;(dyn <a class="trait" href="https://doc.rust-lang.org/1.60.0/std/error/trait.Error.html" title="trait std::error::Error">Error</a> + 'static)) { ... }
 }</code></pre></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Visits typed values.</p>
 <p>An instance of <code>Visit</code> (“a visitor”) represents the logic necessary to
-record field values of various types. When an implementor of <a href="trait.Value.html"><code>Value</code></a> is
-<a href="trait.Value.html#method.record">recorded</a>, it calls the appropriate method on the provided visitor to
+record field values of various types. When an implementor of <a href="../trait.Value.html"><code>Value</code></a> is
+<a href="../trait.Value.html#tymethod.record">recorded</a>, it calls the appropriate method on the provided visitor to
 indicate the type that value should be recorded as.</p>
-<p>When a <a href="../subscriber/trait.Subscriber.html"><code>Subscriber</code></a> implementation <a href="../subscriber/trait.Subscriber.html#method.event">records an <code>Event</code></a> or a
-<a href="../subscriber/trait.Subscriber.html#method.record">set of <code>Value</code>s added to a <code>Span</code></a>, it can pass an <code>&amp;mut Visit</code> to the
+<p>When a <a href="../trait.Subscriber.html"><code>Subscriber</code></a> implementation <a href="../trait.Subscriber.html#tymethod.event">records an <code>Event</code></a> or a
+<a href="../trait.Subscriber.html#tymethod.record">set of <code>Value</code>s added to a <code>Span</code></a>, it can pass an <code>&amp;mut Visit</code> to the
 <code>record</code> method on the provided <a href="struct.ValueSet.html"><code>ValueSet</code></a> or <a href="../event/struct.Event.html"><code>Event</code></a>. This visitor
 will then be used to record all the field-value pairs present on that
 <code>Event</code> or <code>ValueSet</code>.</p>

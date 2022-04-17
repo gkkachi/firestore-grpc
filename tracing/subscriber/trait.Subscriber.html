@@ -45,7 +45,7 @@ they occur.</li>
 <a href="../span/struct.Id.html">ID</a> with which it tagged that span when it was created. This means
 that it is up to the subscriber to determine whether and how span <em>data</em> —
 the fields and metadata describing the span — should be stored. The
-<a href="trait.Subscriber.html#method.new_span"><code>new_span</code></a> function is called when a new span is created, and at that
+<a href="../trait.Subscriber.html#tymethod.new_span"><code>new_span</code></a> function is called when a new span is created, and at that
 point, the subscriber <em>may</em> choose to store the associated data if it will
 be referenced again. However, if the data has already been recorded and will
 not be needed by the implementations of <code>enter</code> and <code>exit</code>, the subscriber
@@ -57,17 +57,17 @@ backward-compatibility reasons. However, many subscribers will likely want
 to override these default implementations.</p>
 <p>The following methods are likely of interest:</p>
 <ul>
-<li><a href="trait.Subscriber.html#method.register_callsite"><code>register_callsite</code></a> is called once for each callsite from which a span
+<li><a href="../trait.Subscriber.html#method.register_callsite"><code>register_callsite</code></a> is called once for each callsite from which a span
 event may originate, and returns an <a href="struct.Interest.html"><code>Interest</code></a> value describing whether or
 not the subscriber wishes to see events or spans from that callsite. By
-default, it calls <a href="trait.Subscriber.html#method.enabled"><code>enabled</code></a>, and returns <code>Interest::always()</code> if
+default, it calls <a href="../trait.Subscriber.html#tymethod.enabled"><code>enabled</code></a>, and returns <code>Interest::always()</code> if
 <code>enabled</code> returns true, or <code>Interest::never()</code> if enabled returns false.
 However, if the subscriber’s interest can change dynamically at runtime,
 it may want to override this function to return <code>Interest::sometimes()</code>.
 Additionally, subscribers which wish to perform a behaviour once for each
 callsite, such as allocating storage for data related to that callsite,
 can perform it in <code>register_callsite</code>.</li>
-<li><a href="trait.Subscriber.html#method.clone_span"><code>clone_span</code></a> is called every time a span ID is cloned, and <a href="trait.Subscriber.html#method.try_close"><code>try_close</code></a>
+<li><a href="../trait.Subscriber.html#method.clone_span"><code>clone_span</code></a> is called every time a span ID is cloned, and <a href="../trait.Subscriber.html#method.try_close"><code>try_close</code></a>
 is called when a span ID is dropped. By default, these functions do
 nothing. However, they can be used to implement reference counting for
 spans, allowing subscribers to free storage for span data and to determine
@@ -75,7 +75,7 @@ when a span has <em>closed</em> permanently (rather than being exited).
 Subscribers which store per-span data or which need to track span closures
 should override these functions together.</li>
 </ul>
-</div></details><h2 id="required-methods" class="small-section-header">Required methods<a href="#required-methods" class="anchor"></a></h2><div class="methods"><details class="rustdoc-toggle" open><summary><div id="tymethod.enabled" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/tracing_core/subscriber.rs.html#172">source</a></div><h4 class="code-header">fn <a href="#tymethod.enabled" class="fnname">enabled</a>(&amp;self, metadata: &amp;<a class="struct" href="../struct.Metadata.html" title="struct tracing::Metadata">Metadata</a>&lt;'_&gt;) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.60.0/std/primitive.bool.html">bool</a></h4></div></summary><div class="docblock"><p>Returns true if a span or event with the specified <a href="../metadata/struct.Metadata.html">metadata</a> would be
+</div></details><h2 id="required-methods" class="small-section-header">Required methods<a href="#required-methods" class="anchor"></a></h2><div class="methods"><details class="rustdoc-toggle" open><summary><div id="tymethod.enabled" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/tracing_core/subscriber.rs.html#172">source</a></div><h4 class="code-header">fn <a href="#tymethod.enabled" class="fnname">enabled</a>(&amp;self, metadata: &amp;<a class="struct" href="../struct.Metadata.html" title="struct tracing::Metadata">Metadata</a>&lt;'_&gt;) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.60.0/std/primitive.bool.html">bool</a></h4></div></summary><div class="docblock"><p>Returns true if a span or event with the specified <a href="../struct.Metadata.html">metadata</a> would be
 recorded.</p>
 <p>By default, it is assumed that this filter needs only be evaluated once
 for each callsite, so it is called by <a href="#method.register_callsite"><code>register_callsite</code></a> when each
@@ -199,7 +199,7 @@ the filter will not be re-evaluated once it has been applied to a given
 set of metadata. Thus, the counter will not be incremented, and the span
 or event that corresponds to the metadata will never be <code>enabled</code>.</p>
 <p><code>Subscriber</code>s that need to change their filters occasionally should call
-<a href="../callsite/fn.rebuild_interest_cache.html"><code>rebuild_interest_cache</code></a> to re-evaluate <code>register_callsite</code> for all
+<a href="../../tracing_core/callsite/fn.rebuild_interest_cache.html"><code>rebuild_interest_cache</code></a> to re-evaluate <code>register_callsite</code> for all
 callsites.</p>
 <p>Similarly, if a <code>Subscriber</code> has a filtering strategy that can be
 changed dynamically at runtime, it would need to re-evaluate that filter
@@ -229,17 +229,17 @@ encouraged to provide an implementation of this method.</p>
 course of its lifetime, it is free to return a different value from
 multiple invocations of this method. However, note that changes in the
 maximum level will <strong>only</strong> be reflected after the callsite <a href="struct.Interest.html"><code>Interest</code></a>
-cache is rebuilt, by calling the <a href="../callsite/fn.rebuild_interest_cache.html"><code>callsite::rebuild_interest_cache</code></a>
+cache is rebuilt, by calling the <a href="../../tracing_core/callsite/fn.rebuild_interest_cache.html"><code>callsite::rebuild_interest_cache</code></a>
 function. Therefore, if the subscriber will change the value returned by
 this method, it is responsible for ensuring that
-<a href="../callsite/fn.rebuild_interest_cache.html"><code>rebuild_interest_cache</code></a> is called after the value of the max
+<a href="../../tracing_core/callsite/fn.rebuild_interest_cache.html"><code>rebuild_interest_cache</code></a> is called after the value of the max
 level changes.</p>
 </div></details><details class="rustdoc-toggle" open><summary><div id="method.clone_span" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/tracing_core/subscriber.rs.html#349">source</a></div><h4 class="code-header">fn <a href="#method.clone_span" class="fnname">clone_span</a>(&amp;self, id: &amp;<a class="struct" href="../span/struct.Id.html" title="struct tracing::span::Id">Id</a>) -&gt; <a class="struct" href="../span/struct.Id.html" title="struct tracing::span::Id">Id</a></h4></div></summary><div class="docblock"><p>Notifies the subscriber that a <a href="../span/struct.Id.html">span ID</a> has been cloned.</p>
 <p>This function is guaranteed to only be called with span IDs that were
 returned by this subscriber’s <code>new_span</code> function.</p>
 <p>Note that the default implementation of this function this is just the
 identity function, passing through the identifier. However, it can be
-used in conjunction with <a href="trait.Subscriber.html#method.try_close"><code>try_close</code></a> to track the number of handles
+used in conjunction with <a href="../trait.Subscriber.html#method.try_close"><code>try_close</code></a> to track the number of handles
 capable of <code>enter</code>ing a span. When all the handles have been dropped
 (i.e., <code>try_close</code> has been called one more time than <code>clone_span</code> for a
 given ID), the subscriber may assume that the span will not be entered
@@ -252,7 +252,7 @@ what that means for the specified pointer.</p>
 </div></div><div class="docblock"><p><strong>This method is deprecated.</strong></p>
 <p>Using <code>drop_span</code> may result in subscribers composed using
 <code>tracing-subscriber</code> crate’s <code>Layer</code> trait from observing close events.
-Use <a href="trait.Subscriber.html#method.try_close"><code>try_close</code></a> instead.</p>
+Use <a href="../trait.Subscriber.html#method.try_close"><code>try_close</code></a> instead.</p>
 <p>The default implementation of this function does nothing.</p>
 </div></details><details class="rustdoc-toggle" open><summary><div id="method.try_close" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/tracing_core/subscriber.rs.html#401">source</a></div><h4 class="code-header">fn <a href="#method.try_close" class="fnname">try_close</a>(&amp;self, id: <a class="struct" href="../span/struct.Id.html" title="struct tracing::span::Id">Id</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.60.0/std/primitive.bool.html">bool</a></h4></div></summary><div class="docblock"><p>Notifies the subscriber that a <a href="../span/struct.Id.html">span ID</a> has been dropped, and returns
 <code>true</code> if there are now 0 IDs that refer to that span.</p>
@@ -260,7 +260,7 @@ Use <a href="trait.Subscriber.html#method.try_close"><code>try_close</code></a> 
 subscriber implementations may use this return value to notify any
 “layered” subscribers that this subscriber considers the span closed.</p>
 <p>The default implementation of this method calls the subscriber’s
-<a href="trait.Subscriber.html#method.drop_span"><code>drop_span</code></a> method and returns <code>false</code>. This means that, unless the
+<a href="../trait.Subscriber.html#method.drop_span"><code>drop_span</code></a> method and returns <code>false</code>. This means that, unless the
 subscriber overrides the default implementation, close notifications
 will never be sent to any layered subscribers. In general, if the
 subscriber tracks reference counts, this method should be implemented,
@@ -270,7 +270,7 @@ returned by this subscriber’s <code>new_span</code> function.</p>
 <p>It’s guaranteed that if this function has been called once more than the
 number of times <code>clone_span</code> was called with the same <code>id</code>, then no more
 handles that can enter the span with that <code>id</code> exist. This means that it
-can be used in conjunction with <a href="trait.Subscriber.html#method.clone_span"><code>clone_span</code></a> to track the number of
+can be used in conjunction with <a href="../trait.Subscriber.html#method.clone_span"><code>clone_span</code></a> to track the number of
 handles capable of <code>enter</code>ing a span. When all the handles have been
 dropped (i.e., <code>try_close</code> has been called one more time than
 <code>clone_span</code> for a given ID), the subscriber may assume that the span
@@ -283,8 +283,8 @@ inside of a <code>try_close</code> function may cause a double panic, if the spa
 was dropped due to a thread unwinding.</p>
 </div></details><details class="rustdoc-toggle" open><summary><div id="method.current_span" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/tracing_core/subscriber.rs.html#420">source</a></div><h4 class="code-header">fn <a href="#method.current_span" class="fnname">current_span</a>(&amp;self) -&gt; <a class="struct" href="../../tracing_core/span/struct.Current.html" title="struct tracing_core::span::Current">Current</a></h4></div></summary><div class="docblock"><p>Returns a type representing this subscriber’s view of the current span.</p>
 <p>If subscribers track a current span, they should override this function
-to return <a href="../span/struct.Current.html#tymethod.new"><code>Current::new</code></a> if the thread from which this method is
-called is inside a span, or <a href="../span/struct.Current.html#tymethod.none"><code>Current::none</code></a> if the thread is not
+to return <a href="../../tracing_core/span/struct.Current.html#tymethod.new"><code>Current::new</code></a> if the thread from which this method is
+called is inside a span, or <a href="../../tracing_core/span/struct.Current.html#tymethod.none"><code>Current::none</code></a> if the thread is not
 inside a span.</p>
 <p>By default, this returns a value indicating that the subscriber
 does <strong>not</strong> track what span is current. If the subscriber does not

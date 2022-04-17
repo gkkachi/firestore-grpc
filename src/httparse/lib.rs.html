@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/httparse-1.6.0/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/httparse-1.7.0/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
     <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../httparse/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
         </a><h2 class="location"></h2>
     </nav>
@@ -1635,6 +1635,276 @@
 <span id="1630">1630</span>
 <span id="1631">1631</span>
 <span id="1632">1632</span>
+<span id="1633">1633</span>
+<span id="1634">1634</span>
+<span id="1635">1635</span>
+<span id="1636">1636</span>
+<span id="1637">1637</span>
+<span id="1638">1638</span>
+<span id="1639">1639</span>
+<span id="1640">1640</span>
+<span id="1641">1641</span>
+<span id="1642">1642</span>
+<span id="1643">1643</span>
+<span id="1644">1644</span>
+<span id="1645">1645</span>
+<span id="1646">1646</span>
+<span id="1647">1647</span>
+<span id="1648">1648</span>
+<span id="1649">1649</span>
+<span id="1650">1650</span>
+<span id="1651">1651</span>
+<span id="1652">1652</span>
+<span id="1653">1653</span>
+<span id="1654">1654</span>
+<span id="1655">1655</span>
+<span id="1656">1656</span>
+<span id="1657">1657</span>
+<span id="1658">1658</span>
+<span id="1659">1659</span>
+<span id="1660">1660</span>
+<span id="1661">1661</span>
+<span id="1662">1662</span>
+<span id="1663">1663</span>
+<span id="1664">1664</span>
+<span id="1665">1665</span>
+<span id="1666">1666</span>
+<span id="1667">1667</span>
+<span id="1668">1668</span>
+<span id="1669">1669</span>
+<span id="1670">1670</span>
+<span id="1671">1671</span>
+<span id="1672">1672</span>
+<span id="1673">1673</span>
+<span id="1674">1674</span>
+<span id="1675">1675</span>
+<span id="1676">1676</span>
+<span id="1677">1677</span>
+<span id="1678">1678</span>
+<span id="1679">1679</span>
+<span id="1680">1680</span>
+<span id="1681">1681</span>
+<span id="1682">1682</span>
+<span id="1683">1683</span>
+<span id="1684">1684</span>
+<span id="1685">1685</span>
+<span id="1686">1686</span>
+<span id="1687">1687</span>
+<span id="1688">1688</span>
+<span id="1689">1689</span>
+<span id="1690">1690</span>
+<span id="1691">1691</span>
+<span id="1692">1692</span>
+<span id="1693">1693</span>
+<span id="1694">1694</span>
+<span id="1695">1695</span>
+<span id="1696">1696</span>
+<span id="1697">1697</span>
+<span id="1698">1698</span>
+<span id="1699">1699</span>
+<span id="1700">1700</span>
+<span id="1701">1701</span>
+<span id="1702">1702</span>
+<span id="1703">1703</span>
+<span id="1704">1704</span>
+<span id="1705">1705</span>
+<span id="1706">1706</span>
+<span id="1707">1707</span>
+<span id="1708">1708</span>
+<span id="1709">1709</span>
+<span id="1710">1710</span>
+<span id="1711">1711</span>
+<span id="1712">1712</span>
+<span id="1713">1713</span>
+<span id="1714">1714</span>
+<span id="1715">1715</span>
+<span id="1716">1716</span>
+<span id="1717">1717</span>
+<span id="1718">1718</span>
+<span id="1719">1719</span>
+<span id="1720">1720</span>
+<span id="1721">1721</span>
+<span id="1722">1722</span>
+<span id="1723">1723</span>
+<span id="1724">1724</span>
+<span id="1725">1725</span>
+<span id="1726">1726</span>
+<span id="1727">1727</span>
+<span id="1728">1728</span>
+<span id="1729">1729</span>
+<span id="1730">1730</span>
+<span id="1731">1731</span>
+<span id="1732">1732</span>
+<span id="1733">1733</span>
+<span id="1734">1734</span>
+<span id="1735">1735</span>
+<span id="1736">1736</span>
+<span id="1737">1737</span>
+<span id="1738">1738</span>
+<span id="1739">1739</span>
+<span id="1740">1740</span>
+<span id="1741">1741</span>
+<span id="1742">1742</span>
+<span id="1743">1743</span>
+<span id="1744">1744</span>
+<span id="1745">1745</span>
+<span id="1746">1746</span>
+<span id="1747">1747</span>
+<span id="1748">1748</span>
+<span id="1749">1749</span>
+<span id="1750">1750</span>
+<span id="1751">1751</span>
+<span id="1752">1752</span>
+<span id="1753">1753</span>
+<span id="1754">1754</span>
+<span id="1755">1755</span>
+<span id="1756">1756</span>
+<span id="1757">1757</span>
+<span id="1758">1758</span>
+<span id="1759">1759</span>
+<span id="1760">1760</span>
+<span id="1761">1761</span>
+<span id="1762">1762</span>
+<span id="1763">1763</span>
+<span id="1764">1764</span>
+<span id="1765">1765</span>
+<span id="1766">1766</span>
+<span id="1767">1767</span>
+<span id="1768">1768</span>
+<span id="1769">1769</span>
+<span id="1770">1770</span>
+<span id="1771">1771</span>
+<span id="1772">1772</span>
+<span id="1773">1773</span>
+<span id="1774">1774</span>
+<span id="1775">1775</span>
+<span id="1776">1776</span>
+<span id="1777">1777</span>
+<span id="1778">1778</span>
+<span id="1779">1779</span>
+<span id="1780">1780</span>
+<span id="1781">1781</span>
+<span id="1782">1782</span>
+<span id="1783">1783</span>
+<span id="1784">1784</span>
+<span id="1785">1785</span>
+<span id="1786">1786</span>
+<span id="1787">1787</span>
+<span id="1788">1788</span>
+<span id="1789">1789</span>
+<span id="1790">1790</span>
+<span id="1791">1791</span>
+<span id="1792">1792</span>
+<span id="1793">1793</span>
+<span id="1794">1794</span>
+<span id="1795">1795</span>
+<span id="1796">1796</span>
+<span id="1797">1797</span>
+<span id="1798">1798</span>
+<span id="1799">1799</span>
+<span id="1800">1800</span>
+<span id="1801">1801</span>
+<span id="1802">1802</span>
+<span id="1803">1803</span>
+<span id="1804">1804</span>
+<span id="1805">1805</span>
+<span id="1806">1806</span>
+<span id="1807">1807</span>
+<span id="1808">1808</span>
+<span id="1809">1809</span>
+<span id="1810">1810</span>
+<span id="1811">1811</span>
+<span id="1812">1812</span>
+<span id="1813">1813</span>
+<span id="1814">1814</span>
+<span id="1815">1815</span>
+<span id="1816">1816</span>
+<span id="1817">1817</span>
+<span id="1818">1818</span>
+<span id="1819">1819</span>
+<span id="1820">1820</span>
+<span id="1821">1821</span>
+<span id="1822">1822</span>
+<span id="1823">1823</span>
+<span id="1824">1824</span>
+<span id="1825">1825</span>
+<span id="1826">1826</span>
+<span id="1827">1827</span>
+<span id="1828">1828</span>
+<span id="1829">1829</span>
+<span id="1830">1830</span>
+<span id="1831">1831</span>
+<span id="1832">1832</span>
+<span id="1833">1833</span>
+<span id="1834">1834</span>
+<span id="1835">1835</span>
+<span id="1836">1836</span>
+<span id="1837">1837</span>
+<span id="1838">1838</span>
+<span id="1839">1839</span>
+<span id="1840">1840</span>
+<span id="1841">1841</span>
+<span id="1842">1842</span>
+<span id="1843">1843</span>
+<span id="1844">1844</span>
+<span id="1845">1845</span>
+<span id="1846">1846</span>
+<span id="1847">1847</span>
+<span id="1848">1848</span>
+<span id="1849">1849</span>
+<span id="1850">1850</span>
+<span id="1851">1851</span>
+<span id="1852">1852</span>
+<span id="1853">1853</span>
+<span id="1854">1854</span>
+<span id="1855">1855</span>
+<span id="1856">1856</span>
+<span id="1857">1857</span>
+<span id="1858">1858</span>
+<span id="1859">1859</span>
+<span id="1860">1860</span>
+<span id="1861">1861</span>
+<span id="1862">1862</span>
+<span id="1863">1863</span>
+<span id="1864">1864</span>
+<span id="1865">1865</span>
+<span id="1866">1866</span>
+<span id="1867">1867</span>
+<span id="1868">1868</span>
+<span id="1869">1869</span>
+<span id="1870">1870</span>
+<span id="1871">1871</span>
+<span id="1872">1872</span>
+<span id="1873">1873</span>
+<span id="1874">1874</span>
+<span id="1875">1875</span>
+<span id="1876">1876</span>
+<span id="1877">1877</span>
+<span id="1878">1878</span>
+<span id="1879">1879</span>
+<span id="1880">1880</span>
+<span id="1881">1881</span>
+<span id="1882">1882</span>
+<span id="1883">1883</span>
+<span id="1884">1884</span>
+<span id="1885">1885</span>
+<span id="1886">1886</span>
+<span id="1887">1887</span>
+<span id="1888">1888</span>
+<span id="1889">1889</span>
+<span id="1890">1890</span>
+<span id="1891">1891</span>
+<span id="1892">1892</span>
+<span id="1893">1893</span>
+<span id="1894">1894</span>
+<span id="1895">1895</span>
+<span id="1896">1896</span>
+<span id="1897">1897</span>
+<span id="1898">1898</span>
+<span id="1899">1899</span>
+<span id="1900">1900</span>
+<span id="1901">1901</span>
+<span id="1902">1902</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">deny</span>(<span class="ident">warnings</span>))]</span>
@@ -1882,6 +2152,8 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ParserConfig</span> {
     <span class="ident">allow_spaces_after_header_name_in_responses</span>: <span class="ident">bool</span>,
     <span class="ident">allow_obsolete_multiline_headers_in_responses</span>: <span class="ident">bool</span>,
+    <span class="ident">allow_multiple_spaces_in_request_line_delimiters</span>: <span class="ident">bool</span>,
+    <span class="ident">allow_multiple_spaces_in_response_status_delimiters</span>: <span class="ident">bool</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">ParserConfig</span> {
@@ -1892,6 +2164,53 @@
     ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">allow_spaces_after_header_name_in_responses</span> <span class="op">=</span> <span class="ident">value</span>;
         <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Sets whether multiple spaces are allowed as delimiters in request lines.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Background</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The [latest version of the HTTP/1.1 spec][spec] allows implementations to parse multiple</span>
+    <span class="doccomment">/// whitespace characters in place of the `SP` delimiters in the request line, including:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// &gt; SP, HTAB, VT (%x0B), FF (%x0C), or bare CR</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This option relaxes the parser to allow for multiple spaces, but does *not* allow the</span>
+    <span class="doccomment">/// request line to contain the other mentioned whitespace characters.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [spec]: https://httpwg.org/http-core/draft-ietf-httpbis-messaging-latest.html#rfc.section.3.p.3</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allow_multiple_spaces_in_request_line_delimiters</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">allow_multiple_spaces_in_request_line_delimiters</span> <span class="op">=</span> <span class="ident">value</span>;
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Whether multiple spaces are allowed as delimiters in request lines.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">multiple_spaces_in_request_line_delimiters_are_allowed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">allow_multiple_spaces_in_request_line_delimiters</span>
+    }
+
+    <span class="doccomment">/// Sets whether multiple spaces are allowed as delimiters in response status lines.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Background</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The [latest version of the HTTP/1.1 spec][spec] allows implementations to parse multiple</span>
+    <span class="doccomment">/// whitespace characters in place of the `SP` delimiters in the response status line,</span>
+    <span class="doccomment">/// including:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// &gt; SP, HTAB, VT (%x0B), FF (%x0C), or bare CR</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This option relaxes the parser to allow for multiple spaces, but does *not* allow the status</span>
+    <span class="doccomment">/// line to contain the other mentioned whitespace characters.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [spec]: https://httpwg.org/http-core/draft-ietf-httpbis-messaging-latest.html#rfc.section.4.p.3</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allow_multiple_spaces_in_response_status_delimiters</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">allow_multiple_spaces_in_response_status_delimiters</span> <span class="op">=</span> <span class="ident">value</span>;
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Whether multiple spaces are allowed as delimiters in response status lines.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">multiple_spaces_in_response_status_delimiters_are_allowed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">allow_multiple_spaces_in_response_status_delimiters</span>
     }
 
     <span class="doccomment">/// Sets whether obsolete multiline headers should be allowed.</span>
@@ -1928,6 +2247,25 @@
     <span class="doccomment">/// Whether obsolete multiline headers should be allowed.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">obsolete_multiline_headers_in_responses_are_allowed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">allow_obsolete_multiline_headers_in_responses</span>
+    }
+
+    <span class="doccomment">/// Parses a request with the given config.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_request</span><span class="op">&lt;</span><span class="lifetime">&#39;headers</span>, <span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">request</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;headers</span>, <span class="lifetime">&#39;buf</span><span class="op">&gt;</span>,
+        <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> [<span class="ident">u8</span>],
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="ident">request</span>.<span class="ident">parse_with_config</span>(<span class="ident">buf</span>, <span class="self">self</span>)
+    }
+
+    <span class="doccomment">/// Parses a request with the given config and buffer for headers</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_request_with_uninit_headers</span><span class="op">&lt;</span><span class="lifetime">&#39;headers</span>, <span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">request</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;headers</span>, <span class="lifetime">&#39;buf</span><span class="op">&gt;</span>,
+        <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> [<span class="ident">u8</span>],
+        <span class="ident">headers</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;headers</span> <span class="kw-2">mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span><span class="op">&gt;</span>],
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="ident">request</span>.<span class="ident">parse_with_config_and_uninit_headers</span>(<span class="ident">buf</span>, <span class="self">self</span>, <span class="ident">headers</span>)
     }
 
     <span class="doccomment">/// Parses a response with the given config.</span>
@@ -1995,24 +2333,27 @@
             <span class="ident">method</span>: <span class="prelude-val">None</span>,
             <span class="ident">path</span>: <span class="prelude-val">None</span>,
             <span class="ident">version</span>: <span class="prelude-val">None</span>,
-            <span class="ident">headers</span>: <span class="ident">headers</span>,
+            <span class="ident">headers</span>,
         }
     }
 
-    <span class="doccomment">/// Try to parse a buffer of bytes into the Request,</span>
-    <span class="doccomment">/// except use an uninitialized slice of `Header`s.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// For more information, see `parse`</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_with_uninit_headers</span>(
+    <span class="kw">fn</span> <span class="ident">parse_with_config_and_uninit_headers</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> [<span class="ident">u8</span>],
+        <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">ParserConfig</span>,
         <span class="kw-2">mut</span> <span class="ident">headers</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;h</span> <span class="kw-2">mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span><span class="op">&gt;</span>],
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">orig_len</span> <span class="op">=</span> <span class="ident">buf</span>.<span class="ident">len</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">Bytes::new</span>(<span class="ident">buf</span>);
         <span class="macro">complete!</span>(<span class="ident">skip_empty_lines</span>(<span class="kw-2">&amp;mut</span> <span class="ident">bytes</span>));
         <span class="self">self</span>.<span class="ident">method</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="macro">complete!</span>(<span class="ident">parse_token</span>(<span class="kw-2">&amp;mut</span> <span class="ident">bytes</span>)));
+        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">allow_multiple_spaces_in_request_line_delimiters</span> {
+            <span class="macro">complete!</span>(<span class="ident">skip_spaces</span>(<span class="kw-2">&amp;mut</span> <span class="ident">bytes</span>));
+        }
         <span class="self">self</span>.<span class="ident">path</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="macro">complete!</span>(<span class="ident">parse_uri</span>(<span class="kw-2">&amp;mut</span> <span class="ident">bytes</span>)));
+        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">allow_multiple_spaces_in_request_line_delimiters</span> {
+            <span class="macro">complete!</span>(<span class="ident">skip_spaces</span>(<span class="kw-2">&amp;mut</span> <span class="ident">bytes</span>));
+        }
         <span class="self">self</span>.<span class="ident">version</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="macro">complete!</span>(<span class="ident">parse_version</span>(<span class="kw-2">&amp;mut</span> <span class="ident">bytes</span>)));
         <span class="macro">newline!</span>(<span class="ident">bytes</span>);
 
@@ -2028,17 +2369,26 @@
         <span class="prelude-val">Ok</span>(<span class="ident">Status::Complete</span>(<span class="ident">len</span> <span class="op">+</span> <span class="ident">headers_len</span>))
     }
 
-    <span class="doccomment">/// Try to parse a buffer of bytes into the Request.</span>
+    <span class="doccomment">/// Try to parse a buffer of bytes into the Request,</span>
+    <span class="doccomment">/// except use an uninitialized slice of `Header`s.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns byte offset in `buf` to start of HTTP body.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// For more information, see `parse`</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_with_uninit_headers</span>(
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
+        <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> [<span class="ident">u8</span>],
+        <span class="ident">headers</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;h</span> <span class="kw-2">mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span><span class="op">&gt;</span>],
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">parse_with_config_and_uninit_headers</span>(<span class="ident">buf</span>, <span class="kw-2">&amp;</span><span class="ident">Default::default</span>(), <span class="ident">headers</span>)
+    }
+
+    <span class="kw">fn</span> <span class="ident">parse_with_config</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> [<span class="ident">u8</span>], <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">ParserConfig</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">headers</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">headers</span>, <span class="kw-2">&amp;mut</span> []);
 
         <span class="comment">/* SAFETY: see `parse_headers_iter_uninit` guarantees */</span>
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">headers</span>: <span class="kw-2">*mut</span> [<span class="ident">Header</span>] <span class="op">=</span> <span class="ident">headers</span>;
             <span class="kw">let</span> <span class="ident">headers</span> <span class="op">=</span> <span class="ident">headers</span> <span class="kw">as</span> <span class="kw-2">*mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&gt;</span>];
-            <span class="kw">match</span> <span class="self">self</span>.<span class="ident">parse_with_uninit_headers</span>(<span class="ident">buf</span>, <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">headers</span>) {
+            <span class="kw">match</span> <span class="self">self</span>.<span class="ident">parse_with_config_and_uninit_headers</span>(<span class="ident">buf</span>, <span class="ident">config</span>, <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">headers</span>) {
                 <span class="prelude-val">Ok</span>(<span class="ident">Status::Complete</span>(<span class="ident">idx</span>)) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Status::Complete</span>(<span class="ident">idx</span>)),
                 <span class="ident">other</span> =&gt; {
                     <span class="comment">// put the original headers back</span>
@@ -2047,6 +2397,13 @@
                 },
             }
         }
+    }
+
+    <span class="doccomment">/// Try to parse a buffer of bytes into the Request.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns byte offset in `buf` to start of HTTP body.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">parse_with_config</span>(<span class="ident">buf</span>, <span class="kw-2">&amp;</span><span class="ident">Default::default</span>())
     }
 }
 
@@ -2069,6 +2426,24 @@
                 <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Status::Complete</span>(()));
             },
             <span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Status::Partial</span>)
+        }
+    }
+}
+
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">fn</span> <span class="ident">skip_spaces</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Bytes</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">loop</span> {
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">peek</span>();
+        <span class="kw">match</span> <span class="ident">b</span> {
+            <span class="prelude-val">Some</span>(<span class="string">b&#39; &#39;</span>) =&gt; {
+                <span class="comment">// there&#39;s ` `, so it&#39;s safe to bump 1 pos</span>
+                <span class="kw">unsafe</span> { <span class="ident">bytes</span>.<span class="ident">bump</span>() };
+            }
+            <span class="prelude-val">Some</span>(..) =&gt; {
+                <span class="ident">bytes</span>.<span class="ident">slice</span>();
+                <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Status::Complete</span>(()));
+            }
+            <span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Status::Partial</span>),
         }
     }
 }
@@ -2098,7 +2473,7 @@
             <span class="ident">version</span>: <span class="prelude-val">None</span>,
             <span class="ident">code</span>: <span class="prelude-val">None</span>,
             <span class="ident">reason</span>: <span class="prelude-val">None</span>,
-            <span class="ident">headers</span>: <span class="ident">headers</span>,
+            <span class="ident">headers</span>,
         }
     }
 
@@ -2136,6 +2511,9 @@
         <span class="macro">complete!</span>(<span class="ident">skip_empty_lines</span>(<span class="kw-2">&amp;mut</span> <span class="ident">bytes</span>));
         <span class="self">self</span>.<span class="ident">version</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="macro">complete!</span>(<span class="ident">parse_version</span>(<span class="kw-2">&amp;mut</span> <span class="ident">bytes</span>)));
         <span class="macro">space!</span>(<span class="ident">bytes</span> <span class="ident">or</span> <span class="ident">Error::Version</span>);
+        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">allow_multiple_spaces_in_response_status_delimiters</span> {
+            <span class="macro">complete!</span>(<span class="ident">skip_spaces</span>(<span class="kw-2">&amp;mut</span> <span class="ident">bytes</span>));
+        }
         <span class="self">self</span>.<span class="ident">code</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="macro">complete!</span>(<span class="ident">parse_code</span>(<span class="kw-2">&amp;mut</span> <span class="ident">bytes</span>)));
 
         <span class="comment">// RFC7230 says there must be &#39;SP&#39; and then reason-phrase, but admits</span>
@@ -2149,6 +2527,9 @@
         <span class="comment">// Anything else we&#39;ll say is a malformed status.</span>
         <span class="kw">match</span> <span class="macro">next!</span>(<span class="ident">bytes</span>) {
             <span class="string">b&#39; &#39;</span> =&gt; {
+                <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">allow_multiple_spaces_in_response_status_delimiters</span> {
+                    <span class="macro">complete!</span>(<span class="ident">skip_spaces</span>(<span class="kw-2">&amp;mut</span> <span class="ident">bytes</span>));
+                }
                 <span class="ident">bytes</span>.<span class="ident">slice</span>();
                 <span class="self">self</span>.<span class="ident">reason</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="macro">complete!</span>(<span class="ident">parse_reason</span>(<span class="kw-2">&amp;mut</span> <span class="ident">bytes</span>)));
             },
@@ -2287,7 +2668,7 @@
                     <span class="string">&quot;&quot;</span>
                 }
             }));
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="op">!</span>(<span class="ident">b</span> <span class="op">==</span> <span class="number">0x09</span> <span class="op">|</span><span class="op">|</span> <span class="ident">b</span> <span class="op">==</span> <span class="string">b&#39; &#39;</span> <span class="op">|</span><span class="op">|</span> (<span class="ident">b</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0x21</span> <span class="op">&amp;&amp;</span> <span class="ident">b</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0x7E</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">b</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0x80</span>) {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="op">!</span>(<span class="ident">b</span> <span class="op">==</span> <span class="number">0x09</span> <span class="op">|</span><span class="op">|</span> <span class="ident">b</span> <span class="op">==</span> <span class="string">b&#39; &#39;</span> <span class="op">|</span><span class="op">|</span> (<span class="number">0x21</span>..<span class="op">=</span><span class="number">0x7E</span>).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">b</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">b</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0x80</span>) {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::Status</span>);
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0x80</span> {
             <span class="ident">seen_obs_text</span> <span class="op">=</span> <span class="bool-val">true</span>;
@@ -2297,6 +2678,12 @@
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">fn</span> <span class="ident">parse_token</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Bytes</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="macro">next!</span>(<span class="ident">bytes</span>);
+    <span class="kw">if</span> <span class="op">!</span><span class="ident">is_token</span>(<span class="ident">b</span>) {
+        <span class="comment">// First char must be a token char, it can&#39;t be a space which would indicate an empty token.</span>
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::Token</span>);
+    }
+
     <span class="kw">loop</span> {
         <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="macro">next!</span>(<span class="ident">bytes</span>);
         <span class="kw">if</span> <span class="ident">b</span> <span class="op">==</span> <span class="string">b&#39; &#39;</span> {
@@ -2312,6 +2699,12 @@
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">fn</span> <span class="ident">parse_uri</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Bytes</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="macro">next!</span>(<span class="ident">bytes</span>);
+    <span class="kw">if</span> <span class="op">!</span><span class="ident">is_uri_token</span>(<span class="ident">b</span>) {
+        <span class="comment">// First char must be a URI char, it can&#39;t be a space which would indicate an empty path.</span>
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::Token</span>);
+    }
+
     <span class="ident">simd::match_uri_vectored</span>(<span class="ident">bytes</span>);
 
     <span class="kw">loop</span> {
@@ -2385,7 +2778,7 @@
     <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">s</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw-2">&amp;mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>];
     <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">s</span>
 }
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">assume_init_slice</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>]) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>] {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">assume_init_slice</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">s</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>]) -&gt; <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>] {
     <span class="kw">let</span> <span class="ident">s</span>: <span class="kw-2">*mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>] <span class="op">=</span> <span class="ident">s</span>;
     <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">s</span> <span class="kw">as</span> <span class="kw-2">*mut</span> [<span class="ident">T</span>];
     <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">s</span>
@@ -2947,6 +3340,27 @@
         <span class="op">|</span><span class="ident">_r</span><span class="op">|</span> {}
     }
 
+    <span class="macro">req!</span> {
+        <span class="ident">test_request_with_empty_method</span>,
+        <span class="string">b&quot; / HTTP/1.1\r\n\r\n&quot;</span>,
+        <span class="prelude-val">Err</span>(<span class="ident">::Error::Token</span>),
+        <span class="op">|</span><span class="ident">_r</span><span class="op">|</span> {}
+    }
+
+    <span class="macro">req!</span> {
+        <span class="ident">test_request_with_empty_path</span>,
+        <span class="string">b&quot;GET  HTTP/1.1\r\n\r\n&quot;</span>,
+        <span class="prelude-val">Err</span>(<span class="ident">::Error::Token</span>),
+        <span class="op">|</span><span class="ident">_r</span><span class="op">|</span> {}
+    }
+
+    <span class="macro">req!</span> {
+        <span class="ident">test_request_with_empty_method_and_path</span>,
+        <span class="string">b&quot;  HTTP/1.1\r\n\r\n&quot;</span>,
+        <span class="prelude-val">Err</span>(<span class="ident">::Error::Token</span>),
+        <span class="op">|</span><span class="ident">_r</span><span class="op">|</span> {}
+    }
+
     <span class="macro">macro_rules!</span> <span class="ident">res</span> {
         (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">buf</span>:<span class="ident">expr</span>, <span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">ident</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">body</span>:<span class="ident">expr</span>) =&gt; (
             <span class="macro">res!</span> {<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">buf</span>, <span class="prelude-val">Ok</span>(<span class="ident">Status::Complete</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">buf</span>.<span class="ident">len</span>())), <span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">body</span> }
@@ -3265,6 +3679,132 @@
         <span class="macro">assert_eq!</span>(<span class="ident">parse_chunk_size</span>(<span class="string">b&quot;1ffffffffffffffff\r\n&quot;</span>), <span class="prelude-val">Err</span>(<span class="ident">::InvalidChunkSize</span>));
         <span class="macro">assert_eq!</span>(<span class="ident">parse_chunk_size</span>(<span class="string">b&quot;Affffffffffffffff\r\n&quot;</span>), <span class="prelude-val">Err</span>(<span class="ident">::InvalidChunkSize</span>));
         <span class="macro">assert_eq!</span>(<span class="ident">parse_chunk_size</span>(<span class="string">b&quot;fffffffffffffffff\r\n&quot;</span>), <span class="prelude-val">Err</span>(<span class="ident">::InvalidChunkSize</span>));
+    }
+
+    <span class="kw">static</span> <span class="ident">RESPONSE_WITH_MULTIPLE_SPACE_DELIMITERS</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">u8</span>] <span class="op">=</span>
+        <span class="string">b&quot;HTTP/1.1   200  OK\r\n\r\n&quot;</span>;
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_forbid_response_with_multiple_space_delimiters</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">headers</span> <span class="op">=</span> [<span class="ident">EMPTY_HEADER</span>; <span class="ident">NUM_OF_HEADERS</span>];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">Response::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">headers</span>[..]);
+        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">response</span>.<span class="ident">parse</span>(<span class="ident">RESPONSE_WITH_MULTIPLE_SPACE_DELIMITERS</span>);
+
+        <span class="macro">assert_eq!</span>(<span class="ident">result</span>, <span class="prelude-val">Err</span>(<span class="ident">::Error::Status</span>));
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_allow_response_with_multiple_space_delimiters</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">headers</span> <span class="op">=</span> [<span class="ident">EMPTY_HEADER</span>; <span class="ident">NUM_OF_HEADERS</span>];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">Response::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">headers</span>[..]);
+        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">::ParserConfig::default</span>()
+            .<span class="ident">allow_multiple_spaces_in_response_status_delimiters</span>(<span class="bool-val">true</span>)
+            .<span class="ident">parse_response</span>(<span class="kw-2">&amp;mut</span> <span class="ident">response</span>, <span class="ident">RESPONSE_WITH_MULTIPLE_SPACE_DELIMITERS</span>);
+
+        <span class="macro">assert_eq!</span>(<span class="ident">result</span>, <span class="prelude-val">Ok</span>(<span class="ident">Status::Complete</span>(<span class="ident">RESPONSE_WITH_MULTIPLE_SPACE_DELIMITERS</span>.<span class="ident">len</span>())));
+        <span class="macro">assert_eq!</span>(<span class="ident">response</span>.<span class="ident">version</span>.<span class="ident">unwrap</span>(), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">response</span>.<span class="ident">code</span>.<span class="ident">unwrap</span>(), <span class="number">200</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">response</span>.<span class="ident">reason</span>.<span class="ident">unwrap</span>(), <span class="string">&quot;OK&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">response</span>.<span class="ident">headers</span>.<span class="ident">len</span>(), <span class="number">0</span>);
+    }
+
+    <span class="doccomment">/// This is technically allowed by the spec, but we only support multiple spaces as an option,</span>
+    <span class="doccomment">/// not stray `\r`s.</span>
+    <span class="kw">static</span> <span class="ident">RESPONSE_WITH_WEIRD_WHITESPACE_DELIMITERS</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">u8</span>] <span class="op">=</span>
+        <span class="string">b&quot;HTTP/1.1 200\rOK\r\n\r\n&quot;</span>;
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_forbid_response_with_weird_whitespace_delimiters</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">headers</span> <span class="op">=</span> [<span class="ident">EMPTY_HEADER</span>; <span class="ident">NUM_OF_HEADERS</span>];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">Response::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">headers</span>[..]);
+        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">response</span>.<span class="ident">parse</span>(<span class="ident">RESPONSE_WITH_WEIRD_WHITESPACE_DELIMITERS</span>);
+
+        <span class="macro">assert_eq!</span>(<span class="ident">result</span>, <span class="prelude-val">Err</span>(<span class="ident">::Error::Status</span>));
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_still_forbid_response_with_weird_whitespace_delimiters</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">headers</span> <span class="op">=</span> [<span class="ident">EMPTY_HEADER</span>; <span class="ident">NUM_OF_HEADERS</span>];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">Response::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">headers</span>[..]);
+        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">::ParserConfig::default</span>()
+            .<span class="ident">allow_multiple_spaces_in_response_status_delimiters</span>(<span class="bool-val">true</span>)
+            .<span class="ident">parse_response</span>(<span class="kw-2">&amp;mut</span> <span class="ident">response</span>, <span class="ident">RESPONSE_WITH_WEIRD_WHITESPACE_DELIMITERS</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">result</span>, <span class="prelude-val">Err</span>(<span class="ident">::Error::Status</span>));
+    }
+
+    <span class="kw">static</span> <span class="ident">REQUEST_WITH_MULTIPLE_SPACE_DELIMITERS</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">u8</span>] <span class="op">=</span>
+        <span class="string">b&quot;GET  /    HTTP/1.1\r\n\r\n&quot;</span>;
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_forbid_request_with_multiple_space_delimiters</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">headers</span> <span class="op">=</span> [<span class="ident">EMPTY_HEADER</span>; <span class="ident">NUM_OF_HEADERS</span>];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">request</span> <span class="op">=</span> <span class="ident">Request::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">headers</span>[..]);
+        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">parse</span>(<span class="ident">REQUEST_WITH_MULTIPLE_SPACE_DELIMITERS</span>);
+
+        <span class="macro">assert_eq!</span>(<span class="ident">result</span>, <span class="prelude-val">Err</span>(<span class="ident">::Error::Token</span>));
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_allow_request_with_multiple_space_delimiters</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">headers</span> <span class="op">=</span> [<span class="ident">EMPTY_HEADER</span>; <span class="ident">NUM_OF_HEADERS</span>];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">request</span> <span class="op">=</span> <span class="ident">Request::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">headers</span>[..]);
+        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">::ParserConfig::default</span>()
+            .<span class="ident">allow_multiple_spaces_in_request_line_delimiters</span>(<span class="bool-val">true</span>)
+            .<span class="ident">parse_request</span>(<span class="kw-2">&amp;mut</span> <span class="ident">request</span>, <span class="ident">REQUEST_WITH_MULTIPLE_SPACE_DELIMITERS</span>);
+
+        <span class="macro">assert_eq!</span>(<span class="ident">result</span>, <span class="prelude-val">Ok</span>(<span class="ident">Status::Complete</span>(<span class="ident">REQUEST_WITH_MULTIPLE_SPACE_DELIMITERS</span>.<span class="ident">len</span>())));
+        <span class="macro">assert_eq!</span>(<span class="ident">request</span>.<span class="ident">method</span>.<span class="ident">unwrap</span>(), <span class="string">&quot;GET&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">request</span>.<span class="ident">path</span>.<span class="ident">unwrap</span>(), <span class="string">&quot;/&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">request</span>.<span class="ident">version</span>.<span class="ident">unwrap</span>(), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">request</span>.<span class="ident">headers</span>.<span class="ident">len</span>(), <span class="number">0</span>);
+    }
+
+    <span class="doccomment">/// This is technically allowed by the spec, but we only support multiple spaces as an option,</span>
+    <span class="doccomment">/// not stray `\r`s.</span>
+    <span class="kw">static</span> <span class="ident">REQUEST_WITH_WEIRD_WHITESPACE_DELIMITERS</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">u8</span>] <span class="op">=</span>
+        <span class="string">b&quot;GET\r/\rHTTP/1.1\r\n\r\n&quot;</span>;
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_forbid_request_with_weird_whitespace_delimiters</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">headers</span> <span class="op">=</span> [<span class="ident">EMPTY_HEADER</span>; <span class="ident">NUM_OF_HEADERS</span>];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">request</span> <span class="op">=</span> <span class="ident">Request::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">headers</span>[..]);
+        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">parse</span>(<span class="ident">REQUEST_WITH_WEIRD_WHITESPACE_DELIMITERS</span>);
+
+        <span class="macro">assert_eq!</span>(<span class="ident">result</span>, <span class="prelude-val">Err</span>(<span class="ident">::Error::Token</span>));
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_still_forbid_request_with_weird_whitespace_delimiters</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">headers</span> <span class="op">=</span> [<span class="ident">EMPTY_HEADER</span>; <span class="ident">NUM_OF_HEADERS</span>];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">request</span> <span class="op">=</span> <span class="ident">Request::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">headers</span>[..]);
+        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">::ParserConfig::default</span>()
+            .<span class="ident">allow_multiple_spaces_in_request_line_delimiters</span>(<span class="bool-val">true</span>)
+            .<span class="ident">parse_request</span>(<span class="kw-2">&amp;mut</span> <span class="ident">request</span>, <span class="ident">REQUEST_WITH_WEIRD_WHITESPACE_DELIMITERS</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">result</span>, <span class="prelude-val">Err</span>(<span class="ident">::Error::Token</span>));
+    }
+
+    <span class="kw">static</span> <span class="ident">REQUEST_WITH_MULTIPLE_SPACES_AND_BAD_PATH</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">u8</span>] <span class="op">=</span> <span class="string">b&quot;GET   /foo&gt;ohno HTTP/1.1\r\n\r\n&quot;</span>;
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_request_with_multiple_spaces_and_bad_path</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">headers</span> <span class="op">=</span> [<span class="ident">EMPTY_HEADER</span>; <span class="ident">NUM_OF_HEADERS</span>];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">request</span> <span class="op">=</span> <span class="ident">Request::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">headers</span>[..]);
+        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">::ParserConfig::default</span>()
+            .<span class="ident">allow_multiple_spaces_in_request_line_delimiters</span>(<span class="bool-val">true</span>)
+            .<span class="ident">parse_request</span>(<span class="kw-2">&amp;mut</span> <span class="ident">request</span>, <span class="ident">REQUEST_WITH_MULTIPLE_SPACES_AND_BAD_PATH</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">result</span>, <span class="prelude-val">Err</span>(<span class="ident">::Error::Token</span>));
+    }
+
+    <span class="kw">static</span> <span class="ident">RESPONSE_WITH_SPACES_IN_CODE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">u8</span>] <span class="op">=</span> <span class="string">b&quot;HTTP/1.1 99 200 OK\r\n\r\n&quot;</span>;
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_response_with_spaces_in_code</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">headers</span> <span class="op">=</span> [<span class="ident">EMPTY_HEADER</span>; <span class="ident">NUM_OF_HEADERS</span>];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">Response::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">headers</span>[..]);
+        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">::ParserConfig::default</span>()
+            .<span class="ident">allow_multiple_spaces_in_response_status_delimiters</span>(<span class="bool-val">true</span>)
+            .<span class="ident">parse_response</span>(<span class="kw-2">&amp;mut</span> <span class="ident">response</span>, <span class="ident">RESPONSE_WITH_SPACES_IN_CODE</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">result</span>, <span class="prelude-val">Err</span>(<span class="ident">::Error::Status</span>));
     }
 }
 </code></pre></div>
