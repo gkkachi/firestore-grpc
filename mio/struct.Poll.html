@@ -134,25 +134,25 @@ internal state properly and won’t generate events.</p>
 <h2 id="implementation-notes"><a href="#implementation-notes">Implementation notes</a></h2>
 <p><code>Poll</code> is backed by the selector provided by the operating system.</p>
 <div><table><thead><tr><th>OS</th><th>Selector</th></tr></thead><tbody>
-<tr><td>Android</td><td><a href="http://man7.org/linux/man-pages/man7/epoll.7.html">epoll</a></td></tr>
+<tr><td>Android</td><td><a href="https://man7.org/linux/man-pages/man7/epoll.7.html">epoll</a></td></tr>
 <tr><td>DragonFly BSD</td><td><a href="https://www.freebsd.org/cgi/man.cgi?query=kqueue&amp;sektion=2">kqueue</a></td></tr>
 <tr><td>FreeBSD</td><td><a href="https://www.freebsd.org/cgi/man.cgi?query=kqueue&amp;sektion=2">kqueue</a></td></tr>
 <tr><td>iOS</td><td><a href="https://www.freebsd.org/cgi/man.cgi?query=kqueue&amp;sektion=2">kqueue</a></td></tr>
-<tr><td>illumos</td><td><a href="http://man7.org/linux/man-pages/man7/epoll.7.html">epoll</a></td></tr>
-<tr><td>Linux</td><td><a href="http://man7.org/linux/man-pages/man7/epoll.7.html">epoll</a></td></tr>
+<tr><td>illumos</td><td><a href="https://man7.org/linux/man-pages/man7/epoll.7.html">epoll</a></td></tr>
+<tr><td>Linux</td><td><a href="https://man7.org/linux/man-pages/man7/epoll.7.html">epoll</a></td></tr>
 <tr><td>NetBSD</td><td><a href="https://www.freebsd.org/cgi/man.cgi?query=kqueue&amp;sektion=2">kqueue</a></td></tr>
 <tr><td>OpenBSD</td><td><a href="https://www.freebsd.org/cgi/man.cgi?query=kqueue&amp;sektion=2">kqueue</a></td></tr>
-<tr><td>Windows</td><td><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365198(v=vs.85).aspx">IOCP</a></td></tr>
+<tr><td>Windows</td><td><a href="https://docs.microsoft.com/en-us/windows/win32/fileio/i-o-completion-ports">IOCP</a></td></tr>
 <tr><td>macOS</td><td><a href="https://www.freebsd.org/cgi/man.cgi?query=kqueue&amp;sektion=2">kqueue</a></td></tr>
 </tbody></table>
 </div>
 <p>On all supported platforms, socket operations are handled by using the
 system selector. Platform specific extensions (e.g. <a href="unix/struct.SourceFd.html"><code>SourceFd</code></a>) allow
 accessing other features provided by individual system selectors. For
-example, Linux’s <a href="http://man7.org/linux/man-pages/man2/signalfd.2.html"><code>signalfd</code></a> feature can be used by registering the FD with
+example, Linux’s <a href="https://man7.org/linux/man-pages/man2/signalfd.2.html"><code>signalfd</code></a> feature can be used by registering the FD with
 <code>Poll</code> via <a href="unix/struct.SourceFd.html"><code>SourceFd</code></a>.</p>
 <p>On all platforms except windows, a call to <a href="struct.Poll.html#method.poll"><code>Poll::poll</code></a> is mostly just a
-direct call to the system selector. However, <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365198(v=vs.85).aspx">IOCP</a> uses a completion model
+direct call to the system selector. However, <a href="https://docs.microsoft.com/en-us/windows/win32/fileio/i-o-completion-ports">IOCP</a> uses a completion model
 instead of a readiness model. In this case, <code>Poll</code> must adapt the completion
 model Mio’s API. While non-trivial, the bridge layer is still quite
 efficient. The most expensive part being calls to <code>read</code> and <code>write</code> require
