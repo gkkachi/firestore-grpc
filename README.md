@@ -21,17 +21,18 @@ export TOKEN=`gcloud auth print-access-token`
 
 ```toml
 [dependencies]
-firestore_grpc = "0.31"
-tokio = {version = "0.2", features = ["full"]}
+firestore_grpc = "0.109"
+tokio = {version = "1.0", features = ["full"]}
 ```
 
 #### `main.rs`
 
 ```rust
 use firestore_grpc::tonic::{
+    codegen::InterceptedService,
     metadata::MetadataValue,
     transport::{Channel, ClientTlsConfig},
-    Request,
+    Request, Status,
 };
 use firestore_grpc::v1::{
     firestore_client::FirestoreClient, value::ValueType, CreateDocumentRequest, Document, Value,
@@ -51,13 +52,13 @@ fn get_project_id() -> String {
     env::var("PROJECT_ID").unwrap()
 }
 
-async fn get_client() -> Result<FirestoreClient<Channel>, BoxError> {
+async fn get_client() -> Result<FirestoreClient<InterceptedService<Channel, impl Fn(Request<()>) -> Result<Request<()>, Status>>>, BoxError> {
     let endpoint = Channel::from_static(URL).tls_config(ClientTlsConfig::new().domain_name(DOMAIN));
 
     let bearer_token = format!("Bearer {}", get_token());
     let header_value = MetadataValue::from_str(&bearer_token)?;
 
-    let channel = endpoint.connect().await?;
+    let channel = endpoint?.connect().await?;
 
     let service = FirestoreClient::with_interceptor(channel, move |mut req: Request<()>| {
         req.metadata_mut()
@@ -104,4 +105,5 @@ async fn create_document() -> Result<Document, BoxError> {
 async fn main() {
     create_document().await.unwrap();
 }
+
 ```
