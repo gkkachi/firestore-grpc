@@ -1,4 +1,4 @@
-var N = null;var sourcesIndex = {};
+var sourcesIndex = {};
 sourcesIndex["anyhow"] = {"name":"","files":["backtrace.rs","chain.rs","context.rs","ensure.rs","error.rs","fmt.rs","kind.rs","lib.rs","macros.rs","ptr.rs","wrapper.rs"]};
 sourcesIndex["async_stream"] = {"name":"","files":["async_stream.rs","lib.rs","next.rs","yielder.rs"]};
 sourcesIndex["async_stream_impl"] = {"name":"","files":["lib.rs"]};
