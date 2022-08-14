@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ConditionType","The type of precondition."]]});
+window.SIDEBAR_ITEMS = {"enum":[["ConditionType","The type of precondition."]]};

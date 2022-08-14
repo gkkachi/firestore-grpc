@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ResponseType","The supported responses."]]});
+window.SIDEBAR_ITEMS = {"enum":[["ResponseType","The supported responses."]]};

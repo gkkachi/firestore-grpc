@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["OperandType","The argument to the filter."],["Operator","A unary operator."]]});
+window.SIDEBAR_ITEMS = {"enum":[["OperandType","The argument to the filter."],["Operator","A unary operator."]]};

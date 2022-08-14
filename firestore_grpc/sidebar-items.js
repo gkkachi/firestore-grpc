@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["google",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["google",""]]};

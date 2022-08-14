@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ConsistencySelector","The consistency mode for this transaction. If not set, defaults to strong consistency."],["QueryType","The query to run."]]});
+window.SIDEBAR_ITEMS = {"enum":[["ConsistencySelector","The consistency mode for this transaction. If not set, defaults to strong consistency."],["QueryType","The query to run."]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ServerValue","A value that is calculated by the server."],["TransformType","The transformation to apply on the field."]]});
+window.SIDEBAR_ITEMS = {"enum":[["ServerValue","A value that is calculated by the server."],["TransformType","The transformation to apply on the field."]]};

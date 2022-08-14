@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["FirestoreClient","The Cloud Firestore service."]]});
+window.SIDEBAR_ITEMS = {"struct":[["FirestoreClient","The Cloud Firestore service."]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Annotation",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["Annotation",""]]};

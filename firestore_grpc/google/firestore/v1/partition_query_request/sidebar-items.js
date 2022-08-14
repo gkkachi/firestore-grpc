@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ConsistencySelector","The consistency mode for this request. If not set, defaults to strong consistency."],["QueryType","The query to partition."]]});
+window.SIDEBAR_ITEMS = {"enum":[["ConsistencySelector","The consistency mode for this request. If not set, defaults to strong consistency."],["QueryType","The query to partition."]]};
