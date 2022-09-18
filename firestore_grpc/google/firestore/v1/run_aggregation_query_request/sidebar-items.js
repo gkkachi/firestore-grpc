@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["ConsistencySelector","The consistency mode for the query, defaults to strong consistency."],["QueryType","The query to run."]]};

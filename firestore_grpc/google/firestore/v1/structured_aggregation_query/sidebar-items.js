@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["QueryType","The base query to aggregate over."]],"mod":[["aggregation","Nested message and enum types in `Aggregation`."]],"struct":[["Aggregation","Defines a aggregation that produces a single result."]]};
