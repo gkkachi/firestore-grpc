@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/rustls-0.19.1/src/stream.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rustls/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/rustls-0.19.1/src/stream.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rustls/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -199,206 +199,206 @@
 <span id="199">199</span>
 <span id="200">200</span>
 <span id="201">201</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::session::Session</span>;
-<span class="kw">use</span> <span class="ident">std::io</span>::{<span class="ident">IoSlice</span>, <span class="ident">Read</span>, <span class="prelude-ty">Result</span>, <span class="ident">Write</span>};
+</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::session::Session;
+<span class="kw">use </span>std::io::{IoSlice, Read, <span class="prelude-ty">Result</span>, Write};
 
-<span class="doccomment">/// This type implements `io::Read` and `io::Write`, encapsulating</span>
-<span class="doccomment">/// a Session `S` and an underlying transport `T`, such as a socket.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This allows you to use a rustls Session like a normal stream.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Stream</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">S</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="ident">Session</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">T</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="ident">Read</span> <span class="op">+</span> <span class="ident">Write</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Our session</span>
-    <span class="kw">pub</span> <span class="ident">sess</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">S</span>,
+<span class="doccomment">/// This type implements `io::Read` and `io::Write`, encapsulating
+/// a Session `S` and an underlying transport `T`, such as a socket.
+///
+/// This allows you to use a rustls Session like a normal stream.
+</span><span class="kw">pub struct </span>Stream&lt;<span class="lifetime">&#39;a</span>, S: <span class="lifetime">&#39;a </span>+ Session + <span class="question-mark">?</span>Sized, T: <span class="lifetime">&#39;a </span>+ Read + Write + <span class="question-mark">?</span>Sized&gt; {
+    <span class="doccomment">/// Our session
+    </span><span class="kw">pub </span>sess: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>S,
 
-    <span class="doccomment">/// The underlying transport, like a socket</span>
-    <span class="kw">pub</span> <span class="ident">sock</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span>,
+    <span class="doccomment">/// The underlying transport, like a socket
+    </span><span class="kw">pub </span>sock: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Stream</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">S</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="ident">Session</span>,
-    <span class="ident">T</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="ident">Read</span> <span class="op">+</span> <span class="ident">Write</span>,
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, S, T&gt; Stream&lt;<span class="lifetime">&#39;a</span>, S, T&gt;
+<span class="kw">where
+    </span>S: <span class="lifetime">&#39;a </span>+ Session,
+    T: <span class="lifetime">&#39;a </span>+ Read + Write,
 {
-    <span class="doccomment">/// Make a new Stream using the Session `sess` and socket-like object</span>
-    <span class="doccomment">/// `sock`.  This does not fail and does no IO.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">sess</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">S</span>, <span class="ident">sock</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="ident">Stream</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="ident">Stream</span> { <span class="ident">sess</span>, <span class="ident">sock</span> }
+    <span class="doccomment">/// Make a new Stream using the Session `sess` and socket-like object
+    /// `sock`.  This does not fail and does no IO.
+    </span><span class="kw">pub fn </span>new(sess: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>S, sock: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T) -&gt; Stream&lt;<span class="lifetime">&#39;a</span>, S, T&gt; {
+        Stream { sess, sock }
     }
 
-    <span class="doccomment">/// If we&#39;re handshaking, complete all the IO for that.</span>
-    <span class="doccomment">/// If we have data to write, write it all.</span>
-    <span class="kw">fn</span> <span class="ident">complete_prior_io</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">sess</span>.<span class="ident">is_handshaking</span>() {
-            <span class="self">self</span>.<span class="ident">sess</span>.<span class="ident">complete_io</span>(<span class="self">self</span>.<span class="ident">sock</span>)<span class="question-mark">?</span>;
+    <span class="doccomment">/// If we&#39;re handshaking, complete all the IO for that.
+    /// If we have data to write, write it all.
+    </span><span class="kw">fn </span>complete_prior_io(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="kw">if </span><span class="self">self</span>.sess.is_handshaking() {
+            <span class="self">self</span>.sess.complete_io(<span class="self">self</span>.sock)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">sess</span>.<span class="ident">wants_write</span>() {
-            <span class="self">self</span>.<span class="ident">sess</span>.<span class="ident">complete_io</span>(<span class="self">self</span>.<span class="ident">sock</span>)<span class="question-mark">?</span>;
+        <span class="kw">if </span><span class="self">self</span>.sess.wants_write() {
+            <span class="self">self</span>.sess.complete_io(<span class="self">self</span>.sock)<span class="question-mark">?</span>;
         }
 
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Read</span> <span class="kw">for</span> <span class="ident">Stream</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">S</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="ident">Session</span>,
-    <span class="ident">T</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="ident">Read</span> <span class="op">+</span> <span class="ident">Write</span>,
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, S, T&gt; Read <span class="kw">for </span>Stream&lt;<span class="lifetime">&#39;a</span>, S, T&gt;
+<span class="kw">where
+    </span>S: <span class="lifetime">&#39;a </span>+ Session,
+    T: <span class="lifetime">&#39;a </span>+ Read + Write,
 {
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">complete_prior_io</span>()<span class="question-mark">?</span>;
+    <span class="kw">fn </span>read(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;mut </span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;usize&gt; {
+        <span class="self">self</span>.complete_prior_io()<span class="question-mark">?</span>;
 
-        <span class="comment">// We call complete_io() in a loop since a single call may read only</span>
-        <span class="comment">// a partial packet from the underlying transport. A full packet is</span>
-        <span class="comment">// needed to get more plaintext, which we must do if EOF has not been</span>
-        <span class="comment">// hit. Otherwise, we will prematurely signal EOF by returning 0. We</span>
-        <span class="comment">// determine if EOF has actually been hit by checking if 0 bytes were</span>
-        <span class="comment">// read from the underlying transport.</span>
-        <span class="kw">while</span> <span class="self">self</span>.<span class="ident">sess</span>.<span class="ident">wants_read</span>() <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">sess</span>.<span class="ident">complete_io</span>(<span class="self">self</span>.<span class="ident">sock</span>)<span class="question-mark">?</span>.<span class="number">0</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {}
+        <span class="comment">// We call complete_io() in a loop since a single call may read only
+        // a partial packet from the underlying transport. A full packet is
+        // needed to get more plaintext, which we must do if EOF has not been
+        // hit. Otherwise, we will prematurely signal EOF by returning 0. We
+        // determine if EOF has actually been hit by checking if 0 bytes were
+        // read from the underlying transport.
+        </span><span class="kw">while </span><span class="self">self</span>.sess.wants_read() &amp;&amp; <span class="self">self</span>.sess.complete_io(<span class="self">self</span>.sock)<span class="question-mark">?</span>.<span class="number">0 </span>!= <span class="number">0 </span>{}
 
-        <span class="self">self</span>.<span class="ident">sess</span>.<span class="ident">read</span>(<span class="ident">buf</span>)
+        <span class="self">self</span>.sess.read(buf)
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="ident">Stream</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">S</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="ident">Session</span>,
-    <span class="ident">T</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="ident">Read</span> <span class="op">+</span> <span class="ident">Write</span>,
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, S, T&gt; Write <span class="kw">for </span>Stream&lt;<span class="lifetime">&#39;a</span>, S, T&gt;
+<span class="kw">where
+    </span>S: <span class="lifetime">&#39;a </span>+ Session,
+    T: <span class="lifetime">&#39;a </span>+ Read + Write,
 {
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">complete_prior_io</span>()<span class="question-mark">?</span>;
+    <span class="kw">fn </span>write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;usize&gt; {
+        <span class="self">self</span>.complete_prior_io()<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">sess</span>.<span class="ident">write</span>(<span class="ident">buf</span>)<span class="question-mark">?</span>;
+        <span class="kw">let </span>len = <span class="self">self</span>.sess.write(buf)<span class="question-mark">?</span>;
 
-        <span class="comment">// Try to write the underlying transport here, but don&#39;t let</span>
-        <span class="comment">// any errors mask the fact we&#39;ve consumed `len` bytes.</span>
-        <span class="comment">// Callers will learn of permanent errors on the next call.</span>
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">sess</span>.<span class="ident">complete_io</span>(<span class="self">self</span>.<span class="ident">sock</span>);
+        <span class="comment">// Try to write the underlying transport here, but don&#39;t let
+        // any errors mask the fact we&#39;ve consumed `len` bytes.
+        // Callers will learn of permanent errors on the next call.
+        </span><span class="kw">let _ </span>= <span class="self">self</span>.sess.complete_io(<span class="self">self</span>.sock);
 
-        <span class="prelude-val">Ok</span>(<span class="ident">len</span>)
+        <span class="prelude-val">Ok</span>(len)
     }
 
-    <span class="kw">fn</span> <span class="ident">write_vectored</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="ident">IoSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">complete_prior_io</span>()<span class="question-mark">?</span>;
+    <span class="kw">fn </span>write_vectored(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bufs: <span class="kw-2">&amp;</span>[IoSlice&lt;<span class="lifetime">&#39;_</span>&gt;]) -&gt; <span class="prelude-ty">Result</span>&lt;usize&gt; {
+        <span class="self">self</span>.complete_prior_io()<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">sess</span>.<span class="ident">write_vectored</span>(<span class="ident">bufs</span>)<span class="question-mark">?</span>;
+        <span class="kw">let </span>len = <span class="self">self</span>.sess.write_vectored(bufs)<span class="question-mark">?</span>;
 
-        <span class="comment">// Try to write the underlying transport here, but don&#39;t let</span>
-        <span class="comment">// any errors mask the fact we&#39;ve consumed `len` bytes.</span>
-        <span class="comment">// Callers will learn of permanent errors on the next call.</span>
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">sess</span>.<span class="ident">complete_io</span>(<span class="self">self</span>.<span class="ident">sock</span>);
+        <span class="comment">// Try to write the underlying transport here, but don&#39;t let
+        // any errors mask the fact we&#39;ve consumed `len` bytes.
+        // Callers will learn of permanent errors on the next call.
+        </span><span class="kw">let _ </span>= <span class="self">self</span>.sess.complete_io(<span class="self">self</span>.sock);
 
-        <span class="prelude-val">Ok</span>(<span class="ident">len</span>)
+        <span class="prelude-val">Ok</span>(len)
     }
 
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">complete_prior_io</span>()<span class="question-mark">?</span>;
+    <span class="kw">fn </span>flush(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="self">self</span>.complete_prior_io()<span class="question-mark">?</span>;
 
-        <span class="self">self</span>.<span class="ident">sess</span>.<span class="ident">flush</span>()<span class="question-mark">?</span>;
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">sess</span>.<span class="ident">wants_write</span>() {
-            <span class="self">self</span>.<span class="ident">sess</span>.<span class="ident">complete_io</span>(<span class="self">self</span>.<span class="ident">sock</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.sess.flush()<span class="question-mark">?</span>;
+        <span class="kw">if </span><span class="self">self</span>.sess.wants_write() {
+            <span class="self">self</span>.sess.complete_io(<span class="self">self</span>.sock)<span class="question-mark">?</span>;
         }
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="doccomment">/// This type implements `io::Read` and `io::Write`, encapsulating</span>
-<span class="doccomment">/// and owning a Session `S` and an underlying blocking transport</span>
-<span class="doccomment">/// `T`, such as a socket.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This allows you to use a rustls Session like a normal stream.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StreamOwned</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Session</span> <span class="op">+</span> <span class="ident">Sized</span>, <span class="ident">T</span>: <span class="ident">Read</span> <span class="op">+</span> <span class="ident">Write</span> <span class="op">+</span> <span class="ident">Sized</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Our session</span>
-    <span class="kw">pub</span> <span class="ident">sess</span>: <span class="ident">S</span>,
+<span class="doccomment">/// This type implements `io::Read` and `io::Write`, encapsulating
+/// and owning a Session `S` and an underlying blocking transport
+/// `T`, such as a socket.
+///
+/// This allows you to use a rustls Session like a normal stream.
+</span><span class="kw">pub struct </span>StreamOwned&lt;S: Session + Sized, T: Read + Write + Sized&gt; {
+    <span class="doccomment">/// Our session
+    </span><span class="kw">pub </span>sess: S,
 
-    <span class="doccomment">/// The underlying transport, like a socket</span>
-    <span class="kw">pub</span> <span class="ident">sock</span>: <span class="ident">T</span>,
+    <span class="doccomment">/// The underlying transport, like a socket
+    </span><span class="kw">pub </span>sock: T,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">StreamOwned</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">S</span>: <span class="ident">Session</span>,
-    <span class="ident">T</span>: <span class="ident">Read</span> <span class="op">+</span> <span class="ident">Write</span>,
+<span class="kw">impl</span>&lt;S, T&gt; StreamOwned&lt;S, T&gt;
+<span class="kw">where
+    </span>S: Session,
+    T: Read + Write,
 {
-    <span class="doccomment">/// Make a new StreamOwned taking the Session `sess` and socket-like</span>
-    <span class="doccomment">/// object `sock`.  This does not fail and does no IO.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is the same as `Stream::new` except `sess` and `sock` are</span>
-    <span class="doccomment">/// moved into the StreamOwned.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">sess</span>: <span class="ident">S</span>, <span class="ident">sock</span>: <span class="ident">T</span>) -&gt; <span class="ident">StreamOwned</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="ident">StreamOwned</span> { <span class="ident">sess</span>, <span class="ident">sock</span> }
+    <span class="doccomment">/// Make a new StreamOwned taking the Session `sess` and socket-like
+    /// object `sock`.  This does not fail and does no IO.
+    ///
+    /// This is the same as `Stream::new` except `sess` and `sock` are
+    /// moved into the StreamOwned.
+    </span><span class="kw">pub fn </span>new(sess: S, sock: T) -&gt; StreamOwned&lt;S, T&gt; {
+        StreamOwned { sess, sock }
     }
 
-    <span class="doccomment">/// Get a reference to the underlying socket</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">T</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sock</span>
+    <span class="doccomment">/// Get a reference to the underlying socket
+    </span><span class="kw">pub fn </span>get_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>T {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.sock
     }
 
-    <span class="doccomment">/// Get a mutable reference to the underlying socket</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">T</span> {
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">sock</span>
+    <span class="doccomment">/// Get a mutable reference to the underlying socket
+    </span><span class="kw">pub fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>T {
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>.sock
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">StreamOwned</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">S</span>: <span class="ident">Session</span>,
-    <span class="ident">T</span>: <span class="ident">Read</span> <span class="op">+</span> <span class="ident">Write</span>,
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, S, T&gt; StreamOwned&lt;S, T&gt;
+<span class="kw">where
+    </span>S: Session,
+    T: Read + Write,
 {
-    <span class="kw">fn</span> <span class="ident">as_stream</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">Stream</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="ident">Stream</span> {
-            <span class="ident">sess</span>: <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">sess</span>,
-            <span class="ident">sock</span>: <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">sock</span>,
+    <span class="kw">fn </span>as_stream(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; Stream&lt;<span class="lifetime">&#39;a</span>, S, T&gt; {
+        Stream {
+            sess: <span class="kw-2">&amp;mut </span><span class="self">self</span>.sess,
+            sock: <span class="kw-2">&amp;mut </span><span class="self">self</span>.sock,
         }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Read</span> <span class="kw">for</span> <span class="ident">StreamOwned</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">S</span>: <span class="ident">Session</span>,
-    <span class="ident">T</span>: <span class="ident">Read</span> <span class="op">+</span> <span class="ident">Write</span>,
+<span class="kw">impl</span>&lt;S, T&gt; Read <span class="kw">for </span>StreamOwned&lt;S, T&gt;
+<span class="kw">where
+    </span>S: Session,
+    T: Read + Write,
 {
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">as_stream</span>().<span class="ident">read</span>(<span class="ident">buf</span>)
+    <span class="kw">fn </span>read(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;mut </span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;usize&gt; {
+        <span class="self">self</span>.as_stream().read(buf)
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="ident">StreamOwned</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">T</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">S</span>: <span class="ident">Session</span>,
-    <span class="ident">T</span>: <span class="ident">Read</span> <span class="op">+</span> <span class="ident">Write</span>,
+<span class="kw">impl</span>&lt;S, T&gt; Write <span class="kw">for </span>StreamOwned&lt;S, T&gt;
+<span class="kw">where
+    </span>S: Session,
+    T: Read + Write,
 {
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">as_stream</span>().<span class="ident">write</span>(<span class="ident">buf</span>)
+    <span class="kw">fn </span>write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;usize&gt; {
+        <span class="self">self</span>.as_stream().write(buf)
     }
 
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">as_stream</span>().<span class="ident">flush</span>()
+    <span class="kw">fn </span>flush(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="self">self</span>.as_stream().flush()
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Stream</span>, <span class="ident">StreamOwned</span>};
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::client::ClientSession</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::server::ServerSession</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::session::Session</span>;
-    <span class="kw">use</span> <span class="ident">std::net::TcpStream</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::{Stream, StreamOwned};
+    <span class="kw">use </span><span class="kw">crate</span>::client::ClientSession;
+    <span class="kw">use </span><span class="kw">crate</span>::server::ServerSession;
+    <span class="kw">use </span><span class="kw">crate</span>::session::Session;
+    <span class="kw">use </span>std::net::TcpStream;
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">stream_can_be_created_for_session_and_tcpstream</span>() {
-        <span class="kw">type</span> <span class="ident">_Test</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Stream</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="kw">dyn</span> <span class="ident">Session</span>, <span class="ident">TcpStream</span><span class="op">&gt;</span>;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>stream_can_be_created_for_session_and_tcpstream() {
+        <span class="kw">type </span>_Test&lt;<span class="lifetime">&#39;a</span>&gt; = Stream&lt;<span class="lifetime">&#39;a</span>, <span class="kw">dyn </span>Session, TcpStream&gt;;
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">streamowned_can_be_created_for_client_and_tcpstream</span>() {
-        <span class="kw">type</span> <span class="ident">_Test</span> <span class="op">=</span> <span class="ident">StreamOwned</span><span class="op">&lt;</span><span class="ident">ClientSession</span>, <span class="ident">TcpStream</span><span class="op">&gt;</span>;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>streamowned_can_be_created_for_client_and_tcpstream() {
+        <span class="kw">type </span>_Test = StreamOwned&lt;ClientSession, TcpStream&gt;;
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">streamowned_can_be_created_for_server_and_tcpstream</span>() {
-        <span class="kw">type</span> <span class="ident">_Test</span> <span class="op">=</span> <span class="ident">StreamOwned</span><span class="op">&lt;</span><span class="ident">ServerSession</span>, <span class="ident">TcpStream</span><span class="op">&gt;</span>;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>streamowned_can_be_created_for_server_and_tcpstream() {
+        <span class="kw">type </span>_Test = StreamOwned&lt;ServerSession, TcpStream&gt;;
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustls" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustls" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

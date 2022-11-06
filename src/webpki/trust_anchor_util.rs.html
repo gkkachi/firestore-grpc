@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/webpki-0.21.4/src/trust_anchor_util.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>trust_anchor_util.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../webpki/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../webpki/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../webpki/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/webpki-0.21.4/src/trust_anchor_util.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>trust_anchor_util.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../webpki/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../webpki/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../webpki/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -118,125 +118,125 @@
 <span id="118">118</span>
 <span id="119">119</span>
 <span id="120">120</span>
-</pre><pre class="rust"><code><span class="comment">// Copyright 2015 Brian Smith.</span>
-<span class="comment">//</span>
-<span class="comment">// Permission to use, copy, modify, and/or distribute this software for any</span>
-<span class="comment">// purpose with or without fee is hereby granted, provided that the above</span>
-<span class="comment">// copyright notice and this permission notice appear in all copies.</span>
-<span class="comment">//</span>
-<span class="comment">// THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHORS DISCLAIM ALL WARRANTIES</span>
-<span class="comment">// WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF</span>
-<span class="comment">// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR</span>
-<span class="comment">// ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES</span>
-<span class="comment">// WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN</span>
-<span class="comment">// ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</span>
-<span class="comment">// OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</span>
+</pre><pre class="rust"><code><span class="comment">// Copyright 2015 Brian Smith.
+//
+// Permission to use, copy, modify, and/or distribute this software for any
+// purpose with or without fee is hereby granted, provided that the above
+// copyright notice and this permission notice appear in all copies.
+//
+// THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR
+// ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+// WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+// ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+// OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-<span class="doccomment">//! Utilities for efficiently embedding trust anchors in programs.</span>
+</span><span class="doccomment">//! Utilities for efficiently embedding trust anchors in programs.
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::der</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">cert</span>::{<span class="ident">certificate_serial_number</span>, <span class="ident">parse_cert_internal</span>, <span class="ident">Cert</span>, <span class="ident">EndEntityOrCA</span>},
-    <span class="ident">Error</span>, <span class="ident">TrustAnchor</span>,
+</span><span class="kw">use </span><span class="kw">super</span>::der;
+<span class="kw">use crate</span>::{
+    cert::{certificate_serial_number, parse_cert_internal, Cert, EndEntityOrCA},
+    Error, TrustAnchor,
 };
 
-<span class="doccomment">/// Interprets the given DER-encoded certificate as a `TrustAnchor`. The</span>
-<span class="doccomment">/// certificate is not validated. In particular, there is no check that the</span>
-<span class="doccomment">/// certificate is self-signed or even that the certificate has the cA basic</span>
-<span class="doccomment">/// constraint.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cert_der_as_trust_anchor</span>(<span class="ident">cert_der</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TrustAnchor</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">cert_der</span> <span class="op">=</span> <span class="ident">untrusted::Input::from</span>(<span class="ident">cert_der</span>);
+<span class="doccomment">/// Interprets the given DER-encoded certificate as a `TrustAnchor`. The
+/// certificate is not validated. In particular, there is no check that the
+/// certificate is self-signed or even that the certificate has the cA basic
+/// constraint.
+</span><span class="kw">pub fn </span>cert_der_as_trust_anchor(cert_der: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;TrustAnchor, Error&gt; {
+    <span class="kw">let </span>cert_der = untrusted::Input::from(cert_der);
 
-    <span class="comment">// XXX: `EndEntityOrCA::EndEntity` is used instead of `EndEntityOrCA::CA`</span>
-    <span class="comment">// because we don&#39;t have a reference to a child cert, which is needed for</span>
-    <span class="comment">// `EndEntityOrCA::CA`. For this purpose, it doesn&#39;t matter.</span>
-    <span class="comment">//</span>
-    <span class="comment">// v1 certificates will result in `Error::BadDER` because `parse_cert` will</span>
-    <span class="comment">// expect a version field that isn&#39;t there. In that case, try to parse the</span>
-    <span class="comment">// certificate using a special parser for v1 certificates. Notably, that</span>
-    <span class="comment">// parser doesn&#39;t allow extensions, so there&#39;s no need to worry about</span>
-    <span class="comment">// embedded name constraints in a v1 certificate.</span>
-    <span class="kw">match</span> <span class="ident">parse_cert_internal</span>(
-        <span class="ident">cert_der</span>,
-        <span class="ident">EndEntityOrCA::EndEntity</span>,
-        <span class="ident">possibly_invalid_certificate_serial_number</span>,
+    <span class="comment">// XXX: `EndEntityOrCA::EndEntity` is used instead of `EndEntityOrCA::CA`
+    // because we don&#39;t have a reference to a child cert, which is needed for
+    // `EndEntityOrCA::CA`. For this purpose, it doesn&#39;t matter.
+    //
+    // v1 certificates will result in `Error::BadDER` because `parse_cert` will
+    // expect a version field that isn&#39;t there. In that case, try to parse the
+    // certificate using a special parser for v1 certificates. Notably, that
+    // parser doesn&#39;t allow extensions, so there&#39;s no need to worry about
+    // embedded name constraints in a v1 certificate.
+    </span><span class="kw">match </span>parse_cert_internal(
+        cert_der,
+        EndEntityOrCA::EndEntity,
+        possibly_invalid_certificate_serial_number,
     ) {
-        <span class="prelude-val">Ok</span>(<span class="ident">cert</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">trust_anchor_from_cert</span>(<span class="ident">cert</span>)),
-        <span class="prelude-val">Err</span>(<span class="ident">Error::BadDER</span>) =&gt; <span class="ident">parse_cert_v1</span>(<span class="ident">cert_der</span>).<span class="ident">or</span>(<span class="prelude-val">Err</span>(<span class="ident">Error::BadDER</span>)),
-        <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+        <span class="prelude-val">Ok</span>(cert) =&gt; <span class="prelude-val">Ok</span>(trust_anchor_from_cert(cert)),
+        <span class="prelude-val">Err</span>(Error::BadDER) =&gt; parse_cert_v1(cert_der).or(<span class="prelude-val">Err</span>(Error::BadDER)),
+        <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(err),
     }
 }
 
-<span class="kw">fn</span> <span class="ident">possibly_invalid_certificate_serial_number</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-    <span class="ident">input</span>: <span class="kw-2">&amp;mut</span> <span class="ident">untrusted::Reader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="comment">// https://tools.ietf.org/html/rfc5280#section-4.1.2.2:</span>
-    <span class="comment">// * Conforming CAs MUST NOT use serialNumber values longer than 20 octets.&quot;</span>
-    <span class="comment">// * &quot;The serial number MUST be a positive integer [...]&quot;</span>
-    <span class="comment">//</span>
-    <span class="comment">// However, we don&#39;t enforce these constraints on trust anchors, as there</span>
-    <span class="comment">// are widely-deployed trust anchors that violate these constraints.</span>
-    <span class="ident">skip</span>(<span class="ident">input</span>, <span class="ident">der::Tag::Integer</span>)
+<span class="kw">fn </span>possibly_invalid_certificate_serial_number&lt;<span class="lifetime">&#39;a</span>&gt;(
+    input: <span class="kw-2">&amp;mut </span>untrusted::Reader&lt;<span class="lifetime">&#39;a</span>&gt;,
+) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
+    <span class="comment">// https://tools.ietf.org/html/rfc5280#section-4.1.2.2:
+    // * Conforming CAs MUST NOT use serialNumber values longer than 20 octets.&quot;
+    // * &quot;The serial number MUST be a positive integer [...]&quot;
+    //
+    // However, we don&#39;t enforce these constraints on trust anchors, as there
+    // are widely-deployed trust anchors that violate these constraints.
+    </span>skip(input, der::Tag::Integer)
 }
 
-<span class="doccomment">/// Generates code for hard-coding the given trust anchors into a program. This</span>
-<span class="doccomment">/// is designed to be used in a build script. `name` is the name of the public</span>
-<span class="doccomment">/// static variable that will contain the TrustAnchor array.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generate_code_for_trust_anchors</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">trust_anchors</span>: <span class="kw-2">&amp;</span>[<span class="ident">TrustAnchor</span>]) -&gt; <span class="ident">String</span> {
-    <span class="kw">let</span> <span class="ident">decl</span> <span class="op">=</span> <span class="macro">format!</span>(
+<span class="doccomment">/// Generates code for hard-coding the given trust anchors into a program. This
+/// is designed to be used in a build script. `name` is the name of the public
+/// static variable that will contain the TrustAnchor array.
+</span><span class="kw">pub fn </span>generate_code_for_trust_anchors(name: <span class="kw-2">&amp;</span>str, trust_anchors: <span class="kw-2">&amp;</span>[TrustAnchor]) -&gt; String {
+    <span class="kw">let </span>decl = <span class="macro">format!</span>(
         <span class="string">&quot;static {}: [TrustAnchor&lt;&#39;static&gt;; {}] = &quot;</span>,
-        <span class="ident">name</span>,
-        <span class="ident">trust_anchors</span>.<span class="ident">len</span>()
+        name,
+        trust_anchors.len()
     );
 
-    <span class="comment">// &quot;{:?}&quot; formats the array of trust anchors as Rust code, approximately,</span>
-    <span class="comment">// except that it drops the leading &quot;&amp;&quot; on slices.</span>
-    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">str::replace</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{:?};\n&quot;</span>, <span class="ident">trust_anchors</span>), <span class="string">&quot;: [&quot;</span>, <span class="string">&quot;: &amp;[&quot;</span>);
+    <span class="comment">// &quot;{:?}&quot; formats the array of trust anchors as Rust code, approximately,
+    // except that it drops the leading &quot;&amp;&quot; on slices.
+    </span><span class="kw">let </span>value = str::replace(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{:?};\n&quot;</span>, trust_anchors), <span class="string">&quot;: [&quot;</span>, <span class="string">&quot;: &amp;[&quot;</span>);
 
-    <span class="ident">decl</span> <span class="op">+</span> <span class="kw-2">&amp;</span><span class="ident">value</span>
+    decl + <span class="kw-2">&amp;</span>value
 }
 
-<span class="kw">fn</span> <span class="ident">trust_anchor_from_cert</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">cert</span>: <span class="ident">Cert</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="ident">TrustAnchor</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">TrustAnchor</span> {
-        <span class="ident">subject</span>: <span class="ident">cert</span>.<span class="ident">subject</span>.<span class="ident">as_slice_less_safe</span>(),
-        <span class="ident">spki</span>: <span class="ident">cert</span>.<span class="ident">spki</span>.<span class="ident">value</span>().<span class="ident">as_slice_less_safe</span>(),
-        <span class="ident">name_constraints</span>: <span class="ident">cert</span>.<span class="ident">name_constraints</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">nc</span><span class="op">|</span> <span class="ident">nc</span>.<span class="ident">as_slice_less_safe</span>()),
+<span class="kw">fn </span>trust_anchor_from_cert&lt;<span class="lifetime">&#39;a</span>&gt;(cert: Cert&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; TrustAnchor&lt;<span class="lifetime">&#39;a</span>&gt; {
+    TrustAnchor {
+        subject: cert.subject.as_slice_less_safe(),
+        spki: cert.spki.value().as_slice_less_safe(),
+        name_constraints: cert.name_constraints.map(|nc| nc.as_slice_less_safe()),
     }
 }
 
-<span class="doccomment">/// Parses a v1 certificate directly into a TrustAnchor.</span>
-<span class="kw">fn</span> <span class="ident">parse_cert_v1</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">cert_der</span>: <span class="ident">untrusted::Input</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TrustAnchor</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="comment">// X.509 Certificate: https://tools.ietf.org/html/rfc5280#section-4.1.</span>
-    <span class="ident">cert_der</span>.<span class="ident">read_all</span>(<span class="ident">Error::BadDER</span>, <span class="op">|</span><span class="ident">cert_der</span><span class="op">|</span> {
-        <span class="ident">der::nested</span>(<span class="ident">cert_der</span>, <span class="ident">der::Tag::Sequence</span>, <span class="ident">Error::BadDER</span>, <span class="op">|</span><span class="ident">cert_der</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">anchor</span> <span class="op">=</span> <span class="ident">der::nested</span>(<span class="ident">cert_der</span>, <span class="ident">der::Tag::Sequence</span>, <span class="ident">Error::BadDER</span>, <span class="op">|</span><span class="ident">tbs</span><span class="op">|</span> {
-                <span class="comment">// The version number field does not appear in v1 certificates.</span>
-                <span class="ident">certificate_serial_number</span>(<span class="ident">tbs</span>)<span class="question-mark">?</span>;
+<span class="doccomment">/// Parses a v1 certificate directly into a TrustAnchor.
+</span><span class="kw">fn </span>parse_cert_v1&lt;<span class="lifetime">&#39;a</span>&gt;(cert_der: untrusted::Input&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;TrustAnchor&lt;<span class="lifetime">&#39;a</span>&gt;, Error&gt; {
+    <span class="comment">// X.509 Certificate: https://tools.ietf.org/html/rfc5280#section-4.1.
+    </span>cert_der.read_all(Error::BadDER, |cert_der| {
+        der::nested(cert_der, der::Tag::Sequence, Error::BadDER, |cert_der| {
+            <span class="kw">let </span>anchor = der::nested(cert_der, der::Tag::Sequence, Error::BadDER, |tbs| {
+                <span class="comment">// The version number field does not appear in v1 certificates.
+                </span>certificate_serial_number(tbs)<span class="question-mark">?</span>;
 
-                <span class="ident">skip</span>(<span class="ident">tbs</span>, <span class="ident">der::Tag::Sequence</span>)<span class="question-mark">?</span>; <span class="comment">// signature.</span>
-                <span class="ident">skip</span>(<span class="ident">tbs</span>, <span class="ident">der::Tag::Sequence</span>)<span class="question-mark">?</span>; <span class="comment">// issuer.</span>
-                <span class="ident">skip</span>(<span class="ident">tbs</span>, <span class="ident">der::Tag::Sequence</span>)<span class="question-mark">?</span>; <span class="comment">// validity.</span>
-                <span class="kw">let</span> <span class="ident">subject</span> <span class="op">=</span> <span class="ident">der::expect_tag_and_get_value</span>(<span class="ident">tbs</span>, <span class="ident">der::Tag::Sequence</span>)<span class="question-mark">?</span>;
-                <span class="kw">let</span> <span class="ident">spki</span> <span class="op">=</span> <span class="ident">der::expect_tag_and_get_value</span>(<span class="ident">tbs</span>, <span class="ident">der::Tag::Sequence</span>)<span class="question-mark">?</span>;
+                skip(tbs, der::Tag::Sequence)<span class="question-mark">?</span>; <span class="comment">// signature.
+                </span>skip(tbs, der::Tag::Sequence)<span class="question-mark">?</span>; <span class="comment">// issuer.
+                </span>skip(tbs, der::Tag::Sequence)<span class="question-mark">?</span>; <span class="comment">// validity.
+                </span><span class="kw">let </span>subject = der::expect_tag_and_get_value(tbs, der::Tag::Sequence)<span class="question-mark">?</span>;
+                <span class="kw">let </span>spki = der::expect_tag_and_get_value(tbs, der::Tag::Sequence)<span class="question-mark">?</span>;
 
-                <span class="prelude-val">Ok</span>(<span class="ident">TrustAnchor</span> {
-                    <span class="ident">subject</span>: <span class="ident">subject</span>.<span class="ident">as_slice_less_safe</span>(),
-                    <span class="ident">spki</span>: <span class="ident">spki</span>.<span class="ident">as_slice_less_safe</span>(),
-                    <span class="ident">name_constraints</span>: <span class="prelude-val">None</span>,
+                <span class="prelude-val">Ok</span>(TrustAnchor {
+                    subject: subject.as_slice_less_safe(),
+                    spki: spki.as_slice_less_safe(),
+                    name_constraints: <span class="prelude-val">None</span>,
                 })
             });
 
-            <span class="comment">// read and discard signatureAlgorithm + signature</span>
-            <span class="ident">skip</span>(<span class="ident">cert_der</span>, <span class="ident">der::Tag::Sequence</span>)<span class="question-mark">?</span>;
-            <span class="ident">skip</span>(<span class="ident">cert_der</span>, <span class="ident">der::Tag::BitString</span>)<span class="question-mark">?</span>;
+            <span class="comment">// read and discard signatureAlgorithm + signature
+            </span>skip(cert_der, der::Tag::Sequence)<span class="question-mark">?</span>;
+            skip(cert_der, der::Tag::BitString)<span class="question-mark">?</span>;
 
-            <span class="ident">anchor</span>
+            anchor
         })
     })
 }
 
-<span class="kw">fn</span> <span class="ident">skip</span>(<span class="ident">input</span>: <span class="kw-2">&amp;mut</span> <span class="ident">untrusted::Reader</span>, <span class="ident">tag</span>: <span class="ident">der::Tag</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="ident">der::expect_tag_and_get_value</span>(<span class="ident">input</span>, <span class="ident">tag</span>).<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())
+<span class="kw">fn </span>skip(input: <span class="kw-2">&amp;mut </span>untrusted::Reader, tag: der::Tag) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
+    der::expect_tag_and_get_value(input, tag).map(|<span class="kw">_</span>| ())
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="webpki" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="webpki" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

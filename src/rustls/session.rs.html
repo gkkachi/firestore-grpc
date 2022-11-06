@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/rustls-0.19.1/src/session.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>session.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rustls/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/rustls-0.19.1/src/session.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>session.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rustls/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -849,856 +849,856 @@
 <span id="849">849</span>
 <span id="850">850</span>
 <span id="851">851</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cipher</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error::TLSError</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::key</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;logging&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::log</span>::{<span class="ident">debug</span>, <span class="ident">error</span>, <span class="ident">warn</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::base::Payload</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::codec::Codec</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::deframer::MessageDeframer</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::enums</span>::{<span class="ident">AlertDescription</span>, <span class="ident">AlertLevel</span>, <span class="ident">ContentType</span>, <span class="ident">ProtocolVersion</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::fragmenter</span>::{<span class="ident">MessageFragmenter</span>, <span class="ident">MAX_FRAGMENT_LEN</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::hsjoiner::HandshakeJoiner</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::message</span>::{<span class="ident">BorrowMessage</span>, <span class="ident">Message</span>, <span class="ident">MessagePayload</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::prf</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::quic</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::rand</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::record_layer</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::suites::SupportedCipherSuite</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::vecbuf::ChunkVecBuffer</span>;
-<span class="kw">use</span> <span class="ident">ring</span>;
-<span class="kw">use</span> <span class="ident">std::io</span>::{<span class="ident">Read</span>, <span class="ident">Write</span>};
+</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::cipher;
+<span class="kw">use </span><span class="kw">crate</span>::error::TLSError;
+<span class="kw">use </span><span class="kw">crate</span>::key;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::log::{debug, error, warn};
+<span class="kw">use </span><span class="kw">crate</span>::msgs::base::Payload;
+<span class="kw">use </span><span class="kw">crate</span>::msgs::codec::Codec;
+<span class="kw">use </span><span class="kw">crate</span>::msgs::deframer::MessageDeframer;
+<span class="kw">use </span><span class="kw">crate</span>::msgs::enums::{AlertDescription, AlertLevel, ContentType, ProtocolVersion};
+<span class="kw">use </span><span class="kw">crate</span>::msgs::fragmenter::{MessageFragmenter, MAX_FRAGMENT_LEN};
+<span class="kw">use </span><span class="kw">crate</span>::msgs::hsjoiner::HandshakeJoiner;
+<span class="kw">use </span><span class="kw">crate</span>::msgs::message::{BorrowMessage, Message, MessagePayload};
+<span class="kw">use </span><span class="kw">crate</span>::prf;
+<span class="kw">use </span><span class="kw">crate</span>::quic;
+<span class="kw">use </span><span class="kw">crate</span>::rand;
+<span class="kw">use </span><span class="kw">crate</span>::record_layer;
+<span class="kw">use </span><span class="kw">crate</span>::suites::SupportedCipherSuite;
+<span class="kw">use </span><span class="kw">crate</span>::vecbuf::ChunkVecBuffer;
+<span class="kw">use </span>ring;
+<span class="kw">use </span>std::io::{Read, Write};
 
-<span class="kw">use</span> <span class="ident">std::collections::VecDeque</span>;
-<span class="kw">use</span> <span class="ident">std::io</span>;
+<span class="kw">use </span>std::collections::VecDeque;
+<span class="kw">use </span>std::io;
 
-<span class="doccomment">/// Generalises `ClientSession` and `ServerSession`</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Session</span>: <span class="ident">quic::QuicExt</span> <span class="op">+</span> <span class="ident">Read</span> <span class="op">+</span> <span class="ident">Write</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
-    <span class="doccomment">/// Read TLS content from `rd`.  This method does internal</span>
-    <span class="doccomment">/// buffering, so `rd` can supply TLS messages in arbitrary-</span>
-    <span class="doccomment">/// sized chunks (like a socket or pipe might).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// You should call `process_new_packets` each time a call to</span>
-    <span class="doccomment">/// this function succeeds.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The returned error only relates to IO on `rd`.  TLS-level</span>
-    <span class="doccomment">/// errors are emitted from `process_new_packets`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function returns `Ok(0)` when the underlying `rd` does</span>
-    <span class="doccomment">/// so.  This typically happens when a socket is cleanly closed,</span>
-    <span class="doccomment">/// or a file is at EOF.</span>
-    <span class="kw">fn</span> <span class="ident">read_tls</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">rd</span>: <span class="kw-2">&amp;mut</span> <span class="kw">dyn</span> <span class="ident">Read</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">io::Error</span><span class="op">&gt;</span>;
+<span class="doccomment">/// Generalises `ClientSession` and `ServerSession`
+</span><span class="kw">pub trait </span>Session: quic::QuicExt + Read + Write + Send + Sync {
+    <span class="doccomment">/// Read TLS content from `rd`.  This method does internal
+    /// buffering, so `rd` can supply TLS messages in arbitrary-
+    /// sized chunks (like a socket or pipe might).
+    ///
+    /// You should call `process_new_packets` each time a call to
+    /// this function succeeds.
+    ///
+    /// The returned error only relates to IO on `rd`.  TLS-level
+    /// errors are emitted from `process_new_packets`.
+    ///
+    /// This function returns `Ok(0)` when the underlying `rd` does
+    /// so.  This typically happens when a socket is cleanly closed,
+    /// or a file is at EOF.
+    </span><span class="kw">fn </span>read_tls(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rd: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Read) -&gt; <span class="prelude-ty">Result</span>&lt;usize, io::Error&gt;;
 
-    <span class="doccomment">/// Writes TLS messages to `wr`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// On success the function returns `Ok(n)` where `n` is a number</span>
-    <span class="doccomment">/// of bytes written to `wr`, number of bytes after encoding and</span>
-    <span class="doccomment">/// encryption.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that after function return the session buffer maybe not</span>
-    <span class="doccomment">/// yet fully flushed. [`wants_write`] function can be used</span>
-    <span class="doccomment">/// to check if output buffer is not empty.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`wants_write`]: #tymethod.wants_write</span>
-    <span class="kw">fn</span> <span class="ident">write_tls</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">wr</span>: <span class="kw-2">&amp;mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">io::Error</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Writes TLS messages to `wr`.
+    ///
+    /// On success the function returns `Ok(n)` where `n` is a number
+    /// of bytes written to `wr`, number of bytes after encoding and
+    /// encryption.
+    ///
+    /// Note that after function return the session buffer maybe not
+    /// yet fully flushed. [`wants_write`] function can be used
+    /// to check if output buffer is not empty.
+    ///
+    /// [`wants_write`]: #tymethod.wants_write
+    </span><span class="kw">fn </span>write_tls(<span class="kw-2">&amp;mut </span><span class="self">self</span>, wr: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Write) -&gt; <span class="prelude-ty">Result</span>&lt;usize, io::Error&gt;;
 
-    <span class="doccomment">/// Processes any new packets read by a previous call to `read_tls`.</span>
-    <span class="doccomment">/// Errors from this function relate to TLS protocol errors, and</span>
-    <span class="doccomment">/// are fatal to the session.  Future calls after an error will do</span>
-    <span class="doccomment">/// no new work and will return the same error.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Success from this function can mean new plaintext is available:</span>
-    <span class="doccomment">/// obtain it using `read`.</span>
-    <span class="kw">fn</span> <span class="ident">process_new_packets</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Processes any new packets read by a previous call to `read_tls`.
+    /// Errors from this function relate to TLS protocol errors, and
+    /// are fatal to the session.  Future calls after an error will do
+    /// no new work and will return the same error.
+    ///
+    /// Success from this function can mean new plaintext is available:
+    /// obtain it using `read`.
+    </span><span class="kw">fn </span>process_new_packets(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), TLSError&gt;;
 
-    <span class="doccomment">/// Returns true if the caller should call `read_tls` as soon</span>
-    <span class="doccomment">/// as possible.</span>
-    <span class="kw">fn</span> <span class="ident">wants_read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+    <span class="doccomment">/// Returns true if the caller should call `read_tls` as soon
+    /// as possible.
+    </span><span class="kw">fn </span>wants_read(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
 
-    <span class="doccomment">/// Returns true if the caller should call `write_tls` as soon</span>
-    <span class="doccomment">/// as possible.</span>
-    <span class="kw">fn</span> <span class="ident">wants_write</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+    <span class="doccomment">/// Returns true if the caller should call `write_tls` as soon
+    /// as possible.
+    </span><span class="kw">fn </span>wants_write(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
 
-    <span class="doccomment">/// Returns true if the session is currently perform the TLS</span>
-    <span class="doccomment">/// handshake.  During this time plaintext written to the</span>
-    <span class="doccomment">/// session is buffered in memory.</span>
-    <span class="kw">fn</span> <span class="ident">is_handshaking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+    <span class="doccomment">/// Returns true if the session is currently perform the TLS
+    /// handshake.  During this time plaintext written to the
+    /// session is buffered in memory.
+    </span><span class="kw">fn </span>is_handshaking(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
 
-    <span class="doccomment">/// Sets a limit on the internal buffers used to buffer</span>
-    <span class="doccomment">/// unsent plaintext (prior to completing the TLS handshake)</span>
-    <span class="doccomment">/// and unsent TLS records.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// By default, there is no limit.  The limit can be set</span>
-    <span class="doccomment">/// at any time, even if the current buffer use is higher.</span>
-    <span class="kw">fn</span> <span class="ident">set_buffer_limit</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">usize</span>);
+    <span class="doccomment">/// Sets a limit on the internal buffers used to buffer
+    /// unsent plaintext (prior to completing the TLS handshake)
+    /// and unsent TLS records.
+    ///
+    /// By default, there is no limit.  The limit can be set
+    /// at any time, even if the current buffer use is higher.
+    </span><span class="kw">fn </span>set_buffer_limit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, limit: usize);
 
-    <span class="doccomment">/// Queues a close_notify fatal alert to be sent in the next</span>
-    <span class="doccomment">/// `write_tls` call.  This informs the peer that the</span>
-    <span class="doccomment">/// connection is being closed.</span>
-    <span class="kw">fn</span> <span class="ident">send_close_notify</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>);
+    <span class="doccomment">/// Queues a close_notify fatal alert to be sent in the next
+    /// `write_tls` call.  This informs the peer that the
+    /// connection is being closed.
+    </span><span class="kw">fn </span>send_close_notify(<span class="kw-2">&amp;mut </span><span class="self">self</span>);
 
-    <span class="doccomment">/// Retrieves the certificate chain used by the peer to authenticate.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The order of the certificate chain is as it appears in the TLS</span>
-    <span class="doccomment">/// protocol: the first certificate relates to the peer, the</span>
-    <span class="doccomment">/// second certifies the first, the third certifies the second, and</span>
-    <span class="doccomment">/// so on.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// For clients, this is the certificate chain of the server.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// For servers, this is the certificate chain of the client,</span>
-    <span class="doccomment">/// if client authentication was completed.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The return value is None until this value is available.</span>
-    <span class="kw">fn</span> <span class="ident">get_peer_certificates</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">key::Certificate</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Retrieves the certificate chain used by the peer to authenticate.
+    ///
+    /// The order of the certificate chain is as it appears in the TLS
+    /// protocol: the first certificate relates to the peer, the
+    /// second certifies the first, the third certifies the second, and
+    /// so on.
+    ///
+    /// For clients, this is the certificate chain of the server.
+    ///
+    /// For servers, this is the certificate chain of the client,
+    /// if client authentication was completed.
+    ///
+    /// The return value is None until this value is available.
+    </span><span class="kw">fn </span>get_peer_certificates(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;key::Certificate&gt;&gt;;
 
-    <span class="doccomment">/// Retrieves the protocol agreed with the peer via ALPN.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// A return value of None after handshake completion</span>
-    <span class="doccomment">/// means no protocol was agreed (because no protocols</span>
-    <span class="doccomment">/// were offered or accepted by the peer).</span>
-    <span class="kw">fn</span> <span class="ident">get_alpn_protocol</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>;
+    <span class="doccomment">/// Retrieves the protocol agreed with the peer via ALPN.
+    ///
+    /// A return value of None after handshake completion
+    /// means no protocol was agreed (because no protocols
+    /// were offered or accepted by the peer).
+    </span><span class="kw">fn </span>get_alpn_protocol(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt;;
 
-    <span class="doccomment">/// Retrieves the protocol version agreed with the peer.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This returns None until the version is agreed.</span>
-    <span class="kw">fn</span> <span class="ident">get_protocol_version</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ProtocolVersion</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Retrieves the protocol version agreed with the peer.
+    ///
+    /// This returns None until the version is agreed.
+    </span><span class="kw">fn </span>get_protocol_version(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;ProtocolVersion&gt;;
 
-    <span class="doccomment">/// Derives key material from the agreed session secrets.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function fills in `output` with `output.len()` bytes of key</span>
-    <span class="doccomment">/// material derived from the master session secret using `label`</span>
-    <span class="doccomment">/// and `context` for diversification.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// See RFC5705 for more details on what this does and is for.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// For TLS1.3 connections, this function does not use the</span>
-    <span class="doccomment">/// &quot;early&quot; exporter at any point.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function fails if called prior to the handshake completing;</span>
-    <span class="doccomment">/// check with `is_handshaking()` first.</span>
-    <span class="kw">fn</span> <span class="ident">export_keying_material</span>(
+    <span class="doccomment">/// Derives key material from the agreed session secrets.
+    ///
+    /// This function fills in `output` with `output.len()` bytes of key
+    /// material derived from the master session secret using `label`
+    /// and `context` for diversification.
+    ///
+    /// See RFC5705 for more details on what this does and is for.
+    ///
+    /// For TLS1.3 connections, this function does not use the
+    /// &quot;early&quot; exporter at any point.
+    ///
+    /// This function fails if called prior to the handshake completing;
+    /// check with `is_handshaking()` first.
+    </span><span class="kw">fn </span>export_keying_material(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">output</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>],
-        <span class="ident">label</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-        <span class="ident">context</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span>;
+        output: <span class="kw-2">&amp;mut </span>[u8],
+        label: <span class="kw-2">&amp;</span>[u8],
+        context: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), TLSError&gt;;
 
-    <span class="doccomment">/// Retrieves the ciphersuite agreed with the peer.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This returns None until the ciphersuite is agreed.</span>
-    <span class="kw">fn</span> <span class="ident">get_negotiated_ciphersuite</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">SupportedCipherSuite</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Retrieves the ciphersuite agreed with the peer.
+    ///
+    /// This returns None until the ciphersuite is agreed.
+    </span><span class="kw">fn </span>get_negotiated_ciphersuite(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt;;
 
-    <span class="doccomment">/// This function uses `io` to complete any outstanding IO for</span>
-    <span class="doccomment">/// this session.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is a convenience function which solely uses other parts</span>
-    <span class="doccomment">/// of the public API.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// What this means depends on the session state:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// - If the session `is_handshaking()`, then IO is performed until</span>
-    <span class="doccomment">///   the handshake is complete.</span>
-    <span class="doccomment">/// - Otherwise, if `wants_write` is true, `write_tls` is invoked</span>
-    <span class="doccomment">///   until it is all written.</span>
-    <span class="doccomment">/// - Otherwise, if `wants_read` is true, `read_tls` is invoked</span>
-    <span class="doccomment">///   once.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The return value is the number of bytes read from and written</span>
-    <span class="doccomment">/// to `io`, respectively.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function will block if `io` blocks.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Errors from TLS record handling (ie, from `process_new_packets()`)</span>
-    <span class="doccomment">/// are wrapped in an `io::ErrorKind::InvalidData`-kind error.</span>
-    <span class="kw">fn</span> <span class="ident">complete_io</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">io</span>: <span class="kw-2">&amp;mut</span> <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>), <span class="ident">io::Error</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
-        <span class="ident">T</span>: <span class="ident">Read</span> <span class="op">+</span> <span class="ident">Write</span>,
+    <span class="doccomment">/// This function uses `io` to complete any outstanding IO for
+    /// this session.
+    ///
+    /// This is a convenience function which solely uses other parts
+    /// of the public API.
+    ///
+    /// What this means depends on the session state:
+    ///
+    /// - If the session `is_handshaking()`, then IO is performed until
+    ///   the handshake is complete.
+    /// - Otherwise, if `wants_write` is true, `write_tls` is invoked
+    ///   until it is all written.
+    /// - Otherwise, if `wants_read` is true, `read_tls` is invoked
+    ///   once.
+    ///
+    /// The return value is the number of bytes read from and written
+    /// to `io`, respectively.
+    ///
+    /// This function will block if `io` blocks.
+    ///
+    /// Errors from TLS record handling (ie, from `process_new_packets()`)
+    /// are wrapped in an `io::ErrorKind::InvalidData`-kind error.
+    </span><span class="kw">fn </span>complete_io&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, io: <span class="kw-2">&amp;mut </span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(usize, usize), io::Error&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
+        T: Read + Write,
     {
-        <span class="kw">let</span> <span class="ident">until_handshaked</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">is_handshaking</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">eof</span> <span class="op">=</span> <span class="bool-val">false</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">wrlen</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rdlen</span> <span class="op">=</span> <span class="number">0</span>;
+        <span class="kw">let </span>until_handshaked = <span class="self">self</span>.is_handshaking();
+        <span class="kw">let </span><span class="kw-2">mut </span>eof = <span class="bool-val">false</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>wrlen = <span class="number">0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>rdlen = <span class="number">0</span>;
 
-        <span class="kw">loop</span> {
-            <span class="kw">while</span> <span class="self">self</span>.<span class="ident">wants_write</span>() {
-                <span class="ident">wrlen</span> <span class="op">+</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">write_tls</span>(<span class="ident">io</span>)<span class="question-mark">?</span>;
+        <span class="kw">loop </span>{
+            <span class="kw">while </span><span class="self">self</span>.wants_write() {
+                wrlen += <span class="self">self</span>.write_tls(io)<span class="question-mark">?</span>;
             }
 
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">until_handshaked</span> <span class="op">&amp;&amp;</span> <span class="ident">wrlen</span> <span class="op">&gt;</span> <span class="number">0</span> {
-                <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="ident">rdlen</span>, <span class="ident">wrlen</span>));
+            <span class="kw">if </span>!until_handshaked &amp;&amp; wrlen &gt; <span class="number">0 </span>{
+                <span class="kw">return </span><span class="prelude-val">Ok</span>((rdlen, wrlen));
             }
 
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">eof</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">wants_read</span>() {
-                <span class="kw">match</span> <span class="self">self</span>.<span class="ident">read_tls</span>(<span class="ident">io</span>)<span class="question-mark">?</span> {
-                    <span class="number">0</span> =&gt; <span class="ident">eof</span> <span class="op">=</span> <span class="bool-val">true</span>,
-                    <span class="ident">n</span> =&gt; <span class="ident">rdlen</span> <span class="op">+</span><span class="op">=</span> <span class="ident">n</span>,
+            <span class="kw">if </span>!eof &amp;&amp; <span class="self">self</span>.wants_read() {
+                <span class="kw">match </span><span class="self">self</span>.read_tls(io)<span class="question-mark">? </span>{
+                    <span class="number">0 </span>=&gt; eof = <span class="bool-val">true</span>,
+                    n =&gt; rdlen += n,
                 }
             }
 
-            <span class="kw">match</span> <span class="self">self</span>.<span class="ident">process_new_packets</span>() {
+            <span class="kw">match </span><span class="self">self</span>.process_new_packets() {
                 <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {}
-                <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-                    <span class="comment">// In case we have an alert to send describing this error,</span>
-                    <span class="comment">// try a last-gasp write -- but don&#39;t predate the primary</span>
-                    <span class="comment">// error.</span>
-                    <span class="kw">let</span> <span class="ident">_ignored</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">write_tls</span>(<span class="ident">io</span>);
+                <span class="prelude-val">Err</span>(e) =&gt; {
+                    <span class="comment">// In case we have an alert to send describing this error,
+                    // try a last-gasp write -- but don&#39;t predate the primary
+                    // error.
+                    </span><span class="kw">let </span>_ignored = <span class="self">self</span>.write_tls(io);
 
-                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(<span class="ident">io::ErrorKind::InvalidData</span>, <span class="ident">e</span>));
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(io::Error::new(io::ErrorKind::InvalidData, e));
                 }
             };
 
-            <span class="kw">match</span> (<span class="ident">eof</span>, <span class="ident">until_handshaked</span>, <span class="self">self</span>.<span class="ident">is_handshaking</span>()) {
-                (<span class="kw">_</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="ident">rdlen</span>, <span class="ident">wrlen</span>)),
-                (<span class="kw">_</span>, <span class="bool-val">false</span>, <span class="kw">_</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="ident">rdlen</span>, <span class="ident">wrlen</span>)),
-                (<span class="bool-val">true</span>, <span class="bool-val">true</span>, <span class="bool-val">true</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::from</span>(<span class="ident">io::ErrorKind::UnexpectedEof</span>)),
+            <span class="kw">match </span>(eof, until_handshaked, <span class="self">self</span>.is_handshaking()) {
+                (<span class="kw">_</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>) =&gt; <span class="kw">return </span><span class="prelude-val">Ok</span>((rdlen, wrlen)),
+                (<span class="kw">_</span>, <span class="bool-val">false</span>, <span class="kw">_</span>) =&gt; <span class="kw">return </span><span class="prelude-val">Ok</span>((rdlen, wrlen)),
+                (<span class="bool-val">true</span>, <span class="bool-val">true</span>, <span class="bool-val">true</span>) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(io::Error::from(io::ErrorKind::UnexpectedEof)),
                 (..) =&gt; {}
             }
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Protocol</span> {
-    <span class="ident">Tls13</span>,
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;quic&quot;</span>)]</span>
-    <span class="ident">Quic</span>,
+<span class="attribute">#[derive(Copy, Clone, Eq, PartialEq)]
+</span><span class="kw">pub enum </span>Protocol {
+    Tls13,
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+    </span>Quic,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SessionRandoms</span> {
-    <span class="kw">pub</span> <span class="ident">we_are_client</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span> <span class="ident">client</span>: [<span class="ident">u8</span>; <span class="number">32</span>],
-    <span class="kw">pub</span> <span class="ident">server</span>: [<span class="ident">u8</span>; <span class="number">32</span>],
+<span class="attribute">#[derive(Clone, Debug)]
+</span><span class="kw">pub struct </span>SessionRandoms {
+    <span class="kw">pub </span>we_are_client: bool,
+    <span class="kw">pub </span>client: [u8; <span class="number">32</span>],
+    <span class="kw">pub </span>server: [u8; <span class="number">32</span>],
 }
 
-<span class="kw">static</span> <span class="ident">TLS12_DOWNGRADE_SENTINEL</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="number">0x44</span>, <span class="number">0x4f</span>, <span class="number">0x57</span>, <span class="number">0x4e</span>, <span class="number">0x47</span>, <span class="number">0x52</span>, <span class="number">0x44</span>, <span class="number">0x01</span>];
+<span class="kw">static </span>TLS12_DOWNGRADE_SENTINEL: <span class="kw-2">&amp;</span>[u8] = <span class="kw-2">&amp;</span>[<span class="number">0x44</span>, <span class="number">0x4f</span>, <span class="number">0x57</span>, <span class="number">0x4e</span>, <span class="number">0x47</span>, <span class="number">0x52</span>, <span class="number">0x44</span>, <span class="number">0x01</span>];
 
-<span class="kw">impl</span> <span class="ident">SessionRandoms</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">for_server</span>() -&gt; <span class="ident">SessionRandoms</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">SessionRandoms</span> {
-            <span class="ident">we_are_client</span>: <span class="bool-val">false</span>,
-            <span class="ident">client</span>: [<span class="number">0u8</span>; <span class="number">32</span>],
-            <span class="ident">server</span>: [<span class="number">0u8</span>; <span class="number">32</span>],
+<span class="kw">impl </span>SessionRandoms {
+    <span class="kw">pub fn </span>for_server() -&gt; SessionRandoms {
+        <span class="kw">let </span><span class="kw-2">mut </span>ret = SessionRandoms {
+            we_are_client: <span class="bool-val">false</span>,
+            client: [<span class="number">0u8</span>; <span class="number">32</span>],
+            server: [<span class="number">0u8</span>; <span class="number">32</span>],
         };
 
-        <span class="ident">rand::fill_random</span>(<span class="kw-2">&amp;mut</span> <span class="ident">ret</span>.<span class="ident">server</span>);
-        <span class="ident">ret</span>
+        rand::fill_random(<span class="kw-2">&amp;mut </span>ret.server);
+        ret
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">for_client</span>() -&gt; <span class="ident">SessionRandoms</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">SessionRandoms</span> {
-            <span class="ident">we_are_client</span>: <span class="bool-val">true</span>,
-            <span class="ident">client</span>: [<span class="number">0u8</span>; <span class="number">32</span>],
-            <span class="ident">server</span>: [<span class="number">0u8</span>; <span class="number">32</span>],
+    <span class="kw">pub fn </span>for_client() -&gt; SessionRandoms {
+        <span class="kw">let </span><span class="kw-2">mut </span>ret = SessionRandoms {
+            we_are_client: <span class="bool-val">true</span>,
+            client: [<span class="number">0u8</span>; <span class="number">32</span>],
+            server: [<span class="number">0u8</span>; <span class="number">32</span>],
         };
 
-        <span class="ident">rand::fill_random</span>(<span class="kw-2">&amp;mut</span> <span class="ident">ret</span>.<span class="ident">client</span>);
-        <span class="ident">ret</span>
+        rand::fill_random(<span class="kw-2">&amp;mut </span>ret.client);
+        ret
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_tls12_downgrade_marker</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="self">self</span>.<span class="ident">we_are_client</span>);
-        <span class="self">self</span>.<span class="ident">server</span>[<span class="number">24</span>..]
-            .<span class="ident">as_mut</span>()
-            .<span class="ident">write_all</span>(<span class="ident">TLS12_DOWNGRADE_SENTINEL</span>)
-            .<span class="ident">unwrap</span>();
+    <span class="kw">pub fn </span>set_tls12_downgrade_marker(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="macro">assert!</span>(!<span class="self">self</span>.we_are_client);
+        <span class="self">self</span>.server[<span class="number">24</span>..]
+            .as_mut()
+            .write_all(TLS12_DOWNGRADE_SENTINEL)
+            .unwrap();
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_tls12_downgrade_marker</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">we_are_client</span>);
-        <span class="comment">// both the server random and TLS12_DOWNGRADE_SENTINEL are</span>
-        <span class="comment">// public values and don&#39;t require constant time comparison</span>
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">server</span>[<span class="number">24</span>..] <span class="op">==</span> <span class="ident">TLS12_DOWNGRADE_SENTINEL</span>
+    <span class="kw">pub fn </span>has_tls12_downgrade_marker(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
+        <span class="macro">assert!</span>(<span class="self">self</span>.we_are_client);
+        <span class="comment">// both the server random and TLS12_DOWNGRADE_SENTINEL are
+        // public values and don&#39;t require constant time comparison
+        </span><span class="kw-2">&amp;</span><span class="self">self</span>.server[<span class="number">24</span>..] == TLS12_DOWNGRADE_SENTINEL
     }
 }
 
-<span class="kw">fn</span> <span class="ident">join_randoms</span>(<span class="ident">first</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">second</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; [<span class="ident">u8</span>; <span class="number">64</span>] {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">randoms</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">64</span>];
-    <span class="ident">randoms</span>
-        .<span class="ident">as_mut</span>()
-        .<span class="ident">write_all</span>(<span class="ident">first</span>)
-        .<span class="ident">unwrap</span>();
-    <span class="ident">randoms</span>[<span class="number">32</span>..]
-        .<span class="ident">as_mut</span>()
-        .<span class="ident">write_all</span>(<span class="ident">second</span>)
-        .<span class="ident">unwrap</span>();
-    <span class="ident">randoms</span>
+<span class="kw">fn </span>join_randoms(first: <span class="kw-2">&amp;</span>[u8], second: <span class="kw-2">&amp;</span>[u8]) -&gt; [u8; <span class="number">64</span>] {
+    <span class="kw">let </span><span class="kw-2">mut </span>randoms = [<span class="number">0u8</span>; <span class="number">64</span>];
+    randoms
+        .as_mut()
+        .write_all(first)
+        .unwrap();
+    randoms[<span class="number">32</span>..]
+        .as_mut()
+        .write_all(second)
+        .unwrap();
+    randoms
 }
 
-<span class="doccomment">/// TLS1.2 per-session keying material</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SessionSecrets</span> {
-    <span class="kw">pub</span> <span class="ident">randoms</span>: <span class="ident">SessionRandoms</span>,
-    <span class="ident">hash</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">ring::digest::Algorithm</span>,
-    <span class="kw">pub</span> <span class="ident">master_secret</span>: [<span class="ident">u8</span>; <span class="number">48</span>],
+<span class="doccomment">/// TLS1.2 per-session keying material
+</span><span class="kw">pub struct </span>SessionSecrets {
+    <span class="kw">pub </span>randoms: SessionRandoms,
+    hash: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ring::digest::Algorithm,
+    <span class="kw">pub </span>master_secret: [u8; <span class="number">48</span>],
 }
 
-<span class="kw">impl</span> <span class="ident">SessionSecrets</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
-        <span class="ident">randoms</span>: <span class="kw-2">&amp;</span><span class="ident">SessionRandoms</span>,
-        <span class="ident">hashalg</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">ring::digest::Algorithm</span>,
-        <span class="ident">pms</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-    ) -&gt; <span class="ident">SessionSecrets</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">SessionSecrets</span> {
-            <span class="ident">randoms</span>: <span class="ident">randoms</span>.<span class="ident">clone</span>(),
-            <span class="ident">hash</span>: <span class="ident">hashalg</span>,
-            <span class="ident">master_secret</span>: [<span class="number">0u8</span>; <span class="number">48</span>],
+<span class="kw">impl </span>SessionSecrets {
+    <span class="kw">pub fn </span>new(
+        randoms: <span class="kw-2">&amp;</span>SessionRandoms,
+        hashalg: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ring::digest::Algorithm,
+        pms: <span class="kw-2">&amp;</span>[u8],
+    ) -&gt; SessionSecrets {
+        <span class="kw">let </span><span class="kw-2">mut </span>ret = SessionSecrets {
+            randoms: randoms.clone(),
+            hash: hashalg,
+            master_secret: [<span class="number">0u8</span>; <span class="number">48</span>],
         };
 
-        <span class="kw">let</span> <span class="ident">randoms</span> <span class="op">=</span> <span class="ident">join_randoms</span>(<span class="kw-2">&amp;</span><span class="ident">ret</span>.<span class="ident">randoms</span>.<span class="ident">client</span>, <span class="kw-2">&amp;</span><span class="ident">ret</span>.<span class="ident">randoms</span>.<span class="ident">server</span>);
-        <span class="ident">prf::prf</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">ret</span>.<span class="ident">master_secret</span>,
-            <span class="ident">ret</span>.<span class="ident">hash</span>,
-            <span class="ident">pms</span>,
+        <span class="kw">let </span>randoms = join_randoms(<span class="kw-2">&amp;</span>ret.randoms.client, <span class="kw-2">&amp;</span>ret.randoms.server);
+        prf::prf(
+            <span class="kw-2">&amp;mut </span>ret.master_secret,
+            ret.hash,
+            pms,
             <span class="string">b&quot;master secret&quot;</span>,
-            <span class="kw-2">&amp;</span><span class="ident">randoms</span>,
+            <span class="kw-2">&amp;</span>randoms,
         );
-        <span class="ident">ret</span>
+        ret
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_ems</span>(
-        <span class="ident">randoms</span>: <span class="kw-2">&amp;</span><span class="ident">SessionRandoms</span>,
-        <span class="ident">hs_hash</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-        <span class="ident">hashalg</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">ring::digest::Algorithm</span>,
-        <span class="ident">pms</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-    ) -&gt; <span class="ident">SessionSecrets</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">SessionSecrets</span> {
-            <span class="ident">randoms</span>: <span class="ident">randoms</span>.<span class="ident">clone</span>(),
-            <span class="ident">hash</span>: <span class="ident">hashalg</span>,
-            <span class="ident">master_secret</span>: [<span class="number">0u8</span>; <span class="number">48</span>],
+    <span class="kw">pub fn </span>new_ems(
+        randoms: <span class="kw-2">&amp;</span>SessionRandoms,
+        hs_hash: <span class="kw-2">&amp;</span>[u8],
+        hashalg: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ring::digest::Algorithm,
+        pms: <span class="kw-2">&amp;</span>[u8],
+    ) -&gt; SessionSecrets {
+        <span class="kw">let </span><span class="kw-2">mut </span>ret = SessionSecrets {
+            randoms: randoms.clone(),
+            hash: hashalg,
+            master_secret: [<span class="number">0u8</span>; <span class="number">48</span>],
         };
 
-        <span class="ident">prf::prf</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">ret</span>.<span class="ident">master_secret</span>,
-            <span class="ident">ret</span>.<span class="ident">hash</span>,
-            <span class="ident">pms</span>,
+        prf::prf(
+            <span class="kw-2">&amp;mut </span>ret.master_secret,
+            ret.hash,
+            pms,
             <span class="string">b&quot;extended master secret&quot;</span>,
-            <span class="ident">hs_hash</span>,
+            hs_hash,
         );
-        <span class="ident">ret</span>
+        ret
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_resume</span>(
-        <span class="ident">randoms</span>: <span class="kw-2">&amp;</span><span class="ident">SessionRandoms</span>,
-        <span class="ident">hashalg</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">ring::digest::Algorithm</span>,
-        <span class="ident">master_secret</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-    ) -&gt; <span class="ident">SessionSecrets</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">SessionSecrets</span> {
-            <span class="ident">randoms</span>: <span class="ident">randoms</span>.<span class="ident">clone</span>(),
-            <span class="ident">hash</span>: <span class="ident">hashalg</span>,
-            <span class="ident">master_secret</span>: [<span class="number">0u8</span>; <span class="number">48</span>],
+    <span class="kw">pub fn </span>new_resume(
+        randoms: <span class="kw-2">&amp;</span>SessionRandoms,
+        hashalg: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ring::digest::Algorithm,
+        master_secret: <span class="kw-2">&amp;</span>[u8],
+    ) -&gt; SessionSecrets {
+        <span class="kw">let </span><span class="kw-2">mut </span>ret = SessionSecrets {
+            randoms: randoms.clone(),
+            hash: hashalg,
+            master_secret: [<span class="number">0u8</span>; <span class="number">48</span>],
         };
-        <span class="ident">ret</span>.<span class="ident">master_secret</span>
-            .<span class="ident">as_mut</span>()
-            .<span class="ident">write_all</span>(<span class="ident">master_secret</span>)
-            .<span class="ident">unwrap</span>();
-        <span class="ident">ret</span>
+        ret.master_secret
+            .as_mut()
+            .write_all(master_secret)
+            .unwrap();
+        ret
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_key_block</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-        <span class="ident">out</span>.<span class="ident">resize</span>(<span class="ident">len</span>, <span class="number">0u8</span>);
+    <span class="kw">pub fn </span>make_key_block(<span class="kw-2">&amp;</span><span class="self">self</span>, len: usize) -&gt; Vec&lt;u8&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>out = Vec::new();
+        out.resize(len, <span class="number">0u8</span>);
 
-        <span class="comment">// NOTE: opposite order to above for no good reason.</span>
-        <span class="comment">// Don&#39;t design security protocols on drugs, kids.</span>
-        <span class="kw">let</span> <span class="ident">randoms</span> <span class="op">=</span> <span class="ident">join_randoms</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">randoms</span>.<span class="ident">server</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">randoms</span>.<span class="ident">client</span>);
-        <span class="ident">prf::prf</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">out</span>,
-            <span class="self">self</span>.<span class="ident">hash</span>,
-            <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">master_secret</span>,
+        <span class="comment">// NOTE: opposite order to above for no good reason.
+        // Don&#39;t design security protocols on drugs, kids.
+        </span><span class="kw">let </span>randoms = join_randoms(<span class="kw-2">&amp;</span><span class="self">self</span>.randoms.server, <span class="kw-2">&amp;</span><span class="self">self</span>.randoms.client);
+        prf::prf(
+            <span class="kw-2">&amp;mut </span>out,
+            <span class="self">self</span>.hash,
+            <span class="kw-2">&amp;</span><span class="self">self</span>.master_secret,
             <span class="string">b&quot;key expansion&quot;</span>,
-            <span class="kw-2">&amp;</span><span class="ident">randoms</span>,
+            <span class="kw-2">&amp;</span>randoms,
         );
 
-        <span class="ident">out</span>
+        out
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_master_secret</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-        <span class="ident">ret</span>.<span class="ident">extend_from_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">master_secret</span>);
-        <span class="ident">ret</span>
+    <span class="kw">pub fn </span>get_master_secret(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;u8&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>ret = Vec::new();
+        ret.extend_from_slice(<span class="kw-2">&amp;</span><span class="self">self</span>.master_secret);
+        ret
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_verify_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">handshake_hash</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">label</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-        <span class="ident">out</span>.<span class="ident">resize</span>(<span class="number">12</span>, <span class="number">0u8</span>);
+    <span class="kw">pub fn </span>make_verify_data(<span class="kw-2">&amp;</span><span class="self">self</span>, handshake_hash: <span class="kw-2">&amp;</span>[u8], label: <span class="kw-2">&amp;</span>[u8]) -&gt; Vec&lt;u8&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>out = Vec::new();
+        out.resize(<span class="number">12</span>, <span class="number">0u8</span>);
 
-        <span class="ident">prf::prf</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">out</span>,
-            <span class="self">self</span>.<span class="ident">hash</span>,
-            <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">master_secret</span>,
-            <span class="ident">label</span>,
-            <span class="ident">handshake_hash</span>,
+        prf::prf(
+            <span class="kw-2">&amp;mut </span>out,
+            <span class="self">self</span>.hash,
+            <span class="kw-2">&amp;</span><span class="self">self</span>.master_secret,
+            label,
+            handshake_hash,
         );
-        <span class="ident">out</span>
+        out
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">client_verify_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">handshake_hash</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">make_verify_data</span>(<span class="ident">handshake_hash</span>, <span class="string">b&quot;client finished&quot;</span>)
+    <span class="kw">pub fn </span>client_verify_data(<span class="kw-2">&amp;</span><span class="self">self</span>, handshake_hash: <span class="kw-2">&amp;</span>[u8]) -&gt; Vec&lt;u8&gt; {
+        <span class="self">self</span>.make_verify_data(handshake_hash, <span class="string">b&quot;client finished&quot;</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">server_verify_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">handshake_hash</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">make_verify_data</span>(<span class="ident">handshake_hash</span>, <span class="string">b&quot;server finished&quot;</span>)
+    <span class="kw">pub fn </span>server_verify_data(<span class="kw-2">&amp;</span><span class="self">self</span>, handshake_hash: <span class="kw-2">&amp;</span>[u8]) -&gt; Vec&lt;u8&gt; {
+        <span class="self">self</span>.make_verify_data(handshake_hash, <span class="string">b&quot;server finished&quot;</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">export_keying_material</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">output</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>], <span class="ident">label</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">context</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">randoms</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-        <span class="ident">randoms</span>.<span class="ident">extend_from_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">randoms</span>.<span class="ident">client</span>);
-        <span class="ident">randoms</span>.<span class="ident">extend_from_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">randoms</span>.<span class="ident">server</span>);
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">context</span>) <span class="op">=</span> <span class="ident">context</span> {
-            <span class="macro">assert!</span>(<span class="ident">context</span>.<span class="ident">len</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="number">0xffff</span>);
-            (<span class="ident">context</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u16</span>).<span class="ident">encode</span>(<span class="kw-2">&amp;mut</span> <span class="ident">randoms</span>);
-            <span class="ident">randoms</span>.<span class="ident">extend_from_slice</span>(<span class="ident">context</span>);
+    <span class="kw">pub fn </span>export_keying_material(<span class="kw-2">&amp;</span><span class="self">self</span>, output: <span class="kw-2">&amp;mut </span>[u8], label: <span class="kw-2">&amp;</span>[u8], context: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt;) {
+        <span class="kw">let </span><span class="kw-2">mut </span>randoms = Vec::new();
+        randoms.extend_from_slice(<span class="kw-2">&amp;</span><span class="self">self</span>.randoms.client);
+        randoms.extend_from_slice(<span class="kw-2">&amp;</span><span class="self">self</span>.randoms.server);
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(context) = context {
+            <span class="macro">assert!</span>(context.len() &lt;= <span class="number">0xffff</span>);
+            (context.len() <span class="kw">as </span>u16).encode(<span class="kw-2">&amp;mut </span>randoms);
+            randoms.extend_from_slice(context);
         }
 
-        <span class="ident">prf::prf</span>(<span class="ident">output</span>, <span class="self">self</span>.<span class="ident">hash</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">master_secret</span>, <span class="ident">label</span>, <span class="kw-2">&amp;</span><span class="ident">randoms</span>)
+        prf::prf(output, <span class="self">self</span>.hash, <span class="kw-2">&amp;</span><span class="self">self</span>.master_secret, label, <span class="kw-2">&amp;</span>randoms)
     }
 }
 
-<span class="comment">// --- Common (to client and server) session functions ---</span>
+<span class="comment">// --- Common (to client and server) session functions ---
 
-<span class="kw">enum</span> <span class="ident">Limit</span> {
-    <span class="ident">Yes</span>,
-    <span class="ident">No</span>,
+</span><span class="kw">enum </span>Limit {
+    Yes,
+    No,
 }
 
-<span class="doccomment">/// For TLS1.3 middlebox compatibility mode, how to handle</span>
-<span class="doccomment">/// a received ChangeCipherSpec message.</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MiddleboxCCS</span> {
-    <span class="doccomment">/// process the message as normal</span>
-    <span class="ident">Process</span>,
+<span class="doccomment">/// For TLS1.3 middlebox compatibility mode, how to handle
+/// a received ChangeCipherSpec message.
+</span><span class="kw">pub enum </span>MiddleboxCCS {
+    <span class="doccomment">/// process the message as normal
+    </span>Process,
 
-    <span class="doccomment">/// just ignore it</span>
-    <span class="ident">Drop</span>,
+    <span class="doccomment">/// just ignore it
+    </span>Drop,
 }
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SessionCommon</span> {
-    <span class="kw">pub</span> <span class="ident">negotiated_version</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ProtocolVersion</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">is_client</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span> <span class="ident">record_layer</span>: <span class="ident">record_layer::RecordLayer</span>,
-    <span class="ident">suite</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">SupportedCipherSuite</span><span class="op">&gt;</span>,
-    <span class="ident">peer_eof</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span> <span class="ident">traffic</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span> <span class="ident">early_traffic</span>: <span class="ident">bool</span>,
-    <span class="ident">sent_fatal_alert</span>: <span class="ident">bool</span>,
-    <span class="ident">received_middlebox_ccs</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span> <span class="ident">message_deframer</span>: <span class="ident">MessageDeframer</span>,
-    <span class="kw">pub</span> <span class="ident">handshake_joiner</span>: <span class="ident">HandshakeJoiner</span>,
-    <span class="kw">pub</span> <span class="ident">message_fragmenter</span>: <span class="ident">MessageFragmenter</span>,
-    <span class="ident">received_plaintext</span>: <span class="ident">ChunkVecBuffer</span>,
-    <span class="ident">sendable_plaintext</span>: <span class="ident">ChunkVecBuffer</span>,
-    <span class="kw">pub</span> <span class="ident">sendable_tls</span>: <span class="ident">ChunkVecBuffer</span>,
-    <span class="doccomment">/// Protocol whose key schedule should be used. Unused for TLS &lt; 1.3.</span>
-    <span class="kw">pub</span> <span class="ident">protocol</span>: <span class="ident">Protocol</span>,
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;quic&quot;</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">quic</span>: <span class="ident">Quic</span>,
+<span class="kw">pub struct </span>SessionCommon {
+    <span class="kw">pub </span>negotiated_version: <span class="prelude-ty">Option</span>&lt;ProtocolVersion&gt;,
+    <span class="kw">pub </span>is_client: bool,
+    <span class="kw">pub </span>record_layer: record_layer::RecordLayer,
+    suite: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt;,
+    peer_eof: bool,
+    <span class="kw">pub </span>traffic: bool,
+    <span class="kw">pub </span>early_traffic: bool,
+    sent_fatal_alert: bool,
+    received_middlebox_ccs: bool,
+    <span class="kw">pub </span>message_deframer: MessageDeframer,
+    <span class="kw">pub </span>handshake_joiner: HandshakeJoiner,
+    <span class="kw">pub </span>message_fragmenter: MessageFragmenter,
+    received_plaintext: ChunkVecBuffer,
+    sendable_plaintext: ChunkVecBuffer,
+    <span class="kw">pub </span>sendable_tls: ChunkVecBuffer,
+    <span class="doccomment">/// Protocol whose key schedule should be used. Unused for TLS &lt; 1.3.
+    </span><span class="kw">pub </span>protocol: Protocol,
+    <span class="attribute">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) quic: Quic,
 }
 
-<span class="kw">impl</span> <span class="ident">SessionCommon</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">mtu</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>, <span class="ident">client</span>: <span class="ident">bool</span>) -&gt; <span class="ident">SessionCommon</span> {
-        <span class="ident">SessionCommon</span> {
-            <span class="ident">negotiated_version</span>: <span class="prelude-val">None</span>,
-            <span class="ident">is_client</span>: <span class="ident">client</span>,
-            <span class="ident">record_layer</span>: <span class="ident">record_layer::RecordLayer::new</span>(),
-            <span class="ident">suite</span>: <span class="prelude-val">None</span>,
-            <span class="ident">peer_eof</span>: <span class="bool-val">false</span>,
-            <span class="ident">traffic</span>: <span class="bool-val">false</span>,
-            <span class="ident">early_traffic</span>: <span class="bool-val">false</span>,
-            <span class="ident">sent_fatal_alert</span>: <span class="bool-val">false</span>,
-            <span class="ident">received_middlebox_ccs</span>: <span class="bool-val">false</span>,
-            <span class="ident">message_deframer</span>: <span class="ident">MessageDeframer::new</span>(),
-            <span class="ident">handshake_joiner</span>: <span class="ident">HandshakeJoiner::new</span>(),
-            <span class="ident">message_fragmenter</span>: <span class="ident">MessageFragmenter::new</span>(<span class="ident">mtu</span>.<span class="ident">unwrap_or</span>(<span class="ident">MAX_FRAGMENT_LEN</span>)),
-            <span class="ident">received_plaintext</span>: <span class="ident">ChunkVecBuffer::new</span>(),
-            <span class="ident">sendable_plaintext</span>: <span class="ident">ChunkVecBuffer::new</span>(),
-            <span class="ident">sendable_tls</span>: <span class="ident">ChunkVecBuffer::new</span>(),
-            <span class="ident">protocol</span>: <span class="ident">Protocol::Tls13</span>,
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;quic&quot;</span>)]</span>
-            <span class="ident">quic</span>: <span class="ident">Quic::new</span>(),
+<span class="kw">impl </span>SessionCommon {
+    <span class="kw">pub fn </span>new(mtu: <span class="prelude-ty">Option</span>&lt;usize&gt;, client: bool) -&gt; SessionCommon {
+        SessionCommon {
+            negotiated_version: <span class="prelude-val">None</span>,
+            is_client: client,
+            record_layer: record_layer::RecordLayer::new(),
+            suite: <span class="prelude-val">None</span>,
+            peer_eof: <span class="bool-val">false</span>,
+            traffic: <span class="bool-val">false</span>,
+            early_traffic: <span class="bool-val">false</span>,
+            sent_fatal_alert: <span class="bool-val">false</span>,
+            received_middlebox_ccs: <span class="bool-val">false</span>,
+            message_deframer: MessageDeframer::new(),
+            handshake_joiner: HandshakeJoiner::new(),
+            message_fragmenter: MessageFragmenter::new(mtu.unwrap_or(MAX_FRAGMENT_LEN)),
+            received_plaintext: ChunkVecBuffer::new(),
+            sendable_plaintext: ChunkVecBuffer::new(),
+            sendable_tls: ChunkVecBuffer::new(),
+            protocol: Protocol::Tls13,
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+            </span>quic: Quic::new(),
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_tls13</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">negotiated_version</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">ProtocolVersion::TLSv1_3</span>) =&gt; <span class="bool-val">true</span>,
-            <span class="kw">_</span> =&gt; <span class="bool-val">false</span>,
+    <span class="kw">pub fn </span>is_tls13(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">match </span><span class="self">self</span>.negotiated_version {
+            <span class="prelude-val">Some</span>(ProtocolVersion::TLSv1_3) =&gt; <span class="bool-val">true</span>,
+            <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_suite</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">SupportedCipherSuite</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">suite</span>
+    <span class="kw">pub fn </span>get_suite(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt; {
+        <span class="self">self</span>.suite
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_suite_assert</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">SupportedCipherSuite</span> {
-        <span class="self">self</span>.<span class="ident">suite</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>()
+    <span class="kw">pub fn </span>get_suite_assert(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite {
+        <span class="self">self</span>.suite.as_ref().unwrap()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_suite</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">suite</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">SupportedCipherSuite</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">suite</span> {
-            <span class="prelude-val">None</span> =&gt; {
-                <span class="self">self</span>.<span class="ident">suite</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">suite</span>);
-                <span class="bool-val">true</span>
-            }
-            <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="kw">if</span> <span class="ident">s</span> <span class="op">==</span> <span class="ident">suite</span> =&gt; {
-                <span class="self">self</span>.<span class="ident">suite</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">suite</span>);
-                <span class="bool-val">true</span>
-            }
-            <span class="kw">_</span> =&gt; <span class="bool-val">false</span>,
+    <span class="kw">pub fn </span>set_suite(<span class="kw-2">&amp;mut </span><span class="self">self</span>, suite: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite) -&gt; bool {
+        <span class="kw">match </span><span class="self">self</span>.suite {
+            <span class="prelude-val">None </span>=&gt; {
+                <span class="self">self</span>.suite = <span class="prelude-val">Some</span>(suite);
+                <span class="bool-val">true
+            </span>}
+            <span class="prelude-val">Some</span>(s) <span class="kw">if </span>s == suite =&gt; {
+                <span class="self">self</span>.suite = <span class="prelude-val">Some</span>(suite);
+                <span class="bool-val">true
+            </span>}
+            <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">filter_tls13_ccs</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">msg</span>: <span class="kw-2">&amp;</span><span class="ident">Message</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MiddleboxCCS</span>, <span class="ident">TLSError</span><span class="op">&gt;</span> {
-        <span class="comment">// pass message to handshake state machine if any of these are true:</span>
-        <span class="comment">// - TLS1.2 (where it&#39;s part of the state machine),</span>
-        <span class="comment">// - prior to determining the version (it&#39;s illegal as a first message)</span>
-        <span class="comment">// - if it&#39;s not a CCS at all</span>
-        <span class="comment">// - if we&#39;ve finished the handshake</span>
-        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">is_tls13</span>() <span class="op">|</span><span class="op">|</span> <span class="op">!</span><span class="ident">msg</span>.<span class="ident">is_content_type</span>(<span class="ident">ContentType::ChangeCipherSpec</span>) <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">traffic</span> {
-            <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">MiddleboxCCS::Process</span>);
+    <span class="kw">pub fn </span>filter_tls13_ccs(<span class="kw-2">&amp;mut </span><span class="self">self</span>, msg: <span class="kw-2">&amp;</span>Message) -&gt; <span class="prelude-ty">Result</span>&lt;MiddleboxCCS, TLSError&gt; {
+        <span class="comment">// pass message to handshake state machine if any of these are true:
+        // - TLS1.2 (where it&#39;s part of the state machine),
+        // - prior to determining the version (it&#39;s illegal as a first message)
+        // - if it&#39;s not a CCS at all
+        // - if we&#39;ve finished the handshake
+        </span><span class="kw">if </span>!<span class="self">self</span>.is_tls13() || !msg.is_content_type(ContentType::ChangeCipherSpec) || <span class="self">self</span>.traffic {
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(MiddleboxCCS::Process);
         }
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">received_middlebox_ccs</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">TLSError::PeerMisbehavedError</span>(
-                <span class="string">&quot;illegal middlebox CCS received&quot;</span>.<span class="ident">into</span>(),
+        <span class="kw">if </span><span class="self">self</span>.received_middlebox_ccs {
+            <span class="prelude-val">Err</span>(TLSError::PeerMisbehavedError(
+                <span class="string">&quot;illegal middlebox CCS received&quot;</span>.into(),
             ))
-        } <span class="kw">else</span> {
-            <span class="self">self</span>.<span class="ident">received_middlebox_ccs</span> <span class="op">=</span> <span class="bool-val">true</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">MiddleboxCCS::Drop</span>)
+        } <span class="kw">else </span>{
+            <span class="self">self</span>.received_middlebox_ccs = <span class="bool-val">true</span>;
+            <span class="prelude-val">Ok</span>(MiddleboxCCS::Drop)
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">decrypt_incoming</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">encr</span>: <span class="ident">Message</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Message</span>, <span class="ident">TLSError</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>
-            .<span class="ident">record_layer</span>
-            .<span class="ident">wants_close_before_decrypt</span>()
+    <span class="kw">pub fn </span>decrypt_incoming(<span class="kw-2">&amp;mut </span><span class="self">self</span>, encr: Message) -&gt; <span class="prelude-ty">Result</span>&lt;Message, TLSError&gt; {
+        <span class="kw">if </span><span class="self">self
+            </span>.record_layer
+            .wants_close_before_decrypt()
         {
-            <span class="self">self</span>.<span class="ident">send_close_notify</span>();
+            <span class="self">self</span>.send_close_notify();
         }
 
-        <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">record_layer</span>.<span class="ident">decrypt_incoming</span>(<span class="ident">encr</span>);
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">TLSError::PeerSentOversizedRecord</span>) <span class="op">=</span> <span class="ident">rc</span> {
-            <span class="self">self</span>.<span class="ident">send_fatal_alert</span>(<span class="ident">AlertDescription::RecordOverflow</span>);
+        <span class="kw">let </span>rc = <span class="self">self</span>.record_layer.decrypt_incoming(encr);
+        <span class="kw">if let </span><span class="prelude-val">Err</span>(TLSError::PeerSentOversizedRecord) = rc {
+            <span class="self">self</span>.send_fatal_alert(AlertDescription::RecordOverflow);
         }
-        <span class="ident">rc</span>
+        rc
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_readable_plaintext</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="op">!</span><span class="self">self</span>.<span class="ident">received_plaintext</span>.<span class="ident">is_empty</span>()
+    <span class="kw">pub fn </span>has_readable_plaintext(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        !<span class="self">self</span>.received_plaintext.is_empty()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_buffer_limit</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">usize</span>) {
-        <span class="self">self</span>.<span class="ident">sendable_plaintext</span>.<span class="ident">set_limit</span>(<span class="ident">limit</span>);
-        <span class="self">self</span>.<span class="ident">sendable_tls</span>.<span class="ident">set_limit</span>(<span class="ident">limit</span>);
+    <span class="kw">pub fn </span>set_buffer_limit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, limit: usize) {
+        <span class="self">self</span>.sendable_plaintext.set_limit(limit);
+        <span class="self">self</span>.sendable_tls.set_limit(limit);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">process_alert</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">msg</span>: <span class="ident">Message</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">MessagePayload::Alert</span>(<span class="kw-2">ref</span> <span class="ident">alert</span>) <span class="op">=</span> <span class="ident">msg</span>.<span class="ident">payload</span> {
-            <span class="comment">// Reject unknown AlertLevels.</span>
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">AlertLevel::Unknown</span>(<span class="kw">_</span>) <span class="op">=</span> <span class="ident">alert</span>.<span class="ident">level</span> {
-                <span class="self">self</span>.<span class="ident">send_fatal_alert</span>(<span class="ident">AlertDescription::IllegalParameter</span>);
+    <span class="kw">pub fn </span>process_alert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, msg: Message) -&gt; <span class="prelude-ty">Result</span>&lt;(), TLSError&gt; {
+        <span class="kw">if let </span>MessagePayload::Alert(<span class="kw-2">ref </span>alert) = msg.payload {
+            <span class="comment">// Reject unknown AlertLevels.
+            </span><span class="kw">if let </span>AlertLevel::Unknown(<span class="kw">_</span>) = alert.level {
+                <span class="self">self</span>.send_fatal_alert(AlertDescription::IllegalParameter);
             }
 
-            <span class="comment">// If we get a CloseNotify, make a note to declare EOF to our</span>
-            <span class="comment">// caller.</span>
-            <span class="kw">if</span> <span class="ident">alert</span>.<span class="ident">description</span> <span class="op">==</span> <span class="ident">AlertDescription::CloseNotify</span> {
-                <span class="self">self</span>.<span class="ident">peer_eof</span> <span class="op">=</span> <span class="bool-val">true</span>;
-                <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
+            <span class="comment">// If we get a CloseNotify, make a note to declare EOF to our
+            // caller.
+            </span><span class="kw">if </span>alert.description == AlertDescription::CloseNotify {
+                <span class="self">self</span>.peer_eof = <span class="bool-val">true</span>;
+                <span class="kw">return </span><span class="prelude-val">Ok</span>(());
             }
 
-            <span class="comment">// Warnings are nonfatal for TLS1.2, but outlawed in TLS1.3</span>
-            <span class="comment">// (except, for no good reason, user_cancelled).</span>
-            <span class="kw">if</span> <span class="ident">alert</span>.<span class="ident">level</span> <span class="op">==</span> <span class="ident">AlertLevel::Warning</span> {
-                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_tls13</span>() <span class="op">&amp;&amp;</span> <span class="ident">alert</span>.<span class="ident">description</span> <span class="op">!</span><span class="op">=</span> <span class="ident">AlertDescription::UserCanceled</span> {
-                    <span class="self">self</span>.<span class="ident">send_fatal_alert</span>(<span class="ident">AlertDescription::DecodeError</span>);
-                } <span class="kw">else</span> {
-                    <span class="macro">warn!</span>(<span class="string">&quot;TLS alert warning received: {:#?}&quot;</span>, <span class="ident">msg</span>);
-                    <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
+            <span class="comment">// Warnings are nonfatal for TLS1.2, but outlawed in TLS1.3
+            // (except, for no good reason, user_cancelled).
+            </span><span class="kw">if </span>alert.level == AlertLevel::Warning {
+                <span class="kw">if </span><span class="self">self</span>.is_tls13() &amp;&amp; alert.description != AlertDescription::UserCanceled {
+                    <span class="self">self</span>.send_fatal_alert(AlertDescription::DecodeError);
+                } <span class="kw">else </span>{
+                    <span class="macro">warn!</span>(<span class="string">&quot;TLS alert warning received: {:#?}&quot;</span>, msg);
+                    <span class="kw">return </span><span class="prelude-val">Ok</span>(());
                 }
             }
 
-            <span class="macro">error!</span>(<span class="string">&quot;TLS alert received: {:#?}&quot;</span>, <span class="ident">msg</span>);
-            <span class="prelude-val">Err</span>(<span class="ident">TLSError::AlertReceived</span>(<span class="ident">alert</span>.<span class="ident">description</span>))
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">TLSError::CorruptMessagePayload</span>(<span class="ident">ContentType::Alert</span>))
+            <span class="macro">error!</span>(<span class="string">&quot;TLS alert received: {:#?}&quot;</span>, msg);
+            <span class="prelude-val">Err</span>(TLSError::AlertReceived(alert.description))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(TLSError::CorruptMessagePayload(ContentType::Alert))
         }
     }
 
-    <span class="doccomment">/// Fragment `m`, encrypt the fragments, and then queue</span>
-    <span class="doccomment">/// the encrypted fragments for sending.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_msg_encrypt</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">m</span>: <span class="ident">Message</span>) {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">plain_messages</span> <span class="op">=</span> <span class="ident">VecDeque::new</span>();
-        <span class="self">self</span>.<span class="ident">message_fragmenter</span>
-            .<span class="ident">fragment</span>(<span class="ident">m</span>, <span class="kw-2">&amp;mut</span> <span class="ident">plain_messages</span>);
+    <span class="doccomment">/// Fragment `m`, encrypt the fragments, and then queue
+    /// the encrypted fragments for sending.
+    </span><span class="kw">pub fn </span>send_msg_encrypt(<span class="kw-2">&amp;mut </span><span class="self">self</span>, m: Message) {
+        <span class="kw">let </span><span class="kw-2">mut </span>plain_messages = VecDeque::new();
+        <span class="self">self</span>.message_fragmenter
+            .fragment(m, <span class="kw-2">&amp;mut </span>plain_messages);
 
-        <span class="kw">for</span> <span class="ident">m</span> <span class="kw">in</span> <span class="ident">plain_messages</span> {
-            <span class="self">self</span>.<span class="ident">send_single_fragment</span>(<span class="ident">m</span>.<span class="ident">to_borrowed</span>());
+        <span class="kw">for </span>m <span class="kw">in </span>plain_messages {
+            <span class="self">self</span>.send_single_fragment(m.to_borrowed());
         }
     }
 
-    <span class="doccomment">/// Like send_msg_encrypt, but operate on an appdata directly.</span>
-    <span class="kw">fn</span> <span class="ident">send_appdata_encrypt</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">payload</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">limit</span>: <span class="ident">Limit</span>) -&gt; <span class="ident">usize</span> {
-        <span class="comment">// Here, the limit on sendable_tls applies to encrypted data,</span>
-        <span class="comment">// but we&#39;re respecting it for plaintext data -- so we&#39;ll</span>
-        <span class="comment">// be out by whatever the cipher+record overhead is.  That&#39;s a</span>
-        <span class="comment">// constant and predictable amount, so it&#39;s not a terrible issue.</span>
-        <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">limit</span> {
-            <span class="ident">Limit::Yes</span> =&gt; <span class="self">self</span>
-                .<span class="ident">sendable_tls</span>
-                .<span class="ident">apply_limit</span>(<span class="ident">payload</span>.<span class="ident">len</span>()),
-            <span class="ident">Limit::No</span> =&gt; <span class="ident">payload</span>.<span class="ident">len</span>(),
+    <span class="doccomment">/// Like send_msg_encrypt, but operate on an appdata directly.
+    </span><span class="kw">fn </span>send_appdata_encrypt(<span class="kw-2">&amp;mut </span><span class="self">self</span>, payload: <span class="kw-2">&amp;</span>[u8], limit: Limit) -&gt; usize {
+        <span class="comment">// Here, the limit on sendable_tls applies to encrypted data,
+        // but we&#39;re respecting it for plaintext data -- so we&#39;ll
+        // be out by whatever the cipher+record overhead is.  That&#39;s a
+        // constant and predictable amount, so it&#39;s not a terrible issue.
+        </span><span class="kw">let </span>len = <span class="kw">match </span>limit {
+            Limit::Yes =&gt; <span class="self">self
+                </span>.sendable_tls
+                .apply_limit(payload.len()),
+            Limit::No =&gt; payload.len(),
         };
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">plain_messages</span> <span class="op">=</span> <span class="ident">VecDeque::new</span>();
-        <span class="self">self</span>.<span class="ident">message_fragmenter</span>.<span class="ident">fragment_borrow</span>(
-            <span class="ident">ContentType::ApplicationData</span>,
-            <span class="ident">ProtocolVersion::TLSv1_2</span>,
-            <span class="kw-2">&amp;</span><span class="ident">payload</span>[..<span class="ident">len</span>],
-            <span class="kw-2">&amp;mut</span> <span class="ident">plain_messages</span>,
+        <span class="kw">let </span><span class="kw-2">mut </span>plain_messages = VecDeque::new();
+        <span class="self">self</span>.message_fragmenter.fragment_borrow(
+            ContentType::ApplicationData,
+            ProtocolVersion::TLSv1_2,
+            <span class="kw-2">&amp;</span>payload[..len],
+            <span class="kw-2">&amp;mut </span>plain_messages,
         );
 
-        <span class="kw">for</span> <span class="ident">m</span> <span class="kw">in</span> <span class="ident">plain_messages</span> {
-            <span class="self">self</span>.<span class="ident">send_single_fragment</span>(<span class="ident">m</span>);
+        <span class="kw">for </span>m <span class="kw">in </span>plain_messages {
+            <span class="self">self</span>.send_single_fragment(m);
         }
 
-        <span class="ident">len</span>
+        len
     }
 
-    <span class="kw">fn</span> <span class="ident">send_single_fragment</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">m</span>: <span class="ident">BorrowMessage</span>) {
-        <span class="comment">// Close connection once we start to run out of</span>
-        <span class="comment">// sequence space.</span>
-        <span class="kw">if</span> <span class="self">self</span>
-            .<span class="ident">record_layer</span>
-            .<span class="ident">wants_close_before_encrypt</span>()
+    <span class="kw">fn </span>send_single_fragment(<span class="kw-2">&amp;mut </span><span class="self">self</span>, m: BorrowMessage) {
+        <span class="comment">// Close connection once we start to run out of
+        // sequence space.
+        </span><span class="kw">if </span><span class="self">self
+            </span>.record_layer
+            .wants_close_before_encrypt()
         {
-            <span class="self">self</span>.<span class="ident">send_close_notify</span>();
+            <span class="self">self</span>.send_close_notify();
         }
 
-        <span class="comment">// Refuse to wrap counter at all costs.  This</span>
-        <span class="comment">// is basically untestable unfortunately.</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">record_layer</span>.<span class="ident">encrypt_exhausted</span>() {
+        <span class="comment">// Refuse to wrap counter at all costs.  This
+        // is basically untestable unfortunately.
+        </span><span class="kw">if </span><span class="self">self</span>.record_layer.encrypt_exhausted() {
             <span class="kw">return</span>;
         }
 
-        <span class="kw">let</span> <span class="ident">em</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">record_layer</span>.<span class="ident">encrypt_outgoing</span>(<span class="ident">m</span>);
-        <span class="self">self</span>.<span class="ident">queue_tls_message</span>(<span class="ident">em</span>);
+        <span class="kw">let </span>em = <span class="self">self</span>.record_layer.encrypt_outgoing(m);
+        <span class="self">self</span>.queue_tls_message(em);
     }
 
-    <span class="doccomment">/// Are we done? ie, have we processed all received messages,</span>
-    <span class="doccomment">/// and received a close_notify to indicate that no new messages</span>
-    <span class="doccomment">/// will arrive?</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connection_at_eof</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">peer_eof</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">message_deframer</span>.<span class="ident">has_pending</span>()
+    <span class="doccomment">/// Are we done? ie, have we processed all received messages,
+    /// and received a close_notify to indicate that no new messages
+    /// will arrive?
+    </span><span class="kw">pub fn </span>connection_at_eof(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.peer_eof &amp;&amp; !<span class="self">self</span>.message_deframer.has_pending()
     }
 
-    <span class="doccomment">/// Read TLS content from `rd`.  This method does internal</span>
-    <span class="doccomment">/// buffering, so `rd` can supply TLS messages in arbitrary-</span>
-    <span class="doccomment">/// sized chunks (like a socket or pipe might).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_tls</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">rd</span>: <span class="kw-2">&amp;mut</span> <span class="kw">dyn</span> <span class="ident">Read</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">message_deframer</span>.<span class="ident">read</span>(<span class="ident">rd</span>)
+    <span class="doccomment">/// Read TLS content from `rd`.  This method does internal
+    /// buffering, so `rd` can supply TLS messages in arbitrary-
+    /// sized chunks (like a socket or pipe might).
+    </span><span class="kw">pub fn </span>read_tls(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rd: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Read) -&gt; io::Result&lt;usize&gt; {
+        <span class="self">self</span>.message_deframer.read(rd)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_tls</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">wr</span>: <span class="kw-2">&amp;mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">sendable_tls</span>.<span class="ident">write_to</span>(<span class="ident">wr</span>)
+    <span class="kw">pub fn </span>write_tls(<span class="kw-2">&amp;mut </span><span class="self">self</span>, wr: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Write) -&gt; io::Result&lt;usize&gt; {
+        <span class="self">self</span>.sendable_tls.write_to(wr)
     }
 
-    <span class="doccomment">/// Send plaintext application data, fragmenting and</span>
-    <span class="doccomment">/// encrypting it as it goes out.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If internal buffers are too small, this function will not accept</span>
-    <span class="doccomment">/// all the data.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_some_plaintext</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">send_plain</span>(<span class="ident">data</span>, <span class="ident">Limit::Yes</span>)
+    <span class="doccomment">/// Send plaintext application data, fragmenting and
+    /// encrypting it as it goes out.
+    ///
+    /// If internal buffers are too small, this function will not accept
+    /// all the data.
+    </span><span class="kw">pub fn </span>send_some_plaintext(<span class="kw-2">&amp;mut </span><span class="self">self</span>, data: <span class="kw-2">&amp;</span>[u8]) -&gt; usize {
+        <span class="self">self</span>.send_plain(data, Limit::Yes)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_early_plaintext</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">usize</span> {
-        <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">early_traffic</span>);
-        <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">record_layer</span>.<span class="ident">is_encrypting</span>());
+    <span class="kw">pub fn </span>send_early_plaintext(<span class="kw-2">&amp;mut </span><span class="self">self</span>, data: <span class="kw-2">&amp;</span>[u8]) -&gt; usize {
+        <span class="macro">debug_assert!</span>(<span class="self">self</span>.early_traffic);
+        <span class="macro">debug_assert!</span>(<span class="self">self</span>.record_layer.is_encrypting());
 
-        <span class="kw">if</span> <span class="ident">data</span>.<span class="ident">is_empty</span>() {
-            <span class="comment">// Don&#39;t send empty fragments.</span>
-            <span class="kw">return</span> <span class="number">0</span>;
+        <span class="kw">if </span>data.is_empty() {
+            <span class="comment">// Don&#39;t send empty fragments.
+            </span><span class="kw">return </span><span class="number">0</span>;
         }
 
-        <span class="self">self</span>.<span class="ident">send_appdata_encrypt</span>(<span class="ident">data</span>, <span class="ident">Limit::Yes</span>)
+        <span class="self">self</span>.send_appdata_encrypt(data, Limit::Yes)
     }
 
-    <span class="doccomment">/// Encrypt and send some plaintext `data`.  `limit` controls</span>
-    <span class="doccomment">/// whether the per-session buffer limits apply.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns the number of bytes written from `data`: this might</span>
-    <span class="doccomment">/// be less than `data.len()` if buffer limits were exceeded.</span>
-    <span class="kw">fn</span> <span class="ident">send_plain</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">limit</span>: <span class="ident">Limit</span>) -&gt; <span class="ident">usize</span> {
-        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">traffic</span> {
-            <span class="comment">// If we haven&#39;t completed handshaking, buffer</span>
-            <span class="comment">// plaintext to send once we do.</span>
-            <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">limit</span> {
-                <span class="ident">Limit::Yes</span> =&gt; <span class="self">self</span>
-                    .<span class="ident">sendable_plaintext</span>
-                    .<span class="ident">append_limited_copy</span>(<span class="ident">data</span>),
-                <span class="ident">Limit::No</span> =&gt; <span class="self">self</span>
-                    .<span class="ident">sendable_plaintext</span>
-                    .<span class="ident">append</span>(<span class="ident">data</span>.<span class="ident">to_vec</span>()),
+    <span class="doccomment">/// Encrypt and send some plaintext `data`.  `limit` controls
+    /// whether the per-session buffer limits apply.
+    ///
+    /// Returns the number of bytes written from `data`: this might
+    /// be less than `data.len()` if buffer limits were exceeded.
+    </span><span class="kw">fn </span>send_plain(<span class="kw-2">&amp;mut </span><span class="self">self</span>, data: <span class="kw-2">&amp;</span>[u8], limit: Limit) -&gt; usize {
+        <span class="kw">if </span>!<span class="self">self</span>.traffic {
+            <span class="comment">// If we haven&#39;t completed handshaking, buffer
+            // plaintext to send once we do.
+            </span><span class="kw">let </span>len = <span class="kw">match </span>limit {
+                Limit::Yes =&gt; <span class="self">self
+                    </span>.sendable_plaintext
+                    .append_limited_copy(data),
+                Limit::No =&gt; <span class="self">self
+                    </span>.sendable_plaintext
+                    .append(data.to_vec()),
             };
-            <span class="kw">return</span> <span class="ident">len</span>;
+            <span class="kw">return </span>len;
         }
 
-        <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">record_layer</span>.<span class="ident">is_encrypting</span>());
+        <span class="macro">debug_assert!</span>(<span class="self">self</span>.record_layer.is_encrypting());
 
-        <span class="kw">if</span> <span class="ident">data</span>.<span class="ident">is_empty</span>() {
-            <span class="comment">// Don&#39;t send empty fragments.</span>
-            <span class="kw">return</span> <span class="number">0</span>;
+        <span class="kw">if </span>data.is_empty() {
+            <span class="comment">// Don&#39;t send empty fragments.
+            </span><span class="kw">return </span><span class="number">0</span>;
         }
 
-        <span class="self">self</span>.<span class="ident">send_appdata_encrypt</span>(<span class="ident">data</span>, <span class="ident">limit</span>)
+        <span class="self">self</span>.send_appdata_encrypt(data, limit)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">start_traffic</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">traffic</span> <span class="op">=</span> <span class="bool-val">true</span>;
-        <span class="self">self</span>.<span class="ident">flush_plaintext</span>();
+    <span class="kw">pub fn </span>start_traffic(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.traffic = <span class="bool-val">true</span>;
+        <span class="self">self</span>.flush_plaintext();
     }
 
-    <span class="doccomment">/// Send any buffered plaintext.  Plaintext is buffered if</span>
-    <span class="doccomment">/// written during handshake.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_plaintext</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">traffic</span> {
+    <span class="doccomment">/// Send any buffered plaintext.  Plaintext is buffered if
+    /// written during handshake.
+    </span><span class="kw">pub fn </span>flush_plaintext(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">if </span>!<span class="self">self</span>.traffic {
             <span class="kw">return</span>;
         }
 
-        <span class="kw">while</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">sendable_plaintext</span>.<span class="ident">is_empty</span>() {
-            <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">sendable_plaintext</span>.<span class="ident">take_one</span>();
-            <span class="self">self</span>.<span class="ident">send_plain</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>, <span class="ident">Limit::No</span>);
+        <span class="kw">while </span>!<span class="self">self</span>.sendable_plaintext.is_empty() {
+            <span class="kw">let </span>buf = <span class="self">self</span>.sendable_plaintext.take_one();
+            <span class="self">self</span>.send_plain(<span class="kw-2">&amp;</span>buf, Limit::No);
         }
     }
 
-    <span class="comment">// Put m into sendable_tls for writing.</span>
-    <span class="kw">fn</span> <span class="ident">queue_tls_message</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">m</span>: <span class="ident">Message</span>) {
-        <span class="self">self</span>.<span class="ident">sendable_tls</span>
-            .<span class="ident">append</span>(<span class="ident">m</span>.<span class="ident">get_encoding</span>());
+    <span class="comment">// Put m into sendable_tls for writing.
+    </span><span class="kw">fn </span>queue_tls_message(<span class="kw-2">&amp;mut </span><span class="self">self</span>, m: Message) {
+        <span class="self">self</span>.sendable_tls
+            .append(m.get_encoding());
     }
 
-    <span class="doccomment">/// Send a raw TLS message, fragmenting it if needed.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_msg</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">m</span>: <span class="ident">Message</span>, <span class="ident">must_encrypt</span>: <span class="ident">bool</span>) {
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;quic&quot;</span>)]</span>
-        {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Protocol::Quic</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">protocol</span> {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">MessagePayload::Alert</span>(<span class="ident">alert</span>) <span class="op">=</span> <span class="ident">m</span>.<span class="ident">payload</span> {
-                    <span class="self">self</span>.<span class="ident">quic</span>.<span class="ident">alert</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">alert</span>.<span class="ident">description</span>);
-                } <span class="kw">else</span> {
+    <span class="doccomment">/// Send a raw TLS message, fragmenting it if needed.
+    </span><span class="kw">pub fn </span>send_msg(<span class="kw-2">&amp;mut </span><span class="self">self</span>, m: Message, must_encrypt: bool) {
+        <span class="attribute">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+        </span>{
+            <span class="kw">if let </span>Protocol::Quic = <span class="self">self</span>.protocol {
+                <span class="kw">if let </span>MessagePayload::Alert(alert) = m.payload {
+                    <span class="self">self</span>.quic.alert = <span class="prelude-val">Some</span>(alert.description);
+                } <span class="kw">else </span>{
                     <span class="macro">debug_assert!</span>(
-                        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">MessagePayload::Handshake</span>(<span class="kw">_</span>) <span class="op">=</span> <span class="ident">m</span>.<span class="ident">payload</span> {
-                            <span class="bool-val">true</span>
-                        } <span class="kw">else</span> {
-                            <span class="bool-val">false</span>
-                        },
-                        <span class="string">&quot;QUIC uses TLS for the cryptographic handshake only&quot;</span>
-                    );
-                    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-                    <span class="ident">m</span>.<span class="ident">payload</span>.<span class="ident">encode</span>(<span class="kw-2">&amp;mut</span> <span class="ident">bytes</span>);
-                    <span class="self">self</span>.<span class="ident">quic</span>
-                        .<span class="ident">hs_queue</span>
-                        .<span class="ident">push_back</span>((<span class="ident">must_encrypt</span>, <span class="ident">bytes</span>));
+                        <span class="kw">if let </span>MessagePayload::Handshake(<span class="kw">_</span>) = m.payload {
+                            <span class="bool-val">true
+                        </span>} <span class="kw">else </span>{
+                            <span class="bool-val">false
+                        </span>},
+                        <span class="string">&quot;QUIC uses TLS for the cryptographic handshake only&quot;
+                    </span>);
+                    <span class="kw">let </span><span class="kw-2">mut </span>bytes = Vec::new();
+                    m.payload.encode(<span class="kw-2">&amp;mut </span>bytes);
+                    <span class="self">self</span>.quic
+                        .hs_queue
+                        .push_back((must_encrypt, bytes));
                 }
                 <span class="kw">return</span>;
             }
         }
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">must_encrypt</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">to_send</span> <span class="op">=</span> <span class="ident">VecDeque::new</span>();
-            <span class="self">self</span>.<span class="ident">message_fragmenter</span>
-                .<span class="ident">fragment</span>(<span class="ident">m</span>, <span class="kw-2">&amp;mut</span> <span class="ident">to_send</span>);
-            <span class="kw">for</span> <span class="ident">mm</span> <span class="kw">in</span> <span class="ident">to_send</span> {
-                <span class="self">self</span>.<span class="ident">queue_tls_message</span>(<span class="ident">mm</span>);
+        <span class="kw">if </span>!must_encrypt {
+            <span class="kw">let </span><span class="kw-2">mut </span>to_send = VecDeque::new();
+            <span class="self">self</span>.message_fragmenter
+                .fragment(m, <span class="kw-2">&amp;mut </span>to_send);
+            <span class="kw">for </span>mm <span class="kw">in </span>to_send {
+                <span class="self">self</span>.queue_tls_message(mm);
             }
-        } <span class="kw">else</span> {
-            <span class="self">self</span>.<span class="ident">send_msg_encrypt</span>(<span class="ident">m</span>);
+        } <span class="kw">else </span>{
+            <span class="self">self</span>.send_msg_encrypt(m);
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_received_plaintext</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">bytes</span>: <span class="ident">Payload</span>) {
-        <span class="self">self</span>.<span class="ident">received_plaintext</span>.<span class="ident">append</span>(<span class="ident">bytes</span>.<span class="number">0</span>);
+    <span class="kw">pub fn </span>take_received_plaintext(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bytes: Payload) {
+        <span class="self">self</span>.received_plaintext.append(bytes.<span class="number">0</span>);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">received_plaintext</span>.<span class="ident">read</span>(<span class="ident">buf</span>)<span class="question-mark">?</span>;
+    <span class="kw">pub fn </span>read(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;mut </span>[u8]) -&gt; io::Result&lt;usize&gt; {
+        <span class="kw">let </span>len = <span class="self">self</span>.received_plaintext.read(buf)<span class="question-mark">?</span>;
 
-        <span class="kw">if</span> <span class="ident">len</span> <span class="op">==</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">connection_at_eof</span>() <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">received_plaintext</span>.<span class="ident">is_empty</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(
-                <span class="ident">io::ErrorKind::ConnectionAborted</span>,
+        <span class="kw">if </span>len == <span class="number">0 </span>&amp;&amp; <span class="self">self</span>.connection_at_eof() &amp;&amp; <span class="self">self</span>.received_plaintext.is_empty() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(io::Error::new(
+                io::ErrorKind::ConnectionAborted,
                 <span class="string">&quot;CloseNotify alert received&quot;</span>,
             ));
         }
 
-        <span class="prelude-val">Ok</span>(<span class="ident">len</span>)
+        <span class="prelude-val">Ok</span>(len)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">start_encryption_tls12</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">secrets</span>: <span class="kw-2">&amp;</span><span class="ident">SessionSecrets</span>) {
-        <span class="kw">let</span> (<span class="ident">dec</span>, <span class="ident">enc</span>) <span class="op">=</span> <span class="ident">cipher::new_tls12</span>(<span class="self">self</span>.<span class="ident">get_suite_assert</span>(), <span class="ident">secrets</span>);
-        <span class="self">self</span>.<span class="ident">record_layer</span>
-            .<span class="ident">prepare_message_encrypter</span>(<span class="ident">enc</span>);
-        <span class="self">self</span>.<span class="ident">record_layer</span>
-            .<span class="ident">prepare_message_decrypter</span>(<span class="ident">dec</span>);
+    <span class="kw">pub fn </span>start_encryption_tls12(<span class="kw-2">&amp;mut </span><span class="self">self</span>, secrets: <span class="kw-2">&amp;</span>SessionSecrets) {
+        <span class="kw">let </span>(dec, enc) = cipher::new_tls12(<span class="self">self</span>.get_suite_assert(), secrets);
+        <span class="self">self</span>.record_layer
+            .prepare_message_encrypter(enc);
+        <span class="self">self</span>.record_layer
+            .prepare_message_decrypter(dec);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_warning_alert</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">desc</span>: <span class="ident">AlertDescription</span>) {
-        <span class="macro">warn!</span>(<span class="string">&quot;Sending warning alert {:?}&quot;</span>, <span class="ident">desc</span>);
-        <span class="self">self</span>.<span class="ident">send_warning_alert_no_log</span>(<span class="ident">desc</span>);
+    <span class="kw">pub fn </span>send_warning_alert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, desc: AlertDescription) {
+        <span class="macro">warn!</span>(<span class="string">&quot;Sending warning alert {:?}&quot;</span>, desc);
+        <span class="self">self</span>.send_warning_alert_no_log(desc);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_fatal_alert</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">desc</span>: <span class="ident">AlertDescription</span>) {
-        <span class="macro">warn!</span>(<span class="string">&quot;Sending fatal alert {:?}&quot;</span>, <span class="ident">desc</span>);
-        <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="self">self</span>.<span class="ident">sent_fatal_alert</span>);
-        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Message::build_alert</span>(<span class="ident">AlertLevel::Fatal</span>, <span class="ident">desc</span>);
-        <span class="self">self</span>.<span class="ident">send_msg</span>(<span class="ident">m</span>, <span class="self">self</span>.<span class="ident">record_layer</span>.<span class="ident">is_encrypting</span>());
-        <span class="self">self</span>.<span class="ident">sent_fatal_alert</span> <span class="op">=</span> <span class="bool-val">true</span>;
+    <span class="kw">pub fn </span>send_fatal_alert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, desc: AlertDescription) {
+        <span class="macro">warn!</span>(<span class="string">&quot;Sending fatal alert {:?}&quot;</span>, desc);
+        <span class="macro">debug_assert!</span>(!<span class="self">self</span>.sent_fatal_alert);
+        <span class="kw">let </span>m = Message::build_alert(AlertLevel::Fatal, desc);
+        <span class="self">self</span>.send_msg(m, <span class="self">self</span>.record_layer.is_encrypting());
+        <span class="self">self</span>.sent_fatal_alert = <span class="bool-val">true</span>;
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_close_notify</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="macro">debug!</span>(<span class="string">&quot;Sending warning alert {:?}&quot;</span>, <span class="ident">AlertDescription::CloseNotify</span>);
-        <span class="self">self</span>.<span class="ident">send_warning_alert_no_log</span>(<span class="ident">AlertDescription::CloseNotify</span>);
+    <span class="kw">pub fn </span>send_close_notify(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="macro">debug!</span>(<span class="string">&quot;Sending warning alert {:?}&quot;</span>, AlertDescription::CloseNotify);
+        <span class="self">self</span>.send_warning_alert_no_log(AlertDescription::CloseNotify);
     }
 
-    <span class="kw">fn</span> <span class="ident">send_warning_alert_no_log</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">desc</span>: <span class="ident">AlertDescription</span>) {
-        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Message::build_alert</span>(<span class="ident">AlertLevel::Warning</span>, <span class="ident">desc</span>);
-        <span class="self">self</span>.<span class="ident">send_msg</span>(<span class="ident">m</span>, <span class="self">self</span>.<span class="ident">record_layer</span>.<span class="ident">is_encrypting</span>());
+    <span class="kw">fn </span>send_warning_alert_no_log(<span class="kw-2">&amp;mut </span><span class="self">self</span>, desc: AlertDescription) {
+        <span class="kw">let </span>m = Message::build_alert(AlertLevel::Warning, desc);
+        <span class="self">self</span>.send_msg(m, <span class="self">self</span>.record_layer.is_encrypting());
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_quic</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;quic&quot;</span>)]</span>
-        {
-            <span class="self">self</span>.<span class="ident">protocol</span> <span class="op">==</span> <span class="ident">Protocol::Quic</span>
+    <span class="kw">pub fn </span>is_quic(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="attribute">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+        </span>{
+            <span class="self">self</span>.protocol == Protocol::Quic
         }
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;quic&quot;</span>))]</span>
-        <span class="bool-val">false</span>
-    }
+        <span class="attribute">#[cfg(not(feature = <span class="string">&quot;quic&quot;</span>))]
+        </span><span class="bool-val">false
+    </span>}
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;quic&quot;</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">Quic</span> {
-    <span class="doccomment">/// QUIC transport parameters received from the peer during the handshake</span>
-    <span class="kw">pub</span> <span class="ident">params</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">alert</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AlertDescription</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">hs_queue</span>: <span class="ident">VecDeque</span><span class="op">&lt;</span>(<span class="ident">bool</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>)<span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">early_secret</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ring::hkdf::Prk</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">hs_secrets</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">quic::Secrets</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">traffic_secrets</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">quic::Secrets</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Whether keys derived from traffic_secrets have been passed to the QUIC implementation</span>
-    <span class="kw">pub</span> <span class="ident">returned_traffic_keys</span>: <span class="ident">bool</span>,
+<span class="attribute">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>Quic {
+    <span class="doccomment">/// QUIC transport parameters received from the peer during the handshake
+    </span><span class="kw">pub </span>params: <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;,
+    <span class="kw">pub </span>alert: <span class="prelude-ty">Option</span>&lt;AlertDescription&gt;,
+    <span class="kw">pub </span>hs_queue: VecDeque&lt;(bool, Vec&lt;u8&gt;)&gt;,
+    <span class="kw">pub </span>early_secret: <span class="prelude-ty">Option</span>&lt;ring::hkdf::Prk&gt;,
+    <span class="kw">pub </span>hs_secrets: <span class="prelude-ty">Option</span>&lt;quic::Secrets&gt;,
+    <span class="kw">pub </span>traffic_secrets: <span class="prelude-ty">Option</span>&lt;quic::Secrets&gt;,
+    <span class="doccomment">/// Whether keys derived from traffic_secrets have been passed to the QUIC implementation
+    </span><span class="kw">pub </span>returned_traffic_keys: bool,
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;quic&quot;</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Quic</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">params</span>: <span class="prelude-val">None</span>,
-            <span class="ident">alert</span>: <span class="prelude-val">None</span>,
-            <span class="ident">hs_queue</span>: <span class="ident">VecDeque::new</span>(),
-            <span class="ident">early_secret</span>: <span class="prelude-val">None</span>,
-            <span class="ident">hs_secrets</span>: <span class="prelude-val">None</span>,
-            <span class="ident">traffic_secrets</span>: <span class="prelude-val">None</span>,
-            <span class="ident">returned_traffic_keys</span>: <span class="bool-val">false</span>,
+<span class="attribute">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+</span><span class="kw">impl </span>Quic {
+    <span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            params: <span class="prelude-val">None</span>,
+            alert: <span class="prelude-val">None</span>,
+            hs_queue: VecDeque::new(),
+            early_secret: <span class="prelude-val">None</span>,
+            hs_secrets: <span class="prelude-val">None</span>,
+            traffic_secrets: <span class="prelude-val">None</span>,
+            returned_traffic_keys: <span class="bool-val">false</span>,
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustls" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustls" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

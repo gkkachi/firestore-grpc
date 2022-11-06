@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/rustls-0.19.1/src/server/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../rustls/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/rustls-0.19.1/src/server/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../rustls/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -752,515 +752,515 @@
 <span id="752">752</span>
 <span id="753">753</span>
 <span id="754">754</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error::TLSError</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::key</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::keylog</span>::{<span class="ident">KeyLog</span>, <span class="ident">NoKeyLog</span>};
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;logging&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::log::trace</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::enums::ContentType</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::enums::SignatureScheme</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::enums</span>::{<span class="ident">AlertDescription</span>, <span class="ident">HandshakeType</span>, <span class="ident">ProtocolVersion</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::handshake::ServerExtension</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::message::Message</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::session</span>::{<span class="ident">MiddleboxCCS</span>, <span class="ident">Session</span>, <span class="ident">SessionCommon</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::sign</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::suites</span>::{<span class="ident">SupportedCipherSuite</span>, <span class="ident">ALL_CIPHERSUITES</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::verify</span>;
+</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::error::TLSError;
+<span class="kw">use </span><span class="kw">crate</span>::key;
+<span class="kw">use </span><span class="kw">crate</span>::keylog::{KeyLog, NoKeyLog};
+<span class="attribute">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::log::trace;
+<span class="kw">use </span><span class="kw">crate</span>::msgs::enums::ContentType;
+<span class="kw">use </span><span class="kw">crate</span>::msgs::enums::SignatureScheme;
+<span class="kw">use </span><span class="kw">crate</span>::msgs::enums::{AlertDescription, HandshakeType, ProtocolVersion};
+<span class="kw">use </span><span class="kw">crate</span>::msgs::handshake::ServerExtension;
+<span class="kw">use </span><span class="kw">crate</span>::msgs::message::Message;
+<span class="kw">use </span><span class="kw">crate</span>::session::{MiddleboxCCS, Session, SessionCommon};
+<span class="kw">use </span><span class="kw">crate</span>::sign;
+<span class="kw">use </span><span class="kw">crate</span>::suites::{SupportedCipherSuite, ALL_CIPHERSUITES};
+<span class="kw">use </span><span class="kw">crate</span>::verify;
 
-<span class="kw">use</span> <span class="ident">webpki</span>;
+<span class="kw">use </span>webpki;
 
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
-<span class="kw">use</span> <span class="ident">std::io</span>::{<span class="self">self</span>, <span class="ident">IoSlice</span>};
-<span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
+<span class="kw">use </span>std::fmt;
+<span class="kw">use </span>std::io::{<span class="self">self</span>, IoSlice};
+<span class="kw">use </span>std::sync::Arc;
 
-<span class="attribute">#[<span class="ident">macro_use</span>]</span>
-<span class="kw">mod</span> <span class="ident">hs</span>;
-<span class="kw">mod</span> <span class="ident">common</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">handy</span>;
-<span class="kw">mod</span> <span class="ident">tls12</span>;
-<span class="kw">mod</span> <span class="ident">tls13</span>;
+<span class="attribute">#[macro_use]
+</span><span class="kw">mod </span>hs;
+<span class="kw">mod </span>common;
+<span class="kw">pub mod </span>handy;
+<span class="kw">mod </span>tls12;
+<span class="kw">mod </span>tls13;
 
-<span class="doccomment">/// A trait for the ability to store server session data.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The keys and values are opaque.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Both the keys and values should be treated as</span>
-<span class="doccomment">/// **highly sensitive data**, containing enough key material</span>
-<span class="doccomment">/// to break all security of the corresponding sessions.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Implementations can be lossy (in other words, forgetting</span>
-<span class="doccomment">/// key/value pairs) without any negative security consequences.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// However, note that `take` **must** reliably delete a returned</span>
-<span class="doccomment">/// value.  If it does not, there may be security consequences.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `put` and `take` are mutating operations; this isn&#39;t expressed</span>
-<span class="doccomment">/// in the type system to allow implementations freedom in</span>
-<span class="doccomment">/// how to achieve interior mutability.  `Mutex` is a common</span>
-<span class="doccomment">/// choice.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">StoresServerSessions</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
-    <span class="doccomment">/// Store session secrets encoded in `value` against `key`,</span>
-    <span class="doccomment">/// overwrites any existing value against `key`.  Returns `true`</span>
-    <span class="doccomment">/// if the value was stored.</span>
-    <span class="kw">fn</span> <span class="ident">put</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">value</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span>;
+<span class="doccomment">/// A trait for the ability to store server session data.
+///
+/// The keys and values are opaque.
+///
+/// Both the keys and values should be treated as
+/// **highly sensitive data**, containing enough key material
+/// to break all security of the corresponding sessions.
+///
+/// Implementations can be lossy (in other words, forgetting
+/// key/value pairs) without any negative security consequences.
+///
+/// However, note that `take` **must** reliably delete a returned
+/// value.  If it does not, there may be security consequences.
+///
+/// `put` and `take` are mutating operations; this isn&#39;t expressed
+/// in the type system to allow implementations freedom in
+/// how to achieve interior mutability.  `Mutex` is a common
+/// choice.
+</span><span class="kw">pub trait </span>StoresServerSessions: Send + Sync {
+    <span class="doccomment">/// Store session secrets encoded in `value` against `key`,
+    /// overwrites any existing value against `key`.  Returns `true`
+    /// if the value was stored.
+    </span><span class="kw">fn </span>put(<span class="kw-2">&amp;</span><span class="self">self</span>, key: Vec&lt;u8&gt;, value: Vec&lt;u8&gt;) -&gt; bool;
 
-    <span class="doccomment">/// Find a value with the given `key`.  Return it, or None</span>
-    <span class="doccomment">/// if it doesn&#39;t exist.</span>
-    <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Find a value with the given `key`.  Return it, or None
+    /// if it doesn&#39;t exist.
+    </span><span class="kw">fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;;
 
-    <span class="doccomment">/// Find a value with the given `key`.  Return it and delete it;</span>
-    <span class="doccomment">/// or None if it doesn&#39;t exist.</span>
-    <span class="kw">fn</span> <span class="ident">take</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Find a value with the given `key`.  Return it and delete it;
+    /// or None if it doesn&#39;t exist.
+    </span><span class="kw">fn </span>take(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;;
 }
 
-<span class="doccomment">/// A trait for the ability to encrypt and decrypt tickets.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ProducesTickets</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
-    <span class="doccomment">/// Returns true if this implementation will encrypt/decrypt</span>
-    <span class="doccomment">/// tickets.  Should return false if this is a dummy</span>
-    <span class="doccomment">/// implementation: the server will not send the SessionTicket</span>
-    <span class="doccomment">/// extension and will not call the other functions.</span>
-    <span class="kw">fn</span> <span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+<span class="doccomment">/// A trait for the ability to encrypt and decrypt tickets.
+</span><span class="kw">pub trait </span>ProducesTickets: Send + Sync {
+    <span class="doccomment">/// Returns true if this implementation will encrypt/decrypt
+    /// tickets.  Should return false if this is a dummy
+    /// implementation: the server will not send the SessionTicket
+    /// extension and will not call the other functions.
+    </span><span class="kw">fn </span>enabled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
 
-    <span class="doccomment">/// Returns the lifetime in seconds of tickets produced now.</span>
-    <span class="doccomment">/// The lifetime is provided as a hint to clients that the</span>
-    <span class="doccomment">/// ticket will not be useful after the given time.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This lifetime must be implemented by key rolling and</span>
-    <span class="doccomment">/// erasure, *not* by storing a lifetime in the ticket.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The objective is to limit damage to forward secrecy caused</span>
-    <span class="doccomment">/// by tickets, not just limiting their lifetime.</span>
-    <span class="kw">fn</span> <span class="ident">get_lifetime</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span>;
+    <span class="doccomment">/// Returns the lifetime in seconds of tickets produced now.
+    /// The lifetime is provided as a hint to clients that the
+    /// ticket will not be useful after the given time.
+    ///
+    /// This lifetime must be implemented by key rolling and
+    /// erasure, *not* by storing a lifetime in the ticket.
+    ///
+    /// The objective is to limit damage to forward secrecy caused
+    /// by tickets, not just limiting their lifetime.
+    </span><span class="kw">fn </span>get_lifetime(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32;
 
-    <span class="doccomment">/// Encrypt and authenticate `plain`, returning the resulting</span>
-    <span class="doccomment">/// ticket.  Return None if `plain` cannot be encrypted for</span>
-    <span class="doccomment">/// some reason: an empty ticket will be sent and the connection</span>
-    <span class="doccomment">/// will continue.</span>
-    <span class="kw">fn</span> <span class="ident">encrypt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">plain</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Encrypt and authenticate `plain`, returning the resulting
+    /// ticket.  Return None if `plain` cannot be encrypted for
+    /// some reason: an empty ticket will be sent and the connection
+    /// will continue.
+    </span><span class="kw">fn </span>encrypt(<span class="kw-2">&amp;</span><span class="self">self</span>, plain: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;;
 
-    <span class="doccomment">/// Decrypt `cipher`, validating its authenticity protection</span>
-    <span class="doccomment">/// and recovering the plaintext.  `cipher` is fully attacker</span>
-    <span class="doccomment">/// controlled, so this decryption must be side-channel free,</span>
-    <span class="doccomment">/// panic-proof, and otherwise bullet-proof.  If the decryption</span>
-    <span class="doccomment">/// fails, return None.</span>
-    <span class="kw">fn</span> <span class="ident">decrypt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">cipher</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Decrypt `cipher`, validating its authenticity protection
+    /// and recovering the plaintext.  `cipher` is fully attacker
+    /// controlled, so this decryption must be side-channel free,
+    /// panic-proof, and otherwise bullet-proof.  If the decryption
+    /// fails, return None.
+    </span><span class="kw">fn </span>decrypt(<span class="kw-2">&amp;</span><span class="self">self</span>, cipher: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;;
 }
 
-<span class="doccomment">/// How to choose a certificate chain and signing key for use</span>
-<span class="doccomment">/// in server authentication.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ResolvesServerCert</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
-    <span class="doccomment">/// Choose a certificate chain and matching key given simplified</span>
-    <span class="doccomment">/// ClientHello information.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Return `None` to abort the handshake.</span>
-    <span class="kw">fn</span> <span class="ident">resolve</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">client_hello</span>: <span class="ident">ClientHello</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">sign::CertifiedKey</span><span class="op">&gt;</span>;
+<span class="doccomment">/// How to choose a certificate chain and signing key for use
+/// in server authentication.
+</span><span class="kw">pub trait </span>ResolvesServerCert: Send + Sync {
+    <span class="doccomment">/// Choose a certificate chain and matching key given simplified
+    /// ClientHello information.
+    ///
+    /// Return `None` to abort the handshake.
+    </span><span class="kw">fn </span>resolve(<span class="kw-2">&amp;</span><span class="self">self</span>, client_hello: ClientHello) -&gt; <span class="prelude-ty">Option</span>&lt;sign::CertifiedKey&gt;;
 }
 
-<span class="doccomment">/// A struct representing the received Client Hello</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ClientHello</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">server_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">webpki::DNSNameRef</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">sigschemes</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">SignatureScheme</span>],
-    <span class="ident">alpn</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]]<span class="op">&gt;</span>,
+<span class="doccomment">/// A struct representing the received Client Hello
+</span><span class="kw">pub struct </span>ClientHello&lt;<span class="lifetime">&#39;a</span>&gt; {
+    server_name: <span class="prelude-ty">Option</span>&lt;webpki::DNSNameRef&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
+    sigschemes: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[SignatureScheme],
+    alpn: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8]]&gt;,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">ClientHello</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Creates a new ClientHello</span>
-    <span class="kw">fn</span> <span class="ident">new</span>(
-        <span class="ident">server_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">webpki::DNSNameRef</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">sigschemes</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">SignatureScheme</span>],
-        <span class="ident">alpn</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]]<span class="op">&gt;</span>,
-    ) -&gt; <span class="self">Self</span> {
-        <span class="ident">ClientHello</span> {
-            <span class="ident">server_name</span>,
-            <span class="ident">sigschemes</span>,
-            <span class="ident">alpn</span>,
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ClientHello&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="doccomment">/// Creates a new ClientHello
+    </span><span class="kw">fn </span>new(
+        server_name: <span class="prelude-ty">Option</span>&lt;webpki::DNSNameRef&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
+        sigschemes: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[SignatureScheme],
+        alpn: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8]]&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        ClientHello {
+            server_name,
+            sigschemes,
+            alpn,
         }
     }
 
-    <span class="doccomment">/// Get the server name indicator.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `None` if the client did not supply a SNI.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">server_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">webpki::DNSNameRef</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">server_name</span>
+    <span class="doccomment">/// Get the server name indicator.
+    ///
+    /// Returns `None` if the client did not supply a SNI.
+    </span><span class="kw">pub fn </span>server_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;webpki::DNSNameRef&gt; {
+        <span class="self">self</span>.server_name
     }
 
-    <span class="doccomment">/// Get the compatible signature schemes.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns standard-specified default if the client omitted this extension.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sigschemes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">SignatureScheme</span>] {
-        <span class="self">self</span>.<span class="ident">sigschemes</span>
+    <span class="doccomment">/// Get the compatible signature schemes.
+    ///
+    /// Returns standard-specified default if the client omitted this extension.
+    </span><span class="kw">pub fn </span>sigschemes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[SignatureScheme] {
+        <span class="self">self</span>.sigschemes
     }
 
-    <span class="doccomment">/// Get the alpn.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `None` if the client did not include an ALPN extension</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alpn</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]]<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">alpn</span>
+    <span class="doccomment">/// Get the alpn.
+    ///
+    /// Returns `None` if the client did not include an ALPN extension
+    </span><span class="kw">pub fn </span>alpn(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8]]&gt; {
+        <span class="self">self</span>.alpn
     }
 }
 
-<span class="doccomment">/// Common configuration for a set of server sessions.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Making one of these can be expensive, and should be</span>
-<span class="doccomment">/// once per process rather than once per connection.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ServerConfig</span> {
-    <span class="doccomment">/// List of ciphersuites, in preference order.</span>
-    <span class="kw">pub</span> <span class="ident">ciphersuites</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">SupportedCipherSuite</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Common configuration for a set of server sessions.
+///
+/// Making one of these can be expensive, and should be
+/// once per process rather than once per connection.
+</span><span class="attribute">#[derive(Clone)]
+</span><span class="kw">pub struct </span>ServerConfig {
+    <span class="doccomment">/// List of ciphersuites, in preference order.
+    </span><span class="kw">pub </span>ciphersuites: Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt;,
 
-    <span class="doccomment">/// Ignore the client&#39;s ciphersuite order. Instead,</span>
-    <span class="doccomment">/// choose the top ciphersuite in the server list</span>
-    <span class="doccomment">/// which is supported by the client.</span>
-    <span class="kw">pub</span> <span class="ident">ignore_client_order</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Ignore the client&#39;s ciphersuite order. Instead,
+    /// choose the top ciphersuite in the server list
+    /// which is supported by the client.
+    </span><span class="kw">pub </span>ignore_client_order: bool,
 
-    <span class="doccomment">/// Our MTU.  If None, we don&#39;t limit TLS message sizes.</span>
-    <span class="kw">pub</span> <span class="ident">mtu</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Our MTU.  If None, we don&#39;t limit TLS message sizes.
+    </span><span class="kw">pub </span>mtu: <span class="prelude-ty">Option</span>&lt;usize&gt;,
 
-    <span class="doccomment">/// How to store client sessions.</span>
-    <span class="kw">pub</span> <span class="ident">session_storage</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StoresServerSessions</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// How to store client sessions.
+    </span><span class="kw">pub </span>session_storage: Arc&lt;<span class="kw">dyn </span>StoresServerSessions + Send + Sync&gt;,
 
-    <span class="doccomment">/// How to produce tickets.</span>
-    <span class="kw">pub</span> <span class="ident">ticketer</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ProducesTickets</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// How to produce tickets.
+    </span><span class="kw">pub </span>ticketer: Arc&lt;<span class="kw">dyn </span>ProducesTickets&gt;,
 
-    <span class="doccomment">/// How to choose a server cert and key.</span>
-    <span class="kw">pub</span> <span class="ident">cert_resolver</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ResolvesServerCert</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// How to choose a server cert and key.
+    </span><span class="kw">pub </span>cert_resolver: Arc&lt;<span class="kw">dyn </span>ResolvesServerCert&gt;,
 
-    <span class="doccomment">/// Protocol names we support, most preferred first.</span>
-    <span class="doccomment">/// If empty we don&#39;t do ALPN at all.</span>
-    <span class="kw">pub</span> <span class="ident">alpn_protocols</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Protocol names we support, most preferred first.
+    /// If empty we don&#39;t do ALPN at all.
+    </span><span class="kw">pub </span>alpn_protocols: Vec&lt;Vec&lt;u8&gt;&gt;,
 
-    <span class="doccomment">/// Supported protocol versions, in no particular order.</span>
-    <span class="doccomment">/// The default is all supported versions.</span>
-    <span class="kw">pub</span> <span class="ident">versions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ProtocolVersion</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Supported protocol versions, in no particular order.
+    /// The default is all supported versions.
+    </span><span class="kw">pub </span>versions: Vec&lt;ProtocolVersion&gt;,
 
-    <span class="doccomment">/// How to verify client certificates.</span>
-    <span class="ident">verifier</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">verify::ClientCertVerifier</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// How to verify client certificates.
+    </span>verifier: Arc&lt;<span class="kw">dyn </span>verify::ClientCertVerifier&gt;,
 
-    <span class="doccomment">/// How to output key material for debugging.  The default</span>
-    <span class="doccomment">/// does nothing.</span>
-    <span class="kw">pub</span> <span class="ident">key_log</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyLog</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// How to output key material for debugging.  The default
+    /// does nothing.
+    </span><span class="kw">pub </span>key_log: Arc&lt;<span class="kw">dyn </span>KeyLog&gt;,
 
-    <span class="doccomment">/// Amount of early data to accept; 0 to disable.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;quic&quot;</span>)]</span> <span class="comment">// TLS support unimplemented</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">max_early_data_size</span>: <span class="ident">u32</span>,
+    <span class="doccomment">/// Amount of early data to accept; 0 to disable.
+    </span><span class="attribute">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)] </span><span class="comment">// TLS support unimplemented
+    </span><span class="attribute">#[doc(hidden)]
+    </span><span class="kw">pub </span>max_early_data_size: u32,
 }
 
-<span class="kw">impl</span> <span class="ident">ServerConfig</span> {
-    <span class="doccomment">/// Make a `ServerConfig` with a default set of ciphersuites,</span>
-    <span class="doccomment">/// no keys/certificates, and no ALPN protocols.  Session resumption</span>
-    <span class="doccomment">/// is enabled by storing up to 256 recent sessions in memory. Tickets are</span>
-    <span class="doccomment">/// disabled.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Publicly-available web servers on the internet generally don&#39;t do client</span>
-    <span class="doccomment">/// authentication; for this use case, `client_cert_verifier` should be a</span>
-    <span class="doccomment">/// `NoClientAuth`. Otherwise, use `AllowAnyAuthenticatedClient` or another</span>
-    <span class="doccomment">/// implementation to enforce client authentication.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// We don&#39;t provide a default for `client_cert_verifier` because the safest</span>
-    <span class="doccomment">/// default, requiring client authentication, requires additional</span>
-    <span class="doccomment">/// configuration that we cannot provide reasonable defaults for.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">client_cert_verifier</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">verify::ClientCertVerifier</span><span class="op">&gt;</span>) -&gt; <span class="ident">ServerConfig</span> {
-        <span class="ident">ServerConfig::with_ciphersuites</span>(<span class="ident">client_cert_verifier</span>, <span class="kw-2">&amp;</span><span class="ident">ALL_CIPHERSUITES</span>)
+<span class="kw">impl </span>ServerConfig {
+    <span class="doccomment">/// Make a `ServerConfig` with a default set of ciphersuites,
+    /// no keys/certificates, and no ALPN protocols.  Session resumption
+    /// is enabled by storing up to 256 recent sessions in memory. Tickets are
+    /// disabled.
+    ///
+    /// Publicly-available web servers on the internet generally don&#39;t do client
+    /// authentication; for this use case, `client_cert_verifier` should be a
+    /// `NoClientAuth`. Otherwise, use `AllowAnyAuthenticatedClient` or another
+    /// implementation to enforce client authentication.
+    ///
+    /// We don&#39;t provide a default for `client_cert_verifier` because the safest
+    /// default, requiring client authentication, requires additional
+    /// configuration that we cannot provide reasonable defaults for.
+    </span><span class="kw">pub fn </span>new(client_cert_verifier: Arc&lt;<span class="kw">dyn </span>verify::ClientCertVerifier&gt;) -&gt; ServerConfig {
+        ServerConfig::with_ciphersuites(client_cert_verifier, <span class="kw-2">&amp;</span>ALL_CIPHERSUITES)
     }
 
-    <span class="doccomment">/// Make a `ServerConfig` with a custom set of ciphersuites,</span>
-    <span class="doccomment">/// no keys/certificates, and no ALPN protocols.  Session resumption</span>
-    <span class="doccomment">/// is enabled by storing up to 256 recent sessions in memory. Tickets are</span>
-    <span class="doccomment">/// disabled.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Publicly-available web servers on the internet generally don&#39;t do client</span>
-    <span class="doccomment">/// authentication; for this use case, `client_cert_verifier` should be a</span>
-    <span class="doccomment">/// `NoClientAuth`. Otherwise, use `AllowAnyAuthenticatedClient` or another</span>
-    <span class="doccomment">/// implementation to enforce client authentication.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// We don&#39;t provide a default for `client_cert_verifier` because the safest</span>
-    <span class="doccomment">/// default, requiring client authentication, requires additional</span>
-    <span class="doccomment">/// configuration that we cannot provide reasonable defaults for.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_ciphersuites</span>(
-        <span class="ident">client_cert_verifier</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">verify::ClientCertVerifier</span><span class="op">&gt;</span>,
-        <span class="ident">ciphersuites</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">SupportedCipherSuite</span>],
-    ) -&gt; <span class="ident">ServerConfig</span> {
-        <span class="ident">ServerConfig</span> {
-            <span class="ident">ciphersuites</span>: <span class="ident">ciphersuites</span>.<span class="ident">to_vec</span>(),
-            <span class="ident">ignore_client_order</span>: <span class="bool-val">false</span>,
-            <span class="ident">mtu</span>: <span class="prelude-val">None</span>,
-            <span class="ident">session_storage</span>: <span class="ident">handy::ServerSessionMemoryCache::new</span>(<span class="number">256</span>),
-            <span class="ident">ticketer</span>: <span class="ident">Arc::new</span>(<span class="ident">handy::NeverProducesTickets</span> {}),
-            <span class="ident">alpn_protocols</span>: <span class="ident">Vec::new</span>(),
-            <span class="ident">cert_resolver</span>: <span class="ident">Arc::new</span>(<span class="ident">handy::FailResolveChain</span> {}),
-            <span class="ident">versions</span>: <span class="macro">vec!</span>[<span class="ident">ProtocolVersion::TLSv1_3</span>, <span class="ident">ProtocolVersion::TLSv1_2</span>],
-            <span class="ident">verifier</span>: <span class="ident">client_cert_verifier</span>,
-            <span class="ident">key_log</span>: <span class="ident">Arc::new</span>(<span class="ident">NoKeyLog</span> {}),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;quic&quot;</span>)]</span>
-            <span class="ident">max_early_data_size</span>: <span class="number">0</span>,
+    <span class="doccomment">/// Make a `ServerConfig` with a custom set of ciphersuites,
+    /// no keys/certificates, and no ALPN protocols.  Session resumption
+    /// is enabled by storing up to 256 recent sessions in memory. Tickets are
+    /// disabled.
+    ///
+    /// Publicly-available web servers on the internet generally don&#39;t do client
+    /// authentication; for this use case, `client_cert_verifier` should be a
+    /// `NoClientAuth`. Otherwise, use `AllowAnyAuthenticatedClient` or another
+    /// implementation to enforce client authentication.
+    ///
+    /// We don&#39;t provide a default for `client_cert_verifier` because the safest
+    /// default, requiring client authentication, requires additional
+    /// configuration that we cannot provide reasonable defaults for.
+    </span><span class="kw">pub fn </span>with_ciphersuites(
+        client_cert_verifier: Arc&lt;<span class="kw">dyn </span>verify::ClientCertVerifier&gt;,
+        ciphersuites: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite],
+    ) -&gt; ServerConfig {
+        ServerConfig {
+            ciphersuites: ciphersuites.to_vec(),
+            ignore_client_order: <span class="bool-val">false</span>,
+            mtu: <span class="prelude-val">None</span>,
+            session_storage: handy::ServerSessionMemoryCache::new(<span class="number">256</span>),
+            ticketer: Arc::new(handy::NeverProducesTickets {}),
+            alpn_protocols: Vec::new(),
+            cert_resolver: Arc::new(handy::FailResolveChain {}),
+            versions: <span class="macro">vec!</span>[ProtocolVersion::TLSv1_3, ProtocolVersion::TLSv1_2],
+            verifier: client_cert_verifier,
+            key_log: Arc::new(NoKeyLog {}),
+            <span class="attribute">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+            </span>max_early_data_size: <span class="number">0</span>,
         }
     }
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="doccomment">/// We support a given TLS version if it&#39;s quoted in the configured</span>
-    <span class="doccomment">/// versions *and* at least one ciphersuite for this version is</span>
-    <span class="doccomment">/// also configured.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">supports_version</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">ProtocolVersion</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">versions</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">v</span>)
-            <span class="op">&amp;&amp;</span> <span class="self">self</span>
-                .<span class="ident">ciphersuites</span>
-                .<span class="ident">iter</span>()
-                .<span class="ident">any</span>(<span class="op">|</span><span class="ident">cs</span><span class="op">|</span> <span class="ident">cs</span>.<span class="ident">usable_for_version</span>(<span class="ident">v</span>))
+    <span class="attribute">#[doc(hidden)]
+    </span><span class="doccomment">/// We support a given TLS version if it&#39;s quoted in the configured
+    /// versions *and* at least one ciphersuite for this version is
+    /// also configured.
+    </span><span class="kw">pub fn </span>supports_version(<span class="kw-2">&amp;</span><span class="self">self</span>, v: ProtocolVersion) -&gt; bool {
+        <span class="self">self</span>.versions.contains(<span class="kw-2">&amp;</span>v)
+            &amp;&amp; <span class="self">self
+                </span>.ciphersuites
+                .iter()
+                .any(|cs| cs.usable_for_version(v))
     }
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_verifier</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">verify::ClientCertVerifier</span> {
-        <span class="self">self</span>.<span class="ident">verifier</span>.<span class="ident">as_ref</span>()
+    <span class="attribute">#[doc(hidden)]
+    </span><span class="kw">pub fn </span>get_verifier(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw">dyn </span>verify::ClientCertVerifier {
+        <span class="self">self</span>.verifier.as_ref()
     }
 
-    <span class="doccomment">/// Sets the session persistence layer to `persist`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_persistence</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">persist</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StoresServerSessions</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">session_storage</span> <span class="op">=</span> <span class="ident">persist</span>;
+    <span class="doccomment">/// Sets the session persistence layer to `persist`.
+    </span><span class="kw">pub fn </span>set_persistence(<span class="kw-2">&amp;mut </span><span class="self">self</span>, persist: Arc&lt;<span class="kw">dyn </span>StoresServerSessions + Send + Sync&gt;) {
+        <span class="self">self</span>.session_storage = persist;
     }
 
-    <span class="doccomment">/// Sets a single certificate chain and matching private key.  This</span>
-    <span class="doccomment">/// certificate and key is used for all subsequent connections,</span>
-    <span class="doccomment">/// irrespective of things like SNI hostname.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that the end-entity certificate must have the</span>
-    <span class="doccomment">/// [Subject Alternative Name](https://tools.ietf.org/html/rfc6125#section-4.1)</span>
-    <span class="doccomment">/// extension to describe, e.g., the valid DNS name. The `commonName` field is</span>
-    <span class="doccomment">/// disregarded.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `cert_chain` is a vector of DER-encoded certificates.</span>
-    <span class="doccomment">/// `key_der` is a DER-encoded RSA, ECDSA, or Ed25519 private key.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function fails if `key_der` is invalid.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_single_cert</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">cert_chain</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">key::Certificate</span><span class="op">&gt;</span>,
-        <span class="ident">key_der</span>: <span class="ident">key::PrivateKey</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">resolver</span> <span class="op">=</span> <span class="ident">handy::AlwaysResolvesChain::new</span>(<span class="ident">cert_chain</span>, <span class="kw-2">&amp;</span><span class="ident">key_der</span>)<span class="question-mark">?</span>;
-        <span class="self">self</span>.<span class="ident">cert_resolver</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">resolver</span>);
+    <span class="doccomment">/// Sets a single certificate chain and matching private key.  This
+    /// certificate and key is used for all subsequent connections,
+    /// irrespective of things like SNI hostname.
+    ///
+    /// Note that the end-entity certificate must have the
+    /// [Subject Alternative Name](https://tools.ietf.org/html/rfc6125#section-4.1)
+    /// extension to describe, e.g., the valid DNS name. The `commonName` field is
+    /// disregarded.
+    ///
+    /// `cert_chain` is a vector of DER-encoded certificates.
+    /// `key_der` is a DER-encoded RSA, ECDSA, or Ed25519 private key.
+    ///
+    /// This function fails if `key_der` is invalid.
+    </span><span class="kw">pub fn </span>set_single_cert(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        cert_chain: Vec&lt;key::Certificate&gt;,
+        key_der: key::PrivateKey,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), TLSError&gt; {
+        <span class="kw">let </span>resolver = handy::AlwaysResolvesChain::new(cert_chain, <span class="kw-2">&amp;</span>key_der)<span class="question-mark">?</span>;
+        <span class="self">self</span>.cert_resolver = Arc::new(resolver);
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// Sets a single certificate chain, matching private key and OCSP</span>
-    <span class="doccomment">/// response.  This certificate and key is used for all subsequent</span>
-    <span class="doccomment">/// connections, irrespective of things like SNI hostname.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `cert_chain` is a vector of DER-encoded certificates.</span>
-    <span class="doccomment">/// `key_der` is a DER-encoded RSA, ECDSA, or Ed25519 private key.</span>
-    <span class="doccomment">/// `ocsp` is a DER-encoded OCSP response.  Ignored if zero length.</span>
-    <span class="doccomment">/// `scts` is an `SignedCertificateTimestampList` encoding (see RFC6962)</span>
-    <span class="doccomment">/// and is ignored if empty.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function fails if `key_der` is invalid.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_single_cert_with_ocsp_and_sct</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">cert_chain</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">key::Certificate</span><span class="op">&gt;</span>,
-        <span class="ident">key_der</span>: <span class="ident">key::PrivateKey</span>,
-        <span class="ident">ocsp</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
-        <span class="ident">scts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">resolver</span> <span class="op">=</span>
-            <span class="ident">handy::AlwaysResolvesChain::new_with_extras</span>(<span class="ident">cert_chain</span>, <span class="kw-2">&amp;</span><span class="ident">key_der</span>, <span class="ident">ocsp</span>, <span class="ident">scts</span>)<span class="question-mark">?</span>;
-        <span class="self">self</span>.<span class="ident">cert_resolver</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">resolver</span>);
+    <span class="doccomment">/// Sets a single certificate chain, matching private key and OCSP
+    /// response.  This certificate and key is used for all subsequent
+    /// connections, irrespective of things like SNI hostname.
+    ///
+    /// `cert_chain` is a vector of DER-encoded certificates.
+    /// `key_der` is a DER-encoded RSA, ECDSA, or Ed25519 private key.
+    /// `ocsp` is a DER-encoded OCSP response.  Ignored if zero length.
+    /// `scts` is an `SignedCertificateTimestampList` encoding (see RFC6962)
+    /// and is ignored if empty.
+    ///
+    /// This function fails if `key_der` is invalid.
+    </span><span class="kw">pub fn </span>set_single_cert_with_ocsp_and_sct(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        cert_chain: Vec&lt;key::Certificate&gt;,
+        key_der: key::PrivateKey,
+        ocsp: Vec&lt;u8&gt;,
+        scts: Vec&lt;u8&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), TLSError&gt; {
+        <span class="kw">let </span>resolver =
+            handy::AlwaysResolvesChain::new_with_extras(cert_chain, <span class="kw-2">&amp;</span>key_der, ocsp, scts)<span class="question-mark">?</span>;
+        <span class="self">self</span>.cert_resolver = Arc::new(resolver);
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// Set the ALPN protocol list to the given protocol names.</span>
-    <span class="doccomment">/// Overwrites any existing configured protocols.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The first element in the `protocols` list is the most</span>
-    <span class="doccomment">/// preferred, the last is the least preferred.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_protocols</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">protocols</span>: <span class="kw-2">&amp;</span>[<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>]) {
-        <span class="self">self</span>.<span class="ident">alpn_protocols</span>.<span class="ident">clear</span>();
-        <span class="self">self</span>.<span class="ident">alpn_protocols</span>
-            .<span class="ident">extend_from_slice</span>(<span class="ident">protocols</span>);
+    <span class="doccomment">/// Set the ALPN protocol list to the given protocol names.
+    /// Overwrites any existing configured protocols.
+    ///
+    /// The first element in the `protocols` list is the most
+    /// preferred, the last is the least preferred.
+    </span><span class="kw">pub fn </span>set_protocols(<span class="kw-2">&amp;mut </span><span class="self">self</span>, protocols: <span class="kw-2">&amp;</span>[Vec&lt;u8&gt;]) {
+        <span class="self">self</span>.alpn_protocols.clear();
+        <span class="self">self</span>.alpn_protocols
+            .extend_from_slice(protocols);
     }
 
-    <span class="doccomment">/// Overrides the default `ClientCertVerifier` with something else.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_client_certificate_verifier</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">verifier</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">verify::ClientCertVerifier</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Overrides the default `ClientCertVerifier` with something else.
+    </span><span class="kw">pub fn </span>set_client_certificate_verifier(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        verifier: Arc&lt;<span class="kw">dyn </span>verify::ClientCertVerifier&gt;,
     ) {
-        <span class="self">self</span>.<span class="ident">verifier</span> <span class="op">=</span> <span class="ident">verifier</span>;
+        <span class="self">self</span>.verifier = verifier;
     }
 }
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ServerSessionImpl</span> {
-    <span class="kw">pub</span> <span class="ident">config</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">common</span>: <span class="ident">SessionCommon</span>,
-    <span class="ident">sni</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">webpki::DNSName</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">alpn_protocol</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">quic_params</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">received_resumption_data</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">resumption_data</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">error</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TLSError</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">state</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">hs::State</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">client_cert_chain</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">key::Certificate</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Whether to reject early data even if it would otherwise be accepted</span>
-    <span class="kw">pub</span> <span class="ident">reject_early_data</span>: <span class="ident">bool</span>,
+<span class="kw">pub struct </span>ServerSessionImpl {
+    <span class="kw">pub </span>config: Arc&lt;ServerConfig&gt;,
+    <span class="kw">pub </span>common: SessionCommon,
+    sni: <span class="prelude-ty">Option</span>&lt;webpki::DNSName&gt;,
+    <span class="kw">pub </span>alpn_protocol: <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;,
+    <span class="kw">pub </span>quic_params: <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;,
+    <span class="kw">pub </span>received_resumption_data: <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;,
+    <span class="kw">pub </span>resumption_data: Vec&lt;u8&gt;,
+    <span class="kw">pub </span>error: <span class="prelude-ty">Option</span>&lt;TLSError&gt;,
+    <span class="kw">pub </span>state: <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>hs::State + Send + Sync&gt;&gt;,
+    <span class="kw">pub </span>client_cert_chain: <span class="prelude-ty">Option</span>&lt;Vec&lt;key::Certificate&gt;&gt;,
+    <span class="doccomment">/// Whether to reject early data even if it would otherwise be accepted
+    </span><span class="kw">pub </span>reject_early_data: bool,
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">ServerSessionImpl</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ServerSessionImpl&quot;</span>)
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>ServerSessionImpl {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">&quot;ServerSessionImpl&quot;</span>)
+            .finish()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">ServerSessionImpl</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
-        <span class="ident">server_config</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>,
-        <span class="ident">extra_exts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ServerExtension</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">ServerSessionImpl</span> {
-        <span class="ident">ServerSessionImpl</span> {
-            <span class="ident">config</span>: <span class="ident">server_config</span>.<span class="ident">clone</span>(),
-            <span class="ident">common</span>: <span class="ident">SessionCommon::new</span>(<span class="ident">server_config</span>.<span class="ident">mtu</span>, <span class="bool-val">false</span>),
-            <span class="ident">sni</span>: <span class="prelude-val">None</span>,
-            <span class="ident">alpn_protocol</span>: <span class="prelude-val">None</span>,
-            <span class="ident">quic_params</span>: <span class="prelude-val">None</span>,
-            <span class="ident">received_resumption_data</span>: <span class="prelude-val">None</span>,
-            <span class="ident">resumption_data</span>: <span class="ident">Vec::new</span>(),
-            <span class="ident">error</span>: <span class="prelude-val">None</span>,
-            <span class="ident">state</span>: <span class="prelude-val">Some</span>(<span class="ident">Box::new</span>(<span class="ident">hs::ExpectClientHello::new</span>(
-                <span class="ident">server_config</span>,
-                <span class="ident">extra_exts</span>,
+<span class="kw">impl </span>ServerSessionImpl {
+    <span class="kw">pub fn </span>new(
+        server_config: <span class="kw-2">&amp;</span>Arc&lt;ServerConfig&gt;,
+        extra_exts: Vec&lt;ServerExtension&gt;,
+    ) -&gt; ServerSessionImpl {
+        ServerSessionImpl {
+            config: server_config.clone(),
+            common: SessionCommon::new(server_config.mtu, <span class="bool-val">false</span>),
+            sni: <span class="prelude-val">None</span>,
+            alpn_protocol: <span class="prelude-val">None</span>,
+            quic_params: <span class="prelude-val">None</span>,
+            received_resumption_data: <span class="prelude-val">None</span>,
+            resumption_data: Vec::new(),
+            error: <span class="prelude-val">None</span>,
+            state: <span class="prelude-val">Some</span>(Box::new(hs::ExpectClientHello::new(
+                server_config,
+                extra_exts,
             ))),
-            <span class="ident">client_cert_chain</span>: <span class="prelude-val">None</span>,
-            <span class="ident">reject_early_data</span>: <span class="bool-val">false</span>,
+            client_cert_chain: <span class="prelude-val">None</span>,
+            reject_early_data: <span class="bool-val">false</span>,
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wants_read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="comment">// We want to read more data all the time, except when we</span>
-        <span class="comment">// have unprocessed plaintext.  This provides back-pressure</span>
-        <span class="comment">// to the TCP buffers.</span>
-        <span class="comment">//</span>
-        <span class="comment">// This also covers the handshake case, because we don&#39;t have</span>
-        <span class="comment">// readable plaintext before handshake has completed.</span>
-        <span class="op">!</span><span class="self">self</span>.<span class="ident">common</span>.<span class="ident">has_readable_plaintext</span>()
+    <span class="kw">pub fn </span>wants_read(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="comment">// We want to read more data all the time, except when we
+        // have unprocessed plaintext.  This provides back-pressure
+        // to the TCP buffers.
+        //
+        // This also covers the handshake case, because we don&#39;t have
+        // readable plaintext before handshake has completed.
+        </span>!<span class="self">self</span>.common.has_readable_plaintext()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wants_write</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="op">!</span><span class="self">self</span>.<span class="ident">common</span>.<span class="ident">sendable_tls</span>.<span class="ident">is_empty</span>()
+    <span class="kw">pub fn </span>wants_write(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        !<span class="self">self</span>.common.sendable_tls.is_empty()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_handshaking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="op">!</span><span class="self">self</span>.<span class="ident">common</span>.<span class="ident">traffic</span>
+    <span class="kw">pub fn </span>is_handshaking(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        !<span class="self">self</span>.common.traffic
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_buffer_limit</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">len</span>: <span class="ident">usize</span>) {
-        <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">set_buffer_limit</span>(<span class="ident">len</span>)
+    <span class="kw">pub fn </span>set_buffer_limit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: usize) {
+        <span class="self">self</span>.common.set_buffer_limit(len)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">process_msg</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">msg</span>: <span class="ident">Message</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
-        <span class="comment">// TLS1.3: drop CCS at any time during handshaking</span>
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">MiddleboxCCS::Drop</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">filter_tls13_ccs</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>)<span class="question-mark">?</span> {
+    <span class="kw">pub fn </span>process_msg(<span class="kw-2">&amp;mut </span><span class="self">self</span>, <span class="kw-2">mut </span>msg: Message) -&gt; <span class="prelude-ty">Result</span>&lt;(), TLSError&gt; {
+        <span class="comment">// TLS1.3: drop CCS at any time during handshaking
+        </span><span class="kw">if let </span>MiddleboxCCS::Drop = <span class="self">self</span>.common.filter_tls13_ccs(<span class="kw-2">&amp;</span>msg)<span class="question-mark">? </span>{
             <span class="macro">trace!</span>(<span class="string">&quot;Dropping CCS&quot;</span>);
-            <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(());
         }
 
-        <span class="comment">// Decrypt if demanded by current state.</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">record_layer</span>.<span class="ident">is_decrypting</span>() {
-            <span class="kw">let</span> <span class="ident">dm</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">decrypt_incoming</span>(<span class="ident">msg</span>)<span class="question-mark">?</span>;
-            <span class="ident">msg</span> <span class="op">=</span> <span class="ident">dm</span>;
+        <span class="comment">// Decrypt if demanded by current state.
+        </span><span class="kw">if </span><span class="self">self</span>.common.record_layer.is_decrypting() {
+            <span class="kw">let </span>dm = <span class="self">self</span>.common.decrypt_incoming(msg)<span class="question-mark">?</span>;
+            msg = dm;
         }
 
-        <span class="comment">// For handshake messages, we need to join them before parsing</span>
-        <span class="comment">// and processing.</span>
-        <span class="kw">if</span> <span class="self">self</span>
-            .<span class="ident">common</span>
-            .<span class="ident">handshake_joiner</span>
-            .<span class="ident">want_message</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>)
+        <span class="comment">// For handshake messages, we need to join them before parsing
+        // and processing.
+        </span><span class="kw">if </span><span class="self">self
+            </span>.common
+            .handshake_joiner
+            .want_message(<span class="kw-2">&amp;</span>msg)
         {
-            <span class="self">self</span>.<span class="ident">common</span>
-                .<span class="ident">handshake_joiner</span>
-                .<span class="ident">take_message</span>(<span class="ident">msg</span>)
-                .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
-                    <span class="self">self</span>.<span class="ident">common</span>
-                        .<span class="ident">send_fatal_alert</span>(<span class="ident">AlertDescription::DecodeError</span>);
-                    <span class="ident">TLSError::CorruptMessagePayload</span>(<span class="ident">ContentType::Handshake</span>)
+            <span class="self">self</span>.common
+                .handshake_joiner
+                .take_message(msg)
+                .ok_or_else(|| {
+                    <span class="self">self</span>.common
+                        .send_fatal_alert(AlertDescription::DecodeError);
+                    TLSError::CorruptMessagePayload(ContentType::Handshake)
                 })<span class="question-mark">?</span>;
-            <span class="kw">return</span> <span class="self">self</span>.<span class="ident">process_new_handshake_messages</span>();
+            <span class="kw">return </span><span class="self">self</span>.process_new_handshake_messages();
         }
 
-        <span class="comment">// Now we can fully parse the message payload.</span>
-        <span class="ident">msg</span>.<span class="ident">decode_payload</span>();
+        <span class="comment">// Now we can fully parse the message payload.
+        </span>msg.decode_payload();
 
-        <span class="kw">if</span> <span class="ident">msg</span>.<span class="ident">is_content_type</span>(<span class="ident">ContentType::Alert</span>) {
-            <span class="kw">return</span> <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">process_alert</span>(<span class="ident">msg</span>);
+        <span class="kw">if </span>msg.is_content_type(ContentType::Alert) {
+            <span class="kw">return </span><span class="self">self</span>.common.process_alert(msg);
         }
 
-        <span class="self">self</span>.<span class="ident">process_main_protocol</span>(<span class="ident">msg</span>)
+        <span class="self">self</span>.process_main_protocol(msg)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">process_new_handshake_messages</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
-        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">msg</span>) <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">common</span>
-            .<span class="ident">handshake_joiner</span>
-            .<span class="ident">frames</span>
-            .<span class="ident">pop_front</span>()
+    <span class="kw">pub fn </span>process_new_handshake_messages(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), TLSError&gt; {
+        <span class="kw">while let </span><span class="prelude-val">Some</span>(msg) = <span class="self">self
+            </span>.common
+            .handshake_joiner
+            .frames
+            .pop_front()
         {
-            <span class="self">self</span>.<span class="ident">process_main_protocol</span>(<span class="ident">msg</span>)<span class="question-mark">?</span>;
+            <span class="self">self</span>.process_main_protocol(msg)<span class="question-mark">?</span>;
         }
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn</span> <span class="ident">queue_unexpected_alert</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">common</span>
-            .<span class="ident">send_fatal_alert</span>(<span class="ident">AlertDescription::UnexpectedMessage</span>);
+    <span class="kw">fn </span>queue_unexpected_alert(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.common
+            .send_fatal_alert(AlertDescription::UnexpectedMessage);
     }
 
-    <span class="kw">fn</span> <span class="ident">maybe_send_unexpected_alert</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">rc</span>: <span class="ident">hs::NextStateOrError</span>) -&gt; <span class="ident">hs::NextStateOrError</span> {
-        <span class="kw">match</span> <span class="ident">rc</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">TLSError::InappropriateMessage</span> { .. })
-            <span class="op">|</span> <span class="prelude-val">Err</span>(<span class="ident">TLSError::InappropriateHandshakeMessage</span> { .. }) =&gt; {
-                <span class="self">self</span>.<span class="ident">queue_unexpected_alert</span>();
+    <span class="kw">fn </span>maybe_send_unexpected_alert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rc: hs::NextStateOrError) -&gt; hs::NextStateOrError {
+        <span class="kw">match </span>rc {
+            <span class="prelude-val">Err</span>(TLSError::InappropriateMessage { .. })
+            | <span class="prelude-val">Err</span>(TLSError::InappropriateHandshakeMessage { .. }) =&gt; {
+                <span class="self">self</span>.queue_unexpected_alert();
             }
-            <span class="kw">_</span> =&gt; {}
+            <span class="kw">_ </span>=&gt; {}
         };
-        <span class="ident">rc</span>
+        rc
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">process_main_protocol</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">msg</span>: <span class="ident">Message</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">traffic</span>
-            <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">common</span>.<span class="ident">is_tls13</span>()
-            <span class="op">&amp;&amp;</span> <span class="ident">msg</span>.<span class="ident">is_handshake_type</span>(<span class="ident">HandshakeType::ClientHello</span>)
+    <span class="kw">pub fn </span>process_main_protocol(<span class="kw-2">&amp;mut </span><span class="self">self</span>, msg: Message) -&gt; <span class="prelude-ty">Result</span>&lt;(), TLSError&gt; {
+        <span class="kw">if </span><span class="self">self</span>.common.traffic
+            &amp;&amp; !<span class="self">self</span>.common.is_tls13()
+            &amp;&amp; msg.is_handshake_type(HandshakeType::ClientHello)
         {
-            <span class="self">self</span>.<span class="ident">common</span>
-                .<span class="ident">send_warning_alert</span>(<span class="ident">AlertDescription::NoRenegotiation</span>);
-            <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
+            <span class="self">self</span>.common
+                .send_warning_alert(AlertDescription::NoRenegotiation);
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(());
         }
 
-        <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">take</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">maybe_next_state</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">handle</span>(<span class="self">self</span>, <span class="ident">msg</span>);
-        <span class="kw">let</span> <span class="ident">next_state</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">maybe_send_unexpected_alert</span>(<span class="ident">maybe_next_state</span>)<span class="question-mark">?</span>;
-        <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">next_state</span>);
+        <span class="kw">let </span>state = <span class="self">self</span>.state.take().unwrap();
+        <span class="kw">let </span>maybe_next_state = state.handle(<span class="self">self</span>, msg);
+        <span class="kw">let </span>next_state = <span class="self">self</span>.maybe_send_unexpected_alert(maybe_next_state)<span class="question-mark">?</span>;
+        <span class="self">self</span>.state = <span class="prelude-val">Some</span>(next_state);
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">process_new_packets</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">error</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>.<span class="ident">clone</span>());
+    <span class="kw">pub fn </span>process_new_packets(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), TLSError&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>err) = <span class="self">self</span>.error {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(err.clone());
         }
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">message_deframer</span>.<span class="ident">desynced</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">TLSError::CorruptMessage</span>);
+        <span class="kw">if </span><span class="self">self</span>.common.message_deframer.desynced {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(TLSError::CorruptMessage);
         }
 
-        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">msg</span>) <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">common</span>
-            .<span class="ident">message_deframer</span>
-            .<span class="ident">frames</span>
-            .<span class="ident">pop_front</span>()
+        <span class="kw">while let </span><span class="prelude-val">Some</span>(msg) = <span class="self">self
+            </span>.common
+            .message_deframer
+            .frames
+            .pop_front()
         {
-            <span class="kw">match</span> <span class="self">self</span>.<span class="ident">process_msg</span>(<span class="ident">msg</span>) {
+            <span class="kw">match </span><span class="self">self</span>.process_msg(msg) {
                 <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {}
-                <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
-                    <span class="self">self</span>.<span class="ident">error</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">err</span>.<span class="ident">clone</span>());
-                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>);
+                <span class="prelude-val">Err</span>(err) =&gt; {
+                    <span class="self">self</span>.error = <span class="prelude-val">Some</span>(err.clone());
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(err);
                 }
             }
         }
@@ -1268,243 +1268,243 @@
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_peer_certificates</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">key::Certificate</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">client_cert_chain</span>
-            .<span class="ident">as_ref</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">chain</span><span class="op">|</span> <span class="ident">chain</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">collect</span>())
+    <span class="kw">pub fn </span>get_peer_certificates(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;key::Certificate&gt;&gt; {
+        <span class="self">self</span>.client_cert_chain
+            .as_ref()
+            .map(|chain| chain.iter().cloned().collect())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_alpn_protocol</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">alpn_protocol</span>
-            .<span class="ident">as_ref</span>()
-            .<span class="ident">map</span>(<span class="ident">AsRef::as_ref</span>)
+    <span class="kw">pub fn </span>get_alpn_protocol(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt; {
+        <span class="self">self</span>.alpn_protocol
+            .as_ref()
+            .map(AsRef::as_ref)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_protocol_version</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ProtocolVersion</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">negotiated_version</span>
+    <span class="kw">pub fn </span>get_protocol_version(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;ProtocolVersion&gt; {
+        <span class="self">self</span>.common.negotiated_version
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_negotiated_ciphersuite</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">SupportedCipherSuite</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">get_suite</span>()
+    <span class="kw">pub fn </span>get_negotiated_ciphersuite(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt; {
+        <span class="self">self</span>.common.get_suite()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_sni</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">webpki::DNSName</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">sni</span>.<span class="ident">as_ref</span>()
+    <span class="kw">pub fn </span>get_sni(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>webpki::DNSName&gt; {
+        <span class="self">self</span>.sni.as_ref()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_sni</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">webpki::DNSName</span>) {
-        <span class="comment">// The SNI hostname is immutable once set.</span>
-        <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">sni</span>.<span class="ident">is_none</span>());
-        <span class="self">self</span>.<span class="ident">sni</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>)
+    <span class="kw">pub fn </span>set_sni(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: webpki::DNSName) {
+        <span class="comment">// The SNI hostname is immutable once set.
+        </span><span class="macro">assert!</span>(<span class="self">self</span>.sni.is_none());
+        <span class="self">self</span>.sni = <span class="prelude-val">Some</span>(value)
     }
 
-    <span class="kw">fn</span> <span class="ident">export_keying_material</span>(
+    <span class="kw">fn </span>export_keying_material(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">output</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>],
-        <span class="ident">label</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-        <span class="ident">context</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">state</span>
-            .<span class="ident">as_ref</span>()
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">TLSError::HandshakeNotComplete</span>)
-            .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">st</span><span class="op">|</span> <span class="ident">st</span>.<span class="ident">export_keying_material</span>(<span class="ident">output</span>, <span class="ident">label</span>, <span class="ident">context</span>))
+        output: <span class="kw-2">&amp;mut </span>[u8],
+        label: <span class="kw-2">&amp;</span>[u8],
+        context: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), TLSError&gt; {
+        <span class="self">self</span>.state
+            .as_ref()
+            .ok_or_else(|| TLSError::HandshakeNotComplete)
+            .and_then(|st| st.export_keying_material(output, label, context))
     }
 
-    <span class="kw">fn</span> <span class="ident">send_some_plaintext</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">usize</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">st</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">take</span>();
-        <span class="ident">st</span>.<span class="ident">as_mut</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">st</span><span class="op">|</span> <span class="ident">st</span>.<span class="ident">perhaps_write_key_update</span>(<span class="self">self</span>));
-        <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">st</span>;
-        <span class="self">self</span>.<span class="ident">common</span>.<span class="ident">send_some_plaintext</span>(<span class="ident">buf</span>)
+    <span class="kw">fn </span>send_some_plaintext(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; usize {
+        <span class="kw">let </span><span class="kw-2">mut </span>st = <span class="self">self</span>.state.take();
+        st.as_mut()
+            .map(|st| st.perhaps_write_key_update(<span class="self">self</span>));
+        <span class="self">self</span>.state = st;
+        <span class="self">self</span>.common.send_some_plaintext(buf)
     }
 }
 
-<span class="doccomment">/// This represents a single TLS server session.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Send TLS-protected data to the peer using the `io::Write` trait implementation.</span>
-<span class="doccomment">/// Read data from the peer using the `io::Read` trait implementation.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ServerSession</span> {
-    <span class="comment">// We use the pimpl idiom to hide unimportant details.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">imp</span>: <span class="ident">ServerSessionImpl</span>,
+<span class="doccomment">/// This represents a single TLS server session.
+///
+/// Send TLS-protected data to the peer using the `io::Write` trait implementation.
+/// Read data from the peer using the `io::Read` trait implementation.
+</span><span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub struct </span>ServerSession {
+    <span class="comment">// We use the pimpl idiom to hide unimportant details.
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) imp: ServerSessionImpl,
 }
 
-<span class="kw">impl</span> <span class="ident">ServerSession</span> {
-    <span class="doccomment">/// Make a new ServerSession.  `config` controls how</span>
-    <span class="doccomment">/// we behave in the TLS protocol.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ServerConfig</span><span class="op">&gt;</span>) -&gt; <span class="ident">ServerSession</span> {
-        <span class="ident">ServerSession</span> {
-            <span class="ident">imp</span>: <span class="ident">ServerSessionImpl::new</span>(<span class="ident">config</span>, <span class="macro">vec!</span>[]),
+<span class="kw">impl </span>ServerSession {
+    <span class="doccomment">/// Make a new ServerSession.  `config` controls how
+    /// we behave in the TLS protocol.
+    </span><span class="kw">pub fn </span>new(config: <span class="kw-2">&amp;</span>Arc&lt;ServerConfig&gt;) -&gt; ServerSession {
+        ServerSession {
+            imp: ServerSessionImpl::new(config, <span class="macro">vec!</span>[]),
         }
     }
 
-    <span class="doccomment">/// Retrieves the SNI hostname, if any, used to select the certificate and</span>
-    <span class="doccomment">/// private key.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This returns `None` until some time after the client&#39;s SNI extension</span>
-    <span class="doccomment">/// value is processed during the handshake. It will never be `None` when</span>
-    <span class="doccomment">/// the connection is ready to send or process application data, unless the</span>
-    <span class="doccomment">/// client does not support SNI.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is useful for application protocols that need to enforce that the</span>
-    <span class="doccomment">/// SNI hostname matches an application layer protocol hostname. For</span>
-    <span class="doccomment">/// example, HTTP/1.1 servers commonly expect the `Host:` header field of</span>
-    <span class="doccomment">/// every request on a connection to match the hostname in the SNI extension</span>
-    <span class="doccomment">/// when the client provides the SNI extension.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The SNI hostname is also used to match sessions during session</span>
-    <span class="doccomment">/// resumption.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_sni_hostname</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>
-            .<span class="ident">get_sni</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">as_ref</span>().<span class="ident">into</span>())
+    <span class="doccomment">/// Retrieves the SNI hostname, if any, used to select the certificate and
+    /// private key.
+    ///
+    /// This returns `None` until some time after the client&#39;s SNI extension
+    /// value is processed during the handshake. It will never be `None` when
+    /// the connection is ready to send or process application data, unless the
+    /// client does not support SNI.
+    ///
+    /// This is useful for application protocols that need to enforce that the
+    /// SNI hostname matches an application layer protocol hostname. For
+    /// example, HTTP/1.1 servers commonly expect the `Host:` header field of
+    /// every request on a connection to match the hostname in the SNI extension
+    /// when the client provides the SNI extension.
+    ///
+    /// The SNI hostname is also used to match sessions during session
+    /// resumption.
+    </span><span class="kw">pub fn </span>get_sni_hostname(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; {
+        <span class="self">self</span>.imp
+            .get_sni()
+            .map(|s| s.as_ref().into())
     }
 
-    <span class="doccomment">/// Application-controlled portion of the resumption ticket supplied by the client, if any.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Recovered from the prior session&#39;s `set_resumption_data`. Integrity is guaranteed by rustls.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `Some` iff a valid resumption ticket has been received from the client.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">received_resumption_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>
-            .<span class="ident">received_resumption_data</span>
-            .<span class="ident">as_ref</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">x</span>[..])
+    <span class="doccomment">/// Application-controlled portion of the resumption ticket supplied by the client, if any.
+    ///
+    /// Recovered from the prior session&#39;s `set_resumption_data`. Integrity is guaranteed by rustls.
+    ///
+    /// Returns `Some` iff a valid resumption ticket has been received from the client.
+    </span><span class="kw">pub fn </span>received_resumption_data(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt; {
+        <span class="self">self</span>.imp
+            .received_resumption_data
+            .as_ref()
+            .map(|x| <span class="kw-2">&amp;</span>x[..])
     }
 
-    <span class="doccomment">/// Set the resumption data to embed in future resumption tickets supplied to the client.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Defaults to the empty byte string. Must be less than 2^15 bytes to allow room for other</span>
-    <span class="doccomment">/// data. Should be called while `is_handshaking` returns true to ensure all transmitted</span>
-    <span class="doccomment">/// resumption tickets are affected.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Integrity will be assured by rustls, but the data will be visible to the client. If secrecy</span>
-    <span class="doccomment">/// from the client is desired, encrypt the data separately.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_resumption_data</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) {
-        <span class="macro">assert!</span>(<span class="ident">data</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="number">2usize</span>.<span class="ident">pow</span>(<span class="number">15</span>));
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">resumption_data</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">into</span>();
+    <span class="doccomment">/// Set the resumption data to embed in future resumption tickets supplied to the client.
+    ///
+    /// Defaults to the empty byte string. Must be less than 2^15 bytes to allow room for other
+    /// data. Should be called while `is_handshaking` returns true to ensure all transmitted
+    /// resumption tickets are affected.
+    ///
+    /// Integrity will be assured by rustls, but the data will be visible to the client. If secrecy
+    /// from the client is desired, encrypt the data separately.
+    </span><span class="kw">pub fn </span>set_resumption_data(<span class="kw-2">&amp;mut </span><span class="self">self</span>, data: <span class="kw-2">&amp;</span>[u8]) {
+        <span class="macro">assert!</span>(data.len() &lt; <span class="number">2usize</span>.pow(<span class="number">15</span>));
+        <span class="self">self</span>.imp.resumption_data = data.into();
     }
 
-    <span class="doccomment">/// Explicitly discard early data, notifying the client</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Useful if invariants encoded in `received_resumption_data()` cannot be respected.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Must be called while `is_handshaking` is true.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reject_early_data</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+    <span class="doccomment">/// Explicitly discard early data, notifying the client
+    ///
+    /// Useful if invariants encoded in `received_resumption_data()` cannot be respected.
+    ///
+    /// Must be called while `is_handshaking` is true.
+    </span><span class="kw">pub fn </span>reject_early_data(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="macro">assert!</span>(
-            <span class="self">self</span>.<span class="ident">is_handshaking</span>(),
-            <span class="string">&quot;cannot retroactively reject early data&quot;</span>
-        );
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">reject_early_data</span> <span class="op">=</span> <span class="bool-val">true</span>;
+            <span class="self">self</span>.is_handshaking(),
+            <span class="string">&quot;cannot retroactively reject early data&quot;
+        </span>);
+        <span class="self">self</span>.imp.reject_early_data = <span class="bool-val">true</span>;
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Session</span> <span class="kw">for</span> <span class="ident">ServerSession</span> {
-    <span class="kw">fn</span> <span class="ident">read_tls</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">rd</span>: <span class="kw-2">&amp;mut</span> <span class="kw">dyn</span> <span class="ident">io::Read</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">common</span>.<span class="ident">read_tls</span>(<span class="ident">rd</span>)
+<span class="kw">impl </span>Session <span class="kw">for </span>ServerSession {
+    <span class="kw">fn </span>read_tls(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rd: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>io::Read) -&gt; io::Result&lt;usize&gt; {
+        <span class="self">self</span>.imp.common.read_tls(rd)
     }
 
-    <span class="doccomment">/// Writes TLS messages to `wr`.</span>
-    <span class="kw">fn</span> <span class="ident">write_tls</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">wr</span>: <span class="kw-2">&amp;mut</span> <span class="kw">dyn</span> <span class="ident">io::Write</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">common</span>.<span class="ident">write_tls</span>(<span class="ident">wr</span>)
+    <span class="doccomment">/// Writes TLS messages to `wr`.
+    </span><span class="kw">fn </span>write_tls(<span class="kw-2">&amp;mut </span><span class="self">self</span>, wr: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>io::Write) -&gt; io::Result&lt;usize&gt; {
+        <span class="self">self</span>.imp.common.write_tls(wr)
     }
 
-    <span class="kw">fn</span> <span class="ident">process_new_packets</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">process_new_packets</span>()
+    <span class="kw">fn </span>process_new_packets(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), TLSError&gt; {
+        <span class="self">self</span>.imp.process_new_packets()
     }
 
-    <span class="kw">fn</span> <span class="ident">wants_read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">wants_read</span>()
+    <span class="kw">fn </span>wants_read(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.imp.wants_read()
     }
 
-    <span class="kw">fn</span> <span class="ident">wants_write</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">wants_write</span>()
+    <span class="kw">fn </span>wants_write(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.imp.wants_write()
     }
 
-    <span class="kw">fn</span> <span class="ident">is_handshaking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">is_handshaking</span>()
+    <span class="kw">fn </span>is_handshaking(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.imp.is_handshaking()
     }
 
-    <span class="kw">fn</span> <span class="ident">set_buffer_limit</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">len</span>: <span class="ident">usize</span>) {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">set_buffer_limit</span>(<span class="ident">len</span>)
+    <span class="kw">fn </span>set_buffer_limit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: usize) {
+        <span class="self">self</span>.imp.set_buffer_limit(len)
     }
 
-    <span class="kw">fn</span> <span class="ident">send_close_notify</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">common</span>.<span class="ident">send_close_notify</span>()
+    <span class="kw">fn </span>send_close_notify(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.imp.common.send_close_notify()
     }
 
-    <span class="kw">fn</span> <span class="ident">get_peer_certificates</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">key::Certificate</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">get_peer_certificates</span>()
+    <span class="kw">fn </span>get_peer_certificates(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;key::Certificate&gt;&gt; {
+        <span class="self">self</span>.imp.get_peer_certificates()
     }
 
-    <span class="kw">fn</span> <span class="ident">get_alpn_protocol</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">get_alpn_protocol</span>()
+    <span class="kw">fn </span>get_alpn_protocol(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt; {
+        <span class="self">self</span>.imp.get_alpn_protocol()
     }
 
-    <span class="kw">fn</span> <span class="ident">get_protocol_version</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ProtocolVersion</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">get_protocol_version</span>()
+    <span class="kw">fn </span>get_protocol_version(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;ProtocolVersion&gt; {
+        <span class="self">self</span>.imp.get_protocol_version()
     }
 
-    <span class="kw">fn</span> <span class="ident">export_keying_material</span>(
+    <span class="kw">fn </span>export_keying_material(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">output</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>],
-        <span class="ident">label</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-        <span class="ident">context</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>
-            .<span class="ident">export_keying_material</span>(<span class="ident">output</span>, <span class="ident">label</span>, <span class="ident">context</span>)
+        output: <span class="kw-2">&amp;mut </span>[u8],
+        label: <span class="kw-2">&amp;</span>[u8],
+        context: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), TLSError&gt; {
+        <span class="self">self</span>.imp
+            .export_keying_material(output, label, context)
     }
 
-    <span class="kw">fn</span> <span class="ident">get_negotiated_ciphersuite</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">SupportedCipherSuite</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">get_negotiated_ciphersuite</span>()
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">io::Read</span> <span class="kw">for</span> <span class="ident">ServerSession</span> {
-    <span class="doccomment">/// Obtain plaintext data received from the peer over this TLS connection.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the peer closes the TLS session cleanly, this fails with an error of</span>
-    <span class="doccomment">/// kind ErrorKind::ConnectionAborted once all the pending data has been read.</span>
-    <span class="doccomment">/// No further data can be received on that connection, so the underlying TCP</span>
-    <span class="doccomment">/// connection should closed too.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that support close notify varies in peer TLS libraries: many do not</span>
-    <span class="doccomment">/// support it and uncleanly close the TCP connection (this might be</span>
-    <span class="doccomment">/// vulnerable to truncation attacks depending on the application protocol).</span>
-    <span class="doccomment">/// This means applications using rustls must both handle ErrorKind::ConnectionAborted</span>
-    <span class="doccomment">/// from this function, *and* unexpected closure of the underlying TCP connection.</span>
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">common</span>.<span class="ident">read</span>(<span class="ident">buf</span>)
+    <span class="kw">fn </span>get_negotiated_ciphersuite(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt; {
+        <span class="self">self</span>.imp.get_negotiated_ciphersuite()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">io::Write</span> <span class="kw">for</span> <span class="ident">ServerSession</span> {
-    <span class="doccomment">/// Send the plaintext `buf` to the peer, encrypting</span>
-    <span class="doccomment">/// and authenticating it.  Once this function succeeds</span>
-    <span class="doccomment">/// you should call `write_tls` which will output the</span>
-    <span class="doccomment">/// corresponding TLS records.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function buffers plaintext sent before the</span>
-    <span class="doccomment">/// TLS handshake completes, and sends it as soon</span>
-    <span class="doccomment">/// as it can.  This buffer is of *unlimited size* so</span>
-    <span class="doccomment">/// writing much data before it can be sent will</span>
-    <span class="doccomment">/// cause excess memory usage.</span>
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">send_some_plaintext</span>(<span class="ident">buf</span>))
+<span class="kw">impl </span>io::Read <span class="kw">for </span>ServerSession {
+    <span class="doccomment">/// Obtain plaintext data received from the peer over this TLS connection.
+    ///
+    /// If the peer closes the TLS session cleanly, this fails with an error of
+    /// kind ErrorKind::ConnectionAborted once all the pending data has been read.
+    /// No further data can be received on that connection, so the underlying TCP
+    /// connection should closed too.
+    ///
+    /// Note that support close notify varies in peer TLS libraries: many do not
+    /// support it and uncleanly close the TCP connection (this might be
+    /// vulnerable to truncation attacks depending on the application protocol).
+    /// This means applications using rustls must both handle ErrorKind::ConnectionAborted
+    /// from this function, *and* unexpected closure of the underlying TCP connection.
+    </span><span class="kw">fn </span>read(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;mut </span>[u8]) -&gt; io::Result&lt;usize&gt; {
+        <span class="self">self</span>.imp.common.read(buf)
+    }
+}
+
+<span class="kw">impl </span>io::Write <span class="kw">for </span>ServerSession {
+    <span class="doccomment">/// Send the plaintext `buf` to the peer, encrypting
+    /// and authenticating it.  Once this function succeeds
+    /// you should call `write_tls` which will output the
+    /// corresponding TLS records.
+    ///
+    /// This function buffers plaintext sent before the
+    /// TLS handshake completes, and sends it as soon
+    /// as it can.  This buffer is of *unlimited size* so
+    /// writing much data before it can be sent will
+    /// cause excess memory usage.
+    </span><span class="kw">fn </span>write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; io::Result&lt;usize&gt; {
+        <span class="prelude-val">Ok</span>(<span class="self">self</span>.imp.send_some_plaintext(buf))
     }
 
-    <span class="kw">fn</span> <span class="ident">write_vectored</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="ident">IoSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sz</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">for</span> <span class="ident">buf</span> <span class="kw">in</span> <span class="ident">bufs</span> {
-            <span class="ident">sz</span> <span class="op">+</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">send_some_plaintext</span>(<span class="ident">buf</span>);
+    <span class="kw">fn </span>write_vectored(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bufs: <span class="kw-2">&amp;</span>[IoSlice&lt;<span class="lifetime">&#39;_</span>&gt;]) -&gt; io::Result&lt;usize&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>sz = <span class="number">0</span>;
+        <span class="kw">for </span>buf <span class="kw">in </span>bufs {
+            sz += <span class="self">self</span>.imp.send_some_plaintext(buf);
         }
-        <span class="prelude-val">Ok</span>(<span class="ident">sz</span>)
+        <span class="prelude-val">Ok</span>(sz)
     }
 
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">imp</span>.<span class="ident">common</span>.<span class="ident">flush_plaintext</span>();
+    <span class="kw">fn </span>flush(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; io::Result&lt;()&gt; {
+        <span class="self">self</span>.imp.common.flush_plaintext();
         <span class="prelude-val">Ok</span>(())
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rustls" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rustls" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

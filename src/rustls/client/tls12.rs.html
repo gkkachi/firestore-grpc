@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/rustls-0.19.1/src/client/tls12.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>tls12.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../rustls/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/rustls-0.19.1/src/client/tls12.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>tls12.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../rustls/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -863,870 +863,870 @@
 <span id="863">863</span>
 <span id="864">864</span>
 <span id="865">865</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::check::check_message</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::client::ClientSessionImpl</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error::TLSError</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;logging&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::log</span>::{<span class="ident">debug</span>, <span class="ident">trace</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::base</span>::{<span class="ident">Payload</span>, <span class="ident">PayloadU8</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::ccs::ChangeCipherSpecPayload</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::codec::Codec</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::enums</span>::{<span class="ident">AlertDescription</span>, <span class="ident">ProtocolVersion</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::enums</span>::{<span class="ident">ContentType</span>, <span class="ident">HandshakeType</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::handshake::DecomposedSignatureScheme</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::handshake::DigitallySignedStruct</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::handshake::ServerKeyExchangePayload</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::handshake</span>::{<span class="ident">HandshakeMessagePayload</span>, <span class="ident">HandshakePayload</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::message</span>::{<span class="ident">Message</span>, <span class="ident">MessagePayload</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::msgs::persist</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::session::SessionSecrets</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::suites</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ticketer</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::verify</span>;
+</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::check::check_message;
+<span class="kw">use </span><span class="kw">crate</span>::client::ClientSessionImpl;
+<span class="kw">use </span><span class="kw">crate</span>::error::TLSError;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::log::{debug, trace};
+<span class="kw">use </span><span class="kw">crate</span>::msgs::base::{Payload, PayloadU8};
+<span class="kw">use </span><span class="kw">crate</span>::msgs::ccs::ChangeCipherSpecPayload;
+<span class="kw">use </span><span class="kw">crate</span>::msgs::codec::Codec;
+<span class="kw">use </span><span class="kw">crate</span>::msgs::enums::{AlertDescription, ProtocolVersion};
+<span class="kw">use </span><span class="kw">crate</span>::msgs::enums::{ContentType, HandshakeType};
+<span class="kw">use </span><span class="kw">crate</span>::msgs::handshake::DecomposedSignatureScheme;
+<span class="kw">use </span><span class="kw">crate</span>::msgs::handshake::DigitallySignedStruct;
+<span class="kw">use </span><span class="kw">crate</span>::msgs::handshake::ServerKeyExchangePayload;
+<span class="kw">use </span><span class="kw">crate</span>::msgs::handshake::{HandshakeMessagePayload, HandshakePayload};
+<span class="kw">use </span><span class="kw">crate</span>::msgs::message::{Message, MessagePayload};
+<span class="kw">use </span><span class="kw">crate</span>::msgs::persist;
+<span class="kw">use </span><span class="kw">crate</span>::session::SessionSecrets;
+<span class="kw">use </span><span class="kw">crate</span>::suites;
+<span class="kw">use </span><span class="kw">crate</span>::ticketer;
+<span class="kw">use </span><span class="kw">crate</span>::verify;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::client::common</span>::{<span class="ident">ClientAuthDetails</span>, <span class="ident">ReceivedTicketDetails</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::client::common</span>::{<span class="ident">HandshakeDetails</span>, <span class="ident">ServerCertDetails</span>, <span class="ident">ServerKXDetails</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::client::hs</span>;
+<span class="kw">use </span><span class="kw">crate</span>::client::common::{ClientAuthDetails, ReceivedTicketDetails};
+<span class="kw">use </span><span class="kw">crate</span>::client::common::{HandshakeDetails, ServerCertDetails, ServerKXDetails};
+<span class="kw">use </span><span class="kw">crate</span>::client::hs;
 
-<span class="kw">use</span> <span class="ident">ring::constant_time</span>;
-<span class="kw">use</span> <span class="ident">std::mem</span>;
+<span class="kw">use </span>ring::constant_time;
+<span class="kw">use </span>std::mem;
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExpectCertificate</span> {
-    <span class="kw">pub</span> <span class="ident">handshake</span>: <span class="ident">HandshakeDetails</span>,
-    <span class="kw">pub</span> <span class="ident">server_cert</span>: <span class="ident">ServerCertDetails</span>,
-    <span class="kw">pub</span> <span class="ident">may_send_cert_status</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span> <span class="ident">must_issue_new_ticket</span>: <span class="ident">bool</span>,
+<span class="kw">pub struct </span>ExpectCertificate {
+    <span class="kw">pub </span>handshake: HandshakeDetails,
+    <span class="kw">pub </span>server_cert: ServerCertDetails,
+    <span class="kw">pub </span>may_send_cert_status: bool,
+    <span class="kw">pub </span>must_issue_new_ticket: bool,
 }
 
-<span class="kw">impl</span> <span class="ident">ExpectCertificate</span> {
-    <span class="kw">fn</span> <span class="ident">into_expect_certificate_status_or_server_kx</span>(<span class="self">self</span>) -&gt; <span class="ident">hs::NextState</span> {
-        <span class="ident">Box::new</span>(<span class="ident">ExpectCertificateStatusOrServerKX</span> {
-            <span class="ident">handshake</span>: <span class="self">self</span>.<span class="ident">handshake</span>,
-            <span class="ident">server_cert</span>: <span class="self">self</span>.<span class="ident">server_cert</span>,
-            <span class="ident">must_issue_new_ticket</span>: <span class="self">self</span>.<span class="ident">must_issue_new_ticket</span>,
+<span class="kw">impl </span>ExpectCertificate {
+    <span class="kw">fn </span>into_expect_certificate_status_or_server_kx(<span class="self">self</span>) -&gt; hs::NextState {
+        Box::new(ExpectCertificateStatusOrServerKX {
+            handshake: <span class="self">self</span>.handshake,
+            server_cert: <span class="self">self</span>.server_cert,
+            must_issue_new_ticket: <span class="self">self</span>.must_issue_new_ticket,
         })
     }
 
-    <span class="kw">fn</span> <span class="ident">into_expect_server_kx</span>(<span class="self">self</span>) -&gt; <span class="ident">hs::NextState</span> {
-        <span class="ident">Box::new</span>(<span class="ident">ExpectServerKX</span> {
-            <span class="ident">handshake</span>: <span class="self">self</span>.<span class="ident">handshake</span>,
-            <span class="ident">server_cert</span>: <span class="self">self</span>.<span class="ident">server_cert</span>,
-            <span class="ident">must_issue_new_ticket</span>: <span class="self">self</span>.<span class="ident">must_issue_new_ticket</span>,
+    <span class="kw">fn </span>into_expect_server_kx(<span class="self">self</span>) -&gt; hs::NextState {
+        Box::new(ExpectServerKX {
+            handshake: <span class="self">self</span>.handshake,
+            server_cert: <span class="self">self</span>.server_cert,
+            must_issue_new_ticket: <span class="self">self</span>.must_issue_new_ticket,
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">hs::State</span> <span class="kw">for</span> <span class="ident">ExpectCertificate</span> {
-    <span class="kw">fn</span> <span class="ident">handle</span>(
-        <span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">_sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>,
-        <span class="ident">m</span>: <span class="ident">Message</span>,
-    ) -&gt; <span class="ident">hs::NextStateOrError</span> {
-        <span class="kw">let</span> <span class="ident">cert_chain</span> <span class="op">=</span>
-            <span class="macro">require_handshake_msg!</span>(<span class="ident">m</span>, <span class="ident">HandshakeType::Certificate</span>, <span class="ident">HandshakePayload::Certificate</span>)<span class="question-mark">?</span>;
-        <span class="self">self</span>.<span class="ident">handshake</span>
-            .<span class="ident">transcript</span>
-            .<span class="ident">add_message</span>(<span class="kw-2">&amp;</span><span class="ident">m</span>);
+<span class="kw">impl </span>hs::State <span class="kw">for </span>ExpectCertificate {
+    <span class="kw">fn </span>handle(
+        <span class="kw-2">mut </span><span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;,
+        _sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl,
+        m: Message,
+    ) -&gt; hs::NextStateOrError {
+        <span class="kw">let </span>cert_chain =
+            <span class="macro">require_handshake_msg!</span>(m, HandshakeType::Certificate, HandshakePayload::Certificate)<span class="question-mark">?</span>;
+        <span class="self">self</span>.handshake
+            .transcript
+            .add_message(<span class="kw-2">&amp;</span>m);
 
-        <span class="self">self</span>.<span class="ident">server_cert</span>.<span class="ident">cert_chain</span> <span class="op">=</span> <span class="ident">cert_chain</span>.<span class="ident">clone</span>();
+        <span class="self">self</span>.server_cert.cert_chain = cert_chain.clone();
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">may_send_cert_status</span> {
-            <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">into_expect_certificate_status_or_server_kx</span>())
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">into_expect_server_kx</span>())
+        <span class="kw">if </span><span class="self">self</span>.may_send_cert_status {
+            <span class="prelude-val">Ok</span>(<span class="self">self</span>.into_expect_certificate_status_or_server_kx())
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Ok</span>(<span class="self">self</span>.into_expect_server_kx())
         }
     }
 }
 
-<span class="kw">struct</span> <span class="ident">ExpectCertificateStatus</span> {
-    <span class="ident">handshake</span>: <span class="ident">HandshakeDetails</span>,
-    <span class="ident">server_cert</span>: <span class="ident">ServerCertDetails</span>,
-    <span class="ident">must_issue_new_ticket</span>: <span class="ident">bool</span>,
+<span class="kw">struct </span>ExpectCertificateStatus {
+    handshake: HandshakeDetails,
+    server_cert: ServerCertDetails,
+    must_issue_new_ticket: bool,
 }
 
-<span class="kw">impl</span> <span class="ident">ExpectCertificateStatus</span> {
-    <span class="kw">fn</span> <span class="ident">into_expect_server_kx</span>(<span class="self">self</span>) -&gt; <span class="ident">hs::NextState</span> {
-        <span class="ident">Box::new</span>(<span class="ident">ExpectServerKX</span> {
-            <span class="ident">handshake</span>: <span class="self">self</span>.<span class="ident">handshake</span>,
-            <span class="ident">server_cert</span>: <span class="self">self</span>.<span class="ident">server_cert</span>,
-            <span class="ident">must_issue_new_ticket</span>: <span class="self">self</span>.<span class="ident">must_issue_new_ticket</span>,
+<span class="kw">impl </span>ExpectCertificateStatus {
+    <span class="kw">fn </span>into_expect_server_kx(<span class="self">self</span>) -&gt; hs::NextState {
+        Box::new(ExpectServerKX {
+            handshake: <span class="self">self</span>.handshake,
+            server_cert: <span class="self">self</span>.server_cert,
+            must_issue_new_ticket: <span class="self">self</span>.must_issue_new_ticket,
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">hs::State</span> <span class="kw">for</span> <span class="ident">ExpectCertificateStatus</span> {
-    <span class="kw">fn</span> <span class="ident">handle</span>(
-        <span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">_sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>,
-        <span class="ident">m</span>: <span class="ident">Message</span>,
-    ) -&gt; <span class="ident">hs::NextStateOrError</span> {
-        <span class="self">self</span>.<span class="ident">handshake</span>
-            .<span class="ident">transcript</span>
-            .<span class="ident">add_message</span>(<span class="kw-2">&amp;</span><span class="ident">m</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">status</span> <span class="op">=</span> <span class="macro">require_handshake_msg_mut!</span>(
-            <span class="ident">m</span>,
-            <span class="ident">HandshakeType::CertificateStatus</span>,
-            <span class="ident">HandshakePayload::CertificateStatus</span>
+<span class="kw">impl </span>hs::State <span class="kw">for </span>ExpectCertificateStatus {
+    <span class="kw">fn </span>handle(
+        <span class="kw-2">mut </span><span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;,
+        _sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl,
+        m: Message,
+    ) -&gt; hs::NextStateOrError {
+        <span class="self">self</span>.handshake
+            .transcript
+            .add_message(<span class="kw-2">&amp;</span>m);
+        <span class="kw">let </span><span class="kw-2">mut </span>status = <span class="macro">require_handshake_msg_mut!</span>(
+            m,
+            HandshakeType::CertificateStatus,
+            HandshakePayload::CertificateStatus
         )<span class="question-mark">?</span>;
 
-        <span class="self">self</span>.<span class="ident">server_cert</span>.<span class="ident">ocsp_response</span> <span class="op">=</span> <span class="ident">status</span>.<span class="ident">take_ocsp_response</span>();
+        <span class="self">self</span>.server_cert.ocsp_response = status.take_ocsp_response();
         <span class="macro">trace!</span>(
             <span class="string">&quot;Server stapled OCSP response is {:?}&quot;</span>,
-            <span class="self">self</span>.<span class="ident">server_cert</span>.<span class="ident">ocsp_response</span>
+            <span class="self">self</span>.server_cert.ocsp_response
         );
-        <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">into_expect_server_kx</span>())
+        <span class="prelude-val">Ok</span>(<span class="self">self</span>.into_expect_server_kx())
     }
 }
 
-<span class="kw">struct</span> <span class="ident">ExpectCertificateStatusOrServerKX</span> {
-    <span class="ident">handshake</span>: <span class="ident">HandshakeDetails</span>,
-    <span class="ident">server_cert</span>: <span class="ident">ServerCertDetails</span>,
-    <span class="ident">must_issue_new_ticket</span>: <span class="ident">bool</span>,
+<span class="kw">struct </span>ExpectCertificateStatusOrServerKX {
+    handshake: HandshakeDetails,
+    server_cert: ServerCertDetails,
+    must_issue_new_ticket: bool,
 }
 
-<span class="kw">impl</span> <span class="ident">ExpectCertificateStatusOrServerKX</span> {
-    <span class="kw">fn</span> <span class="ident">into_expect_server_kx</span>(<span class="self">self</span>) -&gt; <span class="ident">hs::NextState</span> {
-        <span class="ident">Box::new</span>(<span class="ident">ExpectServerKX</span> {
-            <span class="ident">handshake</span>: <span class="self">self</span>.<span class="ident">handshake</span>,
-            <span class="ident">server_cert</span>: <span class="self">self</span>.<span class="ident">server_cert</span>,
-            <span class="ident">must_issue_new_ticket</span>: <span class="self">self</span>.<span class="ident">must_issue_new_ticket</span>,
+<span class="kw">impl </span>ExpectCertificateStatusOrServerKX {
+    <span class="kw">fn </span>into_expect_server_kx(<span class="self">self</span>) -&gt; hs::NextState {
+        Box::new(ExpectServerKX {
+            handshake: <span class="self">self</span>.handshake,
+            server_cert: <span class="self">self</span>.server_cert,
+            must_issue_new_ticket: <span class="self">self</span>.must_issue_new_ticket,
         })
     }
 
-    <span class="kw">fn</span> <span class="ident">into_expect_certificate_status</span>(<span class="self">self</span>) -&gt; <span class="ident">hs::NextState</span> {
-        <span class="ident">Box::new</span>(<span class="ident">ExpectCertificateStatus</span> {
-            <span class="ident">handshake</span>: <span class="self">self</span>.<span class="ident">handshake</span>,
-            <span class="ident">server_cert</span>: <span class="self">self</span>.<span class="ident">server_cert</span>,
-            <span class="ident">must_issue_new_ticket</span>: <span class="self">self</span>.<span class="ident">must_issue_new_ticket</span>,
+    <span class="kw">fn </span>into_expect_certificate_status(<span class="self">self</span>) -&gt; hs::NextState {
+        Box::new(ExpectCertificateStatus {
+            handshake: <span class="self">self</span>.handshake,
+            server_cert: <span class="self">self</span>.server_cert,
+            must_issue_new_ticket: <span class="self">self</span>.must_issue_new_ticket,
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">hs::State</span> <span class="kw">for</span> <span class="ident">ExpectCertificateStatusOrServerKX</span> {
-    <span class="kw">fn</span> <span class="ident">handle</span>(<span class="self">self</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>, <span class="ident">m</span>: <span class="ident">Message</span>) -&gt; <span class="ident">hs::NextStateOrError</span> {
-        <span class="ident">check_message</span>(
-            <span class="kw-2">&amp;</span><span class="ident">m</span>,
-            <span class="kw-2">&amp;</span>[<span class="ident">ContentType::Handshake</span>],
+<span class="kw">impl </span>hs::State <span class="kw">for </span>ExpectCertificateStatusOrServerKX {
+    <span class="kw">fn </span>handle(<span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;, sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl, m: Message) -&gt; hs::NextStateOrError {
+        check_message(
+            <span class="kw-2">&amp;</span>m,
+            <span class="kw-2">&amp;</span>[ContentType::Handshake],
             <span class="kw-2">&amp;</span>[
-                <span class="ident">HandshakeType::ServerKeyExchange</span>,
-                <span class="ident">HandshakeType::CertificateStatus</span>,
+                HandshakeType::ServerKeyExchange,
+                HandshakeType::CertificateStatus,
             ],
         )<span class="question-mark">?</span>;
-        <span class="kw">if</span> <span class="ident">m</span>.<span class="ident">is_handshake_type</span>(<span class="ident">HandshakeType::ServerKeyExchange</span>) {
-            <span class="self">self</span>.<span class="ident">into_expect_server_kx</span>()
-                .<span class="ident">handle</span>(<span class="ident">sess</span>, <span class="ident">m</span>)
-        } <span class="kw">else</span> {
-            <span class="self">self</span>.<span class="ident">into_expect_certificate_status</span>()
-                .<span class="ident">handle</span>(<span class="ident">sess</span>, <span class="ident">m</span>)
+        <span class="kw">if </span>m.is_handshake_type(HandshakeType::ServerKeyExchange) {
+            <span class="self">self</span>.into_expect_server_kx()
+                .handle(sess, m)
+        } <span class="kw">else </span>{
+            <span class="self">self</span>.into_expect_certificate_status()
+                .handle(sess, m)
         }
     }
 }
 
-<span class="kw">struct</span> <span class="ident">ExpectServerKX</span> {
-    <span class="ident">handshake</span>: <span class="ident">HandshakeDetails</span>,
-    <span class="ident">server_cert</span>: <span class="ident">ServerCertDetails</span>,
-    <span class="ident">must_issue_new_ticket</span>: <span class="ident">bool</span>,
+<span class="kw">struct </span>ExpectServerKX {
+    handshake: HandshakeDetails,
+    server_cert: ServerCertDetails,
+    must_issue_new_ticket: bool,
 }
 
-<span class="kw">impl</span> <span class="ident">ExpectServerKX</span> {
-    <span class="kw">fn</span> <span class="ident">into_expect_server_done_or_certreq</span>(<span class="self">self</span>, <span class="ident">skx</span>: <span class="ident">ServerKXDetails</span>) -&gt; <span class="ident">hs::NextState</span> {
-        <span class="ident">Box::new</span>(<span class="ident">ExpectServerDoneOrCertReq</span> {
-            <span class="ident">handshake</span>: <span class="self">self</span>.<span class="ident">handshake</span>,
-            <span class="ident">server_cert</span>: <span class="self">self</span>.<span class="ident">server_cert</span>,
-            <span class="ident">server_kx</span>: <span class="ident">skx</span>,
-            <span class="ident">must_issue_new_ticket</span>: <span class="self">self</span>.<span class="ident">must_issue_new_ticket</span>,
+<span class="kw">impl </span>ExpectServerKX {
+    <span class="kw">fn </span>into_expect_server_done_or_certreq(<span class="self">self</span>, skx: ServerKXDetails) -&gt; hs::NextState {
+        Box::new(ExpectServerDoneOrCertReq {
+            handshake: <span class="self">self</span>.handshake,
+            server_cert: <span class="self">self</span>.server_cert,
+            server_kx: skx,
+            must_issue_new_ticket: <span class="self">self</span>.must_issue_new_ticket,
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">hs::State</span> <span class="kw">for</span> <span class="ident">ExpectServerKX</span> {
-    <span class="kw">fn</span> <span class="ident">handle</span>(
-        <span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>,
-        <span class="ident">m</span>: <span class="ident">Message</span>,
-    ) -&gt; <span class="ident">hs::NextStateOrError</span> {
-        <span class="kw">let</span> <span class="ident">opaque_kx</span> <span class="op">=</span> <span class="macro">require_handshake_msg!</span>(
-            <span class="ident">m</span>,
-            <span class="ident">HandshakeType::ServerKeyExchange</span>,
-            <span class="ident">HandshakePayload::ServerKeyExchange</span>
+<span class="kw">impl </span>hs::State <span class="kw">for </span>ExpectServerKX {
+    <span class="kw">fn </span>handle(
+        <span class="kw-2">mut </span><span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;,
+        sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl,
+        m: Message,
+    ) -&gt; hs::NextStateOrError {
+        <span class="kw">let </span>opaque_kx = <span class="macro">require_handshake_msg!</span>(
+            m,
+            HandshakeType::ServerKeyExchange,
+            HandshakePayload::ServerKeyExchange
         )<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">maybe_decoded_kx</span> <span class="op">=</span> <span class="ident">opaque_kx</span>.<span class="ident">unwrap_given_kxa</span>(<span class="kw-2">&amp;</span><span class="ident">sess</span>.<span class="ident">common</span>.<span class="ident">get_suite_assert</span>().<span class="ident">kx</span>);
-        <span class="self">self</span>.<span class="ident">handshake</span>
-            .<span class="ident">transcript</span>
-            .<span class="ident">add_message</span>(<span class="kw-2">&amp;</span><span class="ident">m</span>);
+        <span class="kw">let </span>maybe_decoded_kx = opaque_kx.unwrap_given_kxa(<span class="kw-2">&amp;</span>sess.common.get_suite_assert().kx);
+        <span class="self">self</span>.handshake
+            .transcript
+            .add_message(<span class="kw-2">&amp;</span>m);
 
-        <span class="kw">if</span> <span class="ident">maybe_decoded_kx</span>.<span class="ident">is_none</span>() {
-            <span class="ident">sess</span>.<span class="ident">common</span>
-                .<span class="ident">send_fatal_alert</span>(<span class="ident">AlertDescription::DecodeError</span>);
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">TLSError::CorruptMessagePayload</span>(<span class="ident">ContentType::Handshake</span>));
+        <span class="kw">if </span>maybe_decoded_kx.is_none() {
+            sess.common
+                .send_fatal_alert(AlertDescription::DecodeError);
+            <span class="kw">return </span><span class="prelude-val">Err</span>(TLSError::CorruptMessagePayload(ContentType::Handshake));
         }
 
-        <span class="kw">let</span> <span class="ident">decoded_kx</span> <span class="op">=</span> <span class="ident">maybe_decoded_kx</span>.<span class="ident">unwrap</span>();
+        <span class="kw">let </span>decoded_kx = maybe_decoded_kx.unwrap();
 
-        <span class="comment">// Save the signature and signed parameters for later verification.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">kx_params</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-        <span class="ident">decoded_kx</span>.<span class="ident">encode_params</span>(<span class="kw-2">&amp;mut</span> <span class="ident">kx_params</span>);
-        <span class="kw">let</span> <span class="ident">skx</span> <span class="op">=</span> <span class="ident">ServerKXDetails::new</span>(<span class="ident">kx_params</span>, <span class="ident">decoded_kx</span>.<span class="ident">get_sig</span>().<span class="ident">unwrap</span>());
+        <span class="comment">// Save the signature and signed parameters for later verification.
+        </span><span class="kw">let </span><span class="kw-2">mut </span>kx_params = Vec::new();
+        decoded_kx.encode_params(<span class="kw-2">&amp;mut </span>kx_params);
+        <span class="kw">let </span>skx = ServerKXDetails::new(kx_params, decoded_kx.get_sig().unwrap());
 
-        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;logging&quot;</span>), <span class="ident">allow</span>(<span class="ident">unused_variables</span>))]</span>
-        {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ServerKeyExchangePayload::ECDHE</span>(<span class="ident">ecdhe</span>) <span class="op">=</span> <span class="ident">decoded_kx</span> {
-                <span class="macro">debug!</span>(<span class="string">&quot;ECDHE curve is {:?}&quot;</span>, <span class="ident">ecdhe</span>.<span class="ident">params</span>.<span class="ident">curve_params</span>);
+        <span class="attribute">#[cfg_attr(not(feature = <span class="string">&quot;logging&quot;</span>), allow(unused_variables))]
+        </span>{
+            <span class="kw">if let </span>ServerKeyExchangePayload::ECDHE(ecdhe) = decoded_kx {
+                <span class="macro">debug!</span>(<span class="string">&quot;ECDHE curve is {:?}&quot;</span>, ecdhe.params.curve_params);
             }
         }
 
-        <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">into_expect_server_done_or_certreq</span>(<span class="ident">skx</span>))
+        <span class="prelude-val">Ok</span>(<span class="self">self</span>.into_expect_server_done_or_certreq(skx))
     }
 }
 
-<span class="kw">fn</span> <span class="ident">emit_certificate</span>(
-    <span class="ident">handshake</span>: <span class="kw-2">&amp;mut</span> <span class="ident">HandshakeDetails</span>,
-    <span class="ident">client_auth</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientAuthDetails</span>,
-    <span class="ident">sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>,
+<span class="kw">fn </span>emit_certificate(
+    handshake: <span class="kw-2">&amp;mut </span>HandshakeDetails,
+    client_auth: <span class="kw-2">&amp;mut </span>ClientAuthDetails,
+    sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl,
 ) {
-    <span class="kw">let</span> <span class="ident">chosen_cert</span> <span class="op">=</span> <span class="ident">client_auth</span>.<span class="ident">cert</span>.<span class="ident">take</span>();
+    <span class="kw">let </span>chosen_cert = client_auth.cert.take();
 
-    <span class="kw">let</span> <span class="ident">cert</span> <span class="op">=</span> <span class="ident">Message</span> {
-        <span class="ident">typ</span>: <span class="ident">ContentType::Handshake</span>,
-        <span class="ident">version</span>: <span class="ident">ProtocolVersion::TLSv1_2</span>,
-        <span class="ident">payload</span>: <span class="ident">MessagePayload::Handshake</span>(<span class="ident">HandshakeMessagePayload</span> {
-            <span class="ident">typ</span>: <span class="ident">HandshakeType::Certificate</span>,
-            <span class="ident">payload</span>: <span class="ident">HandshakePayload::Certificate</span>(<span class="ident">chosen_cert</span>.<span class="ident">unwrap_or_else</span>(<span class="ident">Vec::new</span>)),
+    <span class="kw">let </span>cert = Message {
+        typ: ContentType::Handshake,
+        version: ProtocolVersion::TLSv1_2,
+        payload: MessagePayload::Handshake(HandshakeMessagePayload {
+            typ: HandshakeType::Certificate,
+            payload: HandshakePayload::Certificate(chosen_cert.unwrap_or_else(Vec::new)),
         }),
     };
 
-    <span class="ident">handshake</span>.<span class="ident">transcript</span>.<span class="ident">add_message</span>(<span class="kw-2">&amp;</span><span class="ident">cert</span>);
-    <span class="ident">sess</span>.<span class="ident">common</span>.<span class="ident">send_msg</span>(<span class="ident">cert</span>, <span class="bool-val">false</span>);
+    handshake.transcript.add_message(<span class="kw-2">&amp;</span>cert);
+    sess.common.send_msg(cert, <span class="bool-val">false</span>);
 }
 
-<span class="kw">fn</span> <span class="ident">emit_clientkx</span>(
-    <span class="ident">handshake</span>: <span class="kw-2">&amp;mut</span> <span class="ident">HandshakeDetails</span>,
-    <span class="ident">sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>,
-    <span class="ident">kxd</span>: <span class="kw-2">&amp;</span><span class="ident">suites::KeyExchangeResult</span>,
+<span class="kw">fn </span>emit_clientkx(
+    handshake: <span class="kw-2">&amp;mut </span>HandshakeDetails,
+    sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl,
+    kxd: <span class="kw-2">&amp;</span>suites::KeyExchangeResult,
 ) {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-    <span class="kw">let</span> <span class="ident">ecpoint</span> <span class="op">=</span> <span class="ident">PayloadU8::new</span>(<span class="ident">Vec::from</span>(<span class="ident">kxd</span>.<span class="ident">pubkey</span>.<span class="ident">as_ref</span>()));
-    <span class="ident">ecpoint</span>.<span class="ident">encode</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
-    <span class="kw">let</span> <span class="ident">pubkey</span> <span class="op">=</span> <span class="ident">Payload::new</span>(<span class="ident">buf</span>);
+    <span class="kw">let </span><span class="kw-2">mut </span>buf = Vec::new();
+    <span class="kw">let </span>ecpoint = PayloadU8::new(Vec::from(kxd.pubkey.as_ref()));
+    ecpoint.encode(<span class="kw-2">&amp;mut </span>buf);
+    <span class="kw">let </span>pubkey = Payload::new(buf);
 
-    <span class="kw">let</span> <span class="ident">ckx</span> <span class="op">=</span> <span class="ident">Message</span> {
-        <span class="ident">typ</span>: <span class="ident">ContentType::Handshake</span>,
-        <span class="ident">version</span>: <span class="ident">ProtocolVersion::TLSv1_2</span>,
-        <span class="ident">payload</span>: <span class="ident">MessagePayload::Handshake</span>(<span class="ident">HandshakeMessagePayload</span> {
-            <span class="ident">typ</span>: <span class="ident">HandshakeType::ClientKeyExchange</span>,
-            <span class="ident">payload</span>: <span class="ident">HandshakePayload::ClientKeyExchange</span>(<span class="ident">pubkey</span>),
+    <span class="kw">let </span>ckx = Message {
+        typ: ContentType::Handshake,
+        version: ProtocolVersion::TLSv1_2,
+        payload: MessagePayload::Handshake(HandshakeMessagePayload {
+            typ: HandshakeType::ClientKeyExchange,
+            payload: HandshakePayload::ClientKeyExchange(pubkey),
         }),
     };
 
-    <span class="ident">handshake</span>.<span class="ident">transcript</span>.<span class="ident">add_message</span>(<span class="kw-2">&amp;</span><span class="ident">ckx</span>);
-    <span class="ident">sess</span>.<span class="ident">common</span>.<span class="ident">send_msg</span>(<span class="ident">ckx</span>, <span class="bool-val">false</span>);
+    handshake.transcript.add_message(<span class="kw-2">&amp;</span>ckx);
+    sess.common.send_msg(ckx, <span class="bool-val">false</span>);
 }
 
-<span class="kw">fn</span> <span class="ident">emit_certverify</span>(
-    <span class="ident">handshake</span>: <span class="kw-2">&amp;mut</span> <span class="ident">HandshakeDetails</span>,
-    <span class="ident">client_auth</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientAuthDetails</span>,
-    <span class="ident">sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
-    <span class="kw">if</span> <span class="ident">client_auth</span>.<span class="ident">signer</span>.<span class="ident">is_none</span>() {
+<span class="kw">fn </span>emit_certverify(
+    handshake: <span class="kw-2">&amp;mut </span>HandshakeDetails,
+    client_auth: <span class="kw-2">&amp;mut </span>ClientAuthDetails,
+    sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl,
+) -&gt; <span class="prelude-ty">Result</span>&lt;(), TLSError&gt; {
+    <span class="kw">if </span>client_auth.signer.is_none() {
         <span class="macro">trace!</span>(<span class="string">&quot;Not sending CertificateVerify, no key&quot;</span>);
-        <span class="ident">handshake</span>
-            .<span class="ident">transcript</span>
-            .<span class="ident">abandon_client_auth</span>();
-        <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
+        handshake
+            .transcript
+            .abandon_client_auth();
+        <span class="kw">return </span><span class="prelude-val">Ok</span>(());
     }
 
-    <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">handshake</span>
-        .<span class="ident">transcript</span>
-        .<span class="ident">take_handshake_buf</span>();
-    <span class="kw">let</span> <span class="ident">signer</span> <span class="op">=</span> <span class="ident">client_auth</span>.<span class="ident">signer</span>.<span class="ident">take</span>().<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">scheme</span> <span class="op">=</span> <span class="ident">signer</span>.<span class="ident">get_scheme</span>();
-    <span class="kw">let</span> <span class="ident">sig</span> <span class="op">=</span> <span class="ident">signer</span>.<span class="ident">sign</span>(<span class="kw-2">&amp;</span><span class="ident">message</span>)<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">DigitallySignedStruct::new</span>(<span class="ident">scheme</span>, <span class="ident">sig</span>);
+    <span class="kw">let </span>message = handshake
+        .transcript
+        .take_handshake_buf();
+    <span class="kw">let </span>signer = client_auth.signer.take().unwrap();
+    <span class="kw">let </span>scheme = signer.get_scheme();
+    <span class="kw">let </span>sig = signer.sign(<span class="kw-2">&amp;</span>message)<span class="question-mark">?</span>;
+    <span class="kw">let </span>body = DigitallySignedStruct::new(scheme, sig);
 
-    <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Message</span> {
-        <span class="ident">typ</span>: <span class="ident">ContentType::Handshake</span>,
-        <span class="ident">version</span>: <span class="ident">ProtocolVersion::TLSv1_2</span>,
-        <span class="ident">payload</span>: <span class="ident">MessagePayload::Handshake</span>(<span class="ident">HandshakeMessagePayload</span> {
-            <span class="ident">typ</span>: <span class="ident">HandshakeType::CertificateVerify</span>,
-            <span class="ident">payload</span>: <span class="ident">HandshakePayload::CertificateVerify</span>(<span class="ident">body</span>),
+    <span class="kw">let </span>m = Message {
+        typ: ContentType::Handshake,
+        version: ProtocolVersion::TLSv1_2,
+        payload: MessagePayload::Handshake(HandshakeMessagePayload {
+            typ: HandshakeType::CertificateVerify,
+            payload: HandshakePayload::CertificateVerify(body),
         }),
     };
 
-    <span class="ident">handshake</span>.<span class="ident">transcript</span>.<span class="ident">add_message</span>(<span class="kw-2">&amp;</span><span class="ident">m</span>);
-    <span class="ident">sess</span>.<span class="ident">common</span>.<span class="ident">send_msg</span>(<span class="ident">m</span>, <span class="bool-val">false</span>);
+    handshake.transcript.add_message(<span class="kw-2">&amp;</span>m);
+    sess.common.send_msg(m, <span class="bool-val">false</span>);
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="kw">fn</span> <span class="ident">emit_ccs</span>(<span class="ident">sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>) {
-    <span class="kw">let</span> <span class="ident">ccs</span> <span class="op">=</span> <span class="ident">Message</span> {
-        <span class="ident">typ</span>: <span class="ident">ContentType::ChangeCipherSpec</span>,
-        <span class="ident">version</span>: <span class="ident">ProtocolVersion::TLSv1_2</span>,
-        <span class="ident">payload</span>: <span class="ident">MessagePayload::ChangeCipherSpec</span>(<span class="ident">ChangeCipherSpecPayload</span> {}),
+<span class="kw">fn </span>emit_ccs(sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl) {
+    <span class="kw">let </span>ccs = Message {
+        typ: ContentType::ChangeCipherSpec,
+        version: ProtocolVersion::TLSv1_2,
+        payload: MessagePayload::ChangeCipherSpec(ChangeCipherSpecPayload {}),
     };
 
-    <span class="ident">sess</span>.<span class="ident">common</span>.<span class="ident">send_msg</span>(<span class="ident">ccs</span>, <span class="bool-val">false</span>);
+    sess.common.send_msg(ccs, <span class="bool-val">false</span>);
 }
 
-<span class="kw">fn</span> <span class="ident">emit_finished</span>(
-    <span class="ident">secrets</span>: <span class="kw-2">&amp;</span><span class="ident">SessionSecrets</span>,
-    <span class="ident">handshake</span>: <span class="kw-2">&amp;mut</span> <span class="ident">HandshakeDetails</span>,
-    <span class="ident">sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>,
+<span class="kw">fn </span>emit_finished(
+    secrets: <span class="kw-2">&amp;</span>SessionSecrets,
+    handshake: <span class="kw-2">&amp;mut </span>HandshakeDetails,
+    sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl,
 ) {
-    <span class="kw">let</span> <span class="ident">vh</span> <span class="op">=</span> <span class="ident">handshake</span>.<span class="ident">transcript</span>.<span class="ident">get_current_hash</span>();
-    <span class="kw">let</span> <span class="ident">verify_data</span> <span class="op">=</span> <span class="ident">secrets</span>.<span class="ident">client_verify_data</span>(<span class="kw-2">&amp;</span><span class="ident">vh</span>);
-    <span class="kw">let</span> <span class="ident">verify_data_payload</span> <span class="op">=</span> <span class="ident">Payload::new</span>(<span class="ident">verify_data</span>);
+    <span class="kw">let </span>vh = handshake.transcript.get_current_hash();
+    <span class="kw">let </span>verify_data = secrets.client_verify_data(<span class="kw-2">&amp;</span>vh);
+    <span class="kw">let </span>verify_data_payload = Payload::new(verify_data);
 
-    <span class="kw">let</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">Message</span> {
-        <span class="ident">typ</span>: <span class="ident">ContentType::Handshake</span>,
-        <span class="ident">version</span>: <span class="ident">ProtocolVersion::TLSv1_2</span>,
-        <span class="ident">payload</span>: <span class="ident">MessagePayload::Handshake</span>(<span class="ident">HandshakeMessagePayload</span> {
-            <span class="ident">typ</span>: <span class="ident">HandshakeType::Finished</span>,
-            <span class="ident">payload</span>: <span class="ident">HandshakePayload::Finished</span>(<span class="ident">verify_data_payload</span>),
+    <span class="kw">let </span>f = Message {
+        typ: ContentType::Handshake,
+        version: ProtocolVersion::TLSv1_2,
+        payload: MessagePayload::Handshake(HandshakeMessagePayload {
+            typ: HandshakeType::Finished,
+            payload: HandshakePayload::Finished(verify_data_payload),
         }),
     };
 
-    <span class="ident">handshake</span>.<span class="ident">transcript</span>.<span class="ident">add_message</span>(<span class="kw-2">&amp;</span><span class="ident">f</span>);
-    <span class="ident">sess</span>.<span class="ident">common</span>.<span class="ident">send_msg</span>(<span class="ident">f</span>, <span class="bool-val">true</span>);
+    handshake.transcript.add_message(<span class="kw-2">&amp;</span>f);
+    sess.common.send_msg(f, <span class="bool-val">true</span>);
 }
 
-<span class="comment">// --- Either a CertificateRequest, or a ServerHelloDone. ---</span>
-<span class="comment">// Existence of the CertificateRequest tells us the server is asking for</span>
-<span class="comment">// client auth.  Otherwise we go straight to ServerHelloDone.</span>
-<span class="kw">struct</span> <span class="ident">ExpectCertificateRequest</span> {
-    <span class="ident">handshake</span>: <span class="ident">HandshakeDetails</span>,
-    <span class="ident">server_cert</span>: <span class="ident">ServerCertDetails</span>,
-    <span class="ident">server_kx</span>: <span class="ident">ServerKXDetails</span>,
-    <span class="ident">must_issue_new_ticket</span>: <span class="ident">bool</span>,
+<span class="comment">// --- Either a CertificateRequest, or a ServerHelloDone. ---
+// Existence of the CertificateRequest tells us the server is asking for
+// client auth.  Otherwise we go straight to ServerHelloDone.
+</span><span class="kw">struct </span>ExpectCertificateRequest {
+    handshake: HandshakeDetails,
+    server_cert: ServerCertDetails,
+    server_kx: ServerKXDetails,
+    must_issue_new_ticket: bool,
 }
 
-<span class="kw">impl</span> <span class="ident">ExpectCertificateRequest</span> {
-    <span class="kw">fn</span> <span class="ident">into_expect_server_done</span>(<span class="self">self</span>, <span class="ident">client_auth</span>: <span class="ident">ClientAuthDetails</span>) -&gt; <span class="ident">hs::NextState</span> {
-        <span class="ident">Box::new</span>(<span class="ident">ExpectServerDone</span> {
-            <span class="ident">handshake</span>: <span class="self">self</span>.<span class="ident">handshake</span>,
-            <span class="ident">server_cert</span>: <span class="self">self</span>.<span class="ident">server_cert</span>,
-            <span class="ident">server_kx</span>: <span class="self">self</span>.<span class="ident">server_kx</span>,
-            <span class="ident">client_auth</span>: <span class="prelude-val">Some</span>(<span class="ident">client_auth</span>),
-            <span class="ident">must_issue_new_ticket</span>: <span class="self">self</span>.<span class="ident">must_issue_new_ticket</span>,
+<span class="kw">impl </span>ExpectCertificateRequest {
+    <span class="kw">fn </span>into_expect_server_done(<span class="self">self</span>, client_auth: ClientAuthDetails) -&gt; hs::NextState {
+        Box::new(ExpectServerDone {
+            handshake: <span class="self">self</span>.handshake,
+            server_cert: <span class="self">self</span>.server_cert,
+            server_kx: <span class="self">self</span>.server_kx,
+            client_auth: <span class="prelude-val">Some</span>(client_auth),
+            must_issue_new_ticket: <span class="self">self</span>.must_issue_new_ticket,
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">hs::State</span> <span class="kw">for</span> <span class="ident">ExpectCertificateRequest</span> {
-    <span class="kw">fn</span> <span class="ident">handle</span>(
-        <span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>,
-        <span class="ident">m</span>: <span class="ident">Message</span>,
-    ) -&gt; <span class="ident">hs::NextStateOrError</span> {
-        <span class="kw">let</span> <span class="ident">certreq</span> <span class="op">=</span> <span class="macro">require_handshake_msg!</span>(
-            <span class="ident">m</span>,
-            <span class="ident">HandshakeType::CertificateRequest</span>,
-            <span class="ident">HandshakePayload::CertificateRequest</span>
+<span class="kw">impl </span>hs::State <span class="kw">for </span>ExpectCertificateRequest {
+    <span class="kw">fn </span>handle(
+        <span class="kw-2">mut </span><span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;,
+        sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl,
+        m: Message,
+    ) -&gt; hs::NextStateOrError {
+        <span class="kw">let </span>certreq = <span class="macro">require_handshake_msg!</span>(
+            m,
+            HandshakeType::CertificateRequest,
+            HandshakePayload::CertificateRequest
         )<span class="question-mark">?</span>;
-        <span class="self">self</span>.<span class="ident">handshake</span>
-            .<span class="ident">transcript</span>
-            .<span class="ident">add_message</span>(<span class="kw-2">&amp;</span><span class="ident">m</span>);
-        <span class="macro">debug!</span>(<span class="string">&quot;Got CertificateRequest {:?}&quot;</span>, <span class="ident">certreq</span>);
+        <span class="self">self</span>.handshake
+            .transcript
+            .add_message(<span class="kw-2">&amp;</span>m);
+        <span class="macro">debug!</span>(<span class="string">&quot;Got CertificateRequest {:?}&quot;</span>, certreq);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">client_auth</span> <span class="op">=</span> <span class="ident">ClientAuthDetails::new</span>();
+        <span class="kw">let </span><span class="kw-2">mut </span>client_auth = ClientAuthDetails::new();
 
-        <span class="comment">// The RFC jovially describes the design here as &#39;somewhat complicated&#39;</span>
-        <span class="comment">// and &#39;somewhat underspecified&#39;.  So thanks for that.</span>
-        <span class="comment">//</span>
-        <span class="comment">// We ignore certreq.certtypes as a result, since the information it contains</span>
-        <span class="comment">// is entirely duplicated in certreq.sigschemes.</span>
+        <span class="comment">// The RFC jovially describes the design here as &#39;somewhat complicated&#39;
+        // and &#39;somewhat underspecified&#39;.  So thanks for that.
+        //
+        // We ignore certreq.certtypes as a result, since the information it contains
+        // is entirely duplicated in certreq.sigschemes.
 
-        <span class="kw">let</span> <span class="ident">canames</span> <span class="op">=</span> <span class="ident">certreq</span>
-            .<span class="ident">canames</span>
-            .<span class="ident">iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="number">0</span>.<span class="ident">as_slice</span>())
-            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span><span class="op">&gt;</span>();
-        <span class="kw">let</span> <span class="ident">maybe_certkey</span> <span class="op">=</span> <span class="ident">sess</span>
-            .<span class="ident">config</span>
-            .<span class="ident">client_auth_cert_resolver</span>
-            .<span class="ident">resolve</span>(<span class="kw-2">&amp;</span><span class="ident">canames</span>, <span class="kw-2">&amp;</span><span class="ident">certreq</span>.<span class="ident">sigschemes</span>);
+        </span><span class="kw">let </span>canames = certreq
+            .canames
+            .iter()
+            .map(|p| p.<span class="number">0</span>.as_slice())
+            .collect::&lt;Vec&lt;<span class="kw-2">&amp;</span>[u8]&gt;&gt;();
+        <span class="kw">let </span>maybe_certkey = sess
+            .config
+            .client_auth_cert_resolver
+            .resolve(<span class="kw-2">&amp;</span>canames, <span class="kw-2">&amp;</span>certreq.sigschemes);
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">mut</span> <span class="ident">certkey</span>) <span class="op">=</span> <span class="ident">maybe_certkey</span> {
-            <span class="kw">let</span> <span class="ident">maybe_signer</span> <span class="op">=</span> <span class="ident">certkey</span>
-                .<span class="ident">key</span>
-                .<span class="ident">choose_scheme</span>(<span class="kw-2">&amp;</span><span class="ident">certreq</span>.<span class="ident">sigschemes</span>);
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">mut </span>certkey) = maybe_certkey {
+            <span class="kw">let </span>maybe_signer = certkey
+                .key
+                .choose_scheme(<span class="kw-2">&amp;</span>certreq.sigschemes);
 
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">maybe_signer</span> {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw">_</span>) = <span class="kw-2">&amp;</span>maybe_signer {
                 <span class="macro">debug!</span>(<span class="string">&quot;Attempting client auth&quot;</span>);
-                <span class="ident">client_auth</span>.<span class="ident">cert</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">certkey</span>.<span class="ident">take_cert</span>());
+                client_auth.cert = <span class="prelude-val">Some</span>(certkey.take_cert());
             }
-            <span class="ident">client_auth</span>.<span class="ident">signer</span> <span class="op">=</span> <span class="ident">maybe_signer</span>;
-        } <span class="kw">else</span> {
+            client_auth.signer = maybe_signer;
+        } <span class="kw">else </span>{
             <span class="macro">debug!</span>(<span class="string">&quot;Client auth requested but no cert/sigscheme available&quot;</span>);
         }
 
-        <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">into_expect_server_done</span>(<span class="ident">client_auth</span>))
+        <span class="prelude-val">Ok</span>(<span class="self">self</span>.into_expect_server_done(client_auth))
     }
 }
 
-<span class="kw">struct</span> <span class="ident">ExpectServerDoneOrCertReq</span> {
-    <span class="ident">handshake</span>: <span class="ident">HandshakeDetails</span>,
-    <span class="ident">server_cert</span>: <span class="ident">ServerCertDetails</span>,
-    <span class="ident">server_kx</span>: <span class="ident">ServerKXDetails</span>,
-    <span class="ident">must_issue_new_ticket</span>: <span class="ident">bool</span>,
+<span class="kw">struct </span>ExpectServerDoneOrCertReq {
+    handshake: HandshakeDetails,
+    server_cert: ServerCertDetails,
+    server_kx: ServerKXDetails,
+    must_issue_new_ticket: bool,
 }
 
-<span class="kw">impl</span> <span class="ident">ExpectServerDoneOrCertReq</span> {
-    <span class="kw">fn</span> <span class="ident">into_expect_certificate_req</span>(<span class="self">self</span>) -&gt; <span class="ident">hs::NextState</span> {
-        <span class="ident">Box::new</span>(<span class="ident">ExpectCertificateRequest</span> {
-            <span class="ident">handshake</span>: <span class="self">self</span>.<span class="ident">handshake</span>,
-            <span class="ident">server_cert</span>: <span class="self">self</span>.<span class="ident">server_cert</span>,
-            <span class="ident">server_kx</span>: <span class="self">self</span>.<span class="ident">server_kx</span>,
-            <span class="ident">must_issue_new_ticket</span>: <span class="self">self</span>.<span class="ident">must_issue_new_ticket</span>,
+<span class="kw">impl </span>ExpectServerDoneOrCertReq {
+    <span class="kw">fn </span>into_expect_certificate_req(<span class="self">self</span>) -&gt; hs::NextState {
+        Box::new(ExpectCertificateRequest {
+            handshake: <span class="self">self</span>.handshake,
+            server_cert: <span class="self">self</span>.server_cert,
+            server_kx: <span class="self">self</span>.server_kx,
+            must_issue_new_ticket: <span class="self">self</span>.must_issue_new_ticket,
         })
     }
 
-    <span class="kw">fn</span> <span class="ident">into_expect_server_done</span>(<span class="self">self</span>) -&gt; <span class="ident">hs::NextState</span> {
-        <span class="ident">Box::new</span>(<span class="ident">ExpectServerDone</span> {
-            <span class="ident">handshake</span>: <span class="self">self</span>.<span class="ident">handshake</span>,
-            <span class="ident">server_cert</span>: <span class="self">self</span>.<span class="ident">server_cert</span>,
-            <span class="ident">server_kx</span>: <span class="self">self</span>.<span class="ident">server_kx</span>,
-            <span class="ident">client_auth</span>: <span class="prelude-val">None</span>,
-            <span class="ident">must_issue_new_ticket</span>: <span class="self">self</span>.<span class="ident">must_issue_new_ticket</span>,
+    <span class="kw">fn </span>into_expect_server_done(<span class="self">self</span>) -&gt; hs::NextState {
+        Box::new(ExpectServerDone {
+            handshake: <span class="self">self</span>.handshake,
+            server_cert: <span class="self">self</span>.server_cert,
+            server_kx: <span class="self">self</span>.server_kx,
+            client_auth: <span class="prelude-val">None</span>,
+            must_issue_new_ticket: <span class="self">self</span>.must_issue_new_ticket,
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">hs::State</span> <span class="kw">for</span> <span class="ident">ExpectServerDoneOrCertReq</span> {
-    <span class="kw">fn</span> <span class="ident">handle</span>(
-        <span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>,
-        <span class="ident">m</span>: <span class="ident">Message</span>,
-    ) -&gt; <span class="ident">hs::NextStateOrError</span> {
-        <span class="kw">if</span> <span class="macro">require_handshake_msg!</span>(
-            <span class="ident">m</span>,
-            <span class="ident">HandshakeType::CertificateRequest</span>,
-            <span class="ident">HandshakePayload::CertificateRequest</span>
+<span class="kw">impl </span>hs::State <span class="kw">for </span>ExpectServerDoneOrCertReq {
+    <span class="kw">fn </span>handle(
+        <span class="kw-2">mut </span><span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;,
+        sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl,
+        m: Message,
+    ) -&gt; hs::NextStateOrError {
+        <span class="kw">if </span><span class="macro">require_handshake_msg!</span>(
+            m,
+            HandshakeType::CertificateRequest,
+            HandshakePayload::CertificateRequest
         )
-        .<span class="ident">is_ok</span>()
+        .is_ok()
         {
-            <span class="self">self</span>.<span class="ident">into_expect_certificate_req</span>()
-                .<span class="ident">handle</span>(<span class="ident">sess</span>, <span class="ident">m</span>)
-        } <span class="kw">else</span> {
-            <span class="self">self</span>.<span class="ident">handshake</span>
-                .<span class="ident">transcript</span>
-                .<span class="ident">abandon_client_auth</span>();
-            <span class="self">self</span>.<span class="ident">into_expect_server_done</span>()
-                .<span class="ident">handle</span>(<span class="ident">sess</span>, <span class="ident">m</span>)
+            <span class="self">self</span>.into_expect_certificate_req()
+                .handle(sess, m)
+        } <span class="kw">else </span>{
+            <span class="self">self</span>.handshake
+                .transcript
+                .abandon_client_auth();
+            <span class="self">self</span>.into_expect_server_done()
+                .handle(sess, m)
         }
     }
 }
 
-<span class="kw">struct</span> <span class="ident">ExpectServerDone</span> {
-    <span class="ident">handshake</span>: <span class="ident">HandshakeDetails</span>,
-    <span class="ident">server_cert</span>: <span class="ident">ServerCertDetails</span>,
-    <span class="ident">server_kx</span>: <span class="ident">ServerKXDetails</span>,
-    <span class="ident">client_auth</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ClientAuthDetails</span><span class="op">&gt;</span>,
-    <span class="ident">must_issue_new_ticket</span>: <span class="ident">bool</span>,
+<span class="kw">struct </span>ExpectServerDone {
+    handshake: HandshakeDetails,
+    server_cert: ServerCertDetails,
+    server_kx: ServerKXDetails,
+    client_auth: <span class="prelude-ty">Option</span>&lt;ClientAuthDetails&gt;,
+    must_issue_new_ticket: bool,
 }
 
-<span class="kw">impl</span> <span class="ident">ExpectServerDone</span> {
-    <span class="kw">fn</span> <span class="ident">into_expect_new_ticket</span>(
+<span class="kw">impl </span>ExpectServerDone {
+    <span class="kw">fn </span>into_expect_new_ticket(
         <span class="self">self</span>,
-        <span class="ident">secrets</span>: <span class="ident">SessionSecrets</span>,
-        <span class="ident">certv</span>: <span class="ident">verify::ServerCertVerified</span>,
-        <span class="ident">sigv</span>: <span class="ident">verify::HandshakeSignatureValid</span>,
-    ) -&gt; <span class="ident">hs::NextState</span> {
-        <span class="ident">Box::new</span>(<span class="ident">ExpectNewTicket</span> {
-            <span class="ident">secrets</span>,
-            <span class="ident">handshake</span>: <span class="self">self</span>.<span class="ident">handshake</span>,
-            <span class="ident">resuming</span>: <span class="bool-val">false</span>,
-            <span class="ident">cert_verified</span>: <span class="ident">certv</span>,
-            <span class="ident">sig_verified</span>: <span class="ident">sigv</span>,
+        secrets: SessionSecrets,
+        certv: verify::ServerCertVerified,
+        sigv: verify::HandshakeSignatureValid,
+    ) -&gt; hs::NextState {
+        Box::new(ExpectNewTicket {
+            secrets,
+            handshake: <span class="self">self</span>.handshake,
+            resuming: <span class="bool-val">false</span>,
+            cert_verified: certv,
+            sig_verified: sigv,
         })
     }
 
-    <span class="kw">fn</span> <span class="ident">into_expect_ccs</span>(
+    <span class="kw">fn </span>into_expect_ccs(
         <span class="self">self</span>,
-        <span class="ident">secrets</span>: <span class="ident">SessionSecrets</span>,
-        <span class="ident">certv</span>: <span class="ident">verify::ServerCertVerified</span>,
-        <span class="ident">sigv</span>: <span class="ident">verify::HandshakeSignatureValid</span>,
-    ) -&gt; <span class="ident">hs::NextState</span> {
-        <span class="ident">Box::new</span>(<span class="ident">ExpectCCS</span> {
-            <span class="ident">secrets</span>,
-            <span class="ident">handshake</span>: <span class="self">self</span>.<span class="ident">handshake</span>,
-            <span class="ident">ticket</span>: <span class="ident">ReceivedTicketDetails::new</span>(),
-            <span class="ident">resuming</span>: <span class="bool-val">false</span>,
-            <span class="ident">cert_verified</span>: <span class="ident">certv</span>,
-            <span class="ident">sig_verified</span>: <span class="ident">sigv</span>,
+        secrets: SessionSecrets,
+        certv: verify::ServerCertVerified,
+        sigv: verify::HandshakeSignatureValid,
+    ) -&gt; hs::NextState {
+        Box::new(ExpectCCS {
+            secrets,
+            handshake: <span class="self">self</span>.handshake,
+            ticket: ReceivedTicketDetails::new(),
+            resuming: <span class="bool-val">false</span>,
+            cert_verified: certv,
+            sig_verified: sigv,
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">hs::State</span> <span class="kw">for</span> <span class="ident">ExpectServerDone</span> {
-    <span class="kw">fn</span> <span class="ident">handle</span>(<span class="self">self</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>, <span class="ident">m</span>: <span class="ident">Message</span>) -&gt; <span class="ident">hs::NextStateOrError</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">st</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>;
-        <span class="ident">check_message</span>(
-            <span class="kw-2">&amp;</span><span class="ident">m</span>,
-            <span class="kw-2">&amp;</span>[<span class="ident">ContentType::Handshake</span>],
-            <span class="kw-2">&amp;</span>[<span class="ident">HandshakeType::ServerHelloDone</span>],
+<span class="kw">impl </span>hs::State <span class="kw">for </span>ExpectServerDone {
+    <span class="kw">fn </span>handle(<span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;, sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl, m: Message) -&gt; hs::NextStateOrError {
+        <span class="kw">let </span><span class="kw-2">mut </span>st = <span class="kw-2">*</span><span class="self">self</span>;
+        check_message(
+            <span class="kw-2">&amp;</span>m,
+            <span class="kw-2">&amp;</span>[ContentType::Handshake],
+            <span class="kw-2">&amp;</span>[HandshakeType::ServerHelloDone],
         )<span class="question-mark">?</span>;
-        <span class="ident">st</span>.<span class="ident">handshake</span>.<span class="ident">transcript</span>.<span class="ident">add_message</span>(<span class="kw-2">&amp;</span><span class="ident">m</span>);
+        st.handshake.transcript.add_message(<span class="kw-2">&amp;</span>m);
 
-        <span class="ident">hs::check_aligned_handshake</span>(<span class="ident">sess</span>)<span class="question-mark">?</span>;
+        hs::check_aligned_handshake(sess)<span class="question-mark">?</span>;
 
-        <span class="macro">trace!</span>(<span class="string">&quot;Server cert is {:?}&quot;</span>, <span class="ident">st</span>.<span class="ident">server_cert</span>.<span class="ident">cert_chain</span>);
-        <span class="macro">debug!</span>(<span class="string">&quot;Server DNS name is {:?}&quot;</span>, <span class="ident">st</span>.<span class="ident">handshake</span>.<span class="ident">dns_name</span>);
+        <span class="macro">trace!</span>(<span class="string">&quot;Server cert is {:?}&quot;</span>, st.server_cert.cert_chain);
+        <span class="macro">debug!</span>(<span class="string">&quot;Server DNS name is {:?}&quot;</span>, st.handshake.dns_name);
 
-        <span class="comment">// 1. Verify the cert chain.</span>
-        <span class="comment">// 2. Verify any SCTs provided with the certificate.</span>
-        <span class="comment">// 3. Verify that the top certificate signed their kx.</span>
-        <span class="comment">// 4. If doing client auth, send our Certificate.</span>
-        <span class="comment">// 5. Complete the key exchange:</span>
-        <span class="comment">//    a) generate our kx pair</span>
-        <span class="comment">//    b) emit a ClientKeyExchange containing it</span>
-        <span class="comment">//    c) if doing client auth, emit a CertificateVerify</span>
-        <span class="comment">//    d) emit a CCS</span>
-        <span class="comment">//    e) derive the shared keys, and start encryption</span>
-        <span class="comment">// 6. emit a Finished, our first encrypted message under the new keys.</span>
+        <span class="comment">// 1. Verify the cert chain.
+        // 2. Verify any SCTs provided with the certificate.
+        // 3. Verify that the top certificate signed their kx.
+        // 4. If doing client auth, send our Certificate.
+        // 5. Complete the key exchange:
+        //    a) generate our kx pair
+        //    b) emit a ClientKeyExchange containing it
+        //    c) if doing client auth, emit a CertificateVerify
+        //    d) emit a CCS
+        //    e) derive the shared keys, and start encryption
+        // 6. emit a Finished, our first encrypted message under the new keys.
 
-        <span class="comment">// 1.</span>
-        <span class="kw">if</span> <span class="ident">st</span>.<span class="ident">server_cert</span>.<span class="ident">cert_chain</span>.<span class="ident">is_empty</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">TLSError::NoCertificatesPresented</span>);
+        // 1.
+        </span><span class="kw">if </span>st.server_cert.cert_chain.is_empty() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(TLSError::NoCertificatesPresented);
         }
 
-        <span class="kw">let</span> <span class="ident">certv</span> <span class="op">=</span> <span class="ident">sess</span>
-            .<span class="ident">config</span>
-            .<span class="ident">get_verifier</span>()
-            .<span class="ident">verify_server_cert</span>(
-                <span class="kw-2">&amp;</span><span class="ident">sess</span>.<span class="ident">config</span>.<span class="ident">root_store</span>,
-                <span class="kw-2">&amp;</span><span class="ident">st</span>.<span class="ident">server_cert</span>.<span class="ident">cert_chain</span>,
-                <span class="ident">st</span>.<span class="ident">handshake</span>.<span class="ident">dns_name</span>.<span class="ident">as_ref</span>(),
-                <span class="kw-2">&amp;</span><span class="ident">st</span>.<span class="ident">server_cert</span>.<span class="ident">ocsp_response</span>,
+        <span class="kw">let </span>certv = sess
+            .config
+            .get_verifier()
+            .verify_server_cert(
+                <span class="kw-2">&amp;</span>sess.config.root_store,
+                <span class="kw-2">&amp;</span>st.server_cert.cert_chain,
+                st.handshake.dns_name.as_ref(),
+                <span class="kw-2">&amp;</span>st.server_cert.ocsp_response,
             )
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">hs::send_cert_error_alert</span>(<span class="ident">sess</span>, <span class="ident">err</span>))<span class="question-mark">?</span>;
+            .map_err(|err| hs::send_cert_error_alert(sess, err))<span class="question-mark">?</span>;
 
-        <span class="comment">// 2. Verify any included SCTs.</span>
-        <span class="kw">match</span> (<span class="ident">st</span>.<span class="ident">server_cert</span>.<span class="ident">scts</span>.<span class="ident">as_ref</span>(), <span class="ident">sess</span>.<span class="ident">config</span>.<span class="ident">ct_logs</span>) {
-            (<span class="prelude-val">Some</span>(<span class="ident">scts</span>), <span class="prelude-val">Some</span>(<span class="ident">logs</span>)) =&gt; {
-                <span class="ident">verify::verify_scts</span>(<span class="kw-2">&amp;</span><span class="ident">st</span>.<span class="ident">server_cert</span>.<span class="ident">cert_chain</span>[<span class="number">0</span>], <span class="ident">scts</span>, <span class="ident">logs</span>)<span class="question-mark">?</span>;
+        <span class="comment">// 2. Verify any included SCTs.
+        </span><span class="kw">match </span>(st.server_cert.scts.as_ref(), sess.config.ct_logs) {
+            (<span class="prelude-val">Some</span>(scts), <span class="prelude-val">Some</span>(logs)) =&gt; {
+                verify::verify_scts(<span class="kw-2">&amp;</span>st.server_cert.cert_chain[<span class="number">0</span>], scts, logs)<span class="question-mark">?</span>;
             }
             (<span class="kw">_</span>, <span class="kw">_</span>) =&gt; {}
         }
 
-        <span class="comment">// 3.</span>
-        <span class="comment">// Build up the contents of the signed message.</span>
-        <span class="comment">// It&#39;s ClientHello.random || ServerHello.random || ServerKeyExchange.params</span>
-        <span class="kw">let</span> <span class="ident">sigv</span> <span class="op">=</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-            <span class="ident">message</span>.<span class="ident">extend_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">st</span>.<span class="ident">handshake</span>.<span class="ident">randoms</span>.<span class="ident">client</span>);
-            <span class="ident">message</span>.<span class="ident">extend_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">st</span>.<span class="ident">handshake</span>.<span class="ident">randoms</span>.<span class="ident">server</span>);
-            <span class="ident">message</span>.<span class="ident">extend_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">st</span>.<span class="ident">server_kx</span>.<span class="ident">kx_params</span>);
+        <span class="comment">// 3.
+        // Build up the contents of the signed message.
+        // It&#39;s ClientHello.random || ServerHello.random || ServerKeyExchange.params
+        </span><span class="kw">let </span>sigv = {
+            <span class="kw">let </span><span class="kw-2">mut </span>message = Vec::new();
+            message.extend_from_slice(<span class="kw-2">&amp;</span>st.handshake.randoms.client);
+            message.extend_from_slice(<span class="kw-2">&amp;</span>st.handshake.randoms.server);
+            message.extend_from_slice(<span class="kw-2">&amp;</span>st.server_kx.kx_params);
 
-            <span class="comment">// Check the signature is compatible with the ciphersuite.</span>
-            <span class="kw">let</span> <span class="ident">sig</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">st</span>.<span class="ident">server_kx</span>.<span class="ident">kx_sig</span>;
-            <span class="kw">let</span> <span class="ident">scs</span> <span class="op">=</span> <span class="ident">sess</span>.<span class="ident">common</span>.<span class="ident">get_suite_assert</span>();
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">scs</span>.<span class="ident">usable_for_sigalg</span>(<span class="ident">sig</span>.<span class="ident">scheme</span>.<span class="ident">sign</span>()) {
-                <span class="kw">let</span> <span class="ident">error_message</span> <span class="op">=</span> <span class="macro">format!</span>(
+            <span class="comment">// Check the signature is compatible with the ciphersuite.
+            </span><span class="kw">let </span>sig = <span class="kw-2">&amp;</span>st.server_kx.kx_sig;
+            <span class="kw">let </span>scs = sess.common.get_suite_assert();
+            <span class="kw">if </span>!scs.usable_for_sigalg(sig.scheme.sign()) {
+                <span class="kw">let </span>error_message = <span class="macro">format!</span>(
                     <span class="string">&quot;peer signed kx with wrong algorithm (got {:?} expect {:?})&quot;</span>,
-                    <span class="ident">sig</span>.<span class="ident">scheme</span>.<span class="ident">sign</span>(),
-                    <span class="ident">scs</span>.<span class="ident">sign</span>
+                    sig.scheme.sign(),
+                    scs.sign
                 );
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">TLSError::PeerMisbehavedError</span>(<span class="ident">error_message</span>));
+                <span class="kw">return </span><span class="prelude-val">Err</span>(TLSError::PeerMisbehavedError(error_message));
             }
 
-            <span class="ident">sess</span>.<span class="ident">config</span>
-                .<span class="ident">get_verifier</span>()
-                .<span class="ident">verify_tls12_signature</span>(<span class="kw-2">&amp;</span><span class="ident">message</span>, <span class="kw-2">&amp;</span><span class="ident">st</span>.<span class="ident">server_cert</span>.<span class="ident">cert_chain</span>[<span class="number">0</span>], <span class="ident">sig</span>)
-                .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">hs::send_cert_error_alert</span>(<span class="ident">sess</span>, <span class="ident">err</span>))<span class="question-mark">?</span>
-        };
-        <span class="ident">sess</span>.<span class="ident">server_cert_chain</span> <span class="op">=</span> <span class="ident">st</span>.<span class="ident">server_cert</span>.<span class="ident">take_chain</span>();
+            sess.config
+                .get_verifier()
+                .verify_tls12_signature(<span class="kw-2">&amp;</span>message, <span class="kw-2">&amp;</span>st.server_cert.cert_chain[<span class="number">0</span>], sig)
+                .map_err(|err| hs::send_cert_error_alert(sess, err))<span class="question-mark">?
+        </span>};
+        sess.server_cert_chain = st.server_cert.take_chain();
 
-        <span class="comment">// 4.</span>
-        <span class="kw">if</span> <span class="ident">st</span>.<span class="ident">client_auth</span>.<span class="ident">is_some</span>() {
-            <span class="ident">emit_certificate</span>(<span class="kw-2">&amp;mut</span> <span class="ident">st</span>.<span class="ident">handshake</span>, <span class="ident">st</span>.<span class="ident">client_auth</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>(), <span class="ident">sess</span>);
+        <span class="comment">// 4.
+        </span><span class="kw">if </span>st.client_auth.is_some() {
+            emit_certificate(<span class="kw-2">&amp;mut </span>st.handshake, st.client_auth.as_mut().unwrap(), sess);
         }
 
-        <span class="comment">// 5a.</span>
-        <span class="kw">let</span> <span class="ident">kxd</span> <span class="op">=</span> <span class="ident">sess</span>
-            .<span class="ident">common</span>
-            .<span class="ident">get_suite_assert</span>()
-            .<span class="ident">do_client_kx</span>(<span class="kw-2">&amp;</span><span class="ident">st</span>.<span class="ident">server_kx</span>.<span class="ident">kx_params</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">TLSError::PeerMisbehavedError</span>(<span class="string">&quot;key exchange failed&quot;</span>.<span class="ident">to_string</span>()))<span class="question-mark">?</span>;
+        <span class="comment">// 5a.
+        </span><span class="kw">let </span>kxd = sess
+            .common
+            .get_suite_assert()
+            .do_client_kx(<span class="kw-2">&amp;</span>st.server_kx.kx_params)
+            .ok_or_else(|| TLSError::PeerMisbehavedError(<span class="string">&quot;key exchange failed&quot;</span>.to_string()))<span class="question-mark">?</span>;
 
-        <span class="comment">// 5b.</span>
-        <span class="ident">emit_clientkx</span>(<span class="kw-2">&amp;mut</span> <span class="ident">st</span>.<span class="ident">handshake</span>, <span class="ident">sess</span>, <span class="kw-2">&amp;</span><span class="ident">kxd</span>);
-        <span class="comment">// nb. EMS handshake hash only runs up to ClientKeyExchange.</span>
-        <span class="kw">let</span> <span class="ident">handshake_hash</span> <span class="op">=</span> <span class="ident">st</span>
-            .<span class="ident">handshake</span>
-            .<span class="ident">transcript</span>
-            .<span class="ident">get_current_hash</span>();
+        <span class="comment">// 5b.
+        </span>emit_clientkx(<span class="kw-2">&amp;mut </span>st.handshake, sess, <span class="kw-2">&amp;</span>kxd);
+        <span class="comment">// nb. EMS handshake hash only runs up to ClientKeyExchange.
+        </span><span class="kw">let </span>handshake_hash = st
+            .handshake
+            .transcript
+            .get_current_hash();
 
-        <span class="comment">// 5c.</span>
-        <span class="kw">if</span> <span class="ident">st</span>.<span class="ident">client_auth</span>.<span class="ident">is_some</span>() {
-            <span class="ident">emit_certverify</span>(<span class="kw-2">&amp;mut</span> <span class="ident">st</span>.<span class="ident">handshake</span>, <span class="ident">st</span>.<span class="ident">client_auth</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>(), <span class="ident">sess</span>)<span class="question-mark">?</span>;
+        <span class="comment">// 5c.
+        </span><span class="kw">if </span>st.client_auth.is_some() {
+            emit_certverify(<span class="kw-2">&amp;mut </span>st.handshake, st.client_auth.as_mut().unwrap(), sess)<span class="question-mark">?</span>;
         }
 
-        <span class="comment">// 5d.</span>
-        <span class="ident">emit_ccs</span>(<span class="ident">sess</span>);
+        <span class="comment">// 5d.
+        </span>emit_ccs(sess);
 
-        <span class="comment">// 5e. Now commit secrets.</span>
-        <span class="kw">let</span> <span class="ident">hashalg</span> <span class="op">=</span> <span class="ident">sess</span>
-            .<span class="ident">common</span>
-            .<span class="ident">get_suite_assert</span>()
-            .<span class="ident">get_hash</span>();
-        <span class="kw">let</span> <span class="ident">secrets</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">st</span>.<span class="ident">handshake</span>.<span class="ident">using_ems</span> {
-            <span class="ident">SessionSecrets::new_ems</span>(
-                <span class="kw-2">&amp;</span><span class="ident">st</span>.<span class="ident">handshake</span>.<span class="ident">randoms</span>,
-                <span class="kw-2">&amp;</span><span class="ident">handshake_hash</span>,
-                <span class="ident">hashalg</span>,
-                <span class="kw-2">&amp;</span><span class="ident">kxd</span>.<span class="ident">shared_secret</span>,
+        <span class="comment">// 5e. Now commit secrets.
+        </span><span class="kw">let </span>hashalg = sess
+            .common
+            .get_suite_assert()
+            .get_hash();
+        <span class="kw">let </span>secrets = <span class="kw">if </span>st.handshake.using_ems {
+            SessionSecrets::new_ems(
+                <span class="kw-2">&amp;</span>st.handshake.randoms,
+                <span class="kw-2">&amp;</span>handshake_hash,
+                hashalg,
+                <span class="kw-2">&amp;</span>kxd.shared_secret,
             )
-        } <span class="kw">else</span> {
-            <span class="ident">SessionSecrets::new</span>(<span class="kw-2">&amp;</span><span class="ident">st</span>.<span class="ident">handshake</span>.<span class="ident">randoms</span>, <span class="ident">hashalg</span>, <span class="kw-2">&amp;</span><span class="ident">kxd</span>.<span class="ident">shared_secret</span>)
+        } <span class="kw">else </span>{
+            SessionSecrets::new(<span class="kw-2">&amp;</span>st.handshake.randoms, hashalg, <span class="kw-2">&amp;</span>kxd.shared_secret)
         };
-        <span class="ident">sess</span>.<span class="ident">config</span>.<span class="ident">key_log</span>.<span class="ident">log</span>(
+        sess.config.key_log.log(
             <span class="string">&quot;CLIENT_RANDOM&quot;</span>,
-            <span class="kw-2">&amp;</span><span class="ident">secrets</span>.<span class="ident">randoms</span>.<span class="ident">client</span>,
-            <span class="kw-2">&amp;</span><span class="ident">secrets</span>.<span class="ident">master_secret</span>,
+            <span class="kw-2">&amp;</span>secrets.randoms.client,
+            <span class="kw-2">&amp;</span>secrets.master_secret,
         );
-        <span class="ident">sess</span>.<span class="ident">common</span>
-            .<span class="ident">start_encryption_tls12</span>(<span class="kw-2">&amp;</span><span class="ident">secrets</span>);
-        <span class="ident">sess</span>.<span class="ident">common</span>
-            .<span class="ident">record_layer</span>
-            .<span class="ident">start_encrypting</span>();
+        sess.common
+            .start_encryption_tls12(<span class="kw-2">&amp;</span>secrets);
+        sess.common
+            .record_layer
+            .start_encrypting();
 
-        <span class="comment">// 6.</span>
-        <span class="ident">emit_finished</span>(<span class="kw-2">&amp;</span><span class="ident">secrets</span>, <span class="kw-2">&amp;mut</span> <span class="ident">st</span>.<span class="ident">handshake</span>, <span class="ident">sess</span>);
+        <span class="comment">// 6.
+        </span>emit_finished(<span class="kw-2">&amp;</span>secrets, <span class="kw-2">&amp;mut </span>st.handshake, sess);
 
-        <span class="kw">if</span> <span class="ident">st</span>.<span class="ident">must_issue_new_ticket</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">st</span>.<span class="ident">into_expect_new_ticket</span>(<span class="ident">secrets</span>, <span class="ident">certv</span>, <span class="ident">sigv</span>))
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">st</span>.<span class="ident">into_expect_ccs</span>(<span class="ident">secrets</span>, <span class="ident">certv</span>, <span class="ident">sigv</span>))
+        <span class="kw">if </span>st.must_issue_new_ticket {
+            <span class="prelude-val">Ok</span>(st.into_expect_new_ticket(secrets, certv, sigv))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Ok</span>(st.into_expect_ccs(secrets, certv, sigv))
         }
     }
 }
 
-<span class="comment">// -- Waiting for their CCS --</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExpectCCS</span> {
-    <span class="kw">pub</span> <span class="ident">secrets</span>: <span class="ident">SessionSecrets</span>,
-    <span class="kw">pub</span> <span class="ident">handshake</span>: <span class="ident">HandshakeDetails</span>,
-    <span class="kw">pub</span> <span class="ident">ticket</span>: <span class="ident">ReceivedTicketDetails</span>,
-    <span class="kw">pub</span> <span class="ident">resuming</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span> <span class="ident">cert_verified</span>: <span class="ident">verify::ServerCertVerified</span>,
-    <span class="kw">pub</span> <span class="ident">sig_verified</span>: <span class="ident">verify::HandshakeSignatureValid</span>,
+<span class="comment">// -- Waiting for their CCS --
+</span><span class="kw">pub struct </span>ExpectCCS {
+    <span class="kw">pub </span>secrets: SessionSecrets,
+    <span class="kw">pub </span>handshake: HandshakeDetails,
+    <span class="kw">pub </span>ticket: ReceivedTicketDetails,
+    <span class="kw">pub </span>resuming: bool,
+    <span class="kw">pub </span>cert_verified: verify::ServerCertVerified,
+    <span class="kw">pub </span>sig_verified: verify::HandshakeSignatureValid,
 }
 
-<span class="kw">impl</span> <span class="ident">ExpectCCS</span> {
-    <span class="kw">fn</span> <span class="ident">into_expect_finished</span>(<span class="self">self</span>) -&gt; <span class="ident">hs::NextState</span> {
-        <span class="ident">Box::new</span>(<span class="ident">ExpectFinished</span> {
-            <span class="ident">secrets</span>: <span class="self">self</span>.<span class="ident">secrets</span>,
-            <span class="ident">handshake</span>: <span class="self">self</span>.<span class="ident">handshake</span>,
-            <span class="ident">ticket</span>: <span class="self">self</span>.<span class="ident">ticket</span>,
-            <span class="ident">resuming</span>: <span class="self">self</span>.<span class="ident">resuming</span>,
-            <span class="ident">cert_verified</span>: <span class="self">self</span>.<span class="ident">cert_verified</span>,
-            <span class="ident">sig_verified</span>: <span class="self">self</span>.<span class="ident">sig_verified</span>,
+<span class="kw">impl </span>ExpectCCS {
+    <span class="kw">fn </span>into_expect_finished(<span class="self">self</span>) -&gt; hs::NextState {
+        Box::new(ExpectFinished {
+            secrets: <span class="self">self</span>.secrets,
+            handshake: <span class="self">self</span>.handshake,
+            ticket: <span class="self">self</span>.ticket,
+            resuming: <span class="self">self</span>.resuming,
+            cert_verified: <span class="self">self</span>.cert_verified,
+            sig_verified: <span class="self">self</span>.sig_verified,
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">hs::State</span> <span class="kw">for</span> <span class="ident">ExpectCCS</span> {
-    <span class="kw">fn</span> <span class="ident">handle</span>(<span class="self">self</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>, <span class="ident">m</span>: <span class="ident">Message</span>) -&gt; <span class="ident">hs::NextStateOrError</span> {
-        <span class="ident">check_message</span>(<span class="kw-2">&amp;</span><span class="ident">m</span>, <span class="kw-2">&amp;</span>[<span class="ident">ContentType::ChangeCipherSpec</span>], <span class="kw-2">&amp;</span>[])<span class="question-mark">?</span>;
-        <span class="comment">// CCS should not be received interleaved with fragmented handshake-level</span>
-        <span class="comment">// message.</span>
-        <span class="ident">hs::check_aligned_handshake</span>(<span class="ident">sess</span>)<span class="question-mark">?</span>;
+<span class="kw">impl </span>hs::State <span class="kw">for </span>ExpectCCS {
+    <span class="kw">fn </span>handle(<span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;, sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl, m: Message) -&gt; hs::NextStateOrError {
+        check_message(<span class="kw-2">&amp;</span>m, <span class="kw-2">&amp;</span>[ContentType::ChangeCipherSpec], <span class="kw-2">&amp;</span>[])<span class="question-mark">?</span>;
+        <span class="comment">// CCS should not be received interleaved with fragmented handshake-level
+        // message.
+        </span>hs::check_aligned_handshake(sess)<span class="question-mark">?</span>;
 
-        <span class="comment">// nb. msgs layer validates trivial contents of CCS</span>
-        <span class="ident">sess</span>.<span class="ident">common</span>
-            .<span class="ident">record_layer</span>
-            .<span class="ident">start_decrypting</span>();
+        <span class="comment">// nb. msgs layer validates trivial contents of CCS
+        </span>sess.common
+            .record_layer
+            .start_decrypting();
 
-        <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">into_expect_finished</span>())
+        <span class="prelude-val">Ok</span>(<span class="self">self</span>.into_expect_finished())
     }
 }
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExpectNewTicket</span> {
-    <span class="kw">pub</span> <span class="ident">secrets</span>: <span class="ident">SessionSecrets</span>,
-    <span class="kw">pub</span> <span class="ident">handshake</span>: <span class="ident">HandshakeDetails</span>,
-    <span class="kw">pub</span> <span class="ident">resuming</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span> <span class="ident">cert_verified</span>: <span class="ident">verify::ServerCertVerified</span>,
-    <span class="kw">pub</span> <span class="ident">sig_verified</span>: <span class="ident">verify::HandshakeSignatureValid</span>,
+<span class="kw">pub struct </span>ExpectNewTicket {
+    <span class="kw">pub </span>secrets: SessionSecrets,
+    <span class="kw">pub </span>handshake: HandshakeDetails,
+    <span class="kw">pub </span>resuming: bool,
+    <span class="kw">pub </span>cert_verified: verify::ServerCertVerified,
+    <span class="kw">pub </span>sig_verified: verify::HandshakeSignatureValid,
 }
 
-<span class="kw">impl</span> <span class="ident">ExpectNewTicket</span> {
-    <span class="kw">fn</span> <span class="ident">into_expect_ccs</span>(<span class="self">self</span>, <span class="ident">ticket</span>: <span class="ident">ReceivedTicketDetails</span>) -&gt; <span class="ident">hs::NextState</span> {
-        <span class="ident">Box::new</span>(<span class="ident">ExpectCCS</span> {
-            <span class="ident">secrets</span>: <span class="self">self</span>.<span class="ident">secrets</span>,
-            <span class="ident">handshake</span>: <span class="self">self</span>.<span class="ident">handshake</span>,
-            <span class="ident">ticket</span>,
-            <span class="ident">resuming</span>: <span class="self">self</span>.<span class="ident">resuming</span>,
-            <span class="ident">cert_verified</span>: <span class="self">self</span>.<span class="ident">cert_verified</span>,
-            <span class="ident">sig_verified</span>: <span class="self">self</span>.<span class="ident">sig_verified</span>,
+<span class="kw">impl </span>ExpectNewTicket {
+    <span class="kw">fn </span>into_expect_ccs(<span class="self">self</span>, ticket: ReceivedTicketDetails) -&gt; hs::NextState {
+        Box::new(ExpectCCS {
+            secrets: <span class="self">self</span>.secrets,
+            handshake: <span class="self">self</span>.handshake,
+            ticket,
+            resuming: <span class="self">self</span>.resuming,
+            cert_verified: <span class="self">self</span>.cert_verified,
+            sig_verified: <span class="self">self</span>.sig_verified,
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">hs::State</span> <span class="kw">for</span> <span class="ident">ExpectNewTicket</span> {
-    <span class="kw">fn</span> <span class="ident">handle</span>(
-        <span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">_sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>,
-        <span class="ident">m</span>: <span class="ident">Message</span>,
-    ) -&gt; <span class="ident">hs::NextStateOrError</span> {
-        <span class="self">self</span>.<span class="ident">handshake</span>
-            .<span class="ident">transcript</span>
-            .<span class="ident">add_message</span>(<span class="kw-2">&amp;</span><span class="ident">m</span>);
+<span class="kw">impl </span>hs::State <span class="kw">for </span>ExpectNewTicket {
+    <span class="kw">fn </span>handle(
+        <span class="kw-2">mut </span><span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;,
+        _sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl,
+        m: Message,
+    ) -&gt; hs::NextStateOrError {
+        <span class="self">self</span>.handshake
+            .transcript
+            .add_message(<span class="kw-2">&amp;</span>m);
 
-        <span class="kw">let</span> <span class="ident">nst</span> <span class="op">=</span> <span class="macro">require_handshake_msg_mut!</span>(
-            <span class="ident">m</span>,
-            <span class="ident">HandshakeType::NewSessionTicket</span>,
-            <span class="ident">HandshakePayload::NewSessionTicket</span>
+        <span class="kw">let </span>nst = <span class="macro">require_handshake_msg_mut!</span>(
+            m,
+            HandshakeType::NewSessionTicket,
+            HandshakePayload::NewSessionTicket
         )<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">recvd</span> <span class="op">=</span> <span class="ident">ReceivedTicketDetails::from</span>(<span class="ident">nst</span>.<span class="ident">ticket</span>.<span class="number">0</span>, <span class="ident">nst</span>.<span class="ident">lifetime_hint</span>);
-        <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">into_expect_ccs</span>(<span class="ident">recvd</span>))
+        <span class="kw">let </span>recvd = ReceivedTicketDetails::from(nst.ticket.<span class="number">0</span>, nst.lifetime_hint);
+        <span class="prelude-val">Ok</span>(<span class="self">self</span>.into_expect_ccs(recvd))
     }
 }
 
-<span class="comment">// -- Waiting for their finished --</span>
-<span class="kw">fn</span> <span class="ident">save_session</span>(
-    <span class="ident">secrets</span>: <span class="kw-2">&amp;</span><span class="ident">SessionSecrets</span>,
-    <span class="ident">handshake</span>: <span class="kw-2">&amp;mut</span> <span class="ident">HandshakeDetails</span>,
-    <span class="ident">recvd_ticket</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ReceivedTicketDetails</span>,
-    <span class="ident">sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>,
+<span class="comment">// -- Waiting for their finished --
+</span><span class="kw">fn </span>save_session(
+    secrets: <span class="kw-2">&amp;</span>SessionSecrets,
+    handshake: <span class="kw-2">&amp;mut </span>HandshakeDetails,
+    recvd_ticket: <span class="kw-2">&amp;mut </span>ReceivedTicketDetails,
+    sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl,
 ) {
-    <span class="comment">// Save a ticket.  If we got a new ticket, save that.  Otherwise, save the</span>
-    <span class="comment">// original ticket again.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ticket</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="ident">recvd_ticket</span>.<span class="ident">new_ticket</span>, <span class="ident">Vec::new</span>());
-    <span class="kw">if</span> <span class="ident">ticket</span>.<span class="ident">is_empty</span>() <span class="op">&amp;&amp;</span> <span class="ident">handshake</span>.<span class="ident">resuming_session</span>.<span class="ident">is_some</span>() {
-        <span class="ident">ticket</span> <span class="op">=</span> <span class="ident">handshake</span>
-            .<span class="ident">resuming_session</span>
-            .<span class="ident">as_mut</span>()
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">take_ticket</span>();
+    <span class="comment">// Save a ticket.  If we got a new ticket, save that.  Otherwise, save the
+    // original ticket again.
+    </span><span class="kw">let </span><span class="kw-2">mut </span>ticket = mem::replace(<span class="kw-2">&amp;mut </span>recvd_ticket.new_ticket, Vec::new());
+    <span class="kw">if </span>ticket.is_empty() &amp;&amp; handshake.resuming_session.is_some() {
+        ticket = handshake
+            .resuming_session
+            .as_mut()
+            .unwrap()
+            .take_ticket();
     }
 
-    <span class="kw">if</span> <span class="ident">handshake</span>.<span class="ident">session_id</span>.<span class="ident">is_empty</span>() <span class="op">&amp;&amp;</span> <span class="ident">ticket</span>.<span class="ident">is_empty</span>() {
+    <span class="kw">if </span>handshake.session_id.is_empty() &amp;&amp; ticket.is_empty() {
         <span class="macro">debug!</span>(<span class="string">&quot;Session not saved: server didn&#39;t allocate id or ticket&quot;</span>);
         <span class="kw">return</span>;
     }
 
-    <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">persist::ClientSessionKey::session_for_dns_name</span>(<span class="ident">handshake</span>.<span class="ident">dns_name</span>.<span class="ident">as_ref</span>());
+    <span class="kw">let </span>key = persist::ClientSessionKey::session_for_dns_name(handshake.dns_name.as_ref());
 
-    <span class="kw">let</span> <span class="ident">scs</span> <span class="op">=</span> <span class="ident">sess</span>.<span class="ident">common</span>.<span class="ident">get_suite_assert</span>();
-    <span class="kw">let</span> <span class="ident">master_secret</span> <span class="op">=</span> <span class="ident">secrets</span>.<span class="ident">get_master_secret</span>();
-    <span class="kw">let</span> <span class="ident">version</span> <span class="op">=</span> <span class="ident">sess</span>.<span class="ident">get_protocol_version</span>().<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">persist::ClientSessionValue::new</span>(
-        <span class="ident">version</span>,
-        <span class="ident">scs</span>.<span class="ident">suite</span>,
-        <span class="kw-2">&amp;</span><span class="ident">handshake</span>.<span class="ident">session_id</span>,
-        <span class="ident">ticket</span>,
-        <span class="ident">master_secret</span>,
-        <span class="kw-2">&amp;</span><span class="ident">sess</span>.<span class="ident">server_cert_chain</span>,
+    <span class="kw">let </span>scs = sess.common.get_suite_assert();
+    <span class="kw">let </span>master_secret = secrets.get_master_secret();
+    <span class="kw">let </span>version = sess.get_protocol_version().unwrap();
+    <span class="kw">let </span><span class="kw-2">mut </span>value = persist::ClientSessionValue::new(
+        version,
+        scs.suite,
+        <span class="kw-2">&amp;</span>handshake.session_id,
+        ticket,
+        master_secret,
+        <span class="kw-2">&amp;</span>sess.server_cert_chain,
     );
-    <span class="ident">value</span>.<span class="ident">set_times</span>(<span class="ident">ticketer::timebase</span>(), <span class="ident">recvd_ticket</span>.<span class="ident">new_ticket_lifetime</span>, <span class="number">0</span>);
-    <span class="kw">if</span> <span class="ident">handshake</span>.<span class="ident">using_ems</span> {
-        <span class="ident">value</span>.<span class="ident">set_extended_ms_used</span>();
+    value.set_times(ticketer::timebase(), recvd_ticket.new_ticket_lifetime, <span class="number">0</span>);
+    <span class="kw">if </span>handshake.using_ems {
+        value.set_extended_ms_used();
     }
 
-    <span class="kw">let</span> <span class="ident">worked</span> <span class="op">=</span> <span class="ident">sess</span>
-        .<span class="ident">config</span>
-        .<span class="ident">session_persistence</span>
-        .<span class="ident">put</span>(<span class="ident">key</span>.<span class="ident">get_encoding</span>(), <span class="ident">value</span>.<span class="ident">get_encoding</span>());
+    <span class="kw">let </span>worked = sess
+        .config
+        .session_persistence
+        .put(key.get_encoding(), value.get_encoding());
 
-    <span class="kw">if</span> <span class="ident">worked</span> {
+    <span class="kw">if </span>worked {
         <span class="macro">debug!</span>(<span class="string">&quot;Session saved&quot;</span>);
-    } <span class="kw">else</span> {
+    } <span class="kw">else </span>{
         <span class="macro">debug!</span>(<span class="string">&quot;Session not saved&quot;</span>);
     }
 }
 
-<span class="kw">struct</span> <span class="ident">ExpectFinished</span> {
-    <span class="ident">handshake</span>: <span class="ident">HandshakeDetails</span>,
-    <span class="ident">ticket</span>: <span class="ident">ReceivedTicketDetails</span>,
-    <span class="ident">secrets</span>: <span class="ident">SessionSecrets</span>,
-    <span class="ident">resuming</span>: <span class="ident">bool</span>,
-    <span class="ident">cert_verified</span>: <span class="ident">verify::ServerCertVerified</span>,
-    <span class="ident">sig_verified</span>: <span class="ident">verify::HandshakeSignatureValid</span>,
+<span class="kw">struct </span>ExpectFinished {
+    handshake: HandshakeDetails,
+    ticket: ReceivedTicketDetails,
+    secrets: SessionSecrets,
+    resuming: bool,
+    cert_verified: verify::ServerCertVerified,
+    sig_verified: verify::HandshakeSignatureValid,
 }
 
-<span class="kw">impl</span> <span class="ident">ExpectFinished</span> {
-    <span class="kw">fn</span> <span class="ident">into_expect_traffic</span>(<span class="self">self</span>, <span class="ident">fin</span>: <span class="ident">verify::FinishedMessageVerified</span>) -&gt; <span class="ident">hs::NextState</span> {
-        <span class="ident">Box::new</span>(<span class="ident">ExpectTraffic</span> {
-            <span class="ident">secrets</span>: <span class="self">self</span>.<span class="ident">secrets</span>,
-            <span class="ident">_cert_verified</span>: <span class="self">self</span>.<span class="ident">cert_verified</span>,
-            <span class="ident">_sig_verified</span>: <span class="self">self</span>.<span class="ident">sig_verified</span>,
-            <span class="ident">_fin_verified</span>: <span class="ident">fin</span>,
+<span class="kw">impl </span>ExpectFinished {
+    <span class="kw">fn </span>into_expect_traffic(<span class="self">self</span>, fin: verify::FinishedMessageVerified) -&gt; hs::NextState {
+        Box::new(ExpectTraffic {
+            secrets: <span class="self">self</span>.secrets,
+            _cert_verified: <span class="self">self</span>.cert_verified,
+            _sig_verified: <span class="self">self</span>.sig_verified,
+            _fin_verified: fin,
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">hs::State</span> <span class="kw">for</span> <span class="ident">ExpectFinished</span> {
-    <span class="kw">fn</span> <span class="ident">handle</span>(<span class="self">self</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>, <span class="ident">m</span>: <span class="ident">Message</span>) -&gt; <span class="ident">hs::NextStateOrError</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">st</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>;
-        <span class="kw">let</span> <span class="ident">finished</span> <span class="op">=</span>
-            <span class="macro">require_handshake_msg!</span>(<span class="ident">m</span>, <span class="ident">HandshakeType::Finished</span>, <span class="ident">HandshakePayload::Finished</span>)<span class="question-mark">?</span>;
+<span class="kw">impl </span>hs::State <span class="kw">for </span>ExpectFinished {
+    <span class="kw">fn </span>handle(<span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;, sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl, m: Message) -&gt; hs::NextStateOrError {
+        <span class="kw">let </span><span class="kw-2">mut </span>st = <span class="kw-2">*</span><span class="self">self</span>;
+        <span class="kw">let </span>finished =
+            <span class="macro">require_handshake_msg!</span>(m, HandshakeType::Finished, HandshakePayload::Finished)<span class="question-mark">?</span>;
 
-        <span class="ident">hs::check_aligned_handshake</span>(<span class="ident">sess</span>)<span class="question-mark">?</span>;
+        hs::check_aligned_handshake(sess)<span class="question-mark">?</span>;
 
-        <span class="comment">// Work out what verify_data we expect.</span>
-        <span class="kw">let</span> <span class="ident">vh</span> <span class="op">=</span> <span class="ident">st</span>
-            .<span class="ident">handshake</span>
-            .<span class="ident">transcript</span>
-            .<span class="ident">get_current_hash</span>();
-        <span class="kw">let</span> <span class="ident">expect_verify_data</span> <span class="op">=</span> <span class="ident">st</span>.<span class="ident">secrets</span>.<span class="ident">server_verify_data</span>(<span class="kw-2">&amp;</span><span class="ident">vh</span>);
+        <span class="comment">// Work out what verify_data we expect.
+        </span><span class="kw">let </span>vh = st
+            .handshake
+            .transcript
+            .get_current_hash();
+        <span class="kw">let </span>expect_verify_data = st.secrets.server_verify_data(<span class="kw-2">&amp;</span>vh);
 
-        <span class="comment">// Constant-time verification of this is relatively unimportant: they only</span>
-        <span class="comment">// get one chance.  But it can&#39;t hurt.</span>
-        <span class="kw">let</span> <span class="ident">fin</span> <span class="op">=</span> <span class="ident">constant_time::verify_slices_are_equal</span>(<span class="kw-2">&amp;</span><span class="ident">expect_verify_data</span>, <span class="kw-2">&amp;</span><span class="ident">finished</span>.<span class="number">0</span>)
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
-                <span class="ident">sess</span>.<span class="ident">common</span>
-                    .<span class="ident">send_fatal_alert</span>(<span class="ident">AlertDescription::DecryptError</span>);
-                <span class="ident">TLSError::DecryptError</span>
+        <span class="comment">// Constant-time verification of this is relatively unimportant: they only
+        // get one chance.  But it can&#39;t hurt.
+        </span><span class="kw">let </span>fin = constant_time::verify_slices_are_equal(<span class="kw-2">&amp;</span>expect_verify_data, <span class="kw-2">&amp;</span>finished.<span class="number">0</span>)
+            .map_err(|<span class="kw">_</span>| {
+                sess.common
+                    .send_fatal_alert(AlertDescription::DecryptError);
+                TLSError::DecryptError
             })
-            .<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">verify::FinishedMessageVerified::assertion</span>())<span class="question-mark">?</span>;
+            .map(|<span class="kw">_</span>| verify::FinishedMessageVerified::assertion())<span class="question-mark">?</span>;
 
-        <span class="comment">// Hash this message too.</span>
-        <span class="ident">st</span>.<span class="ident">handshake</span>.<span class="ident">transcript</span>.<span class="ident">add_message</span>(<span class="kw-2">&amp;</span><span class="ident">m</span>);
+        <span class="comment">// Hash this message too.
+        </span>st.handshake.transcript.add_message(<span class="kw-2">&amp;</span>m);
 
-        <span class="ident">save_session</span>(<span class="kw-2">&amp;</span><span class="ident">st</span>.<span class="ident">secrets</span>, <span class="kw-2">&amp;mut</span> <span class="ident">st</span>.<span class="ident">handshake</span>, <span class="kw-2">&amp;mut</span> <span class="ident">st</span>.<span class="ident">ticket</span>, <span class="ident">sess</span>);
+        save_session(<span class="kw-2">&amp;</span>st.secrets, <span class="kw-2">&amp;mut </span>st.handshake, <span class="kw-2">&amp;mut </span>st.ticket, sess);
 
-        <span class="kw">if</span> <span class="ident">st</span>.<span class="ident">resuming</span> {
-            <span class="ident">emit_ccs</span>(<span class="ident">sess</span>);
-            <span class="ident">sess</span>.<span class="ident">common</span>
-                .<span class="ident">record_layer</span>
-                .<span class="ident">start_encrypting</span>();
-            <span class="ident">emit_finished</span>(<span class="kw-2">&amp;</span><span class="ident">st</span>.<span class="ident">secrets</span>, <span class="kw-2">&amp;mut</span> <span class="ident">st</span>.<span class="ident">handshake</span>, <span class="ident">sess</span>);
+        <span class="kw">if </span>st.resuming {
+            emit_ccs(sess);
+            sess.common
+                .record_layer
+                .start_encrypting();
+            emit_finished(<span class="kw-2">&amp;</span>st.secrets, <span class="kw-2">&amp;mut </span>st.handshake, sess);
         }
 
-        <span class="ident">sess</span>.<span class="ident">common</span>.<span class="ident">start_traffic</span>();
-        <span class="prelude-val">Ok</span>(<span class="ident">st</span>.<span class="ident">into_expect_traffic</span>(<span class="ident">fin</span>))
+        sess.common.start_traffic();
+        <span class="prelude-val">Ok</span>(st.into_expect_traffic(fin))
     }
 }
 
-<span class="comment">// -- Traffic transit state --</span>
-<span class="kw">struct</span> <span class="ident">ExpectTraffic</span> {
-    <span class="ident">secrets</span>: <span class="ident">SessionSecrets</span>,
-    <span class="ident">_cert_verified</span>: <span class="ident">verify::ServerCertVerified</span>,
-    <span class="ident">_sig_verified</span>: <span class="ident">verify::HandshakeSignatureValid</span>,
-    <span class="ident">_fin_verified</span>: <span class="ident">verify::FinishedMessageVerified</span>,
+<span class="comment">// -- Traffic transit state --
+</span><span class="kw">struct </span>ExpectTraffic {
+    secrets: SessionSecrets,
+    _cert_verified: verify::ServerCertVerified,
+    _sig_verified: verify::HandshakeSignatureValid,
+    _fin_verified: verify::FinishedMessageVerified,
 }
 
-<span class="kw">impl</span> <span class="ident">hs::State</span> <span class="kw">for</span> <span class="ident">ExpectTraffic</span> {
-    <span class="kw">fn</span> <span class="ident">handle</span>(
-        <span class="self">self</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
-        <span class="ident">sess</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ClientSessionImpl</span>,
-        <span class="kw-2">mut</span> <span class="ident">m</span>: <span class="ident">Message</span>,
-    ) -&gt; <span class="ident">hs::NextStateOrError</span> {
-        <span class="ident">check_message</span>(<span class="kw-2">&amp;</span><span class="ident">m</span>, <span class="kw-2">&amp;</span>[<span class="ident">ContentType::ApplicationData</span>], <span class="kw-2">&amp;</span>[])<span class="question-mark">?</span>;
-        <span class="ident">sess</span>.<span class="ident">common</span>
-            .<span class="ident">take_received_plaintext</span>(<span class="ident">m</span>.<span class="ident">take_opaque_payload</span>().<span class="ident">unwrap</span>());
+<span class="kw">impl </span>hs::State <span class="kw">for </span>ExpectTraffic {
+    <span class="kw">fn </span>handle(
+        <span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;,
+        sess: <span class="kw-2">&amp;mut </span>ClientSessionImpl,
+        <span class="kw-2">mut </span>m: Message,
+    ) -&gt; hs::NextStateOrError {
+        check_message(<span class="kw-2">&amp;</span>m, <span class="kw-2">&amp;</span>[ContentType::ApplicationData], <span class="kw-2">&amp;</span>[])<span class="question-mark">?</span>;
+        sess.common
+            .take_received_plaintext(m.take_opaque_payload().unwrap());
         <span class="prelude-val">Ok</span>(<span class="self">self</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">export_keying_material</span>(
+    <span class="kw">fn </span>export_keying_material(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">output</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>],
-        <span class="ident">label</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-        <span class="ident">context</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TLSError</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">secrets</span>
-            .<span class="ident">export_keying_material</span>(<span class="ident">output</span>, <span class="ident">label</span>, <span class="ident">context</span>);
+        output: <span class="kw-2">&amp;mut </span>[u8],
+        label: <span class="kw-2">&amp;</span>[u8],
+        context: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), TLSError&gt; {
+        <span class="self">self</span>.secrets
+            .export_keying_material(output, label, context);
         <span class="prelude-val">Ok</span>(())
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rustls" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rustls" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/rustls-0.19.1/src/pemfile.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pemfile.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rustls/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/rustls-0.19.1/src/pemfile.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pemfile.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rustls/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rustls/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -78,85 +78,85 @@
 <span id="78">78</span>
 <span id="79">79</span>
 <span id="80">80</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::key</span>;
-<span class="kw">use</span> <span class="ident">base64</span>;
-<span class="kw">use</span> <span class="ident">std::io</span>;
+</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::key;
+<span class="kw">use </span>base64;
+<span class="kw">use </span>std::io;
 
-<span class="doccomment">/// Extract and decode all PEM sections from `rd`, which begin with `start_mark`</span>
-<span class="doccomment">/// and end with `end_mark`.  Apply the functor `f` to each decoded buffer,</span>
-<span class="doccomment">/// and return a Vec of `f`&#39;s return values.</span>
-<span class="kw">fn</span> <span class="ident">extract</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>(
-    <span class="ident">rd</span>: <span class="kw-2">&amp;mut</span> <span class="kw">dyn</span> <span class="ident">io::BufRead</span>,
-    <span class="ident">start_mark</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    <span class="ident">end_mark</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">Fn</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) -&gt; <span class="ident">A</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>, ()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ders</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">b64buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">take_base64</span> <span class="op">=</span> <span class="bool-val">false</span>;
+<span class="doccomment">/// Extract and decode all PEM sections from `rd`, which begin with `start_mark`
+/// and end with `end_mark`.  Apply the functor `f` to each decoded buffer,
+/// and return a Vec of `f`&#39;s return values.
+</span><span class="kw">fn </span>extract&lt;A&gt;(
+    rd: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>io::BufRead,
+    start_mark: <span class="kw-2">&amp;</span>str,
+    end_mark: <span class="kw-2">&amp;</span>str,
+    f: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Fn(Vec&lt;u8&gt;) -&gt; A,
+) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;A&gt;, ()&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>ders = Vec::new();
+    <span class="kw">let </span><span class="kw-2">mut </span>b64buf = String::new();
+    <span class="kw">let </span><span class="kw-2">mut </span>take_base64 = <span class="bool-val">false</span>;
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">raw_line</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="ident">::new</span>();
-    <span class="kw">loop</span> {
-        <span class="ident">raw_line</span>.<span class="ident">clear</span>();
-        <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">rd</span>
-            .<span class="ident">read_until</span>(<span class="string">b&#39;\n&#39;</span>, <span class="kw-2">&amp;mut</span> <span class="ident">raw_line</span>)
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())<span class="question-mark">?</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>raw_line = Vec::&lt;u8&gt;::new();
+    <span class="kw">loop </span>{
+        raw_line.clear();
+        <span class="kw">let </span>len = rd
+            .read_until(<span class="string">b&#39;\n&#39;</span>, <span class="kw-2">&amp;mut </span>raw_line)
+            .map_err(|<span class="kw">_</span>| ())<span class="question-mark">?</span>;
 
-        <span class="kw">if</span> <span class="ident">len</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">ders</span>);
+        <span class="kw">if </span>len == <span class="number">0 </span>{
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(ders);
         }
-        <span class="kw">let</span> <span class="ident">line</span> <span class="op">=</span> <span class="ident">String::from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">raw_line</span>);
+        <span class="kw">let </span>line = String::from_utf8_lossy(<span class="kw-2">&amp;</span>raw_line);
 
-        <span class="kw">if</span> <span class="ident">line</span>.<span class="ident">starts_with</span>(<span class="ident">start_mark</span>) {
-            <span class="ident">take_base64</span> <span class="op">=</span> <span class="bool-val">true</span>;
+        <span class="kw">if </span>line.starts_with(start_mark) {
+            take_base64 = <span class="bool-val">true</span>;
             <span class="kw">continue</span>;
         }
 
-        <span class="kw">if</span> <span class="ident">line</span>.<span class="ident">starts_with</span>(<span class="ident">end_mark</span>) {
-            <span class="ident">take_base64</span> <span class="op">=</span> <span class="bool-val">false</span>;
-            <span class="kw">let</span> <span class="ident">der</span> <span class="op">=</span> <span class="ident">base64::decode</span>(<span class="kw-2">&amp;</span><span class="ident">b64buf</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())<span class="question-mark">?</span>;
-            <span class="ident">ders</span>.<span class="ident">push</span>(<span class="ident">f</span>(<span class="ident">der</span>));
-            <span class="ident">b64buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
+        <span class="kw">if </span>line.starts_with(end_mark) {
+            take_base64 = <span class="bool-val">false</span>;
+            <span class="kw">let </span>der = base64::decode(<span class="kw-2">&amp;</span>b64buf).map_err(|<span class="kw">_</span>| ())<span class="question-mark">?</span>;
+            ders.push(f(der));
+            b64buf = String::new();
             <span class="kw">continue</span>;
         }
 
-        <span class="kw">if</span> <span class="ident">take_base64</span> {
-            <span class="ident">b64buf</span>.<span class="ident">push_str</span>(<span class="ident">line</span>.<span class="ident">trim</span>());
+        <span class="kw">if </span>take_base64 {
+            b64buf.push_str(line.trim());
         }
     }
 }
 
-<span class="doccomment">/// Extract all the certificates from rd, and return a vec of `key::Certificate`s</span>
-<span class="doccomment">/// containing the der-format contents.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">certs</span>(<span class="ident">rd</span>: <span class="kw-2">&amp;mut</span> <span class="kw">dyn</span> <span class="ident">io::BufRead</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">key::Certificate</span><span class="op">&gt;</span>, ()<span class="op">&gt;</span> {
-    <span class="ident">extract</span>(
-        <span class="ident">rd</span>,
+<span class="doccomment">/// Extract all the certificates from rd, and return a vec of `key::Certificate`s
+/// containing the der-format contents.
+</span><span class="kw">pub fn </span>certs(rd: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>io::BufRead) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;key::Certificate&gt;, ()&gt; {
+    extract(
+        rd,
         <span class="string">&quot;-----BEGIN CERTIFICATE-----&quot;</span>,
         <span class="string">&quot;-----END CERTIFICATE-----&quot;</span>,
-        <span class="kw-2">&amp;</span><span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">key::Certificate</span>(<span class="ident">v</span>),
+        <span class="kw-2">&amp;</span>|v| key::Certificate(v),
     )
 }
 
-<span class="doccomment">/// Extract all RSA private keys from rd, and return a vec of `key::PrivateKey`s</span>
-<span class="doccomment">/// containing the der-format contents.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rsa_private_keys</span>(<span class="ident">rd</span>: <span class="kw-2">&amp;mut</span> <span class="kw">dyn</span> <span class="ident">io::BufRead</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">key::PrivateKey</span><span class="op">&gt;</span>, ()<span class="op">&gt;</span> {
-    <span class="ident">extract</span>(
-        <span class="ident">rd</span>,
+<span class="doccomment">/// Extract all RSA private keys from rd, and return a vec of `key::PrivateKey`s
+/// containing the der-format contents.
+</span><span class="kw">pub fn </span>rsa_private_keys(rd: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>io::BufRead) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;key::PrivateKey&gt;, ()&gt; {
+    extract(
+        rd,
         <span class="string">&quot;-----BEGIN RSA PRIVATE KEY-----&quot;</span>,
         <span class="string">&quot;-----END RSA PRIVATE KEY-----&quot;</span>,
-        <span class="kw-2">&amp;</span><span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">key::PrivateKey</span>(<span class="ident">v</span>),
+        <span class="kw-2">&amp;</span>|v| key::PrivateKey(v),
     )
 }
 
-<span class="doccomment">/// Extract all PKCS8-encoded private keys from rd, and return a vec of</span>
-<span class="doccomment">/// `key::PrivateKey`s containing the der-format contents.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pkcs8_private_keys</span>(<span class="ident">rd</span>: <span class="kw-2">&amp;mut</span> <span class="kw">dyn</span> <span class="ident">io::BufRead</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">key::PrivateKey</span><span class="op">&gt;</span>, ()<span class="op">&gt;</span> {
-    <span class="ident">extract</span>(
-        <span class="ident">rd</span>,
+<span class="doccomment">/// Extract all PKCS8-encoded private keys from rd, and return a vec of
+/// `key::PrivateKey`s containing the der-format contents.
+</span><span class="kw">pub fn </span>pkcs8_private_keys(rd: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>io::BufRead) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;key::PrivateKey&gt;, ()&gt; {
+    extract(
+        rd,
         <span class="string">&quot;-----BEGIN PRIVATE KEY-----&quot;</span>,
         <span class="string">&quot;-----END PRIVATE KEY-----&quot;</span>,
-        <span class="kw-2">&amp;</span><span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">key::PrivateKey</span>(<span class="ident">v</span>),
+        <span class="kw-2">&amp;</span>|v| key::PrivateKey(v),
     )
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustls" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rustls" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>
