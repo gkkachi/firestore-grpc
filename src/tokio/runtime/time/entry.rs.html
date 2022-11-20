@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-1.21.2/src/time/driver/entry.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>entry.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../tokio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-1.22.0/src/runtime/time/entry.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>entry.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../tokio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -638,6 +638,85 @@
 <span id="638">638</span>
 <span id="639">639</span>
 <span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
+<span id="665">665</span>
+<span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
+<span id="678">678</span>
+<span id="679">679</span>
+<span id="680">680</span>
+<span id="681">681</span>
+<span id="682">682</span>
+<span id="683">683</span>
+<span id="684">684</span>
+<span id="685">685</span>
+<span id="686">686</span>
+<span id="687">687</span>
+<span id="688">688</span>
+<span id="689">689</span>
+<span id="690">690</span>
+<span id="691">691</span>
+<span id="692">692</span>
+<span id="693">693</span>
+<span id="694">694</span>
+<span id="695">695</span>
+<span id="696">696</span>
+<span id="697">697</span>
+<span id="698">698</span>
+<span id="699">699</span>
+<span id="700">700</span>
+<span id="701">701</span>
+<span id="702">702</span>
+<span id="703">703</span>
+<span id="704">704</span>
+<span id="705">705</span>
+<span id="706">706</span>
+<span id="707">707</span>
+<span id="708">708</span>
+<span id="709">709</span>
+<span id="710">710</span>
+<span id="711">711</span>
+<span id="712">712</span>
+<span id="713">713</span>
+<span id="714">714</span>
+<span id="715">715</span>
+<span id="716">716</span>
+<span id="717">717</span>
+<span id="718">718</span>
+<span id="719">719</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Timer state structures.
 //!
 //! This module contains the heart of the intrusive timer implementation, and as
@@ -698,11 +777,10 @@
 <span class="kw">use </span><span class="kw">crate</span>::loom::sync::atomic::AtomicU64;
 <span class="kw">use </span><span class="kw">crate</span>::loom::sync::atomic::Ordering;
 
+<span class="kw">use </span><span class="kw">crate</span>::runtime::scheduler;
 <span class="kw">use </span><span class="kw">crate</span>::sync::AtomicWaker;
 <span class="kw">use </span><span class="kw">crate</span>::time::Instant;
 <span class="kw">use </span><span class="kw">crate</span>::util::linked_list;
-
-<span class="kw">use </span><span class="kw">super</span>::Handle;
 
 <span class="kw">use </span>std::cell::UnsafeCell <span class="kw">as </span>StdUnsafeCell;
 <span class="kw">use </span>std::task::{Context, Poll, Waker};
@@ -813,7 +891,12 @@
         </span><span class="kw">let </span><span class="kw-2">mut </span>cur_state = <span class="self">self</span>.state.load(Ordering::Relaxed);
 
         <span class="kw">loop </span>{
-            <span class="macro">debug_assert!</span>(cur_state &lt; STATE_MIN_VALUE);
+            <span class="comment">// improve the error message for things like
+            // https://github.com/tokio-rs/tokio/issues/3675
+            </span><span class="macro">assert!</span>(
+                cur_state &lt; STATE_MIN_VALUE,
+                <span class="string">&quot;mark_pending called when the timer entry is in an invalid state&quot;
+            </span>);
 
             <span class="kw">if </span>cur_state &gt; not_after {
                 <span class="kw">break </span><span class="prelude-val">Err</span>(cur_state);
@@ -923,10 +1006,10 @@
 /// timer. As this participates in intrusive data structures, it must be pinned
 /// before polling.
 </span><span class="attribute">#[derive(Debug)]
-</span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct </span>TimerEntry {
-    <span class="doccomment">/// Arc reference to the driver. We can only free the driver after
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>TimerEntry {
+    <span class="doccomment">/// Arc reference to the runtime handle. We can only free the driver after
     /// deregistering everything from their respective timer wheels.
-    </span>driver: Handle,
+    </span>driver: scheduler::Handle,
     <span class="doccomment">/// Shared inner structure; this is part of an intrusive linked list, and
     /// therefore other references can exist to it while mutable references to
     /// Entry exist.
@@ -1130,7 +1213,11 @@
 <span class="comment">// ===== impl Entry =====
 
 </span><span class="kw">impl </span>TimerEntry {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(handle: <span class="kw-2">&amp;</span>Handle, deadline: Instant) -&gt; <span class="self">Self </span>{
+    <span class="attribute">#[track_caller]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(handle: <span class="kw-2">&amp;</span>scheduler::Handle, deadline: Instant) -&gt; <span class="self">Self </span>{
+        <span class="comment">// Panic if the time driver is not enabled
+        </span><span class="kw">let _ </span>= handle.driver().time();
+
         <span class="kw">let </span>driver = handle.clone();
 
         <span class="self">Self </span>{
@@ -1173,20 +1260,21 @@
         // driver did so far and happens-before everything the driver does in
         // the future. While we have the lock held, we also go ahead and
         // deregister the entry if necessary.
-        </span><span class="kw">unsafe </span>{ <span class="self">self</span>.driver.clear_entry(NonNull::from(<span class="self">self</span>.inner())) };
+        </span><span class="kw">unsafe </span>{ <span class="self">self</span>.driver().clear_entry(NonNull::from(<span class="self">self</span>.inner())) };
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>reset(<span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, new_time: Instant) {
         <span class="kw">unsafe </span>{ <span class="self">self</span>.as_mut().get_unchecked_mut() }.initial_deadline = <span class="prelude-val">None</span>;
 
-        <span class="kw">let </span>tick = <span class="self">self</span>.driver.time_source().deadline_to_tick(new_time);
+        <span class="kw">let </span>tick = <span class="self">self</span>.driver().time_source().deadline_to_tick(new_time);
 
         <span class="kw">if </span><span class="self">self</span>.inner().extend_expiration(tick).is_ok() {
             <span class="kw">return</span>;
         }
 
         <span class="kw">unsafe </span>{
-            <span class="self">self</span>.driver.reregister(tick, <span class="self">self</span>.inner().into());
+            <span class="self">self</span>.driver()
+                .reregister(<span class="kw-2">&amp;</span><span class="self">self</span>.driver.driver().io, tick, <span class="self">self</span>.inner().into());
         }
     }
 
@@ -1194,7 +1282,7 @@
         <span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
         cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
     ) -&gt; Poll&lt;<span class="prelude-ty">Result</span>&lt;(), <span class="kw">super</span>::Error&gt;&gt; {
-        <span class="kw">if </span><span class="self">self</span>.driver.is_shutdown() {
+        <span class="kw">if </span><span class="self">self</span>.driver().is_shutdown() {
             <span class="macro">panic!</span>(<span class="string">&quot;{}&quot;</span>, <span class="kw">crate</span>::util::error::RUNTIME_SHUTTING_DOWN_ERROR);
         }
 
@@ -1205,6 +1293,10 @@
         <span class="kw">let </span>this = <span class="kw">unsafe </span>{ <span class="self">self</span>.get_unchecked_mut() };
 
         this.inner().state.poll(cx.waker())
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>driver(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw">super</span>::Handle {
+        <span class="self">self</span>.driver.driver().time()
     }
 }
 
@@ -1274,8 +1366,74 @@
     }
 }
 
-<span class="attribute">#[cfg_attr(target_arch = <span class="string">&quot;x86_64&quot;</span>, repr(align(<span class="number">128</span>)))]
-#[cfg_attr(not(target_arch = <span class="string">&quot;x86_64&quot;</span>), repr(align(<span class="number">64</span>)))]
+<span class="comment">// Copied from [crossbeam/cache_padded](https://github.com/crossbeam-rs/crossbeam/blob/fa35346b7c789bba045ad789e894c68c466d1779/crossbeam-utils/src/cache_padded.rs#L62-L127)
+//
+// Starting from Intel&#39;s Sandy Bridge, spatial prefetcher is now pulling pairs of 64-byte cache
+// lines at a time, so we have to align to 128 bytes rather than 64.
+//
+// Sources:
+// - https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-optimization-manual.pdf
+// - https://github.com/facebook/folly/blob/1b5288e6eea6df074758f877c849b6e73bbb9fbb/folly/lang/Align.h#L107
+//
+// ARM&#39;s big.LITTLE architecture has asymmetric cores and &quot;big&quot; cores have 128-byte cache line size.
+//
+// Sources:
+// - https://www.mono-project.com/news/2016/09/12/arm64-icache/
+//
+// powerpc64 has 128-byte cache line size.
+//
+// Sources:
+// - https://github.com/golang/go/blob/3dd58676054223962cd915bb0934d1f9f489d4d2/src/internal/cpu/cpu_ppc64x.go#L9
+</span><span class="attribute">#[cfg_attr(
+    any(
+        target_arch = <span class="string">&quot;x86_64&quot;</span>,
+        target_arch = <span class="string">&quot;aarch64&quot;</span>,
+        target_arch = <span class="string">&quot;powerpc64&quot;</span>,
+    ),
+    repr(align(<span class="number">128</span>))
+)]
+</span><span class="comment">// arm, mips, mips64, and riscv64 have 32-byte cache line size.
+//
+// Sources:
+// - https://github.com/golang/go/blob/3dd58676054223962cd915bb0934d1f9f489d4d2/src/internal/cpu/cpu_arm.go#L7
+// - https://github.com/golang/go/blob/3dd58676054223962cd915bb0934d1f9f489d4d2/src/internal/cpu/cpu_mips.go#L7
+// - https://github.com/golang/go/blob/3dd58676054223962cd915bb0934d1f9f489d4d2/src/internal/cpu/cpu_mipsle.go#L7
+// - https://github.com/golang/go/blob/3dd58676054223962cd915bb0934d1f9f489d4d2/src/internal/cpu/cpu_mips64x.go#L9
+// - https://github.com/golang/go/blob/3dd58676054223962cd915bb0934d1f9f489d4d2/src/internal/cpu/cpu_riscv64.go#L7
+</span><span class="attribute">#[cfg_attr(
+    any(
+        target_arch = <span class="string">&quot;arm&quot;</span>,
+        target_arch = <span class="string">&quot;mips&quot;</span>,
+        target_arch = <span class="string">&quot;mips64&quot;</span>,
+        target_arch = <span class="string">&quot;riscv64&quot;</span>,
+    ),
+    repr(align(<span class="number">32</span>))
+)]
+</span><span class="comment">// s390x has 256-byte cache line size.
+//
+// Sources:
+// - https://github.com/golang/go/blob/3dd58676054223962cd915bb0934d1f9f489d4d2/src/internal/cpu/cpu_s390x.go#L7
+</span><span class="attribute">#[cfg_attr(target_arch = <span class="string">&quot;s390x&quot;</span>, repr(align(<span class="number">256</span>)))]
+</span><span class="comment">// x86 and wasm have 64-byte cache line size.
+//
+// Sources:
+// - https://github.com/golang/go/blob/dda2991c2ea0c5914714469c4defc2562a907230/src/internal/cpu/cpu_x86.go#L9
+// - https://github.com/golang/go/blob/3dd58676054223962cd915bb0934d1f9f489d4d2/src/internal/cpu/cpu_wasm.go#L7
+//
+// All others are assumed to have 64-byte cache line size.
+</span><span class="attribute">#[cfg_attr(
+    not(any(
+        target_arch = <span class="string">&quot;x86_64&quot;</span>,
+        target_arch = <span class="string">&quot;aarch64&quot;</span>,
+        target_arch = <span class="string">&quot;powerpc64&quot;</span>,
+        target_arch = <span class="string">&quot;arm&quot;</span>,
+        target_arch = <span class="string">&quot;mips&quot;</span>,
+        target_arch = <span class="string">&quot;mips64&quot;</span>,
+        target_arch = <span class="string">&quot;riscv64&quot;</span>,
+        target_arch = <span class="string">&quot;s390x&quot;</span>,
+    )),
+    repr(align(<span class="number">64</span>))
+)]
 #[derive(Debug, Default)]
 </span><span class="kw">struct </span>CachePadded&lt;T&gt;(T);
 </code></pre></div>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-1.21.2/src/park/thread.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>thread.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../tokio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-1.22.0/src/runtime/park.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>park.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../tokio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -330,29 +330,10 @@
 <span id="330">330</span>
 <span id="331">331</span>
 <span id="332">332</span>
-<span id="333">333</span>
-<span id="334">334</span>
-<span id="335">335</span>
-<span id="336">336</span>
-<span id="337">337</span>
-<span id="338">338</span>
-<span id="339">339</span>
-<span id="340">340</span>
-<span id="341">341</span>
-<span id="342">342</span>
-<span id="343">343</span>
-<span id="344">344</span>
-<span id="345">345</span>
-<span id="346">346</span>
-<span id="347">347</span>
-<span id="348">348</span>
-<span id="349">349</span>
-<span id="350">350</span>
 </pre><pre class="rust"><code><span class="attribute">#![cfg_attr(not(feature = <span class="string">&quot;full&quot;</span>), allow(dead_code))]
 
 </span><span class="kw">use </span><span class="kw">crate</span>::loom::sync::atomic::AtomicUsize;
 <span class="kw">use </span><span class="kw">crate</span>::loom::sync::{Arc, Condvar, Mutex};
-<span class="kw">use </span><span class="kw">crate</span>::park::{Park, Unpark};
 
 <span class="kw">use </span>std::sync::atomic::Ordering::SeqCst;
 <span class="kw">use </span>std::time::Duration;
@@ -361,8 +342,6 @@
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>ParkThread {
     inner: Arc&lt;Inner&gt;,
 }
-
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type </span>ParkError = ();
 
 <span class="doccomment">/// Unblocks a thread that was blocked by `ParkThread`.
 </span><span class="attribute">#[derive(Clone, Debug)]
@@ -381,7 +360,7 @@
 <span class="kw">const </span>PARKED: usize = <span class="number">1</span>;
 <span class="kw">const </span>NOTIFIED: usize = <span class="number">2</span>;
 
-<span class="macro">thread_local! </span>{
+<span class="macro">tokio_thread_local! </span>{
     <span class="kw">static </span>CURRENT_PARKER: ParkThread = ParkThread::new();
 }
 
@@ -397,32 +376,25 @@
             }),
         }
     }
-}
 
-<span class="kw">impl </span>Park <span class="kw">for </span>ParkThread {
-    <span class="kw">type </span>Unpark = UnparkThread;
-    <span class="kw">type </span>Error = ParkError;
-
-    <span class="kw">fn </span>unpark(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Unpark {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>unpark(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; UnparkThread {
         <span class="kw">let </span>inner = <span class="self">self</span>.inner.clone();
         UnparkThread { inner }
     }
 
-    <span class="kw">fn </span>park(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>park(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="self">self</span>.inner.park();
-        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn </span>park_timeout(<span class="kw-2">&amp;mut </span><span class="self">self</span>, duration: Duration) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>park_timeout(<span class="kw-2">&amp;mut </span><span class="self">self</span>, duration: Duration) {
         <span class="comment">// Wasm doesn&#39;t have threads, so just sleep.
         </span><span class="attribute">#[cfg(not(tokio_wasm))]
         </span><span class="self">self</span>.inner.park_timeout(duration);
         <span class="attribute">#[cfg(tokio_wasm)]
         </span>std::thread::sleep(duration);
-        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn </span>shutdown(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>shutdown(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="self">self</span>.inner.shutdown();
     }
 }
@@ -562,12 +534,13 @@
 
 <span class="comment">// ===== impl UnparkThread =====
 
-</span><span class="kw">impl </span>Unpark <span class="kw">for </span>UnparkThread {
-    <span class="kw">fn </span>unpark(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+</span><span class="kw">impl </span>UnparkThread {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>unpark(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="self">self</span>.inner.unpark();
     }
 }
 
+<span class="kw">use </span><span class="kw">crate</span>::loom::thread::AccessError;
 <span class="kw">use </span>std::future::Future;
 <span class="kw">use </span>std::marker::PhantomData;
 <span class="kw">use </span>std::mem;
@@ -591,58 +564,49 @@
         }
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>get_unpark(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;UnparkThread, ParkError&gt; {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>waker(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Waker, AccessError&gt; {
+        <span class="self">self</span>.unpark().map(|unpark| unpark.into_waker())
+    }
+
+    <span class="kw">fn </span>unpark(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;UnparkThread, AccessError&gt; {
         <span class="self">self</span>.with_current(|park_thread| park_thread.unpark())
     }
 
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>park(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.with_current(|park_thread| park_thread.inner.park())
+            .unwrap();
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>park_timeout(<span class="kw-2">&amp;mut </span><span class="self">self</span>, duration: Duration) {
+        <span class="self">self</span>.with_current(|park_thread| park_thread.inner.park_timeout(duration))
+            .unwrap();
+    }
+
     <span class="doccomment">/// Gets a reference to the `ParkThread` handle for this thread.
-    </span><span class="kw">fn </span>with_current&lt;F, R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <span class="prelude-ty">Result</span>&lt;R, ParkError&gt;
+    </span><span class="kw">fn </span>with_current&lt;F, R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <span class="prelude-ty">Result</span>&lt;R, AccessError&gt;
     <span class="kw">where
         </span>F: FnOnce(<span class="kw-2">&amp;</span>ParkThread) -&gt; R,
     {
-        CURRENT_PARKER.try_with(|inner| f(inner)).map_err(|<span class="kw">_</span>| ())
+        CURRENT_PARKER.try_with(|inner| f(inner))
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>block_on&lt;F: Future&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, f: F) -&gt; <span class="prelude-ty">Result</span>&lt;F::Output, ParkError&gt; {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>block_on&lt;F: Future&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, f: F) -&gt; <span class="prelude-ty">Result</span>&lt;F::Output, AccessError&gt; {
         <span class="kw">use </span>std::task::Context;
         <span class="kw">use </span>std::task::Poll::Ready;
 
         <span class="comment">// `get_unpark()` should not return a Result
-        </span><span class="kw">let </span>waker = <span class="self">self</span>.get_unpark()<span class="question-mark">?</span>.into_waker();
+        </span><span class="kw">let </span>waker = <span class="self">self</span>.waker()<span class="question-mark">?</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>cx = Context::from_waker(<span class="kw-2">&amp;</span>waker);
 
         <span class="macro">pin!</span>(f);
 
         <span class="kw">loop </span>{
-            <span class="kw">if let </span>Ready(v) = <span class="kw">crate</span>::coop::budget(|| f.as_mut().poll(<span class="kw-2">&amp;mut </span>cx)) {
+            <span class="kw">if let </span>Ready(v) = <span class="kw">crate</span>::runtime::coop::budget(|| f.as_mut().poll(<span class="kw-2">&amp;mut </span>cx)) {
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(v);
             }
 
-            <span class="self">self</span>.park()<span class="question-mark">?</span>;
+            <span class="self">self</span>.park();
         }
-    }
-}
-
-<span class="kw">impl </span>Park <span class="kw">for </span>CachedParkThread {
-    <span class="kw">type </span>Unpark = UnparkThread;
-    <span class="kw">type </span>Error = ParkError;
-
-    <span class="kw">fn </span>unpark(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Unpark {
-        <span class="self">self</span>.get_unpark().unwrap()
-    }
-
-    <span class="kw">fn </span>park(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
-        <span class="self">self</span>.with_current(|park_thread| park_thread.inner.park())<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(())
-    }
-
-    <span class="kw">fn </span>park_timeout(<span class="kw-2">&amp;mut </span><span class="self">self</span>, duration: Duration) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
-        <span class="self">self</span>.with_current(|park_thread| park_thread.inner.park_timeout(duration))<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(())
-    }
-
-    <span class="kw">fn </span>shutdown(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="kw">let _ </span>= <span class="self">self</span>.with_current(|park_thread| park_thread.inner.shutdown());
     }
 }
 

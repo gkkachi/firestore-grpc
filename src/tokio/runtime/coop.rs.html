@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-1.21.2/src/coop.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>coop.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../tokio/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-1.22.0/src/runtime/coop.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>coop.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../tokio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -282,6 +282,8 @@
 <span id="282">282</span>
 <span id="283">283</span>
 <span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
 </pre><pre class="rust"><code><span class="attribute">#![cfg_attr(not(feature = <span class="string">&quot;full&quot;</span>), allow(dead_code))]
 
 </span><span class="doccomment">//! Yield points for improved cooperative scheduling.
@@ -313,11 +315,7 @@
 // other futures. By doing this, you avoid double-counting each iteration of
 // the outer future against the cooperating budget.
 
-</span><span class="kw">use </span>std::cell::Cell;
-
-<span class="macro">thread_local! </span>{
-    <span class="kw">static </span>CURRENT: Cell&lt;Budget&gt; = <span class="kw">const </span>{ Cell::new(Budget::unconstrained()) };
-}
+</span><span class="kw">use </span><span class="kw">crate</span>::runtime::context;
 
 <span class="doccomment">/// Opaque type tracking the amount of &quot;work&quot; a task may still do before
 /// yielding back to the scheduler.
@@ -340,7 +338,7 @@
     }
 
     <span class="doccomment">/// Returns an unconstrained budget. Operations will not be limited.
-    </span><span class="kw">const fn </span>unconstrained() -&gt; Budget {
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const fn </span>unconstrained() -&gt; Budget {
         Budget(<span class="prelude-val">None</span>)
     }
 
@@ -365,37 +363,42 @@
 
 <span class="attribute">#[inline(always)]
 </span><span class="kw">fn </span>with_budget&lt;R&gt;(budget: Budget, f: <span class="kw">impl </span>FnOnce() -&gt; R) -&gt; R {
-    <span class="kw">struct </span>ResetGuard&lt;<span class="lifetime">&#39;a</span>&gt; {
-        cell: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Cell&lt;Budget&gt;,
+    <span class="kw">struct </span>ResetGuard {
         prev: Budget,
     }
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Drop <span class="kw">for </span>ResetGuard&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">impl </span>Drop <span class="kw">for </span>ResetGuard {
         <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-            <span class="self">self</span>.cell.set(<span class="self">self</span>.prev);
+            <span class="kw">let _ </span>= context::budget(|cell| {
+                cell.set(<span class="self">self</span>.prev);
+            });
         }
     }
 
-    CURRENT.with(<span class="kw">move </span>|cell| {
+    <span class="attribute">#[allow(unused_variables)]
+    </span><span class="kw">let </span>maybe_guard = context::budget(|cell| {
         <span class="kw">let </span>prev = cell.get();
-
         cell.set(budget);
 
-        <span class="kw">let </span>_guard = ResetGuard { cell, prev };
+        ResetGuard { prev }
+    });
 
-        f()
-    })
+    <span class="comment">// The function is called regardless even if the budget is not successfully
+    // set due to the thread-local being destroyed.
+    </span>f()
 }
 
 <span class="attribute">#[inline(always)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>has_budget_remaining() -&gt; bool {
-    CURRENT.with(|cell| cell.get().has_remaining())
+    <span class="comment">// If the current budget cannot be accessed due to the thread-local being
+    // shutdown, then we assume there is budget remaining.
+    </span>context::budget(|cell| cell.get().has_remaining()).unwrap_or(<span class="bool-val">true</span>)
 }
 
 <span class="macro">cfg_rt_multi_thread! </span>{
     <span class="doccomment">/// Sets the current task&#39;s budget.
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>set(budget: Budget) {
-        CURRENT.with(|cell| cell.set(budget))
+        <span class="kw">let _ </span>= context::budget(|cell| cell.set(budget));
     }
 }
 
@@ -404,15 +407,16 @@
     ///
     /// Returns the remaining budget
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>stop() -&gt; Budget {
-        CURRENT.with(|cell| {
+        context::budget(|cell| {
             <span class="kw">let </span>prev = cell.get();
             cell.set(Budget::unconstrained());
             prev
-        })
+        }).unwrap_or(Budget::unconstrained())
     }
 }
 
 <span class="macro">cfg_coop! </span>{
+    <span class="kw">use </span>std::cell::Cell;
     <span class="kw">use </span>std::task::{Context, Poll};
 
     <span class="attribute">#[must_use]
@@ -430,7 +434,7 @@
             // They are both represented as the remembered budget being unconstrained.
             </span><span class="kw">let </span>budget = <span class="self">self</span>.<span class="number">0</span>.get();
             <span class="kw">if </span>!budget.is_unconstrained() {
-                CURRENT.with(|cell| {
+                <span class="kw">let _ </span>= context::budget(|cell| {
                     cell.set(budget);
                 });
             }
@@ -446,12 +450,12 @@
     /// that the budget empties appropriately.
     ///
     /// Note that `RestoreOnPending` restores the budget **as it was before `poll_proceed`**.
-    /// Therefore, if the budget is _further_ adjusted between when `poll_proceed` returns and
+    /// Therefore, if the budget is _fCURRENT.withurther_ adjusted between when `poll_proceed` returns and
     /// `RestRestoreOnPending` is dropped, those adjustments are erased unless the caller indicates
     /// that progress was made.
     </span><span class="attribute">#[inline]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>poll_proceed(cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;RestoreOnPending&gt; {
-        CURRENT.with(|cell| {
+        context::budget(|cell| {
             <span class="kw">let </span><span class="kw-2">mut </span>budget = cell.get();
 
             <span class="kw">if </span>budget.decrement() {
@@ -462,7 +466,7 @@
                 cx.waker().wake_by_ref();
                 Poll::Pending
             }
-        })
+        }).unwrap_or(Poll::Ready(RestoreOnPending(Cell::new(Budget::unconstrained()))))
     }
 
     <span class="kw">impl </span>Budget {
@@ -495,7 +499,7 @@
     </span><span class="kw">use </span>wasm_bindgen_test::wasm_bindgen_test <span class="kw">as </span>test;
 
     <span class="kw">fn </span>get() -&gt; Budget {
-        CURRENT.with(|cell| cell.get())
+        context::budget(|cell| cell.get()).unwrap_or(Budget::unconstrained())
     }
 
     <span class="attribute">#[test]
@@ -567,4 +571,4 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="tokio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="tokio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

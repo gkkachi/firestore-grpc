@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-1.21.2/src/time/driver/sleep.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sleep.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../tokio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-1.22.0/src/time/sleep.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sleep.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../tokio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../tokio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -436,12 +436,7 @@
 <span id="436">436</span>
 <span id="437">437</span>
 <span id="438">438</span>
-<span id="439">439</span>
-<span id="440">440</span>
-<span id="441">441</span>
-</pre><pre class="rust"><code><span class="attribute">#[cfg(all(tokio_unstable, feature = <span class="string">&quot;tracing&quot;</span>))]
-</span><span class="kw">use </span><span class="kw">crate</span>::time::driver::ClockTime;
-<span class="kw">use </span><span class="kw">crate</span>::time::driver::{Handle, TimerEntry};
+</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::runtime::time::TimerEntry;
 <span class="kw">use </span><span class="kw">crate</span>::time::{error::Error, Duration, Instant};
 <span class="kw">use </span><span class="kw">crate</span>::util::trace;
 
@@ -680,7 +675,6 @@
     </span><span class="kw">struct </span>Inner {
         deadline: Instant,
         ctx: trace::AsyncOpTracingCtx,
-        time_source: ClockTime,
     }
 }
 
@@ -698,12 +692,15 @@
         deadline: Instant,
         location: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>Location&lt;<span class="lifetime">&#39;static</span>&gt;&gt;,
     ) -&gt; Sleep {
-        <span class="kw">let </span>handle = Handle::current();
+        <span class="kw">use </span><span class="kw">crate</span>::runtime::scheduler;
+
+        <span class="kw">let </span>handle = scheduler::Handle::current();
         <span class="kw">let </span>entry = TimerEntry::new(<span class="kw-2">&amp;</span>handle, deadline);
 
         <span class="attribute">#[cfg(all(tokio_unstable, feature = <span class="string">&quot;tracing&quot;</span>))]
         </span><span class="kw">let </span>inner = {
-            <span class="kw">let </span>time_source = handle.time_source().clone();
+            <span class="kw">let </span>handle = <span class="kw-2">&amp;</span>handle.driver().time();
+            <span class="kw">let </span>time_source = handle.time_source();
             <span class="kw">let </span>deadline_tick = time_source.deadline_to_tick(deadline);
             <span class="kw">let </span>duration = deadline_tick.saturating_sub(time_source.now());
 
@@ -737,11 +734,7 @@
                 resource_span,
             };
 
-            Inner {
-                deadline,
-                ctx,
-                time_source,
-            }
+            Inner { deadline, ctx }
         };
 
         <span class="attribute">#[cfg(not(all(tokio_unstable, feature = <span class="string">&quot;tracing&quot;</span>)))]
@@ -800,8 +793,8 @@
     }
 
     <span class="kw">fn </span>reset_inner(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, deadline: Instant) {
-        <span class="kw">let </span>me = <span class="self">self</span>.project();
-        me.entry.reset(deadline);
+        <span class="kw">let </span><span class="kw-2">mut </span>me = <span class="self">self</span>.project();
+        me.entry.as_mut().reset(deadline);
         (<span class="kw-2">*</span>me.inner).deadline = deadline;
 
         <span class="attribute">#[cfg(all(tokio_unstable, feature = <span class="string">&quot;tracing&quot;</span>))]
@@ -815,8 +808,9 @@
                 <span class="macro">tracing::trace_span!</span>(<span class="string">&quot;runtime.resource.async_op.poll&quot;</span>);
 
             <span class="kw">let </span>duration = {
-                <span class="kw">let </span>now = me.inner.time_source.now();
-                <span class="kw">let </span>deadline_tick = me.inner.time_source.deadline_to_tick(deadline);
+                <span class="kw">let </span>time_source = me.entry.driver().time_source();
+                <span class="kw">let </span>now = time_source.now();
+                <span class="kw">let </span>deadline_tick = time_source.deadline_to_tick(deadline);
                 deadline_tick.saturating_sub(now)
             };
 
@@ -836,11 +830,11 @@
         </span><span class="attribute">#[cfg(all(tokio_unstable, feature = <span class="string">&quot;tracing&quot;</span>))]
         </span><span class="kw">let </span>coop = <span class="macro">ready!</span>(<span class="macro">trace_poll_op!</span>(
             <span class="string">&quot;poll_elapsed&quot;</span>,
-            <span class="kw">crate</span>::coop::poll_proceed(cx),
+            <span class="kw">crate</span>::runtime::coop::poll_proceed(cx),
         ));
 
         <span class="attribute">#[cfg(any(not(tokio_unstable), not(feature = <span class="string">&quot;tracing&quot;</span>)))]
-        </span><span class="kw">let </span>coop = <span class="macro">ready!</span>(<span class="kw">crate</span>::coop::poll_proceed(cx));
+        </span><span class="kw">let </span>coop = <span class="macro">ready!</span>(<span class="kw">crate</span>::runtime::coop::poll_proceed(cx));
 
         <span class="kw">let </span>result = me.entry.poll_elapsed(cx).map(<span class="kw">move </span>|r| {
             coop.made_progress();
@@ -881,4 +875,4 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="tokio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="tokio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>
