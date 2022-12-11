@@ -14,18 +14,18 @@
 
 syntax = "proto3";
 
-package google.cloud.visionai.v1alpha1;
+package google.cloud.visionai.v1;
 
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 
-option csharp_namespace = "Google.Cloud.VisionAI.V1Alpha1";
-option go_package = "google.golang.org/genproto/googleapis/cloud/visionai/v1alpha1;visionai";
+option csharp_namespace = "Google.Cloud.VisionAI.V1";
+option go_package = "google.golang.org/genproto/googleapis/cloud/visionai/v1;visionai";
 option java_multiple_files = true;
 option java_outer_classname = "AnnotationsProto";
-option java_package = "com.google.cloud.visionai.v1alpha1";
-option php_namespace = "Google\\Cloud\\VisionAI\\V1alpha1";
-option ruby_package = "Google::Cloud::VisionAI::V1alpha1";
+option java_package = "com.google.cloud.visionai.v1";
+option php_namespace = "Google\\Cloud\\VisionAI\\V1";
+option ruby_package = "Google::Cloud::VisionAI::V1";
 
 // Enum describing all possible types of a stream annotation.
 enum StreamAnnotationType {
