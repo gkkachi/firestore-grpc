@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-1.23.0/src/runtime/task/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../tokio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-1.24.1/src/runtime/task/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../tokio/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -489,134 +489,6 @@
 <span id="489">489</span>
 <span id="490">490</span>
 <span id="491">491</span>
-<span id="492">492</span>
-<span id="493">493</span>
-<span id="494">494</span>
-<span id="495">495</span>
-<span id="496">496</span>
-<span id="497">497</span>
-<span id="498">498</span>
-<span id="499">499</span>
-<span id="500">500</span>
-<span id="501">501</span>
-<span id="502">502</span>
-<span id="503">503</span>
-<span id="504">504</span>
-<span id="505">505</span>
-<span id="506">506</span>
-<span id="507">507</span>
-<span id="508">508</span>
-<span id="509">509</span>
-<span id="510">510</span>
-<span id="511">511</span>
-<span id="512">512</span>
-<span id="513">513</span>
-<span id="514">514</span>
-<span id="515">515</span>
-<span id="516">516</span>
-<span id="517">517</span>
-<span id="518">518</span>
-<span id="519">519</span>
-<span id="520">520</span>
-<span id="521">521</span>
-<span id="522">522</span>
-<span id="523">523</span>
-<span id="524">524</span>
-<span id="525">525</span>
-<span id="526">526</span>
-<span id="527">527</span>
-<span id="528">528</span>
-<span id="529">529</span>
-<span id="530">530</span>
-<span id="531">531</span>
-<span id="532">532</span>
-<span id="533">533</span>
-<span id="534">534</span>
-<span id="535">535</span>
-<span id="536">536</span>
-<span id="537">537</span>
-<span id="538">538</span>
-<span id="539">539</span>
-<span id="540">540</span>
-<span id="541">541</span>
-<span id="542">542</span>
-<span id="543">543</span>
-<span id="544">544</span>
-<span id="545">545</span>
-<span id="546">546</span>
-<span id="547">547</span>
-<span id="548">548</span>
-<span id="549">549</span>
-<span id="550">550</span>
-<span id="551">551</span>
-<span id="552">552</span>
-<span id="553">553</span>
-<span id="554">554</span>
-<span id="555">555</span>
-<span id="556">556</span>
-<span id="557">557</span>
-<span id="558">558</span>
-<span id="559">559</span>
-<span id="560">560</span>
-<span id="561">561</span>
-<span id="562">562</span>
-<span id="563">563</span>
-<span id="564">564</span>
-<span id="565">565</span>
-<span id="566">566</span>
-<span id="567">567</span>
-<span id="568">568</span>
-<span id="569">569</span>
-<span id="570">570</span>
-<span id="571">571</span>
-<span id="572">572</span>
-<span id="573">573</span>
-<span id="574">574</span>
-<span id="575">575</span>
-<span id="576">576</span>
-<span id="577">577</span>
-<span id="578">578</span>
-<span id="579">579</span>
-<span id="580">580</span>
-<span id="581">581</span>
-<span id="582">582</span>
-<span id="583">583</span>
-<span id="584">584</span>
-<span id="585">585</span>
-<span id="586">586</span>
-<span id="587">587</span>
-<span id="588">588</span>
-<span id="589">589</span>
-<span id="590">590</span>
-<span id="591">591</span>
-<span id="592">592</span>
-<span id="593">593</span>
-<span id="594">594</span>
-<span id="595">595</span>
-<span id="596">596</span>
-<span id="597">597</span>
-<span id="598">598</span>
-<span id="599">599</span>
-<span id="600">600</span>
-<span id="601">601</span>
-<span id="602">602</span>
-<span id="603">603</span>
-<span id="604">604</span>
-<span id="605">605</span>
-<span id="606">606</span>
-<span id="607">607</span>
-<span id="608">608</span>
-<span id="609">609</span>
-<span id="610">610</span>
-<span id="611">611</span>
-<span id="612">612</span>
-<span id="613">613</span>
-<span id="614">614</span>
-<span id="615">615</span>
-<span id="616">616</span>
-<span id="617">617</span>
-<span id="618">618</span>
-<span id="619">619</span>
 </pre><pre class="rust"><code><span class="doccomment">//! The task module.
 //!
 //! The task module contains the code that manages spawned tasks and provides a
@@ -787,18 +659,19 @@
 // unstable. This should be removed once `JoinSet` is stabilized.
 </span><span class="attribute">#![cfg_attr(not(tokio_unstable), allow(dead_code))]
 
-</span><span class="kw">use </span><span class="kw">crate</span>::runtime::context;
-
-<span class="kw">mod </span>core;
+</span><span class="kw">mod </span>core;
 <span class="kw">use </span><span class="self">self</span>::core::Cell;
 <span class="kw">use </span><span class="self">self</span>::core::Header;
 
 <span class="kw">mod </span>error;
-<span class="attribute">#[allow(unreachable_pub)] </span><span class="comment">// https://github.com/rust-lang/rust/issues/57411
-</span><span class="kw">pub use </span><span class="self">self</span>::error::JoinError;
+<span class="kw">pub use </span><span class="self">self</span>::error::JoinError;
 
 <span class="kw">mod </span>harness;
 <span class="kw">use </span><span class="self">self</span>::harness::Harness;
+
+<span class="kw">mod </span>id;
+<span class="attribute">#[cfg_attr(not(tokio_unstable), allow(unreachable_pub))]
+</span><span class="kw">pub use </span>id::{id, try_id, Id};
 
 <span class="macro">cfg_rt_multi_thread! </span>{
     <span class="kw">mod </span>inject;
@@ -810,11 +683,9 @@
 <span class="kw">mod </span>join;
 
 <span class="attribute">#[cfg(feature = <span class="string">&quot;rt&quot;</span>)]
-#[allow(unreachable_pub)] </span><span class="comment">// https://github.com/rust-lang/rust/issues/57411
 </span><span class="kw">pub use </span><span class="self">self</span>::abort::AbortHandle;
 
-<span class="attribute">#[allow(unreachable_pub)] </span><span class="comment">// https://github.com/rust-lang/rust/issues/57411
-</span><span class="kw">pub use </span><span class="self">self</span>::join::JoinHandle;
+<span class="kw">pub use </span><span class="self">self</span>::join::JoinHandle;
 
 <span class="kw">mod </span>list;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span><span class="self">self</span>::list::{LocalOwnedTasks, OwnedTasks};
@@ -833,70 +704,6 @@
 <span class="kw">use </span>std::marker::PhantomData;
 <span class="kw">use </span>std::ptr::NonNull;
 <span class="kw">use </span>std::{fmt, mem};
-
-<span class="doccomment">/// An opaque ID that uniquely identifies a task relative to all other currently
-/// running tasks.
-///
-/// # Notes
-///
-/// - Task IDs are unique relative to other *currently running* tasks. When a
-///   task completes, the same ID may be used for another task.
-/// - Task IDs are *not* sequential, and do not indicate the order in which
-///   tasks are spawned, what runtime a task is spawned on, or any other data.
-/// - The task ID of the currently running task can be obtained from inside the
-///   task via the [`task::try_id()`](crate::task::try_id()) and
-///   [`task::id()`](crate::task::id()) functions and from outside the task via
-///   the [`JoinHandle::id()`](crate::task::JoinHandle::id()) function.
-///
-/// **Note**: This is an [unstable API][unstable]. The public API of this type
-/// may break in 1.x releases. See [the documentation on unstable
-/// features][unstable] for details.
-///
-/// [unstable]: crate#unstable-features
-</span><span class="attribute">#[cfg_attr(docsrs, doc(cfg(all(feature = <span class="string">&quot;rt&quot;</span>, tokio_unstable))))]
-#[cfg_attr(not(tokio_unstable), allow(unreachable_pub))]
-#[derive(Clone, Copy, Debug, Hash, Eq, PartialEq)]
-</span><span class="kw">pub struct </span>Id(u64);
-
-<span class="doccomment">/// Returns the [`Id`] of the currently running task.
-///
-/// # Panics
-///
-/// This function panics if called from outside a task. Please note that calls
-/// to `block_on` do not have task IDs, so the method will panic if called from
-/// within a call to `block_on`. For a version of this function that doesn&#39;t
-/// panic, see [`task::try_id()`](crate::runtime::task::try_id()).
-///
-/// **Note**: This is an [unstable API][unstable]. The public API of this type
-/// may break in 1.x releases. See [the documentation on unstable
-/// features][unstable] for details.
-///
-/// [task ID]: crate::task::Id
-/// [unstable]: crate#unstable-features
-</span><span class="attribute">#[cfg_attr(not(tokio_unstable), allow(unreachable_pub))]
-#[track_caller]
-</span><span class="kw">pub fn </span>id() -&gt; Id {
-    context::current_task_id().expect(<span class="string">&quot;Can&#39;t get a task id when not inside a task&quot;</span>)
-}
-
-<span class="doccomment">/// Returns the [`Id`] of the currently running task, or `None` if called outside
-/// of a task.
-///
-/// This function is similar to  [`task::id()`](crate::runtime::task::id()), except
-/// that it returns `None` rather than panicking if called outside of a task
-/// context.
-///
-/// **Note**: This is an [unstable API][unstable]. The public API of this type
-/// may break in 1.x releases. See [the documentation on unstable
-/// features][unstable] for details.
-///
-/// [task ID]: crate::task::Id
-/// [unstable]: crate#unstable-features
-</span><span class="attribute">#[cfg_attr(not(tokio_unstable), allow(unreachable_pub))]
-#[track_caller]
-</span><span class="kw">pub fn </span>try_id() -&gt; <span class="prelude-ty">Option</span>&lt;Id&gt; {
-    context::current_task_id()
-}
 
 <span class="doccomment">/// An owned handle to the task, tracked by ref count.
 </span><span class="attribute">#[repr(transparent)]
@@ -1172,69 +979,6 @@
     <span class="kw">unsafe fn </span>pointers(target: NonNull&lt;Header&gt;) -&gt; NonNull&lt;linked_list::Pointers&lt;Header&gt;&gt; {
         <span class="self">self</span>::core::Trailer::addr_of_owned(Header::get_trailer(target))
     }
-}
-
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>Id {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="self">self</span>.<span class="number">0</span>.fmt(f)
-    }
-}
-
-<span class="kw">impl </span>Id {
-    <span class="comment">// When 64-bit atomics are available, use a static `AtomicU64` counter to
-    // generate task IDs.
-    //
-    // Note(eliza): we _could_ just use `crate::loom::AtomicU64`, which switches
-    // between an atomic and mutex-based implementation here, rather than having
-    // two separate functions for targets with and without 64-bit atomics.
-    // However, because we can&#39;t use the mutex-based implementation in a static
-    // initializer directly, the 32-bit impl also has to use a `OnceCell`, and I
-    // thought it was nicer to avoid the `OnceCell` overhead on 64-bit
-    // platforms...
-    </span><span class="macro">cfg_has_atomic_u64! </span>{
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>next() -&gt; <span class="self">Self </span>{
-            <span class="kw">use </span>std::sync::atomic::{AtomicU64, Ordering::Relaxed};
-            <span class="kw">static </span>NEXT_ID: AtomicU64 = AtomicU64::new(<span class="number">1</span>);
-            <span class="self">Self</span>(NEXT_ID.fetch_add(<span class="number">1</span>, Relaxed))
-        }
-    }
-
-    <span class="macro">cfg_not_has_atomic_u64! </span>{
-        <span class="macro">cfg_has_const_mutex_new! </span>{
-            <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>next() -&gt; <span class="self">Self </span>{
-                <span class="kw">use </span><span class="kw">crate</span>::loom::sync::Mutex;
-                <span class="kw">static </span>NEXT_ID: Mutex&lt;u64&gt; = Mutex::const_new(<span class="number">1</span>);
-
-                <span class="kw">let </span><span class="kw-2">mut </span>lock = NEXT_ID.lock();
-                <span class="kw">let </span>id = <span class="kw-2">*</span>lock;
-                <span class="kw-2">*</span>lock += <span class="number">1</span>;
-                <span class="self">Self</span>(id)
-            }
-        }
-
-        <span class="macro">cfg_not_has_const_mutex_new! </span>{
-            <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>next() -&gt; <span class="self">Self </span>{
-                <span class="kw">use </span><span class="kw">crate</span>::util::once_cell::OnceCell;
-                <span class="kw">use </span><span class="kw">crate</span>::loom::sync::Mutex;
-
-                <span class="kw">fn </span>init_next_id() -&gt; Mutex&lt;u64&gt; {
-                    Mutex::new(<span class="number">1</span>)
-                }
-
-                <span class="kw">static </span>NEXT_ID: OnceCell&lt;Mutex&lt;u64&gt;&gt; = OnceCell::new();
-
-                <span class="kw">let </span>next_id = NEXT_ID.get(init_next_id);
-                <span class="kw">let </span><span class="kw-2">mut </span>lock = next_id.lock();
-                <span class="kw">let </span>id = <span class="kw-2">*</span>lock;
-                <span class="kw-2">*</span>lock += <span class="number">1</span>;
-                <span class="self">Self</span>(id)
-            }
-        }
-    }
-
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>as_u64(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u64 {
-        <span class="self">self</span>.<span class="number">0
-    </span>}
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="tokio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0 (69f9c33d7 2022-12-12)" ></div></body></html>

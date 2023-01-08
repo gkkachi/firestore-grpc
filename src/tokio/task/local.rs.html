@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-1.23.0/src/task/local.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>local.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../tokio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-1.24.1/src/task/local.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>local.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../tokio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -1174,29 +1174,11 @@
 <span id="1174">1174</span>
 <span id="1175">1175</span>
 <span id="1176">1176</span>
-<span id="1177">1177</span>
-<span id="1178">1178</span>
-<span id="1179">1179</span>
-<span id="1180">1180</span>
-<span id="1181">1181</span>
-<span id="1182">1182</span>
-<span id="1183">1183</span>
-<span id="1184">1184</span>
-<span id="1185">1185</span>
-<span id="1186">1186</span>
-<span id="1187">1187</span>
-<span id="1188">1188</span>
-<span id="1189">1189</span>
-<span id="1190">1190</span>
-<span id="1191">1191</span>
-<span id="1192">1192</span>
-<span id="1193">1193</span>
-<span id="1194">1194</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Runs `!Send` futures on the current thread.
 </span><span class="kw">use </span><span class="kw">crate</span>::loom::cell::UnsafeCell;
 <span class="kw">use </span><span class="kw">crate</span>::loom::sync::{Arc, Mutex};
-<span class="kw">use </span><span class="kw">crate</span>::loom::thread::{<span class="self">self</span>, ThreadId};
 <span class="kw">use </span><span class="kw">crate</span>::runtime::task::{<span class="self">self</span>, JoinHandle, LocalOwnedTasks, Task};
+<span class="kw">use </span><span class="kw">crate</span>::runtime::{context, ThreadId};
 <span class="kw">use </span><span class="kw">crate</span>::sync::AtomicWaker;
 <span class="kw">use </span><span class="kw">crate</span>::util::RcCell;
 
@@ -1471,12 +1453,10 @@
 }
 
 <span class="macro">tokio_thread_local!</span>(<span class="kw">static </span>CURRENT: LocalData = <span class="kw">const </span>{ LocalData {
-    thread_id: Cell::new(<span class="prelude-val">None</span>),
     ctx: RcCell::new(),
 } });
 
 <span class="kw">struct </span>LocalData {
-    thread_id: Cell&lt;<span class="prelude-ty">Option</span>&lt;ThreadId&gt;&gt;,
     ctx: RcCell&lt;Context&gt;,
 }
 
@@ -1573,12 +1553,14 @@
 <span class="kw">impl </span>LocalSet {
     <span class="doccomment">/// Returns a new local task set.
     </span><span class="kw">pub fn </span>new() -&gt; LocalSet {
+        <span class="kw">let </span>owner = context::thread_id().expect(<span class="string">&quot;cannot create LocalSet during thread shutdown&quot;</span>);
+
         LocalSet {
             tick: Cell::new(<span class="number">0</span>),
             context: Rc::new(Context {
                 shared: Arc::new(Shared {
                     local_state: LocalState {
-                        owner: thread_id().expect(<span class="string">&quot;cannot create LocalSet during thread shutdown&quot;</span>),
+                        owner,
                         owned: LocalOwnedTasks::new(),
                         local_queue: UnsafeCell::new(VecDeque::with_capacity(INITIAL_CAPACITY)),
                     },
@@ -2143,7 +2125,7 @@
 
                 <span class="comment">// We are on the thread that owns the `LocalSet`, so we can
                 // wake to the local queue.
-                </span><span class="kw">_ if </span>localdata.get_id() == <span class="prelude-val">Some</span>(<span class="self">self</span>.local_state.owner) =&gt; {
+                </span><span class="kw">_ if </span>context::thread_id().ok() == <span class="prelude-val">Some</span>(<span class="self">self</span>.local_state.owner) =&gt; {
                     <span class="kw">unsafe </span>{
                         <span class="comment">// Safety: we just checked that the thread ID matches
                         // the localset&#39;s owner, so this is safe.
@@ -2287,7 +2269,9 @@
             <span class="comment">// if we couldn&#39;t get the thread ID because we&#39;re dropping the local
             // data, skip the assertion --- the `Drop` impl is not going to be
             // called from another thread, because `LocalSet` is `!Send`
-            </span>thread_id().map(|id| id == <span class="self">self</span>.owner).unwrap_or(<span class="bool-val">true</span>),
+            </span>context::thread_id()
+                .map(|id| id == <span class="self">self</span>.owner)
+                .unwrap_or(<span class="bool-val">true</span>),
             <span class="string">&quot;`LocalSet`&#39;s local run queue must not be accessed by another thread!&quot;
         </span>);
     }
@@ -2296,26 +2280,6 @@
 <span class="comment">// This is `Send` because it is stored in `Shared`. It is up to the caller to
 // ensure they are on the same thread that owns the `LocalSet`.
 </span><span class="kw">unsafe impl </span>Send <span class="kw">for </span>LocalState {}
-
-<span class="kw">impl </span>LocalData {
-    <span class="kw">fn </span>get_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;ThreadId&gt; {
-        <span class="self">self</span>.thread_id.get()
-    }
-
-    <span class="kw">fn </span>get_or_insert_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ThreadId {
-        <span class="self">self</span>.thread_id.get().unwrap_or_else(|| {
-            <span class="kw">let </span>id = thread::current().id();
-            <span class="self">self</span>.thread_id.set(<span class="prelude-val">Some</span>(id));
-            id
-        })
-    }
-}
-
-<span class="kw">fn </span>thread_id() -&gt; <span class="prelude-ty">Option</span>&lt;ThreadId&gt; {
-    CURRENT
-        .try_with(|localdata| localdata.get_or_insert_id())
-        .ok()
-}
 
 <span class="attribute">#[cfg(all(test, not(loom)))]
 </span><span class="kw">mod </span>tests {
