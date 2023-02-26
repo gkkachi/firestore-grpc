@@ -50,7 +50,7 @@ var sourcesIndex = JSON.parse('{\
 "rustls":["",[["client",[],["common.rs","handy.rs","hs.rs","mod.rs","tls12.rs","tls13.rs"]],["manual",[],["features.rs","howto.rs","implvulns.rs","mod.rs","tlsvulns.rs"]],["msgs",[],["alert.rs","base.rs","ccs.rs","codec.rs","deframer.rs","enums.rs","fragmenter.rs","handshake.rs","hsjoiner.rs","macros.rs","message.rs","mod.rs","persist.rs"]],["server",[],["common.rs","handy.rs","hs.rs","mod.rs","tls12.rs","tls13.rs"]]],["anchors.rs","bs_debug.rs","check.rs","cipher.rs","error.rs","hash_hs.rs","key.rs","key_schedule.rs","keylog.rs","lib.rs","pemfile.rs","prf.rs","rand.rs","record_layer.rs","session.rs","sign.rs","stream.rs","suites.rs","ticketer.rs","vecbuf.rs","verify.rs","x509.rs"]],\
 "rustls_native_certs":["",[],["lib.rs","rustls.rs","unix.rs"]],\
 "sct":["",[],["lib.rs"]],\
-"slab":["",[],["lib.rs"]],\
+"slab":["",[],["builder.rs","lib.rs"]],\
 "socket2":["",[["sys",[],["unix.rs"]]],["lib.rs","sockaddr.rs","socket.rs","sockref.rs"]],\
 "spin":["",[],["lib.rs","mutex.rs","once.rs","rw_lock.rs"]],\
 "syn":["",[["gen",[],["clone.rs","debug.rs","eq.rs","gen_helper.rs","hash.rs","visit.rs","visit_mut.rs"]]],["attr.rs","await.rs","bigint.rs","buffer.rs","custom_keyword.rs","custom_punctuation.rs","data.rs","derive.rs","discouraged.rs","drops.rs","error.rs","export.rs","expr.rs","ext.rs","file.rs","generics.rs","group.rs","ident.rs","item.rs","lib.rs","lifetime.rs","lit.rs","lookahead.rs","mac.rs","macros.rs","op.rs","parse.rs","parse_macro_input.rs","parse_quote.rs","pat.rs","path.rs","print.rs","punctuated.rs","reserved.rs","sealed.rs","span.rs","spanned.rs","stmt.rs","thread.rs","token.rs","tt.rs","ty.rs","verbatim.rs","whitespace.rs"]],\
