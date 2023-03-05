@@ -14,15 +14,15 @@ use <code>spawn_local</code> if you want to stay within the <code>LocalSet</code
 
 <span class="attr">#[tokio::main]
 </span><span class="kw">async fn </span>main() {
-    <span class="kw">let </span>unsend_data = Rc::new(<span class="string">&quot;my unsend data...&quot;</span>);
+    <span class="kw">let </span>nonsend_data = Rc::new(<span class="string">&quot;my nonsend data...&quot;</span>);
 
     <span class="kw">let </span>local = task::LocalSet::new();
 
     <span class="comment">// Run the local task set.
     </span>local.run_until(<span class="kw">async move </span>{
-        <span class="kw">let </span>unsend_data = unsend_data.clone();
+        <span class="kw">let </span>nonsend_data = nonsend_data.clone();
         task::spawn_local(<span class="kw">async move </span>{
-            <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, unsend_data);
+            <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, nonsend_data);
             <span class="comment">// ...
         </span>}).<span class="kw">await</span>.unwrap();
     }).<span class="kw">await</span>;

@@ -11,14 +11,14 @@ futures to run together on the same thread.</p>
 </span><span class="kw">async fn </span>main() {
     <span class="comment">// `Rc` does not implement `Send`, and thus may not be sent between
     // threads safely.
-    </span><span class="kw">let </span>unsend_data = Rc::new(<span class="string">&quot;my unsend data...&quot;</span>);
+    </span><span class="kw">let </span>nonsend_data = Rc::new(<span class="string">&quot;my nonsend data...&quot;</span>);
 
-    <span class="kw">let </span>unsend_data = unsend_data.clone();
-    <span class="comment">// Because the `async` block here moves `unsend_data`, the future is `!Send`.
+    <span class="kw">let </span>nonsend_data = nonsend_data.clone();
+    <span class="comment">// Because the `async` block here moves `nonsend_data`, the future is `!Send`.
     // Since `tokio::spawn` requires the spawned future to implement `Send`, this
     // will not compile.
     </span>tokio::spawn(<span class="kw">async move </span>{
-        <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, unsend_data);
+        <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, nonsend_data);
         <span class="comment">// ...
     </span>}).<span class="kw">await</span>.unwrap();
 }</code></pre></div>
@@ -33,18 +33,18 @@ local task set, we can use <a href="fn.spawn_local.html"><code>task::spawn_local
 
 <span class="attr">#[tokio::main]
 </span><span class="kw">async fn </span>main() {
-    <span class="kw">let </span>unsend_data = Rc::new(<span class="string">&quot;my unsend data...&quot;</span>);
+    <span class="kw">let </span>nonsend_data = Rc::new(<span class="string">&quot;my nonsend data...&quot;</span>);
 
     <span class="comment">// Construct a local task set that can run `!Send` futures.
     </span><span class="kw">let </span>local = task::LocalSet::new();
 
     <span class="comment">// Run the local task set.
     </span>local.run_until(<span class="kw">async move </span>{
-        <span class="kw">let </span>unsend_data = unsend_data.clone();
+        <span class="kw">let </span>nonsend_data = nonsend_data.clone();
         <span class="comment">// `spawn_local` ensures that the future is spawned on the local
         // task set.
         </span>task::spawn_local(<span class="kw">async move </span>{
-            <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, unsend_data);
+            <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, nonsend_data);
             <span class="comment">// ...
         </span>}).<span class="kw">await</span>.unwrap();
     }).<span class="kw">await</span>;
@@ -63,18 +63,18 @@ complete. For example,</p>
 
 <span class="attr">#[tokio::main]
 </span><span class="kw">async fn </span>main() {
-    <span class="kw">let </span>unsend_data = Rc::new(<span class="string">&quot;world&quot;</span>);
+    <span class="kw">let </span>nonsend_data = Rc::new(<span class="string">&quot;world&quot;</span>);
     <span class="kw">let </span>local = task::LocalSet::new();
 
-    <span class="kw">let </span>unsend_data2 = unsend_data.clone();
+    <span class="kw">let </span>nonsend_data2 = nonsend_data.clone();
     local.spawn_local(<span class="kw">async move </span>{
         <span class="comment">// ...
-        </span><span class="macro">println!</span>(<span class="string">&quot;hello {}&quot;</span>, unsend_data2)
+        </span><span class="macro">println!</span>(<span class="string">&quot;hello {}&quot;</span>, nonsend_data2)
     });
 
     local.spawn_local(<span class="kw">async move </span>{
         time::sleep(time::Duration::from_millis(<span class="number">100</span>)).<span class="kw">await</span>;
-        <span class="macro">println!</span>(<span class="string">&quot;goodbye {}&quot;</span>, unsend_data)
+        <span class="macro">println!</span>(<span class="string">&quot;goodbye {}&quot;</span>, nonsend_data)
     });
 
     <span class="comment">// ...
