@@ -14,12 +14,12 @@
 
 syntax = "proto3";
 
-package google.analytics.admin.v1alpha;
+package google.analytics.admin.v1beta;
 
-option go_package = "google.golang.org/genproto/googleapis/analytics/admin/v1alpha;admin";
+option go_package = "google.golang.org/genproto/googleapis/analytics/admin/v1beta;admin";
 option java_multiple_files = true;
 option java_outer_classname = "AccessReportProto";
-option java_package = "com.google.analytics.admin.v1alpha";
+option java_package = "com.google.analytics.admin.v1beta";
 
 // Dimensions are attributes of your data. For example, the dimension
 // `userEmail` indicates the email of the user that accessed reporting data.
