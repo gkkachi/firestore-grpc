@@ -2,7 +2,7 @@ var sourcesIndex = JSON.parse('{\
 "anyhow":["",[],["backtrace.rs","chain.rs","context.rs","ensure.rs","error.rs","fmt.rs","kind.rs","lib.rs","macros.rs","ptr.rs","wrapper.rs"]],\
 "async_stream":["",[],["async_stream.rs","lib.rs","next.rs","yielder.rs"]],\
 "async_stream_impl":["",[],["lib.rs"]],\
-"async_trait":["",[],["args.rs","bound.rs","expand.rs","lib.rs","lifetime.rs","parse.rs","receiver.rs"]],\
+"async_trait":["",[],["args.rs","bound.rs","expand.rs","lib.rs","lifetime.rs","parse.rs","receiver.rs","verbatim.rs"]],\
 "base64":["",[["read",[],["decoder.rs","mod.rs"]],["write",[],["encoder.rs","encoder_string_writer.rs","mod.rs"]]],["chunked_encoder.rs","decode.rs","display.rs","encode.rs","lib.rs","tables.rs"]],\
 "bytes":["",[["buf",[],["buf_impl.rs","buf_mut.rs","chain.rs","iter.rs","limit.rs","mod.rs","reader.rs","take.rs","uninit_slice.rs","vec_deque.rs","writer.rs"]],["fmt",[],["debug.rs","hex.rs","mod.rs"]]],["bytes.rs","bytes_mut.rs","lib.rs","loom.rs"]],\
 "cfg_if":["",[],["lib.rs"]],\
