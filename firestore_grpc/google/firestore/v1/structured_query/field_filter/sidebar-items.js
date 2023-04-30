@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Operator","A field filter operator."]]};
+window.SIDEBAR_ITEMS = {"enum":["Operator"]};

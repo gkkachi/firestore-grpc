@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["certs","Extract all the certificates from rd, and return a vec of `key::Certificate`s containing the der-format contents."],["pkcs8_private_keys","Extract all PKCS8-encoded private keys from rd, and return a vec of `key::PrivateKey`s containing the der-format contents."],["rsa_private_keys","Extract all RSA private keys from rd, and return a vec of `key::PrivateKey`s containing the der-format contents."]]};
+window.SIDEBAR_ITEMS = {"fn":["certs","pkcs8_private_keys","rsa_private_keys"]};

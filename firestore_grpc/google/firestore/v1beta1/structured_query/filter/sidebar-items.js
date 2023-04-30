@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["FilterType","The type of filter."]]};
+window.SIDEBAR_ITEMS = {"enum":["FilterType"]};

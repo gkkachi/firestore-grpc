@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["IdempotencyLevel","Is this method side-effect-free (or safe in HTTP parlance), or idempotent, or neither? HTTP based RPC implementation may choose GET verb for safe methods, and PUT verb for idempotent methods instead of the default POST."]]};
+window.SIDEBAR_ITEMS = {"enum":["IdempotencyLevel"]};

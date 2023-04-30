@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/work/firestore-grpc/firestore-grpc/target/debug/build/firestore_grpc-4c438b64d397eca1/out/google.firestore.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.firestore.v1.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../../../../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../../../../../../../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../../../../../../../../../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../../../../../../../../../../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../../../../../../../../../../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../../../../../../../../../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../../../../../../../../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../../../../../../../../../../source-files.js"></script><script defer src="../../../../../../../../../../../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../../../../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../../../../../../../../../firestore_grpc/index.html"><img class="rust-logo" src="../../../../../../../../../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../../../../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../../../../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../../../../../../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/work/firestore-grpc/firestore-grpc/target/debug/build/firestore_grpc-bb09fc1983cb8242/out/google.firestore.v1.rs`."><title>google.firestore.v1.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../../../../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../../../../../../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../../../../../../../../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../../../../../../../../../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../../../../../../../../../../../static.files/ayu-be46fdc453a55015.css"><script src="../../../../../../../../../../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../../../../../../../../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../../../../../../../../../../source-files.js"></script><script defer src="../../../../../../../../../../../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../../../../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../../../../../../../../../firestore_grpc/index.html"><img class="rust-logo" src="../../../../../../../../../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../../../../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../../../../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../../../../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2322,6 +2322,20 @@
 <a href="#2322" id="2322">2322</a>
 <a href="#2323" id="2323">2323</a>
 <a href="#2324" id="2324">2324</a>
+<a href="#2325" id="2325">2325</a>
+<a href="#2326" id="2326">2326</a>
+<a href="#2327" id="2327">2327</a>
+<a href="#2328" id="2328">2328</a>
+<a href="#2329" id="2329">2329</a>
+<a href="#2330" id="2330">2330</a>
+<a href="#2331" id="2331">2331</a>
+<a href="#2332" id="2332">2332</a>
+<a href="#2333" id="2333">2333</a>
+<a href="#2334" id="2334">2334</a>
+<a href="#2335" id="2335">2335</a>
+<a href="#2336" id="2336">2336</a>
+<a href="#2337" id="2337">2337</a>
+<a href="#2338" id="2338">2338</a>
 </pre><pre class="rust"><code><span class="doccomment">/// A Firestore document.
 ///
 /// Must not exceed 1 MiB - 4 bytes.
@@ -2557,7 +2571,11 @@
 <span class="doccomment">/// A Firestore query.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>StructuredQuery {
-    <span class="doccomment">/// The projection to return.
+    <span class="doccomment">/// Optional sub-set of the fields to return.
+    ///
+    /// This acts as a \[DocumentMask][google.firestore.v1.DocumentMask\] over the
+    /// documents returned from a query. When not set, assumes that the caller
+    /// wants all fields returned.
     </span><span class="attr">#[prost(message, optional, tag = <span class="string">&quot;1&quot;</span>)]
     </span><span class="kw">pub </span>select: ::core::option::Option&lt;structured_query::Projection&gt;,
     <span class="doccomment">/// The collections to query.
@@ -2782,23 +2800,26 @@
             ///
             /// Requires:
             ///
-            /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
-            /// * No other `IN` or `ARRAY_CONTAINS_ANY` or `NOT_IN`.
+            /// * That `value` is a non-empty `ArrayValue`, subject to disjunction
+            ///   limits.
+            /// * No `NOT_IN` filters in the same query.
             </span>In = <span class="number">8</span>,
             <span class="doccomment">/// The given `field` is an array that contains any of the values in the
             /// given array.
             ///
             /// Requires:
             ///
-            /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
-            /// * No other `IN` or `ARRAY_CONTAINS_ANY` or `NOT_IN`.
+            /// * That `value` is a non-empty `ArrayValue`, subject to disjunction
+            ///   limits.
+            /// * No other `ARRAY_CONTAINS_ANY` filters within the same disjunction.
+            /// * No `NOT_IN` filters in the same query.
             </span>ArrayContainsAny = <span class="number">9</span>,
             <span class="doccomment">/// The value of the `field` is not in the given array.
             ///
             /// Requires:
             ///
             /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
-            /// * No other `IN`, `ARRAY_CONTAINS_ANY`, `NOT_IN`, `NOT_EQUAL`,
+            /// * No other `OR`, `IN`, `ARRAY_CONTAINS_ANY`, `NOT_IN`, `NOT_EQUAL`,
             ///   `IS_NOT_NULL`, or `IS_NOT_NAN`.
             /// * That `field` comes first in the `order_by`.
             </span>NotIn = <span class="number">10</span>,
@@ -2913,7 +2934,7 @@
 }
 <span class="doccomment">/// Nested message and enum types in `StructuredAggregationQuery`.
 </span><span class="kw">pub mod </span>structured_aggregation_query {
-    <span class="doccomment">/// Defines a aggregation that produces a single result.
+    <span class="doccomment">/// Defines an aggregation that produces a single result.
     </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
     </span><span class="kw">pub struct </span>Aggregation {
         <span class="doccomment">/// Optional. Optional name of the field to store the result of the
@@ -2927,7 +2948,7 @@
         ///   COUNT_UP_TO(1) AS count_up_to_1,
         ///   COUNT_UP_TO(2),
         ///   COUNT_UP_TO(3) AS count_up_to_3,
-        ///   COUNT_UP_TO(4)
+        ///   COUNT(*)
         /// OVER (
         ///   ...
         /// );
@@ -2940,7 +2961,7 @@
         ///   COUNT_UP_TO(1) AS count_up_to_1,
         ///   COUNT_UP_TO(2) AS field_1,
         ///   COUNT_UP_TO(3) AS count_up_to_3,
-        ///   COUNT_UP_TO(4) AS field_2
+        ///   COUNT(*) AS field_2
         /// OVER (
         ///   ...
         /// );
@@ -2969,7 +2990,7 @@
             /// count.
             ///
             /// This provides a way to set an upper bound on the number of documents
-            /// to scan, limiting latency and cost.
+            /// to scan, limiting latency, and cost.
             ///
             /// Unspecified is interpreted as no bound.
             ///
@@ -3788,7 +3809,14 @@
     /// a new transaction.
     </span><span class="attr">#[prost(bytes = <span class="string">&quot;vec&quot;</span>, tag = <span class="string">&quot;2&quot;</span>)]
     </span><span class="kw">pub </span>transaction: ::prost::alloc::vec::Vec&lt;u8&gt;,
-    <span class="doccomment">/// The time at which the aggregate value is valid for.
+    <span class="doccomment">/// The time at which the aggregate result was computed. This is always
+    /// monotonically increasing; in this case, the previous AggregationResult in
+    /// the result stream are guaranteed not to have changed between their
+    /// `read_time` and this one.
+    ///
+    /// If the query returns no results, a response with `read_time` and no
+    /// `result` will be sent, and this represents the time at which the query
+    /// was run.
     </span><span class="attr">#[prost(message, optional, tag = <span class="string">&quot;3&quot;</span>)]
     </span><span class="kw">pub </span>read_time: ::core::option::Option&lt;::prost_types::Timestamp&gt;,
 }
@@ -4547,7 +4575,7 @@
             <span class="self">self</span>.inner.unary(request.into_request(), path, codec).<span class="kw">await
         </span>}
         <span class="attr">#[doc = <span class="string">&quot; Streams batches of document updates and deletes, in order. This method is&quot;</span>]
-        #[doc = <span class="string">&quot; only available via the gRPC API (not REST).&quot;</span>]
+        #[doc = <span class="string">&quot; only available via gRPC or WebChannel (not REST).&quot;</span>]
         </span><span class="kw">pub async fn </span>write(
             <span class="kw-2">&amp;mut </span><span class="self">self</span>,
             request: <span class="kw">impl </span>tonic::IntoStreamingRequest&lt;Message = <span class="kw">super</span>::WriteRequest&gt;,
@@ -4565,8 +4593,8 @@
                 .streaming(request.into_streaming_request(), path, codec)
                 .<span class="kw">await
         </span>}
-        <span class="attr">#[doc = <span class="string">&quot; Listens to changes. This method is only available via the gRPC API (not&quot;</span>]
-        #[doc = <span class="string">&quot; REST).&quot;</span>]
+        <span class="attr">#[doc = <span class="string">&quot; Listens to changes. This method is only available via gRPC or WebChannel&quot;</span>]
+        #[doc = <span class="string">&quot; (not REST).&quot;</span>]
         </span><span class="kw">pub async fn </span>listen(
             <span class="kw-2">&amp;mut </span><span class="self">self</span>,
             request: <span class="kw">impl </span>tonic::IntoStreamingRequest&lt;Message = <span class="kw">super</span>::ListenRequest&gt;,
@@ -4647,4 +4675,4 @@
     }
 }
 </code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../../../../../../../../../../" data-static-root-path="../../../../../../../../../../../../static.files/" data-current-crate="firestore_grpc" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.2 (9eb3afe9e 2023-03-27)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>
+</section></main><div id="rustdoc-vars" data-root-path="../../../../../../../../../../../../" data-static-root-path="../../../../../../../../../../../../static.files/" data-current-crate="firestore_grpc" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>

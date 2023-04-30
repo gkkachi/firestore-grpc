@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["EnumReservedRange","Range of reserved numeric values. Reserved values may not be used by entries in the same enum. Reserved ranges may not overlap."]]};
+window.SIDEBAR_ITEMS = {"struct":["EnumReservedRange"]};

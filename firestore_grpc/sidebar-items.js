@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["google",""]]};
+window.SIDEBAR_ITEMS = {"mod":["google"]};

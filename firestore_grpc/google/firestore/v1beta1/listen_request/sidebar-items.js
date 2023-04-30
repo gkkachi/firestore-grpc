@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["TargetChange","The supported target changes."]]};
+window.SIDEBAR_ITEMS = {"enum":["TargetChange"]};

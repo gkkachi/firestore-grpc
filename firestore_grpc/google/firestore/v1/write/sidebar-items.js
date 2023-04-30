@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Operation","The operation to execute."]]};
+window.SIDEBAR_ITEMS = {"enum":["Operation"]};

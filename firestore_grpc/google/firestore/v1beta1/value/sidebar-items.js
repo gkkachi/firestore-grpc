@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["ValueType","Must have a value set."]]};
+window.SIDEBAR_ITEMS = {"enum":["ValueType"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["QueryType","The query to run."]]};
+window.SIDEBAR_ITEMS = {"enum":["QueryType"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["firestore",""],["rpc",""],["type",""]]};
+window.SIDEBAR_ITEMS = {"mod":["firestore","rpc","type"]};

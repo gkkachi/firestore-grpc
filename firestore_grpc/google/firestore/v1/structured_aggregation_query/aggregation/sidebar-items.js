@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Operator","The type of aggregation to perform, required."]],"struct":[["Count","Count of documents that match the query."]]};
+window.SIDEBAR_ITEMS = {"enum":["Operator"],"struct":["Count"]};

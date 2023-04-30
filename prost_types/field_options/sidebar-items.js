@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["CType",""],["JsType",""]]};
+window.SIDEBAR_ITEMS = {"enum":["CType","JsType"]};

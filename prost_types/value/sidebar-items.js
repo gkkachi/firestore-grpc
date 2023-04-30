@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Kind","The kind of value."]]};
+window.SIDEBAR_ITEMS = {"enum":["Kind"]};
