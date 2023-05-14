@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/pin-project-internal-1.0.12/src/pin_project/derive.rs`."><title>derive.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-be46fdc453a55015.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../pin_project_internal/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/pin-project-internal-1.1.0/src/pin_project/derive.rs`."><title>derive.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-be46fdc453a55015.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../pin_project_internal/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1120,17 +1120,12 @@
 <a href="#1120" id="1120">1120</a>
 <a href="#1121" id="1121">1121</a>
 <a href="#1122" id="1122">1122</a>
-<a href="#1123" id="1123">1123</a>
-<a href="#1124" id="1124">1124</a>
-<a href="#1125" id="1125">1125</a>
-<a href="#1126" id="1126">1126</a>
-<a href="#1127" id="1127">1127</a>
 </pre><pre class="rust"><code><span class="kw">use </span>proc_macro2::{Delimiter, Group, Span, TokenStream};
 <span class="kw">use </span>quote::{format_ident, quote, quote_spanned, ToTokens};
 <span class="kw">use </span>syn::{
-    parse_quote, token, visit_mut::VisitMut, Attribute, Data, DataEnum, DeriveInput, Error, Field,
-    Fields, FieldsNamed, FieldsUnnamed, Generics, Ident, Index, Lifetime, LifetimeDef, Meta,
-    MetaList, MetaNameValue, NestedMeta, <span class="prelude-ty">Result</span>, Token, Type, Variant, Visibility, WhereClause,
+    parse_quote, punctuated::Punctuated, token, visit_mut::VisitMut, Attribute, Data, DataEnum,
+    DeriveInput, Error, Field, Fields, FieldsNamed, FieldsUnnamed, Generics, Ident, Index,
+    Lifetime, LifetimeParam, Meta, <span class="prelude-ty">Result</span>, Token, Type, Variant, Visibility, WhereClause,
 };
 
 <span class="kw">use super</span>::{
@@ -1362,7 +1357,7 @@
     }
 }
 
-<span class="attr">#[derive(Copy, Clone, Eq, PartialEq)]
+<span class="attr">#[derive(Copy, Clone, PartialEq)]
 </span><span class="kw">enum </span>TypeKind {
     Enum,
     Struct,
@@ -1432,7 +1427,7 @@
 <span class="kw">fn </span>validate_enum(brace_token: token::Brace, variants: <span class="kw-2">&amp;</span>Variants) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
     <span class="kw">if </span>variants.is_empty() {
         <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(
-            brace_token.span,
+            brace_token.span.join(),
             <span class="string">&quot;#[pin_project] attribute may not be used on enums without variants&quot;</span>,
         ));
     }
@@ -1696,7 +1691,9 @@
     <span class="kw">let </span><span class="kw-2">mut </span>proj_move = TokenStream::new();
     <span class="kw">let </span><span class="kw-2">mut </span>pinned_bindings = Vec::with_capacity(fields.len());
 
-    <span class="kw">for </span>(i, Field { attrs, vis, ident, colon_token, ty }) <span class="kw">in </span>fields.iter().enumerate() {
+    <span class="kw">for </span>(i, Field { attrs, vis, ident, colon_token, ty, mutability: <span class="kw">_ </span>}) <span class="kw">in
+        </span>fields.iter().enumerate()
+    {
         <span class="kw">let </span>binding = ident.clone().unwrap_or_else(|| <span class="macro">format_ident!</span>(<span class="string">&quot;_{}&quot;</span>, i));
         proj_pat.extend(<span class="macro">quote!</span>(#binding,));
         <span class="kw">let </span>lifetime = <span class="kw-2">&amp;</span>cx.proj.lifetime;
@@ -1895,7 +1892,7 @@
             // This ensures that any unused type parameters
             // don&#39;t end up with `Unpin` bounds.
             </span><span class="kw">let </span>lifetime_fields = cx.orig.generics.lifetimes().enumerate().map(
-                |(i, LifetimeDef { lifetime, .. })| {
+                |(i, LifetimeParam { lifetime, .. })| {
                     <span class="kw">let </span>field_ident = <span class="macro">format_ident!</span>(<span class="string">&quot;__lifetime{}&quot;</span>, i);
                     <span class="macro">quote!</span>(#field_ident: <span class="kw-2">&amp;</span>#lifetime ())
                 },
@@ -2143,33 +2140,26 @@
 /// - Generates a function that borrows fields without an unsafe block and
 ///   forbidding `unaligned_references` lint.
 </span><span class="kw">fn </span>ensure_not_packed(orig: <span class="kw-2">&amp;</span>OriginalType&lt;<span class="lifetime">&#39;_</span>&gt;, fields: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Fields&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;TokenStream&gt; {
-    <span class="kw">for </span>meta <span class="kw">in </span>orig.attrs.iter().filter_map(|attr| attr.parse_meta().ok()) {
-        <span class="kw">if let </span>Meta::List(list) = meta {
+    <span class="kw">for </span>attr <span class="kw">in </span>orig.attrs {
+        <span class="kw">if let </span>Meta::List(<span class="kw-2">ref </span>list) = attr.meta {
             <span class="kw">if </span>list.path.is_ident(<span class="string">&quot;repr&quot;</span>) {
-                <span class="kw">for </span>repr <span class="kw">in </span>list.nested.iter() {
-                    <span class="kw">match </span>repr {
-                        NestedMeta::Meta(Meta::Path(path))
-                        | NestedMeta::Meta(Meta::List(MetaList { path, .. }))
-                        | NestedMeta::Meta(Meta::NameValue(MetaNameValue { path, .. })) =&gt; {
-                            <span class="kw">if </span>path.is_ident(<span class="string">&quot;packed&quot;</span>) {
-                                <span class="kw">let </span>msg = <span class="kw">if </span>fields.is_none() {
-                                    <span class="comment">// #[repr(packed)] cannot be apply on enums and will be rejected by rustc.
-                                    // However, we should not rely on the behavior of rustc that rejects this.
-                                    // https://github.com/taiki-e/pin-project/pull/324#discussion_r612388001
-                                    </span><span class="string">&quot;#[repr(packed)] attribute should be applied to a struct or union&quot;
-                                </span>} <span class="kw">else if let </span>NestedMeta::Meta(Meta::NameValue(..)) = repr {
-                                    <span class="comment">// #[repr(packed = &quot;&quot;)] is not valid format of #[repr(packed)] and will be
-                                    // rejected by rustc.
-                                    // However, we should not rely on the behavior of rustc that rejects this.
-                                    // https://github.com/taiki-e/pin-project/pull/324#discussion_r612388001
-                                    </span><span class="string">&quot;#[repr(packed)] attribute should not be name-value pair&quot;
-                                </span>} <span class="kw">else </span>{
-                                    <span class="string">&quot;#[pin_project] attribute may not be used on #[repr(packed)] types&quot;
-                                </span>};
-                                <span class="macro">bail!</span>(repr, msg);
-                            }
-                        }
-                        NestedMeta::Lit(..) =&gt; {}
+                <span class="kw">for </span>repr <span class="kw">in </span>list.parse_args_with(Punctuated::&lt;Meta, <span class="macro">Token!</span>[,]&gt;::parse_terminated)<span class="question-mark">? </span>{
+                    <span class="kw">if </span>repr.path().is_ident(<span class="string">&quot;packed&quot;</span>) {
+                        <span class="kw">let </span>msg = <span class="kw">if </span>fields.is_none() {
+                            <span class="comment">// #[repr(packed)] cannot be apply on enums and will be rejected by rustc.
+                            // However, we should not rely on the behavior of rustc that rejects this.
+                            // https://github.com/taiki-e/pin-project/pull/324#discussion_r612388001
+                            </span><span class="string">&quot;#[repr(packed)] attribute should be applied to a struct or union&quot;
+                        </span>} <span class="kw">else if </span>repr.require_name_value().is_ok() {
+                            <span class="comment">// #[repr(packed = &quot;&quot;)] is not valid format of #[repr(packed)] and will be
+                            // rejected by rustc.
+                            // However, we should not rely on the behavior of rustc that rejects this.
+                            // https://github.com/taiki-e/pin-project/pull/324#discussion_r612388001
+                            </span><span class="string">&quot;#[repr(packed)] attribute should not be name-value pair&quot;
+                        </span>} <span class="kw">else </span>{
+                            <span class="string">&quot;#[pin_project] attribute may not be used on #[repr(packed)] types&quot;
+                        </span>};
+                        <span class="macro">bail!</span>(repr, msg);
                     }
                 }
             }
@@ -2190,10 +2180,10 @@
     // ```rust
     // #[forbid(unaligned_references)]
     // fn assert_not_repr_packed(val: &amp;MyStruct) {
-    //     let _field1 = &amp;val.field1;
-    //     let _field2 = &amp;val.field2;
+    //     let _field_1 = &amp;val.field_1;
+    //     let _field_2 = &amp;val.field_2;
     //     ...
-    //     let _fieldn = &amp;val.fieldn;
+    //     let _field_n = &amp;val.field_n;
     // }
     // ```
     //
