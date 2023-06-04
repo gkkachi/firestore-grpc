@@ -14,20 +14,20 @@
 
 syntax = "proto3";
 
-package google.cloud.aiplatform.v1beta1;
+package google.cloud.aiplatform.v1;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "google/cloud/aiplatform/v1beta1/machine_resources.proto";
-import "google/cloud/aiplatform/v1beta1/model.proto";
+import "google/cloud/aiplatform/v1/machine_resources.proto";
+import "google/cloud/aiplatform/v1/model.proto";
 
-option csharp_namespace = "Google.Cloud.AIPlatform.V1Beta1";
-option go_package = "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb;aiplatformpb";
+option csharp_namespace = "Google.Cloud.AIPlatform.V1";
+option go_package = "cloud.google.com/go/aiplatform/apiv1/aiplatformpb;aiplatformpb";
 option java_multiple_files = true;
 option java_outer_classname = "PublisherModelProto";
-option java_package = "com.google.cloud.aiplatform.v1beta1";
-option php_namespace = "Google\\Cloud\\AIPlatform\\V1beta1";
-option ruby_package = "Google::Cloud::AIPlatform::V1beta1";
+option java_package = "com.google.cloud.aiplatform.v1";
+option php_namespace = "Google\\Cloud\\AIPlatform\\V1";
+option ruby_package = "Google::Cloud::AIPlatform::V1";
 
 // A Model Garden Publisher Model.
 message PublisherModel {
@@ -233,7 +233,7 @@ message PublisherModel {
 
   // Optional. The schemata that describes formats of the PublisherModel's
   // predictions and explanations as given and returned via
-  // [PredictionService.Predict][google.cloud.aiplatform.v1beta1.PredictionService.Predict].
+  // [PredictionService.Predict][google.cloud.aiplatform.v1.PredictionService.Predict].
   PredictSchemata predict_schemata = 31
       [(google.api.field_behavior) = OPTIONAL];
 }
