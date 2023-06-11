@@ -489,6 +489,15 @@ service ClusterManager {
     option (google.api.method_signature) = "parent";
   }
 
+  // Checks the cluster compatibility with Autopilot mode, and returns a list of
+  // compatibility issues.
+  rpc CheckAutopilotCompatibility(CheckAutopilotCompatibilityRequest)
+      returns (CheckAutopilotCompatibilityResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/locations/*/clusters/*}:checkAutopilotCompatibility"
+    };
+  }
+
   // Fetches locations that offer Google Kubernetes Engine.
   rpc ListLocations(ListLocationsRequest) returns (ListLocationsResponse) {
     option (google.api.http) = {
@@ -1843,6 +1852,9 @@ message Cluster {
   // creation.
   bool enable_kubernetes_alpha = 14;
 
+  // Kubernetes open source beta apis enabled on the cluster. Only beta apis.
+  K8sBetaAPIConfig enable_k8s_beta_apis = 143;
+
   // The resource labels for the cluster to use to annotate any related
   // Google Compute Engine resources.
   map<string, string> resource_labels = 15;
@@ -2086,6 +2098,15 @@ message Cluster {
 
   // Fleet information for the cluster.
   Fleet fleet = 140;
+
+  // Enable/Disable Security Posture API features for the cluster.
+  SecurityPostureConfig security_posture_config = 145;
+}
+
+// Kubernetes open source beta apis enabled on the cluster.
+message K8sBetaAPIConfig {
+  // api name, e.g. storage.k8s.io/v1beta1/csistoragecapacities.
+  repeated string enabled_apis = 1;
 }
 
 // WorkloadConfig defines the flags to enable or disable the
@@ -2137,6 +2158,40 @@ message ProtectConfig {
 
   // Sets which mode to use for Protect workload vulnerability scanning feature.
   optional WorkloadVulnerabilityMode workload_vulnerability_mode = 2;
+}
+
+// SecurityPostureConfig defines the flags needed to enable/disable features for
+// the Security Posture API.
+message SecurityPostureConfig {
+  // Mode defines enablement mode for GKE Security posture features.
+  enum Mode {
+    // Default value not specified.
+    MODE_UNSPECIFIED = 0;
+
+    // Disables Security Posture features on the cluster.
+    DISABLED = 1;
+
+    // Applies Security Posture features on the cluster.
+    BASIC = 2;
+  }
+
+  // VulnerabilityMode defines enablement mode for vulnerability scanning.
+  enum VulnerabilityMode {
+    // Default value not specified.
+    VULNERABILITY_MODE_UNSPECIFIED = 0;
+
+    // Disables vulnerability scanning on the cluster.
+    VULNERABILITY_DISABLED = 1;
+
+    // Applies basic vulnerability scanning on the cluster.
+    VULNERABILITY_BASIC = 2;
+  }
+
+  // Sets which mode to use for Security Posture features.
+  optional Mode mode = 1;
+
+  // Sets which mode to use for vulnerability scanning.
+  optional VulnerabilityMode vulnerability_mode = 2;
 }
 
 // Subset of Nodepool message that has defaults.
@@ -2383,6 +2438,21 @@ message ClusterUpdate {
   // The pod ranges specified here must have been specified earlier in the
   // 'additional_pod_ranges_config' argument.
   AdditionalPodRangesConfig removed_additional_pod_ranges_config = 121;
+
+  // Kubernetes open source beta apis enabled on the cluster. Only beta apis
+  K8sBetaAPIConfig enable_k8s_beta_apis = 122;
+
+  // Enable/Disable Security Posture API features for the cluster.
+  SecurityPostureConfig desired_security_posture_config = 124;
+
+  // Enable/Disable FQDN Network Policy for the cluster.
+  optional bool desired_enable_fqdn_network_policy = 126;
+
+  // The desired workload policy configuration for the autopilot cluster.
+  WorkloadPolicyConfig desired_autopilot_workload_policy_config = 128;
+
+  // Beta APIs enabled for cluster.
+  K8sBetaAPIConfig desired_k8s_beta_apis = 131;
 }
 
 // AdditionalPodRangesConfig is the configuration for additional pod secondary
@@ -3291,6 +3361,19 @@ message ServerConfig {
   map<string, WindowsVersions> windows_version_maps = 10;
 }
 
+// Best effort provisioning.
+message BestEffortProvisioning {
+  // When this is enabled, cluster/node pool creations will ignore non-fatal
+  // errors like stockout to best provision as many nodes as possible right now
+  // and eventually bring up all target number of nodes
+  bool enabled = 1;
+
+  // Minimum number of nodes to be provisioned to be considered as succeeded,
+  // and the rest of nodes will be provisioned gradually and eventually when
+  // stockout issue has been resolved.
+  int32 min_provision_nodes = 2;
+}
+
 // Windows server versions.
 message WindowsVersions {
   // Windows server version.
@@ -3706,6 +3789,9 @@ message NodePool {
   // fields, and may be sent on update requests to ensure the client has an
   // up-to-date value before proceeding.
   string etag = 110;
+
+  // Enable best effort provisioning for nodes
+  BestEffortProvisioning best_effort_provisioning = 113;
 }
 
 // NodeManagement defines the set of node management services turned on for the
@@ -4283,6 +4369,9 @@ message AcceleratorConfig {
 
   // The configuration for GPU sharing options.
   optional GPUSharingConfig gpu_sharing_config = 5;
+
+  // The configuration for auto installation of GPU driver.
+  optional GPUDriverInstallationConfig gpu_driver_installation_config = 6;
 }
 
 // GPUSharingConfig represents the GPU sharing configuration for Hardware
@@ -4302,6 +4391,28 @@ message GPUSharingConfig {
 
   // The type of GPU sharing strategy to enable on the GPU node.
   optional GPUSharingStrategy gpu_sharing_strategy = 2;
+}
+
+// GPUDriverInstallationConfig specifies the version of GPU driver to be auto
+// installed.
+message GPUDriverInstallationConfig {
+  // The GPU driver version to install.
+  enum GPUDriverVersion {
+    // Default value is to not install any GPU driver.
+    GPU_DRIVER_VERSION_UNSPECIFIED = 0;
+
+    // Disable GPU driver auto installation and needs manual installation
+    INSTALLATION_DISABLED = 1;
+
+    // "Default" GPU driver in COS and Ubuntu.
+    DEFAULT = 2;
+
+    // "Latest" GPU driver in COS.
+    LATEST = 3;
+  }
+
+  // Mode for how the GPU driver is installed.
+  optional GPUDriverVersion gpu_driver_version = 1;
 }
 
 // ManagedPrometheusConfig defines the configuration for
@@ -4556,6 +4667,9 @@ message NetworkConfig {
   // GatewayAPIConfig contains the desired config of Gateway API on this
   // cluster.
   GatewayAPIConfig gateway_api_config = 16;
+
+  // Whether FQDN Network Policy is enabled on this cluster.
+  optional bool enable_fqdn_network_policy = 19;
 }
 
 // GatewayAPIConfig contains the desired config of Gateway API on this cluster.
@@ -4953,6 +5067,64 @@ message GetJSONWebKeysResponse {
   repeated Jwk keys = 1;
 }
 
+// CheckAutopilotCompatibilityRequest requests getting the blockers for the
+// given operation in the cluster.
+message CheckAutopilotCompatibilityRequest {
+  // The name (project, location, cluster) of the cluster to retrieve.
+  // Specified in the format `projects/*/locations/*/clusters/*`.
+  string name = 1;
+}
+
+// AutopilotCompatibilityIssue contains information about a specific
+// compatibility issue with Autopilot mode.
+message AutopilotCompatibilityIssue {
+  // The type of the reported issue.
+  enum IssueType {
+    // Default value, should not be used.
+    UNSPECIFIED = 0;
+
+    // Indicates that the issue is a known incompatibility between the
+    // cluster and Autopilot mode.
+    INCOMPATIBILITY = 1;
+
+    // Indicates the issue is an incompatibility if customers take no further
+    // action to resolve.
+    ADDITIONAL_CONFIG_REQUIRED = 2;
+
+    // Indicates the issue is not an incompatibility, but depending on the
+    // workloads business logic, there is a potential that they won't work on
+    // Autopilot.
+    PASSED_WITH_OPTIONAL_CONFIG = 3;
+  }
+
+  // The last time when this issue was observed.
+  google.protobuf.Timestamp last_observation = 1;
+
+  // The constraint type of the issue.
+  string constraint_type = 2;
+
+  // The incompatibility type of this issue.
+  IssueType incompatibility_type = 3;
+
+  // The name of the resources which are subject to this issue.
+  repeated string subjects = 4;
+
+  // A URL to a public documnetation, which addresses resolving this issue.
+  string documentation_url = 5;
+
+  // The description of the issue.
+  string description = 6;
+}
+
+// CheckAutopilotCompatibilityResponse has a list of compatibility issues.
+message CheckAutopilotCompatibilityResponse {
+  // The list of issues for the given operation.
+  repeated AutopilotCompatibilityIssue issues = 1;
+
+  // The summary of the autopilot compatibility response.
+  string summary = 2;
+}
+
 // ReleaseChannel indicates which release channel a cluster is
 // subscribed to. Release channels are arranged in order of risk.
 //
@@ -5028,6 +5200,16 @@ message Master {}
 message Autopilot {
   // Enable Autopilot
   bool enabled = 1;
+
+  // Workload policy configuration for Autopilot.
+  WorkloadPolicyConfig workload_policy_config = 2;
+}
+
+// WorkloadPolicyConfig is the configuration of workload policy for autopilot
+// clusters.
+message WorkloadPolicyConfig {
+  // If true, workloads can use NET_ADMIN capability.
+  optional bool allow_net_admin = 1;
 }
 
 // NotificationConfig is the configuration of notifications.
