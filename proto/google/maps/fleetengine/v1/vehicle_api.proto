@@ -457,16 +457,18 @@ message SearchVehiclesRequest {
   //
   // `EXCLUSIVE` and `SHARED` may not be included together.
   // `SHARED` is not supported when `current_trips_present` is
-  // `CURRENT_TRIPS_PRESENT_UNSPECIFIED`.
+  // `CURRENT_TRIPS_PRESENT_UNSPECIFIED`. `UNKNOWN_TRIP_TYPE` is not allowed.
   repeated TripType trip_types = 9 [(google.api.field_behavior) = REQUIRED];
 
-  // Restricts the search to only those vehicles that have updated their
-  // locations within the specified duration. If this field is not
+  // Restricts the search to only those vehicles that have sent location updates
+  // to Fleet Engine within the specified duration. Stationary vehicles still
+  // transmitting their locations are not considered stale. If this field is not
   // set, the server uses five minutes as the default value.
   google.protobuf.Duration maximum_staleness = 10;
 
   // Required. Restricts the search to vehicles with one of the specified types.
-  // At least one vehicle type must be specified.
+  // At least one vehicle type must be specified. VehicleTypes with a category
+  // of `UNKNOWN` are not allowed.
   repeated Vehicle.VehicleType vehicle_types = 14
       [(google.api.field_behavior) = REQUIRED];
 
@@ -614,13 +616,14 @@ message ListVehiclesRequest {
   // specified trip types.
   repeated TripType trip_types = 7;
 
-  // Restricts the response to vehicles that have updated their locations within
-  // the specified duration at the time of the call. If present, must be a valid
-  // positive duration.
+  // Restricts the response to vehicles that have sent location updates to Fleet
+  // Engine within the specified duration. Stationary vehicles still
+  // transmitting their locations are not considered stale. If present, must be
+  // a valid positive duration.
   google.protobuf.Duration maximum_staleness = 8;
 
   // Required. Restricts the response to vehicles with one of the specified type
-  // categories.
+  // categories. `UNKNOWN` is not allowed.
   repeated Vehicle.VehicleType.Category vehicle_type_categories = 9
       [(google.api.field_behavior) = REQUIRED];
 
