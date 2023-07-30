@@ -14,21 +14,22 @@
 
 syntax = "proto3";
 
-package google.cloud.netapp.v1beta1;
+package google.cloud.netapp.v1;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "google/cloud/netapp/v1beta1/common.proto";
+import "google/cloud/netapp/v1/common.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "cloud.google.com/go/netapp/apiv1beta1/netapppb;netapppb";
+option csharp_namespace = "Google.Cloud.NetApp.V1";
+option go_package = "cloud.google.com/go/netapp/apiv1/netapppb;netapppb";
 option java_multiple_files = true;
 option java_outer_classname = "VolumeProto";
-option java_package = "com.google.cloud.netapp.v1beta1";
+option java_package = "com.google.cloud.netapp.v1";
+option php_namespace = "Google\\Cloud\\NetApp\\V1";
+option ruby_package = "Google::Cloud::NetApp::V1";
 
-// Protocols
-// The protocols
 enum Protocols {
   // Unspecified protocol
   PROTOCOLS_UNSPECIFIED = 0;
@@ -43,8 +44,6 @@ enum Protocols {
   SMB = 3;
 }
 
-// AccessType
-// The access types
 enum AccessType {
   // Unspecified Access Type
   ACCESS_TYPE_UNSPECIFIED = 0;
@@ -105,7 +104,6 @@ enum SecurityStyle {
   UNIX = 2;
 }
 
-// ListVolumesRequest
 // Message for requesting list of Volumes
 message ListVolumesRequest {
   // Required. Parent value for ListVolumesRequest
@@ -130,7 +128,6 @@ message ListVolumesRequest {
   string order_by = 5;
 }
 
-// ListVolumesResponse
 // Message for response to listing Volumes
 message ListVolumesResponse {
   // The list of Volume
@@ -143,7 +140,6 @@ message ListVolumesResponse {
   repeated string unreachable = 3;
 }
 
-// GetVolumeRequest
 // Message for getting a Volume
 message GetVolumeRequest {
   // Required. Name of the volume
@@ -153,7 +149,6 @@ message GetVolumeRequest {
   ];
 }
 
-// CreateVolumeRequest
 // Message for creating a Volume
 message CreateVolumeRequest {
   // Required. Value for parent.
@@ -173,7 +168,6 @@ message CreateVolumeRequest {
   Volume volume = 3 [(google.api.field_behavior) = REQUIRED];
 }
 
-// UpdateVolumeRequest
 // Message for updating a Volume
 message UpdateVolumeRequest {
   // Required. Field mask is used to specify the fields to be overwritten in the
@@ -188,7 +182,6 @@ message UpdateVolumeRequest {
   Volume volume = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
-// DeleteVolumeRequest
 // Message for deleting a Volume
 message DeleteVolumeRequest {
   // Required. Name of the volume
@@ -203,8 +196,7 @@ message DeleteVolumeRequest {
   bool force = 2;
 }
 
-// RevertVolumeRequest reverts the given volume to the
-// specified snapshot.
+// RevertVolumeRequest reverts the given volume to the specified snapshot.
 message RevertVolumeRequest {
   // Required. The resource name of the volume, in the format of
   // projects/{project_id}/locations/{location}/volumes/{volume_id}.
@@ -219,7 +211,6 @@ message RevertVolumeRequest {
   string snapshot_id = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
-// Volume
 // Volume provides a filesystem that you can mount.
 message Volume {
   option (google.api.resource) = {
@@ -374,15 +365,13 @@ message Volume {
   bool has_replication = 29 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
 
-// ExportPolicy
-// Defined the export policy for the volume.
+// Defines the export policy for the volume.
 message ExportPolicy {
   // Required. List of export policy rules
   repeated SimpleExportPolicyRule rules = 1
       [(google.api.field_behavior) = REQUIRED];
 }
 
-// SimpleExportPolicyRule
 // An export policy rule describing various export options.
 message SimpleExportPolicyRule {
   // Comma separated list of allowed clients IP addresses
@@ -511,7 +500,6 @@ message MonthlySchedule {
   optional string days_of_month = 4;
 }
 
-// MountOption
 // View only mount options for a volume.
 message MountOption {
   // Export string

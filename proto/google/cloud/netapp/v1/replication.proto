@@ -14,7 +14,7 @@
 
 syntax = "proto3";
 
-package google.cloud.netapp.v1beta1;
+package google.cloud.netapp.v1;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
@@ -22,10 +22,13 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "cloud.google.com/go/netapp/apiv1beta1/netapppb;netapppb";
+option csharp_namespace = "Google.Cloud.NetApp.V1";
+option go_package = "cloud.google.com/go/netapp/apiv1/netapppb;netapppb";
 option java_multiple_files = true;
 option java_outer_classname = "ReplicationProto";
-option java_package = "com.google.cloud.netapp.v1beta1";
+option java_package = "com.google.cloud.netapp.v1";
+option php_namespace = "Google\\Cloud\\NetApp\\V1";
+option ruby_package = "Google::Cloud::NetApp::V1";
 
 // TransferStats reports all statistics related to replication transfer.
 message TransferStats {
@@ -86,7 +89,6 @@ message Replication {
     ERROR = 6;
   }
 
-  // Replication role
   // New enum values may be added in future to support different replication
   // topology.
   enum ReplicationRole {

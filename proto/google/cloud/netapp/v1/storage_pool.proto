@@ -14,20 +14,22 @@
 
 syntax = "proto3";
 
-package google.cloud.netapp.v1beta1;
+package google.cloud.netapp.v1;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "google/cloud/netapp/v1beta1/common.proto";
+import "google/cloud/netapp/v1/common.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "cloud.google.com/go/netapp/apiv1beta1/netapppb;netapppb";
+option csharp_namespace = "Google.Cloud.NetApp.V1";
+option go_package = "cloud.google.com/go/netapp/apiv1/netapppb;netapppb";
 option java_multiple_files = true;
 option java_outer_classname = "StoragePoolProto";
-option java_package = "com.google.cloud.netapp.v1beta1";
+option java_package = "com.google.cloud.netapp.v1";
+option php_namespace = "Google\\Cloud\\NetApp\\V1";
+option ruby_package = "Google::Cloud::NetApp::V1";
 
-// GetStoragePoolRequest
 message GetStoragePoolRequest {
   // Required. Name of the storage pool
   string name = 1 [
@@ -38,7 +40,6 @@ message GetStoragePoolRequest {
   ];
 }
 
-// ListStoragePoolsRequest
 message ListStoragePoolsRequest {
   // Required. Parent value
   string parent = 1 [
@@ -62,7 +63,6 @@ message ListStoragePoolsRequest {
   string filter = 5;
 }
 
-// ListStoragePoolsResponse
 message ListStoragePoolsResponse {
   // The list of StoragePools
   repeated StoragePool storage_pools = 1;
@@ -74,7 +74,6 @@ message ListStoragePoolsResponse {
   repeated string unreachable = 3;
 }
 
-// CreateStoragePoolRequest
 message CreateStoragePoolRequest {
   // Required. Value for parent.
   string parent = 1 [
@@ -93,7 +92,6 @@ message CreateStoragePoolRequest {
   StoragePool storage_pool = 3 [(google.api.field_behavior) = REQUIRED];
 }
 
-// UpdateStoragePoolRequest
 message UpdateStoragePoolRequest {
   // Required. Field mask is used to specify the fields to be overwritten in the
   // StoragePool resource by the update.
@@ -107,7 +105,6 @@ message UpdateStoragePoolRequest {
   StoragePool storage_pool = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
-// DeleteStoragePoolRequest
 message DeleteStoragePoolRequest {
   // Required. Name of the storage pool
   string name = 1 [
@@ -118,8 +115,6 @@ message DeleteStoragePoolRequest {
   ];
 }
 
-// Resources
-// StoragePool
 // StoragePool is a container for volumes with a service level and capacity.
 // Volumes can be created in a pool of sufficient available capacity.
 // StoragePool capacity is what you are billed for.

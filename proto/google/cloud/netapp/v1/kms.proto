@@ -14,19 +14,21 @@
 
 syntax = "proto3";
 
-package google.cloud.netapp.v1beta1;
+package google.cloud.netapp.v1;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "cloud.google.com/go/netapp/apiv1beta1/netapppb;netapppb";
+option csharp_namespace = "Google.Cloud.NetApp.V1";
+option go_package = "cloud.google.com/go/netapp/apiv1/netapppb;netapppb";
 option java_multiple_files = true;
 option java_outer_classname = "KmsProto";
-option java_package = "com.google.cloud.netapp.v1beta1";
+option java_package = "com.google.cloud.netapp.v1";
+option php_namespace = "Google\\Cloud\\NetApp\\V1";
+option ruby_package = "Google::Cloud::NetApp::V1";
 
-// GetKmsConfigRequest
 message GetKmsConfigRequest {
   // Required. Name of the KmsConfig
   string name = 1 [
@@ -37,7 +39,6 @@ message GetKmsConfigRequest {
   ];
 }
 
-// ListKmsConfigsRequest
 message ListKmsConfigsRequest {
   // Required. Parent value
   string parent = 1 [
@@ -61,7 +62,6 @@ message ListKmsConfigsRequest {
   string filter = 5;
 }
 
-// ListKmsConfigsResponse
 message ListKmsConfigsResponse {
   // The list of KmsConfigs
   repeated KmsConfig kms_configs = 1;
@@ -73,7 +73,6 @@ message ListKmsConfigsResponse {
   repeated string unreachable = 3;
 }
 
-// CreateKmsConfigRequest
 message CreateKmsConfigRequest {
   // Required. Value for parent.
   string parent = 1 [
@@ -92,7 +91,6 @@ message CreateKmsConfigRequest {
   KmsConfig kms_config = 3 [(google.api.field_behavior) = REQUIRED];
 }
 
-// UpdateKmsConfigRequest
 message UpdateKmsConfigRequest {
   // Required. Field mask is used to specify the fields to be overwritten in the
   // KmsConfig resource by the update.
@@ -106,7 +104,6 @@ message UpdateKmsConfigRequest {
   KmsConfig kms_config = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
-// DeleteKmsConfigRequest
 message DeleteKmsConfigRequest {
   // Required. Name of the KmsConfig.
   string name = 1 [
@@ -117,7 +114,6 @@ message DeleteKmsConfigRequest {
   ];
 }
 
-// EncryptVolumesRequest
 // EncryptVolumesRequest specifies the KMS config to encrypt existing volumes.
 message EncryptVolumesRequest {
   // Required. Name of the KmsConfig.
@@ -129,7 +125,6 @@ message EncryptVolumesRequest {
   ];
 }
 
-// VerifyKmsConfigRequest
 // VerifyKmsConfigRequest specifies the KMS config to be validated.
 message VerifyKmsConfigRequest {
   // Required. Name of the KMS Config to be verified.
@@ -141,7 +136,6 @@ message VerifyKmsConfigRequest {
   ];
 }
 
-// VerifyKmsConfigResponse
 // VerifyKmsConfigResponse contains the information if the config is correctly
 // and error message.
 message VerifyKmsConfigResponse {
