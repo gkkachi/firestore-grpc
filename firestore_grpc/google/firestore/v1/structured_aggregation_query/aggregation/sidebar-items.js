@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["Operator"],"struct":["Count"]};
+window.SIDEBAR_ITEMS = {"enum":["Operator"],"struct":["Avg","Count","Sum"]};
