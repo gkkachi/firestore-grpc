@@ -14,21 +14,21 @@
 
 syntax = "proto3";
 
-package google.cloud.discoveryengine.v1beta;
+package google.cloud.discoveryengine.v1;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "google/cloud/discoveryengine/v1beta/search_service.proto";
+import "google/cloud/discoveryengine/v1/search_service.proto";
 import "google/protobuf/timestamp.proto";
 
-option csharp_namespace = "Google.Cloud.DiscoveryEngine.V1Beta";
-option go_package = "cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb;discoveryenginepb";
+option csharp_namespace = "Google.Cloud.DiscoveryEngine.V1";
+option go_package = "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb;discoveryenginepb";
 option java_multiple_files = true;
 option java_outer_classname = "ConversationProto";
-option java_package = "com.google.cloud.discoveryengine.v1beta";
+option java_package = "com.google.cloud.discoveryengine.v1";
 option objc_class_prefix = "DISCOVERYENGINE";
-option php_namespace = "Google\\Cloud\\DiscoveryEngine\\V1beta";
-option ruby_package = "Google::Cloud::DiscoveryEngine::V1beta";
+option php_namespace = "Google\\Cloud\\DiscoveryEngine\\V1";
+option ruby_package = "Google::Cloud::DiscoveryEngine::V1";
 
 // External conversation proto definition.
 message Conversation {
@@ -74,30 +74,6 @@ message Conversation {
 
 // Defines a reply message to user.
 message Reply {
-  // Defines reference in reply.
-  message Reference {
-    option deprecated = true;
-
-    // URI link reference.
-    string uri = 1;
-
-    // Anchor text.
-    string anchor_text = 2;
-
-    // Anchor text start index.
-    int32 start = 3;
-
-    // Anchor text end index.
-    int32 end = 4;
-  }
-
-  // DEPRECATED: use `summary` instead.
-  // Text reply.
-  string reply = 1 [deprecated = true];
-
-  // References in the reply.
-  repeated Reference references = 2 [deprecated = true];
-
   // Summary based on search results.
   SearchResponse.Summary summary = 3;
 }

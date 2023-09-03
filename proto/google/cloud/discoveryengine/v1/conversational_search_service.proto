@@ -14,25 +14,25 @@
 
 syntax = "proto3";
 
-package google.cloud.discoveryengine.v1beta;
+package google.cloud.discoveryengine.v1;
 
 import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "google/cloud/discoveryengine/v1beta/conversation.proto";
-import "google/cloud/discoveryengine/v1beta/search_service.proto";
+import "google/cloud/discoveryengine/v1/conversation.proto";
+import "google/cloud/discoveryengine/v1/search_service.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 
-option csharp_namespace = "Google.Cloud.DiscoveryEngine.V1Beta";
-option go_package = "cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb;discoveryenginepb";
+option csharp_namespace = "Google.Cloud.DiscoveryEngine.V1";
+option go_package = "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb;discoveryenginepb";
 option java_multiple_files = true;
 option java_outer_classname = "ConversationalSearchServiceProto";
-option java_package = "com.google.cloud.discoveryengine.v1beta";
+option java_package = "com.google.cloud.discoveryengine.v1";
 option objc_class_prefix = "DISCOVERYENGINE";
-option php_namespace = "Google\\Cloud\\DiscoveryEngine\\V1beta";
-option ruby_package = "Google::Cloud::DiscoveryEngine::V1beta";
+option php_namespace = "Google\\Cloud\\DiscoveryEngine\\V1";
+option ruby_package = "Google::Cloud::DiscoveryEngine::V1";
 
 // Service for conversational search.
 service ConversationalSearchService {
@@ -44,10 +44,10 @@ service ConversationalSearchService {
   rpc ConverseConversation(ConverseConversationRequest)
       returns (ConverseConversationResponse) {
     option (google.api.http) = {
-      post: "/v1beta/{name=projects/*/locations/*/dataStores/*/conversations/*}:converse"
+      post: "/v1/{name=projects/*/locations/*/dataStores/*/conversations/*}:converse"
       body: "*"
       additional_bindings {
-        post: "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}:converse"
+        post: "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}:converse"
         body: "*"
       }
     };
@@ -56,14 +56,14 @@ service ConversationalSearchService {
 
   // Creates a Conversation.
   //
-  // If the [Conversation][google.cloud.discoveryengine.v1beta.Conversation] to
+  // If the [Conversation][google.cloud.discoveryengine.v1.Conversation] to
   // create already exists, an ALREADY_EXISTS error is returned.
   rpc CreateConversation(CreateConversationRequest) returns (Conversation) {
     option (google.api.http) = {
-      post: "/v1beta/{parent=projects/*/locations/*/dataStores/*}/conversations"
+      post: "/v1/{parent=projects/*/locations/*/dataStores/*}/conversations"
       body: "conversation"
       additional_bindings {
-        post: "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*}/conversations"
+        post: "/v1/{parent=projects/*/locations/*/collections/*/dataStores/*}/conversations"
         body: "conversation"
       }
     };
@@ -72,14 +72,14 @@ service ConversationalSearchService {
 
   // Deletes a Conversation.
   //
-  // If the [Conversation][google.cloud.discoveryengine.v1beta.Conversation] to
+  // If the [Conversation][google.cloud.discoveryengine.v1.Conversation] to
   // delete does not exist, a NOT_FOUND error is returned.
   rpc DeleteConversation(DeleteConversationRequest)
       returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/v1beta/{name=projects/*/locations/*/dataStores/*/conversations/*}"
+      delete: "/v1/{name=projects/*/locations/*/dataStores/*/conversations/*}"
       additional_bindings {
-        delete: "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}"
+        delete: "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}"
       }
     };
     option (google.api.method_signature) = "name";
@@ -87,16 +87,16 @@ service ConversationalSearchService {
 
   // Updates a Conversation.
   //
-  // [Conversation][google.cloud.discoveryengine.v1beta.Conversation] action
-  // type cannot be changed. If the
-  // [Conversation][google.cloud.discoveryengine.v1beta.Conversation] to update
-  // does not exist, a NOT_FOUND error is returned.
+  // [Conversation][google.cloud.discoveryengine.v1.Conversation] action type
+  // cannot be changed. If the
+  // [Conversation][google.cloud.discoveryengine.v1.Conversation] to update does
+  // not exist, a NOT_FOUND error is returned.
   rpc UpdateConversation(UpdateConversationRequest) returns (Conversation) {
     option (google.api.http) = {
-      patch: "/v1beta/{conversation.name=projects/*/locations/*/dataStores/*/conversations/*}"
+      patch: "/v1/{conversation.name=projects/*/locations/*/dataStores/*/conversations/*}"
       body: "conversation"
       additional_bindings {
-        patch: "/v1beta/{conversation.name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}"
+        patch: "/v1/{conversation.name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}"
         body: "conversation"
       }
     };
@@ -106,22 +106,22 @@ service ConversationalSearchService {
   // Gets a Conversation.
   rpc GetConversation(GetConversationRequest) returns (Conversation) {
     option (google.api.http) = {
-      get: "/v1beta/{name=projects/*/locations/*/dataStores/*/conversations/*}"
+      get: "/v1/{name=projects/*/locations/*/dataStores/*/conversations/*}"
       additional_bindings {
-        get: "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}"
+        get: "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}"
       }
     };
     option (google.api.method_signature) = "name";
   }
 
   // Lists all Conversations by their parent
-  // [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
+  // [DataStore][google.cloud.discoveryengine.v1.DataStore].
   rpc ListConversations(ListConversationsRequest)
       returns (ListConversationsResponse) {
     option (google.api.http) = {
-      get: "/v1beta/{parent=projects/*/locations/*/dataStores/*}/conversations"
+      get: "/v1/{parent=projects/*/locations/*/dataStores/*}/conversations"
       additional_bindings {
-        get: "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*}/conversations"
+        get: "/v1/{parent=projects/*/locations/*/collections/*/dataStores/*}/conversations"
       }
     };
     option (google.api.method_signature) = "parent";
@@ -129,7 +129,7 @@ service ConversationalSearchService {
 }
 
 // Request message for
-// [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1beta.ConversationalSearchService.ConverseConversation]
+// [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1.ConversationalSearchService.ConverseConversation]
 // method.
 message ConverseConversationRequest {
   // Required. The resource name of the Conversation to get. Format:
@@ -187,7 +187,7 @@ message ConverseConversationRequest {
 }
 
 // Response message for
-// [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1beta.ConversationalSearchService.ConverseConversation]
+// [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1.ConversationalSearchService.ConverseConversation]
 // method.
 message ConverseConversationResponse {
   // Answer to the current query.
@@ -195,9 +195,6 @@ message ConverseConversationResponse {
 
   // Updated conversation including the answer.
   Conversation conversation = 2;
-
-  // Suggested related questions.
-  repeated string related_questions = 6;
 
   // Search Results.
   repeated SearchResponse.SearchResult search_results = 3;
@@ -224,8 +221,8 @@ message UpdateConversationRequest {
   Conversation conversation = 1 [(google.api.field_behavior) = REQUIRED];
 
   // Indicates which fields in the provided
-  // [Conversation][google.cloud.discoveryengine.v1beta.Conversation] to update.
-  // The following are NOT supported:
+  // [Conversation][google.cloud.discoveryengine.v1.Conversation] to update. The
+  // following are NOT supported:
   //
   // * [conversation.name][]
   //
