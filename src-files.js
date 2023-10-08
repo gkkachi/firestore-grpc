@@ -1,4 +1,4 @@
-var sourcesIndex = JSON.parse('{\
+var srcIndex = JSON.parse('{\
 "anyhow":["",[],["backtrace.rs","chain.rs","context.rs","ensure.rs","error.rs","fmt.rs","kind.rs","lib.rs","macros.rs","ptr.rs","wrapper.rs"]],\
 "async_stream":["",[],["async_stream.rs","lib.rs","next.rs","yielder.rs"]],\
 "async_stream_impl":["",[],["lib.rs"]],\
@@ -72,4 +72,4 @@ var sourcesIndex = JSON.parse('{\
 "want":["",[],["lib.rs"]],\
 "webpki":["",[],["calendar.rs","cert.rs","der.rs","error.rs","name.rs","signed_data.rs","time.rs","trust_anchor_util.rs","verify_cert.rs","webpki.rs"]]\
 }');
-createSourceSidebar();
+createSrcSidebar();
