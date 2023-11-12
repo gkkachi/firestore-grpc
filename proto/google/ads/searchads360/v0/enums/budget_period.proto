@@ -43,8 +43,7 @@ message BudgetPeriodEnum {
     // Fixed daily budget.
     FIXED_DAILY = 4;
 
-    // Custom budget, added back in V5.
-    // Custom bugdet can be used with total_amount to specify lifetime budget
+    // Custom budget can be used with total_amount to specify lifetime budget
     // limit.
     CUSTOM_PERIOD = 5;
   }
