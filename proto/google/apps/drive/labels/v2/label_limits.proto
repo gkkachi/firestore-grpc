@@ -14,15 +14,15 @@
 
 syntax = "proto3";
 
-package google.apps.drive.labels.v2beta;
+package google.apps.drive.labels.v2;
 
 import "google/api/resource.proto";
 import "google/type/date.proto";
 
-option go_package = "google.golang.org/genproto/googleapis/apps/drive/labels/v2beta;labels";
+option go_package = "google.golang.org/genproto/googleapis/apps/drive/labels/v2;labels";
 option java_multiple_files = true;
 option java_outer_classname = "LabelLimitsProto";
-option java_package = "com.google.apps.drive.labels.v2beta";
+option java_package = "com.google.apps.drive.labels.v2";
 option objc_class_prefix = "DLBL";
 
 // Label constraints governing the structure of a Label; such as, the maximum
