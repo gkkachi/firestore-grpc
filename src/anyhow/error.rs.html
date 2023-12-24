@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/anyhow-1.0.75/src/error.rs`."><title>error.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="anyhow" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../anyhow/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/anyhow-1.0.76/src/error.rs`."><title>error.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="anyhow" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../anyhow/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -994,6 +994,11 @@
 <a href="#994" id="994">994</a>
 <a href="#995" id="995">995</a>
 <a href="#996" id="996">996</a>
+<a href="#997" id="997">997</a>
+<a href="#998" id="998">998</a>
+<a href="#999" id="999">999</a>
+<a href="#1000" id="1000">1000</a>
+<a href="#1001" id="1001">1001</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::backtrace::Backtrace;
 <span class="kw">use </span><span class="kw">crate</span>::chain::Chain;
 <span class="attr">#[cfg(any(feature = <span class="string">&quot;std&quot;</span>, anyhow_no_ptr_addr_of))]
@@ -1606,8 +1611,8 @@
 </span><span class="kw">unsafe fn </span>object_drop&lt;E&gt;(e: Own&lt;ErrorImpl&gt;) {
     <span class="comment">// Cast back to ErrorImpl&lt;E&gt; so that the allocator receives the correct
     // Layout to deallocate the Box&#39;s memory.
-    </span><span class="kw">let </span>unerased = e.cast::&lt;ErrorImpl&lt;E&gt;&gt;().boxed();
-    drop(unerased);
+    </span><span class="kw">let </span>unerased_own = e.cast::&lt;ErrorImpl&lt;E&gt;&gt;();
+    drop(<span class="kw">unsafe </span>{ unerased_own.boxed() });
 }
 
 <span class="comment">// Safety: requires layout of *e to match ErrorImpl&lt;E&gt;.
@@ -1616,8 +1621,8 @@
     // without dropping E itself. This is used by downcast after doing a
     // ptr::read to take ownership of the E.
     </span><span class="kw">let _ </span>= target;
-    <span class="kw">let </span>unerased = e.cast::&lt;ErrorImpl&lt;ManuallyDrop&lt;E&gt;&gt;&gt;().boxed();
-    drop(unerased);
+    <span class="kw">let </span>unerased_own = e.cast::&lt;ErrorImpl&lt;ManuallyDrop&lt;E&gt;&gt;&gt;();
+    drop(<span class="kw">unsafe </span>{ unerased_own.boxed() });
 }
 
 <span class="comment">// Safety: requires layout of *e to match ErrorImpl&lt;E&gt;.
@@ -1627,15 +1632,15 @@
 {
     <span class="comment">// Attach E&#39;s native StdError vtable onto a pointer to self._object.
 
-    </span><span class="kw">let </span>unerased = e.cast::&lt;ErrorImpl&lt;E&gt;&gt;();
+    </span><span class="kw">let </span>unerased_ref = e.cast::&lt;ErrorImpl&lt;E&gt;&gt;();
 
     <span class="attr">#[cfg(not(anyhow_no_ptr_addr_of))]
-    </span><span class="kw">return </span>Ref::from_raw(NonNull::new_unchecked(
-        <span class="macro">ptr::addr_of!</span>((<span class="kw-2">*</span>unerased.as_ptr())._object) <span class="kw">as </span><span class="kw-2">*mut </span>E,
-    ));
+    </span><span class="kw">return </span>Ref::from_raw(<span class="kw">unsafe </span>{
+        NonNull::new_unchecked(<span class="macro">ptr::addr_of!</span>((<span class="kw-2">*</span>unerased_ref.as_ptr())._object) <span class="kw">as </span><span class="kw-2">*mut </span>E)
+    });
 
     <span class="attr">#[cfg(anyhow_no_ptr_addr_of)]
-    </span><span class="kw">return </span>Ref::new(<span class="kw-2">&amp;</span>unerased.deref()._object);
+    </span><span class="kw">return </span>Ref::new(<span class="kw">unsafe </span>{ <span class="kw-2">&amp;</span>unerased_ref.deref()._object });
 }
 
 <span class="comment">// Safety: requires layout of *e to match ErrorImpl&lt;E&gt;, and for `e` to be derived
@@ -1646,7 +1651,8 @@
     </span>E: StdError + Send + Sync + <span class="lifetime">&#39;static</span>,
 {
     <span class="comment">// Attach E&#39;s native StdError vtable onto a pointer to self._object.
-    </span><span class="kw-2">&amp;mut </span>e.cast::&lt;ErrorImpl&lt;E&gt;&gt;().deref_mut()._object
+    </span><span class="kw">let </span>unerased_mut = e.cast::&lt;ErrorImpl&lt;E&gt;&gt;();
+    <span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut </span>unerased_mut.deref_mut()._object }
 }
 
 <span class="comment">// Safety: requires layout of *e to match ErrorImpl&lt;E&gt;.
@@ -1655,7 +1661,8 @@
     </span>E: StdError + Send + Sync + <span class="lifetime">&#39;static</span>,
 {
     <span class="comment">// Attach ErrorImpl&lt;E&gt;&#39;s native StdError vtable. The StdError impl is below.
-    </span>e.cast::&lt;ErrorImpl&lt;E&gt;&gt;().boxed()
+    </span><span class="kw">let </span>unerased_own = e.cast::&lt;ErrorImpl&lt;E&gt;&gt;();
+    <span class="kw">unsafe </span>{ unerased_own.boxed() }
 }
 
 <span class="comment">// Safety: requires layout of *e to match ErrorImpl&lt;E&gt;.
@@ -1667,18 +1674,18 @@
         <span class="comment">// Caller is looking for an E pointer and e is ErrorImpl&lt;E&gt;, take a
         // pointer to its E field.
 
-        </span><span class="kw">let </span>unerased = e.cast::&lt;ErrorImpl&lt;E&gt;&gt;();
+        </span><span class="kw">let </span>unerased_ref = e.cast::&lt;ErrorImpl&lt;E&gt;&gt;();
 
         <span class="attr">#[cfg(not(anyhow_no_ptr_addr_of))]
         </span><span class="kw">return </span><span class="prelude-val">Some</span>(
-            Ref::from_raw(NonNull::new_unchecked(
-                <span class="macro">ptr::addr_of!</span>((<span class="kw-2">*</span>unerased.as_ptr())._object) <span class="kw">as </span><span class="kw-2">*mut </span>E,
-            ))
+            Ref::from_raw(<span class="kw">unsafe </span>{
+                NonNull::new_unchecked(<span class="macro">ptr::addr_of!</span>((<span class="kw-2">*</span>unerased_ref.as_ptr())._object) <span class="kw">as </span><span class="kw-2">*mut </span>E)
+            })
             .cast::&lt;()&gt;(),
         );
 
         <span class="attr">#[cfg(anyhow_no_ptr_addr_of)]
-        </span><span class="kw">return </span><span class="prelude-val">Some</span>(Ref::new(<span class="kw-2">&amp;</span>unerased.deref()._object).cast::&lt;()&gt;());
+        </span><span class="kw">return </span><span class="prelude-val">Some</span>(Ref::new(<span class="kw">unsafe </span>{ <span class="kw-2">&amp;</span>unerased_ref.deref()._object }).cast::&lt;()&gt;());
     } <span class="kw">else </span>{
         <span class="prelude-val">None
     </span>}
@@ -1693,7 +1700,8 @@
     <span class="kw">if </span>TypeId::of::&lt;E&gt;() == target {
         <span class="comment">// Caller is looking for an E pointer and e is ErrorImpl&lt;E&gt;, take a
         // pointer to its E field.
-        </span><span class="kw">let </span>unerased = e.cast::&lt;ErrorImpl&lt;E&gt;&gt;().deref_mut();
+        </span><span class="kw">let </span>unerased_mut = e.cast::&lt;ErrorImpl&lt;E&gt;&gt;();
+        <span class="kw">let </span>unerased = <span class="kw">unsafe </span>{ unerased_mut.deref_mut() };
         <span class="prelude-val">Some</span>(Mut::new(<span class="kw-2">&amp;mut </span>unerased._object).cast::&lt;()&gt;())
     } <span class="kw">else </span>{
         <span class="prelude-val">None
@@ -1714,10 +1722,12 @@
     E: <span class="lifetime">&#39;static</span>,
 {
     <span class="kw">if </span>TypeId::of::&lt;C&gt;() == target {
-        <span class="kw">let </span>unerased = e.cast::&lt;ErrorImpl&lt;ContextError&lt;C, E&gt;&gt;&gt;().deref();
+        <span class="kw">let </span>unerased_ref = e.cast::&lt;ErrorImpl&lt;ContextError&lt;C, E&gt;&gt;&gt;();
+        <span class="kw">let </span>unerased = <span class="kw">unsafe </span>{ unerased_ref.deref() };
         <span class="prelude-val">Some</span>(Ref::new(<span class="kw-2">&amp;</span>unerased._object.context).cast::&lt;()&gt;())
     } <span class="kw">else if </span>TypeId::of::&lt;E&gt;() == target {
-        <span class="kw">let </span>unerased = e.cast::&lt;ErrorImpl&lt;ContextError&lt;C, E&gt;&gt;&gt;().deref();
+        <span class="kw">let </span>unerased_ref = e.cast::&lt;ErrorImpl&lt;ContextError&lt;C, E&gt;&gt;&gt;();
+        <span class="kw">let </span>unerased = <span class="kw">unsafe </span>{ unerased_ref.deref() };
         <span class="prelude-val">Some</span>(Ref::new(<span class="kw-2">&amp;</span>unerased._object.error).cast::&lt;()&gt;())
     } <span class="kw">else </span>{
         <span class="prelude-val">None
@@ -1732,10 +1742,12 @@
     E: <span class="lifetime">&#39;static</span>,
 {
     <span class="kw">if </span>TypeId::of::&lt;C&gt;() == target {
-        <span class="kw">let </span>unerased = e.cast::&lt;ErrorImpl&lt;ContextError&lt;C, E&gt;&gt;&gt;().deref_mut();
+        <span class="kw">let </span>unerased_mut = e.cast::&lt;ErrorImpl&lt;ContextError&lt;C, E&gt;&gt;&gt;();
+        <span class="kw">let </span>unerased = <span class="kw">unsafe </span>{ unerased_mut.deref_mut() };
         <span class="prelude-val">Some</span>(Mut::new(<span class="kw-2">&amp;mut </span>unerased._object.context).cast::&lt;()&gt;())
     } <span class="kw">else if </span>TypeId::of::&lt;E&gt;() == target {
-        <span class="kw">let </span>unerased = e.cast::&lt;ErrorImpl&lt;ContextError&lt;C, E&gt;&gt;&gt;().deref_mut();
+        <span class="kw">let </span>unerased_mut = e.cast::&lt;ErrorImpl&lt;ContextError&lt;C, E&gt;&gt;&gt;();
+        <span class="kw">let </span>unerased = <span class="kw">unsafe </span>{ unerased_mut.deref_mut() };
         <span class="prelude-val">Some</span>(Mut::new(<span class="kw-2">&amp;mut </span>unerased._object.error).cast::&lt;()&gt;())
     } <span class="kw">else </span>{
         <span class="prelude-val">None
@@ -1752,15 +1764,11 @@
     <span class="comment">// Called after downcasting by value to either the C or the E and doing a
     // ptr::read to take ownership of that value.
     </span><span class="kw">if </span>TypeId::of::&lt;C&gt;() == target {
-        <span class="kw">let </span>unerased = e
-            .cast::&lt;ErrorImpl&lt;ContextError&lt;ManuallyDrop&lt;C&gt;, E&gt;&gt;&gt;()
-            .boxed();
-        drop(unerased);
+        <span class="kw">let </span>unerased_own = e.cast::&lt;ErrorImpl&lt;ContextError&lt;ManuallyDrop&lt;C&gt;, E&gt;&gt;&gt;();
+        drop(<span class="kw">unsafe </span>{ unerased_own.boxed() });
     } <span class="kw">else </span>{
-        <span class="kw">let </span>unerased = e
-            .cast::&lt;ErrorImpl&lt;ContextError&lt;C, ManuallyDrop&lt;E&gt;&gt;&gt;&gt;()
-            .boxed();
-        drop(unerased);
+        <span class="kw">let </span>unerased_own = e.cast::&lt;ErrorImpl&lt;ContextError&lt;C, ManuallyDrop&lt;E&gt;&gt;&gt;&gt;();
+        drop(<span class="kw">unsafe </span>{ unerased_own.boxed() });
     }
 }
 
@@ -1769,13 +1777,14 @@
 <span class="kw">where
     </span>C: <span class="lifetime">&#39;static</span>,
 {
-    <span class="kw">let </span>unerased = e.cast::&lt;ErrorImpl&lt;ContextError&lt;C, Error&gt;&gt;&gt;().deref();
+    <span class="kw">let </span>unerased_ref = e.cast::&lt;ErrorImpl&lt;ContextError&lt;C, Error&gt;&gt;&gt;();
+    <span class="kw">let </span>unerased = <span class="kw">unsafe </span>{ unerased_ref.deref() };
     <span class="kw">if </span>TypeId::of::&lt;C&gt;() == target {
         <span class="prelude-val">Some</span>(Ref::new(<span class="kw-2">&amp;</span>unerased._object.context).cast::&lt;()&gt;())
     } <span class="kw">else </span>{
         <span class="comment">// Recurse down the context chain per the inner error&#39;s vtable.
         </span><span class="kw">let </span>source = <span class="kw-2">&amp;</span>unerased._object.error;
-        (vtable(source.inner.ptr).object_downcast)(source.inner.by_ref(), target)
+        <span class="kw">unsafe </span>{ (vtable(source.inner.ptr).object_downcast)(source.inner.by_ref(), target) }
     }
 }
 
@@ -1785,13 +1794,14 @@
 <span class="kw">where
     </span>C: <span class="lifetime">&#39;static</span>,
 {
-    <span class="kw">let </span>unerased = e.cast::&lt;ErrorImpl&lt;ContextError&lt;C, Error&gt;&gt;&gt;().deref_mut();
+    <span class="kw">let </span>unerased_mut = e.cast::&lt;ErrorImpl&lt;ContextError&lt;C, Error&gt;&gt;&gt;();
+    <span class="kw">let </span>unerased = <span class="kw">unsafe </span>{ unerased_mut.deref_mut() };
     <span class="kw">if </span>TypeId::of::&lt;C&gt;() == target {
         <span class="prelude-val">Some</span>(Mut::new(<span class="kw-2">&amp;mut </span>unerased._object.context).cast::&lt;()&gt;())
     } <span class="kw">else </span>{
         <span class="comment">// Recurse down the context chain per the inner error&#39;s vtable.
         </span><span class="kw">let </span>source = <span class="kw-2">&amp;mut </span>unerased._object.error;
-        (vtable(source.inner.ptr).object_downcast_mut)(source.inner.by_mut(), target)
+        <span class="kw">unsafe </span>{ (vtable(source.inner.ptr).object_downcast_mut)(source.inner.by_mut(), target) }
     }
 }
 
@@ -1803,21 +1813,18 @@
     <span class="comment">// Called after downcasting by value to either the C or one of the causes
     // and doing a ptr::read to take ownership of that value.
     </span><span class="kw">if </span>TypeId::of::&lt;C&gt;() == target {
-        <span class="kw">let </span>unerased = e
-            .cast::&lt;ErrorImpl&lt;ContextError&lt;ManuallyDrop&lt;C&gt;, Error&gt;&gt;&gt;()
-            .boxed();
+        <span class="kw">let </span>unerased_own = e.cast::&lt;ErrorImpl&lt;ContextError&lt;ManuallyDrop&lt;C&gt;, Error&gt;&gt;&gt;();
         <span class="comment">// Drop the entire rest of the data structure rooted in the next Error.
-        </span>drop(unerased);
+        </span>drop(<span class="kw">unsafe </span>{ unerased_own.boxed() });
     } <span class="kw">else </span>{
-        <span class="kw">let </span>unerased = e
-            .cast::&lt;ErrorImpl&lt;ContextError&lt;C, ManuallyDrop&lt;Error&gt;&gt;&gt;&gt;()
-            .boxed();
+        <span class="kw">let </span>unerased_own = e.cast::&lt;ErrorImpl&lt;ContextError&lt;C, ManuallyDrop&lt;Error&gt;&gt;&gt;&gt;();
+        <span class="kw">let </span>unerased = <span class="kw">unsafe </span>{ unerased_own.boxed() };
         <span class="comment">// Read the Own&lt;ErrorImpl&gt; from the next error.
         </span><span class="kw">let </span>inner = unerased._object.error.inner;
         drop(unerased);
-        <span class="kw">let </span>vtable = vtable(inner.ptr);
+        <span class="kw">let </span>vtable = <span class="kw">unsafe </span>{ vtable(inner.ptr) };
         <span class="comment">// Recursively drop the next error using the same target typeid.
-        </span>(vtable.object_drop_rest)(inner, target);
+        </span><span class="kw">unsafe </span>{ (vtable.object_drop_rest)(inner, target) };
     }
 }
 
@@ -1828,8 +1835,9 @@
 <span class="kw">where
     </span>C: <span class="lifetime">&#39;static</span>,
 {
-    <span class="kw">let </span>unerased = e.cast::&lt;ErrorImpl&lt;ContextError&lt;C, Error&gt;&gt;&gt;().deref();
-    <span class="kw">let </span>backtrace = ErrorImpl::backtrace(unerased._object.error.inner.by_ref());
+    <span class="kw">let </span>unerased_ref = e.cast::&lt;ErrorImpl&lt;ContextError&lt;C, Error&gt;&gt;&gt;();
+    <span class="kw">let </span>unerased = <span class="kw">unsafe </span>{ unerased_ref.deref() };
+    <span class="kw">let </span>backtrace = <span class="kw">unsafe </span>{ ErrorImpl::backtrace(unerased._object.error.inner.by_ref()) };
     <span class="prelude-val">Some</span>(backtrace)
 }
 
@@ -1849,7 +1857,7 @@
 // avoids converting `p` into a reference.
 </span><span class="kw">unsafe fn </span>vtable(p: NonNull&lt;ErrorImpl&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ErrorVTable {
     <span class="comment">// NOTE: This assumes that `ErrorVTable` is the first field of ErrorImpl.
-    </span><span class="kw-2">*</span>(p.as_ptr() <span class="kw">as </span><span class="kw-2">*const &amp;</span><span class="lifetime">&#39;static </span>ErrorVTable)
+    </span><span class="kw">unsafe </span>{ <span class="kw-2">*</span>(p.as_ptr() <span class="kw">as </span><span class="kw-2">*const &amp;</span><span class="lifetime">&#39;static </span>ErrorVTable) }
 }
 
 <span class="comment">// repr C to ensure that ContextError&lt;C, E&gt; has the same layout as
@@ -1873,7 +1881,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>error(this: Ref&lt;<span class="self">Self</span>&gt;) -&gt; <span class="kw-2">&amp;</span>(<span class="kw">dyn </span>StdError + Send + Sync + <span class="lifetime">&#39;static</span>) {
         <span class="comment">// Use vtable to attach E&#39;s native StdError vtable for the right
         // original type E.
-        </span>(vtable(this.ptr).object_ref)(this).deref()
+        </span><span class="kw">unsafe </span>{ (vtable(this.ptr).object_ref)(this).deref() }
     }
 
     <span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
@@ -1882,12 +1890,14 @@
         // original type E.
 
         </span><span class="attr">#[cfg(not(anyhow_no_ptr_addr_of))]
-        </span><span class="kw">return </span>(vtable(this.ptr).object_ref)(this.by_ref())
-            .by_mut()
-            .deref_mut();
+        </span><span class="kw">return unsafe </span>{
+            (vtable(this.ptr).object_ref)(this.by_ref())
+                .by_mut()
+                .deref_mut()
+        };
 
         <span class="attr">#[cfg(anyhow_no_ptr_addr_of)]
-        </span><span class="kw">return </span>(vtable(this.ptr).object_mut)(this);
+        </span><span class="kw">return unsafe </span>{ (vtable(this.ptr).object_mut)(this) };
     }
 
     <span class="attr">#[cfg(any(backtrace, feature = <span class="string">&quot;backtrace&quot;</span>))]
@@ -1895,29 +1905,29 @@
         <span class="comment">// This unwrap can only panic if the underlying error&#39;s backtrace method
         // is nondeterministic, which would only happen in maliciously
         // constructed code.
-        </span>this.deref()
+        </span><span class="kw">unsafe </span>{ this.deref() }
             .backtrace
             .as_ref()
             .or_else(|| {
                 <span class="attr">#[cfg(backtrace)]
-                </span><span class="kw">return </span>error::request_ref::&lt;Backtrace&gt;(<span class="self">Self</span>::error(this));
+                </span><span class="kw">return </span>error::request_ref::&lt;Backtrace&gt;(<span class="kw">unsafe </span>{ <span class="self">Self</span>::error(this) });
                 <span class="attr">#[cfg(not(backtrace))]
-                </span><span class="kw">return </span>(vtable(this.ptr).object_backtrace)(this);
+                </span><span class="kw">return unsafe </span>{ (vtable(this.ptr).object_backtrace)(this) };
             })
             .expect(<span class="string">&quot;backtrace capture failed&quot;</span>)
     }
 
     <span class="attr">#[cfg(backtrace)]
     </span><span class="kw">unsafe fn </span>provide&lt;<span class="lifetime">&#39;a</span>&gt;(this: Ref&lt;<span class="lifetime">&#39;a</span>, <span class="self">Self</span>&gt;, request: <span class="kw-2">&amp;mut </span>Request&lt;<span class="lifetime">&#39;a</span>&gt;) {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(backtrace) = <span class="kw-2">&amp;</span>this.deref().backtrace {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(backtrace) = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;</span>this.deref().backtrace } {
             request.provide_ref(backtrace);
         }
-        <span class="self">Self</span>::error(this).provide(request);
+        <span class="kw">unsafe </span>{ <span class="self">Self</span>::error(this) }.provide(request);
     }
 
     <span class="attr">#[cold]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>chain(this: Ref&lt;<span class="self">Self</span>&gt;) -&gt; Chain {
-        Chain::new(<span class="self">Self</span>::error(this))
+        Chain::new(<span class="kw">unsafe </span>{ <span class="self">Self</span>::error(this) })
     }
 }
 
