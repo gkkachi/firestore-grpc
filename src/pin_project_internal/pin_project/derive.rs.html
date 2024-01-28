@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pin-project-internal-1.1.3/src/pin_project/derive.rs`."><title>derive.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pin_project_internal" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pin-project-internal-1.1.4/src/pin_project/derive.rs`."><title>derive.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pin_project_internal" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1124,7 +1124,15 @@
 <a href="#1124" id="1124">1124</a>
 <a href="#1125" id="1125">1125</a>
 <a href="#1126" id="1126">1126</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>proc_macro2::{Delimiter, Group, Span, TokenStream};
+<a href="#1127" id="1127">1127</a>
+<a href="#1128" id="1128">1128</a>
+<a href="#1129" id="1129">1129</a>
+<a href="#1130" id="1130">1130</a>
+<a href="#1131" id="1131">1131</a>
+<a href="#1132" id="1132">1132</a>
+</pre></div><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT
+
+</span><span class="kw">use </span>proc_macro2::{Delimiter, Group, Span, TokenStream};
 <span class="kw">use </span>quote::{format_ident, quote, quote_spanned, ToTokens};
 <span class="kw">use </span>syn::{
     parse_quote, punctuated::Punctuated, token, visit_mut::VisitMut, Attribute, Data, DataEnum,
@@ -1260,18 +1268,21 @@
         #proj_mut_allowed_lints
         <span class="attr">#[allow(dead_code)] </span><span class="comment">// This lint warns unused fields/variants.
         </span><span class="attr">#[allow(clippy::mut_mut)] </span><span class="comment">// This lint warns `&amp;mut &amp;mut &lt;ty&gt;`.
+        </span><span class="attr">#[allow(clippy::missing_docs_in_private_items)]
     </span>};
     <span class="kw">let </span>proj_ref_allowed_lints = <span class="kw">if </span>cx.project_ref { <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>global_allowed_lints) } <span class="kw">else </span>{ <span class="prelude-val">None </span>};
     <span class="kw">let </span>proj_ref = <span class="macro">quote! </span>{
         #proj_ref_allowed_lints
         <span class="attr">#[allow(dead_code)] </span><span class="comment">// This lint warns unused fields/variants.
         </span><span class="attr">#[allow(clippy::ref_option_ref)] </span><span class="comment">// This lint warns `&amp;Option&lt;&amp;&lt;ty&gt;&gt;`.
+        </span><span class="attr">#[allow(clippy::missing_docs_in_private_items)]
     </span>};
     <span class="kw">let </span>proj_own_allowed_lints =
         <span class="kw">if </span>cx.project_replace.ident().is_some() { <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>global_allowed_lints) } <span class="kw">else </span>{ <span class="prelude-val">None </span>};
     <span class="kw">let </span>proj_own = <span class="macro">quote! </span>{
         #proj_own_allowed_lints
         <span class="attr">#[allow(dead_code)] </span><span class="comment">// This lint warns unused fields/variants.
+        </span><span class="attr">#[allow(clippy::missing_docs_in_private_items)]
         </span>#large_enum_variant
     };
     (proj_mut, proj_ref, proj_own)
@@ -1356,7 +1367,7 @@
                 where_clause,
             },
             orig: OriginalType { attrs, vis, ident, generics },
-            pinned_fields: Vec::new(),
+            pinned_fields: <span class="macro">vec!</span>[],
         })
     }
 }
@@ -1886,7 +1897,7 @@
             // and lifetime used in the original struct. For type parameters,
             // we generate code like this:
             //
-            // ```rust
+            // ```
             // struct AlwaysUnpin&lt;T: ?Sized&gt;(PhantomData&lt;T&gt;) {}
             // impl&lt;T: ?Sized&gt; Unpin for AlwaysUnpin&lt;T&gt; {}
             //
@@ -1978,7 +1989,8 @@
             <span class="kw">impl </span>#impl_generics _pin_project::__private::Drop <span class="kw">for </span>#ident #ty_generics
             #where_clause
             {
-                <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+                <span class="attr">#[allow(clippy::missing_inline_in_public_items)]
+                </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
                     #unsafety {
                         <span class="comment">// Safety - we&#39;re in &#39;drop&#39;, so we know that &#39;self&#39; will
                         // never move again.
@@ -2185,7 +2197,7 @@
     // To ensure that it&#39;s impossible to use pin projections on a `#[repr(packed)]`
     // struct, we generate code like this:
     //
-    // ```rust
+    // ```
     // #[forbid(unaligned_references)]
     // fn assert_not_repr_packed(val: &amp;MyStruct) {
     //     let _field_1 = &amp;val.field_1;

@@ -34,7 +34,7 @@ var srcIndex = JSON.parse('{\
 "openssl_probe":["",[],["lib.rs"]],\
 "percent_encoding":["",[],["lib.rs"]],\
 "pin_project":["",[],["lib.rs"]],\
-"pin_project_internal":["",[["pin_project",[],["args.rs","attribute.rs","derive.rs","mod.rs"]]],["lib.rs","pinned_drop.rs","utils.rs"]],\
+"pin_project_internal":["",[["pin_project",[],["args.rs","attribute.rs","derive.rs","mod.rs"]]],["error.rs","lib.rs","pinned_drop.rs","utils.rs"]],\
 "pin_project_lite":["",[],["lib.rs"]],\
 "pin_utils":["",[],["lib.rs","projection.rs","stack_pin.rs"]],\
 "ppv_lite86":["",[["x86_64",[],["mod.rs","sse2.rs"]]],["lib.rs","soft.rs","types.rs"]],\
