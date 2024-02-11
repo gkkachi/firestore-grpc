@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tonic-0.6.2/src/codec/encode.rs`."><title>encode.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="tonic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../tonic/index.html"><img src="https://raw.githubusercontent.com/tokio-rs/website/master/public/img/icons/tonic.svg" alt="tonic"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tonic-0.6.2/src/codec/encode.rs`."><title>encode.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="tonic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><a class="sub-logo-container" href="../../../tonic/index.html"><img src="https://raw.githubusercontent.com/tokio-rs/website/master/public/img/icons/tonic.svg" alt="tonic"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -230,7 +231,7 @@
 <a href="#230" id="230">230</a>
 <a href="#231" id="231">231</a>
 <a href="#232" id="232">232</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;compression&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">"compression"</span>)]
 </span><span class="kw">use </span><span class="kw">super</span>::compression::{compress, CompressionEncoding, SingleMessageCompressionOverride};
 <span class="kw">use super</span>::{EncodeBuf, Encoder, HEADER_SIZE};
 <span class="kw">use crate</span>::{Code, Status};
@@ -250,8 +251,8 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>encode_server&lt;T, U&gt;(
     encoder: T,
     source: U,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;compression&quot;</span>)] </span>compression_encoding: <span class="prelude-ty">Option</span>&lt;CompressionEncoding&gt;,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;compression&quot;</span>)] </span>compression_override: SingleMessageCompressionOverride,
+    <span class="attr">#[cfg(feature = <span class="string">"compression"</span>)] </span>compression_encoding: <span class="prelude-ty">Option</span>&lt;CompressionEncoding&gt;,
+    <span class="attr">#[cfg(feature = <span class="string">"compression"</span>)] </span>compression_override: SingleMessageCompressionOverride,
 ) -&gt; EncodeBody&lt;<span class="kw">impl </span>Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;Bytes, Status&gt;&gt;&gt;
 <span class="kw">where
     </span>T: Encoder&lt;Error = Status&gt;,
@@ -260,9 +261,9 @@
     <span class="kw">let </span>stream = encode(
         encoder,
         source,
-        <span class="attr">#[cfg(feature = <span class="string">&quot;compression&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"compression"</span>)]
         </span>compression_encoding,
-        <span class="attr">#[cfg(feature = <span class="string">&quot;compression&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"compression"</span>)]
         </span>compression_override,
     )
     .into_stream();
@@ -273,7 +274,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>encode_client&lt;T, U&gt;(
     encoder: T,
     source: U,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;compression&quot;</span>)] </span>compression_encoding: <span class="prelude-ty">Option</span>&lt;CompressionEncoding&gt;,
+    <span class="attr">#[cfg(feature = <span class="string">"compression"</span>)] </span>compression_encoding: <span class="prelude-ty">Option</span>&lt;CompressionEncoding&gt;,
 ) -&gt; EncodeBody&lt;<span class="kw">impl </span>Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;Bytes, Status&gt;&gt;&gt;
 <span class="kw">where
     </span>T: Encoder&lt;Error = Status&gt;,
@@ -282,9 +283,9 @@
     <span class="kw">let </span>stream = encode(
         encoder,
         source.map(<span class="prelude-val">Ok</span>),
-        <span class="attr">#[cfg(feature = <span class="string">&quot;compression&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"compression"</span>)]
         </span>compression_encoding,
-        <span class="attr">#[cfg(feature = <span class="string">&quot;compression&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"compression"</span>)]
         </span>SingleMessageCompressionOverride::default(),
     )
     .into_stream();
@@ -294,8 +295,8 @@
 <span class="kw">fn </span>encode&lt;T, U&gt;(
     <span class="kw-2">mut </span>encoder: T,
     source: U,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;compression&quot;</span>)] </span>compression_encoding: <span class="prelude-ty">Option</span>&lt;CompressionEncoding&gt;,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;compression&quot;</span>)] </span>compression_override: SingleMessageCompressionOverride,
+    <span class="attr">#[cfg(feature = <span class="string">"compression"</span>)] </span>compression_encoding: <span class="prelude-ty">Option</span>&lt;CompressionEncoding&gt;,
+    <span class="attr">#[cfg(feature = <span class="string">"compression"</span>)] </span>compression_override: SingleMessageCompressionOverride,
 ) -&gt; <span class="kw">impl </span>TryStream&lt;<span class="prelude-val">Ok </span>= Bytes, Error = Status&gt;
 <span class="kw">where
     </span>T: Encoder&lt;Error = Status&gt;,
@@ -304,16 +305,16 @@
     <span class="macro">async_stream::stream! </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>buf = BytesMut::with_capacity(BUFFER_SIZE);
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;compression&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"compression"</span>)]
         </span><span class="kw">let </span>(compression_enabled_for_stream, <span class="kw-2">mut </span>uncompression_buf) = <span class="kw">match </span>compression_encoding {
             <span class="prelude-val">Some</span>(CompressionEncoding::Gzip) =&gt; (<span class="bool-val">true</span>, BytesMut::with_capacity(BUFFER_SIZE)),
             <span class="prelude-val">None </span>=&gt; (<span class="bool-val">false</span>, BytesMut::new()),
         };
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;compression&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"compression"</span>)]
         </span><span class="kw">let </span>compress_item = compression_enabled_for_stream &amp;&amp; compression_override == SingleMessageCompressionOverride::Inherit;
 
-        <span class="attr">#[cfg(not(feature = <span class="string">&quot;compression&quot;</span>))]
+        <span class="attr">#[cfg(not(feature = <span class="string">"compression"</span>))]
         </span><span class="kw">let </span>compress_item = <span class="bool-val">false</span>;
 
         <span class="macro">futures_util::pin_mut!</span>(source);
@@ -327,12 +328,12 @@
                     }
 
                     <span class="kw">if </span>compress_item {
-                        <span class="attr">#[cfg(feature = <span class="string">&quot;compression&quot;</span>)]
+                        <span class="attr">#[cfg(feature = <span class="string">"compression"</span>)]
                         </span>{
                             uncompression_buf.clear();
 
                             encoder.encode(item, <span class="kw-2">&amp;mut </span>EncodeBuf::new(<span class="kw-2">&amp;mut </span>uncompression_buf))
-                                .map_err(|err| Status::internal(<span class="macro">format!</span>(<span class="string">&quot;Error encoding: {}&quot;</span>, err)))<span class="question-mark">?</span>;
+                                .map_err(|err| Status::internal(<span class="macro">format!</span>(<span class="string">"Error encoding: {}"</span>, err)))<span class="question-mark">?</span>;
 
                             <span class="kw">let </span>uncompressed_len = uncompression_buf.len();
 
@@ -341,14 +342,14 @@
                                 <span class="kw-2">&amp;mut </span>uncompression_buf,
                                 <span class="kw-2">&amp;mut </span>buf,
                                 uncompressed_len,
-                            ).map_err(|err| Status::internal(<span class="macro">format!</span>(<span class="string">&quot;Error compressing: {}&quot;</span>, err)))<span class="question-mark">?</span>;
+                            ).map_err(|err| Status::internal(<span class="macro">format!</span>(<span class="string">"Error compressing: {}"</span>, err)))<span class="question-mark">?</span>;
                         }
 
-                        <span class="attr">#[cfg(not(feature = <span class="string">&quot;compression&quot;</span>))]
-                        </span><span class="macro">unreachable!</span>(<span class="string">&quot;compression disabled, should not take this branch&quot;</span>);
+                        <span class="attr">#[cfg(not(feature = <span class="string">"compression"</span>))]
+                        </span><span class="macro">unreachable!</span>(<span class="string">"compression disabled, should not take this branch"</span>);
                     } <span class="kw">else </span>{
                         encoder.encode(item, <span class="kw-2">&amp;mut </span>EncodeBuf::new(<span class="kw-2">&amp;mut </span>buf))
-                            .map_err(|err| Status::internal(<span class="macro">format!</span>(<span class="string">&quot;Error encoding: {}&quot;</span>, err)))<span class="question-mark">?</span>;
+                            .map_err(|err| Status::internal(<span class="macro">format!</span>(<span class="string">"Error encoding: {}"</span>, err)))<span class="question-mark">?</span>;
                     }
 
                     <span class="comment">// now that we know length, we can write the header
@@ -421,7 +422,7 @@
 
     <span class="kw">fn </span>poll_data(
         <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Data, <span class="self">Self</span>::Error&gt;&gt;&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>self_proj = <span class="self">self</span>.project();
         <span class="kw">match </span><span class="macro">ready!</span>(self_proj.inner.try_poll_next_unpin(cx)) {
@@ -439,7 +440,7 @@
 
     <span class="kw">fn </span>poll_trailers(
         <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        _cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        _cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; Poll&lt;<span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;HeaderMap&gt;, Status&gt;&gt; {
         <span class="kw">match </span><span class="self">self</span>.role {
             Role::Client =&gt; Poll::Ready(<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)),
@@ -454,7 +455,7 @@
                     <span class="kw-2">*</span>self_proj.is_end_stream = <span class="bool-val">true</span>;
                     status
                 } <span class="kw">else </span>{
-                    Status::new(Code::Ok, <span class="string">&quot;&quot;</span>)
+                    Status::new(Code::Ok, <span class="string">""</span>)
                 };
 
                 Poll::Ready(<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(status.to_header_map()<span class="question-mark">?</span>)))

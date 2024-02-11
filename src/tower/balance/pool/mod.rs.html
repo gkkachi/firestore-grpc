@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tower-0.4.13/src/balance/pool/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="tower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tower-0.4.13/src/balance/pool/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="tower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -465,7 +466,7 @@
 //! considers it a 1. [`Pool`] then maintains an [exponential moving
 //! average](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average) over those
 //! samples, which gives an estimate of how often the underlying service has been ready when it was
-//! needed &quot;recently&quot; (see [`Builder::urgency`]). If the service is loaded (see
+//! needed "recently" (see [`Builder::urgency`]). If the service is loaded (see
 //! [`Builder::loaded_above`]), a new service is created and added to the underlying [`Balance`].
 //! If the service is underutilized (see [`Builder::underutilized_below`]) and there are two or
 //! more services, then the latest added service is removed. In either case, the load estimate is
@@ -526,14 +527,14 @@
     </span>MS: MakeService&lt;Target, Request&gt; + fmt::Debug,
     Target: fmt::Debug,
 {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;PoolDiscoverer&quot;</span>)
-            .field(<span class="string">&quot;maker&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.maker)
-            .field(<span class="string">&quot;making&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.making.is_some())
-            .field(<span class="string">&quot;target&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.target)
-            .field(<span class="string">&quot;load&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.load)
-            .field(<span class="string">&quot;services&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.services)
-            .field(<span class="string">&quot;limit&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.limit)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"PoolDiscoverer"</span>)
+            .field(<span class="string">"maker"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.maker)
+            .field(<span class="string">"making"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.making.is_some())
+            .field(<span class="string">"target"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.target)
+            .field(<span class="string">"load"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.load)
+            .field(<span class="string">"services"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.services)
+            .field(<span class="string">"limit"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.limit)
             .finish()
     }
 }
@@ -547,20 +548,20 @@
 {
     <span class="kw">type </span>Item = <span class="prelude-ty">Result</span>&lt;Change&lt;usize, DropNotifyService&lt;MS::Service&gt;&gt;, MS::MakeError&gt;;
 
-    <span class="kw">fn </span>poll_next(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt;&gt; {
+    <span class="kw">fn </span>poll_next(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt;&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.project();
 
         <span class="kw">while let </span>Poll::Ready(<span class="prelude-val">Some</span>(sid)) = this.died_rx.as_mut().poll_recv(cx) {
             this.services.remove(sid);
             <span class="macro">tracing::trace!</span>(
                 pool.services = this.services.len(),
-                message = <span class="string">&quot;removing dropped service&quot;
+                message = <span class="string">"removing dropped service"
             </span>);
         }
 
         <span class="kw">if </span>this.services.is_empty() &amp;&amp; this.making.is_none() {
             <span class="kw">let _ </span>= <span class="macro">ready!</span>(this.maker.poll_ready(cx))<span class="question-mark">?</span>;
-            <span class="macro">tracing::trace!</span>(<span class="string">&quot;construct initial pool connection&quot;</span>);
+            <span class="macro">tracing::trace!</span>(<span class="string">"construct initial pool connection"</span>);
             this.making
                 .set(<span class="prelude-val">Some</span>(this.maker.make_service(this.target.clone())));
         }
@@ -577,11 +578,11 @@
 
                 <span class="macro">tracing::trace!</span>(
                     pool.services = this.services.len(),
-                    message = <span class="string">&quot;decided to add service to loaded pool&quot;
+                    message = <span class="string">"decided to add service to loaded pool"
                 </span>);
                 <span class="macro">ready!</span>(this.maker.poll_ready(cx))<span class="question-mark">?</span>;
-                <span class="macro">tracing::trace!</span>(<span class="string">&quot;making new service&quot;</span>);
-                <span class="comment">// TODO: it&#39;d be great if we could avoid the clone here and use, say, &amp;Target
+                <span class="macro">tracing::trace!</span>(<span class="string">"making new service"</span>);
+                <span class="comment">// TODO: it'd be great if we could avoid the clone here and use, say, &amp;Target
                 </span>this.making
                     .set(<span class="prelude-val">Some</span>(this.maker.make_service(this.target.clone())));
             }
@@ -599,7 +600,7 @@
             };
             <span class="macro">tracing::trace!</span>(
                 pool.services = this.services.len(),
-                message = <span class="string">&quot;finished creating new service&quot;
+                message = <span class="string">"finished creating new service"
             </span>);
             <span class="kw-2">*</span>this.load = Level::Normal;
             <span class="kw">return </span>Poll::Ready(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(Change::Insert(id, svc))));
@@ -607,19 +608,19 @@
 
         <span class="kw">match </span>this.load {
             Level::High =&gt; {
-                <span class="macro">unreachable!</span>(<span class="string">&quot;found high load but no Service being made&quot;</span>);
+                <span class="macro">unreachable!</span>(<span class="string">"found high load but no Service being made"</span>);
             }
             Level::Normal =&gt; Poll::Pending,
             Level::Low <span class="kw">if </span>this.services.len() == <span class="number">1 </span>=&gt; Poll::Pending,
             Level::Low =&gt; {
                 <span class="kw-2">*</span>this.load = Level::Normal;
-                <span class="comment">// NOTE: this is a little sad -- we&#39;d prefer to kill short-living services
+                <span class="comment">// NOTE: this is a little sad -- we'd prefer to kill short-living services
                 </span><span class="kw">let </span>rm = this.services.iter().next().unwrap().<span class="number">0</span>;
-                <span class="comment">// note that we _don&#39;t_ remove from self.services here
-                // that&#39;ll happen automatically on drop
+                <span class="comment">// note that we _don't_ remove from self.services here
+                // that'll happen automatically on drop
                 </span><span class="macro">tracing::trace!</span>(
                     pool.services = this.services.len(),
-                    message = <span class="string">&quot;removing service for over-provisioned pool&quot;
+                    message = <span class="string">"removing service for over-provisioned pool"
                 </span>);
                 Poll::Ready(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(Change::Remove(rm))))
             }
@@ -628,7 +629,7 @@
 }
 
 <span class="doccomment">/// A [builder] that lets you configure how a [`Pool`] determines whether the underlying service is
-/// loaded or not. See the [module-level documentation](self) and the builder&#39;s methods for
+/// loaded or not. See the [module-level documentation](self) and the builder's methods for
 /// details.
 ///
 ///  [builder]: https://rust-lang-nursery.github.io/api-guidelines/type-safety.html#builders-enable-construction-of-complex-values-c-builder
@@ -778,11 +779,11 @@
     Target: Clone + fmt::Debug,
     MS::Service: fmt::Debug,
 {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;Pool&quot;</span>)
-            .field(<span class="string">&quot;balance&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.balance)
-            .field(<span class="string">&quot;options&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.options)
-            .field(<span class="string">&quot;ewma&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.ewma)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"Pool"</span>)
+            .field(<span class="string">"balance"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.balance)
+            .field(<span class="string">"options"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.options)
+            .field(<span class="string">"ewma"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.ewma)
             .finish()
     }
 }
@@ -822,7 +823,7 @@
     <span class="kw">type </span>Error = &lt;PinBalance&lt;PoolDiscoverer&lt;MS, Target, Req&gt;, Req&gt; <span class="kw">as </span>Service&lt;Req&gt;&gt;::Error;
     <span class="kw">type </span>Future = &lt;PinBalance&lt;PoolDiscoverer&lt;MS, Target, Req&gt;, Req&gt; <span class="kw">as </span>Service&lt;Req&gt;&gt;::Future;
 
-    <span class="kw">fn </span>poll_ready(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;&gt; {
+    <span class="kw">fn </span>poll_ready(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;&gt; {
         <span class="kw">if let </span>Poll::Ready(()) = <span class="self">self</span>.balance.poll_ready(cx)<span class="question-mark">? </span>{
             <span class="comment">// services was ready -- there are enough services
             // update ewma with a 0 sample
@@ -831,17 +832,17 @@
             <span class="kw">let </span>discover = <span class="self">self</span>.balance.discover_mut().as_mut().project();
             <span class="kw">if </span><span class="self">self</span>.ewma &lt; <span class="self">self</span>.options.low {
                 <span class="kw">if </span><span class="kw-2">*</span>discover.load != Level::Low {
-                    <span class="macro">tracing::trace!</span>({ ewma = %<span class="self">self</span>.ewma }, <span class="string">&quot;pool is over-provisioned&quot;</span>);
+                    <span class="macro">tracing::trace!</span>({ ewma = %<span class="self">self</span>.ewma }, <span class="string">"pool is over-provisioned"</span>);
                 }
                 <span class="kw-2">*</span>discover.load = Level::Low;
 
                 <span class="kw">if </span>discover.services.len() &gt; <span class="number">1 </span>{
-                    <span class="comment">// reset EWMA so we don&#39;t immediately try to remove another service
+                    <span class="comment">// reset EWMA so we don't immediately try to remove another service
                     </span><span class="self">self</span>.ewma = <span class="self">self</span>.options.init;
                 }
             } <span class="kw">else </span>{
                 <span class="kw">if </span><span class="kw-2">*</span>discover.load != Level::Normal {
-                    <span class="macro">tracing::trace!</span>({ ewma = %<span class="self">self</span>.ewma }, <span class="string">&quot;pool is appropriately provisioned&quot;</span>);
+                    <span class="macro">tracing::trace!</span>({ ewma = %<span class="self">self</span>.ewma }, <span class="string">"pool is appropriately provisioned"</span>);
                 }
                 <span class="kw-2">*</span>discover.load = Level::Normal;
             }
@@ -851,18 +852,18 @@
 
         <span class="kw">let </span>discover = <span class="self">self</span>.balance.discover_mut().as_mut().project();
         <span class="kw">if </span>discover.making.is_none() {
-            <span class="comment">// no services are ready -- we&#39;re overloaded
+            <span class="comment">// no services are ready -- we're overloaded
             // update ewma with a 1 sample
             </span><span class="self">self</span>.ewma = <span class="self">self</span>.options.alpha + (<span class="number">1.0 </span>- <span class="self">self</span>.options.alpha) * <span class="self">self</span>.ewma;
 
             <span class="kw">if </span><span class="self">self</span>.ewma &gt; <span class="self">self</span>.options.high {
                 <span class="kw">if </span><span class="kw-2">*</span>discover.load != Level::High {
-                    <span class="macro">tracing::trace!</span>({ ewma = %<span class="self">self</span>.ewma }, <span class="string">&quot;pool is under-provisioned&quot;</span>);
+                    <span class="macro">tracing::trace!</span>({ ewma = %<span class="self">self</span>.ewma }, <span class="string">"pool is under-provisioned"</span>);
                 }
                 <span class="kw-2">*</span>discover.load = Level::High;
 
-                <span class="comment">// don&#39;t reset the EWMA -- in theory, poll_ready should now start returning
-                // `Ready`, so we won&#39;t try to launch another service immediately.
+                <span class="comment">// don't reset the EWMA -- in theory, poll_ready should now start returning
+                // `Ready`, so we won't try to launch another service immediately.
                 // we clamp it to high though in case the # of services is limited.
                 </span><span class="self">self</span>.ewma = <span class="self">self</span>.options.high;
 
@@ -908,7 +909,7 @@
     <span class="kw">type </span>Future = Svc::Future;
     <span class="kw">type </span>Error = Svc::Error;
 
-    <span class="kw">fn </span>poll_ready(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;&gt; {
+    <span class="kw">fn </span>poll_ready(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;&gt; {
         <span class="self">self</span>.svc.poll_ready(cx)
     }
 

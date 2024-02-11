@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/async-stream-impl-0.3.5/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="async_stream_impl" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/async-stream-impl-0.3.5/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="async_stream_impl" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -307,13 +308,13 @@
 <span class="kw">use </span>syn::parse::{Parse, ParseStream, Parser, <span class="prelude-ty">Result</span>};
 <span class="kw">use </span>syn::visit_mut::VisitMut;
 
-<span class="kw">struct </span>Scrub&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">struct </span>Scrub&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Whether the stream is a try stream.
     </span>is_try: bool,
     <span class="doccomment">/// The unit expression, `()`.
     </span>unit: Box&lt;syn::Expr&gt;,
     has_yielded: bool,
-    crate_path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TokenStream2,
+    crate_path: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TokenStream2,
 }
 
 <span class="kw">fn </span>parse_input(input: TokenStream) -&gt; syn::Result&lt;(TokenStream2, Vec&lt;syn::Stmt&gt;)&gt; {
@@ -326,8 +327,8 @@
     <span class="prelude-val">Ok</span>((crate_path, stmts))
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Scrub&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>new(is_try: bool, crate_path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TokenStream2) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Scrub&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">fn </span>new(is_try: bool, crate_path: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TokenStream2) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             is_try,
             unit: <span class="macro">syn::parse_quote!</span>(()),
@@ -346,7 +347,7 @@
 }
 
 <span class="kw">fn </span>visit_token_stream_impl(
-    visitor: <span class="kw-2">&amp;mut </span>Scrub&lt;<span class="lifetime">&#39;_</span>&gt;,
+    visitor: <span class="kw-2">&amp;mut </span>Scrub&lt;<span class="lifetime">'_</span>&gt;,
     tokens: TokenStream2,
     modified: <span class="kw-2">&amp;mut </span>bool,
     out: <span class="kw-2">&amp;mut </span>TokenStream2,
@@ -357,7 +358,7 @@
     <span class="kw">let </span><span class="kw-2">mut </span>tokens = tokens.into_iter().peekable();
     <span class="kw">while let </span><span class="prelude-val">Some</span>(tt) = tokens.next() {
         <span class="kw">match </span>tt {
-            TokenTree::Ident(i) <span class="kw">if </span>i == <span class="string">&quot;yield&quot; </span>=&gt; {
+            TokenTree::Ident(i) <span class="kw">if </span>i == <span class="string">"yield" </span>=&gt; {
                 <span class="kw">let </span>stream = std::iter::once(TokenTree::Ident(i)).chain(tokens).collect();
                 <span class="kw">match </span>syn::parse2(stream) {
                     <span class="prelude-val">Ok</span>(Partial(yield_expr, rest)) =&gt; {
@@ -374,10 +375,10 @@
                     }
                 }
             }
-            TokenTree::Ident(i) <span class="kw">if </span>i == <span class="string">&quot;stream&quot; </span>|| i == <span class="string">&quot;try_stream&quot; </span>=&gt; {
+            TokenTree::Ident(i) <span class="kw">if </span>i == <span class="string">"stream" </span>|| i == <span class="string">"try_stream" </span>=&gt; {
                 out.append(TokenTree::Ident(i));
                 <span class="kw">match </span>tokens.peek() {
-                    <span class="prelude-val">Some</span>(TokenTree::Punct(p)) <span class="kw">if </span>p.as_char() == <span class="string">&#39;!&#39; </span>=&gt; {
+                    <span class="prelude-val">Some</span>(TokenTree::Punct(p)) <span class="kw">if </span>p.as_char() == <span class="string">'!' </span>=&gt; {
                         out.extend(tokens.next()); <span class="comment">// !
                         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(TokenTree::Group(<span class="kw">_</span>)) = tokens.peek() {
                             out.extend(tokens.next()); <span class="comment">// { .. } or [ .. ] or ( .. )
@@ -398,7 +399,7 @@
     }
 }
 
-<span class="kw">impl </span>Scrub&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>Scrub&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>visit_token_stream(<span class="kw-2">&amp;mut </span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream2) -&gt; bool {
         <span class="kw">let </span>(<span class="kw-2">mut </span>out, <span class="kw-2">mut </span>modified) = (TokenStream2::new(), <span class="bool-val">false</span>);
         visit_token_stream_impl(<span class="self">self</span>, tokens.clone(), <span class="kw-2">&amp;mut </span>modified, <span class="kw-2">&amp;mut </span>out);
@@ -411,7 +412,7 @@
     }
 }
 
-<span class="kw">impl </span>VisitMut <span class="kw">for </span>Scrub&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>VisitMut <span class="kw">for </span>Scrub&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>visit_expr_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, i: <span class="kw-2">&amp;mut </span>syn::Expr) {
         <span class="kw">match </span>i {
             syn::Expr::Yield(yield_expr) =&gt; {
@@ -445,7 +446,7 @@
                 };
             }
             syn::Expr::Closure(<span class="kw">_</span>) | syn::Expr::Async(<span class="kw">_</span>) =&gt; {
-                <span class="comment">// Don&#39;t transform inner closures or async blocks.
+                <span class="comment">// Don't transform inner closures or async blocks.
             </span>}
             syn::Expr::ForLoop(expr) =&gt; {
                 syn::visit_mut::visit_expr_for_loop_mut(<span class="self">self</span>, expr);
@@ -486,7 +487,7 @@
 
     <span class="kw">fn </span>visit_macro_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, mac: <span class="kw-2">&amp;mut </span>syn::Macro) {
         <span class="kw">let </span>mac_ident = mac.path.segments.last().map(|p| <span class="kw-2">&amp;</span>p.ident);
-        <span class="kw">if </span>mac_ident.map_or(<span class="bool-val">false</span>, |i| i == <span class="string">&quot;stream&quot; </span>|| i == <span class="string">&quot;try_stream&quot;</span>) {
+        <span class="kw">if </span>mac_ident.map_or(<span class="bool-val">false</span>, |i| i == <span class="string">"stream" </span>|| i == <span class="string">"try_stream"</span>) {
             <span class="kw">return</span>;
         }
 
@@ -494,7 +495,7 @@
     }
 
     <span class="kw">fn </span>visit_item_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, i: <span class="kw-2">&amp;mut </span>syn::Item) {
-        <span class="comment">// Recurse into macros but otherwise don&#39;t transform inner items.
+        <span class="comment">// Recurse into macros but otherwise don't transform inner items.
         </span><span class="kw">if let </span>syn::Item::Macro(i) = i {
             <span class="self">self</span>.visit_macro_mut(<span class="kw-2">&amp;mut </span>i.mac);
         }
@@ -571,7 +572,7 @@
 
 <span class="comment">// syn 2.0 wont parse `#[await] for x in xs {}`
 // because `await` is a keyword, use `await_` instead
-</span><span class="kw">const </span>AWAIT_ATTR_NAME: <span class="kw-2">&amp;</span>str = <span class="string">&quot;await_&quot;</span>;
+</span><span class="kw">const </span>AWAIT_ATTR_NAME: <span class="kw-2">&amp;</span>str = <span class="string">"await_"</span>;
 
 <span class="doccomment">/// Replace `for await` with `#[await] for`, which will be later transformed into a `next` loop.
 </span><span class="kw">fn </span>replace_for_await(input: <span class="kw">impl </span>IntoIterator&lt;Item = TokenTree&gt;) -&gt; TokenStream2 {
@@ -582,7 +583,7 @@
         <span class="kw">match </span>token {
             TokenTree::Ident(ident) =&gt; {
                 <span class="kw">match </span>input.peek() {
-                    <span class="prelude-val">Some</span>(TokenTree::Ident(next)) <span class="kw">if </span>ident == <span class="string">&quot;for&quot; </span>&amp;&amp; next == <span class="string">&quot;await&quot; </span>=&gt; {
+                    <span class="prelude-val">Some</span>(TokenTree::Ident(next)) <span class="kw">if </span>ident == <span class="string">"for" </span>&amp;&amp; next == <span class="string">"await" </span>=&gt; {
                         <span class="kw">let </span>next_span = next.span();
                         <span class="kw">let </span>next = syn::Ident::new(AWAIT_ATTR_NAME, next_span);
                         tokens.extend(<span class="macro">quote!</span>(<span class="attr">#[#next]</span>));

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-0.19.1/src/error.rs`."><title>error.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustls" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-0.19.1/src/error.rs`."><title>error.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustls" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -175,7 +176,7 @@
 <span class="doccomment">/// rustls reports protocol errors using this type.
 </span><span class="attr">#[derive(Debug, PartialEq, Clone)]
 </span><span class="kw">pub enum </span>TLSError {
-    <span class="doccomment">/// We received a TLS message that isn&#39;t valid right now.
+    <span class="doccomment">/// We received a TLS message that isn't valid right now.
     /// `expect_types` lists the message types we can expect right now.
     /// `got_type` is the type we found.  This error is typically
     /// caused by a buggy TLS stack (the peer or this one), a broken
@@ -187,7 +188,7 @@
         </span>got_type: ContentType,
     },
 
-    <span class="doccomment">/// We received a TLS handshake message that isn&#39;t valid right now.
+    <span class="doccomment">/// We received a TLS handshake message that isn't valid right now.
     /// `expect_types` lists the handshake message types we can expect
     /// right now.  `got_type` is the type we found.
     </span>InappropriateHandshakeMessage {
@@ -203,13 +204,13 @@
     <span class="doccomment">/// The peer sent us a TLS message with invalid contents.
     </span>CorruptMessagePayload(ContentType),
 
-    <span class="doccomment">/// The peer didn&#39;t give us any certificates.
+    <span class="doccomment">/// The peer didn't give us any certificates.
     </span>NoCertificatesPresented,
 
-    <span class="doccomment">/// We couldn&#39;t decrypt a message.  This is invariably fatal.
+    <span class="doccomment">/// We couldn't decrypt a message.  This is invariably fatal.
     </span>DecryptError,
 
-    <span class="doccomment">/// The peer doesn&#39;t support a protocol version/feature we require.
+    <span class="doccomment">/// The peer doesn't support a protocol version/feature we require.
     /// The parameter gives a hint as to what version/feature it is.
     </span>PeerIncompatibleError(String),
 
@@ -232,7 +233,7 @@
     <span class="doccomment">/// We failed to figure out what time it currently is.
     </span>FailedToGetCurrentTime,
 
-    <span class="doccomment">/// This function doesn&#39;t work until the TLS handshake
+    <span class="doccomment">/// This function doesn't work until the TLS handshake
     /// is complete.
     </span>HandshakeNotComplete,
 
@@ -246,9 +247,9 @@
 <span class="kw">fn </span>join&lt;T: fmt::Debug&gt;(items: <span class="kw-2">&amp;</span>[T]) -&gt; String {
     items
         .iter()
-        .map(|x| <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, x))
+        .map(|x| <span class="macro">format!</span>(<span class="string">"{:?}"</span>, x))
         .collect::&lt;Vec&lt;String&gt;&gt;()
-        .join(<span class="string">&quot; or &quot;</span>)
+        .join(<span class="string">" or "</span>)
 }
 
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>TLSError {
@@ -259,7 +260,7 @@
                 <span class="kw-2">ref </span>got_type,
             } =&gt; <span class="macro">write!</span>(
                 f,
-                <span class="string">&quot;received unexpected message: got {:?} when expecting {}&quot;</span>,
+                <span class="string">"received unexpected message: got {:?} when expecting {}"</span>,
                 got_type,
                 join::&lt;ContentType&gt;(expect_types)
             ),
@@ -268,26 +269,26 @@
                 <span class="kw-2">ref </span>got_type,
             } =&gt; <span class="macro">write!</span>(
                 f,
-                <span class="string">&quot;received unexpected handshake message: got {:?} when expecting {}&quot;</span>,
+                <span class="string">"received unexpected handshake message: got {:?} when expecting {}"</span>,
                 got_type,
                 join::&lt;HandshakeType&gt;(expect_types)
             ),
             TLSError::CorruptMessagePayload(<span class="kw-2">ref </span>typ) =&gt; {
-                <span class="macro">write!</span>(f, <span class="string">&quot;received corrupt message of type {:?}&quot;</span>, typ)
+                <span class="macro">write!</span>(f, <span class="string">"received corrupt message of type {:?}"</span>, typ)
             }
-            TLSError::PeerIncompatibleError(<span class="kw-2">ref </span>why) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;peer is incompatible: {}&quot;</span>, why),
-            TLSError::PeerMisbehavedError(<span class="kw-2">ref </span>why) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;peer misbehaved: {}&quot;</span>, why),
-            TLSError::AlertReceived(<span class="kw-2">ref </span>alert) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;received fatal alert: {:?}&quot;</span>, alert),
-            TLSError::WebPKIError(<span class="kw-2">ref </span>err) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;invalid certificate: {:?}&quot;</span>, err),
-            TLSError::CorruptMessage =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;received corrupt message&quot;</span>),
-            TLSError::NoCertificatesPresented =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;peer sent no certificates&quot;</span>),
-            TLSError::DecryptError =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;cannot decrypt peer&#39;s message&quot;</span>),
-            TLSError::PeerSentOversizedRecord =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;peer sent excess record size&quot;</span>),
-            TLSError::HandshakeNotComplete =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;handshake not complete&quot;</span>),
-            TLSError::NoApplicationProtocol =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;peer doesn&#39;t support any known protocol&quot;</span>),
-            TLSError::InvalidSCT(<span class="kw-2">ref </span>err) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;invalid certificate timestamp: {:?}&quot;</span>, err),
-            TLSError::FailedToGetCurrentTime =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;failed to get current time&quot;</span>),
-            TLSError::General(<span class="kw-2">ref </span>err) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;unexpected error: {}&quot;</span>, err), <span class="comment">// (please file a bug)
+            TLSError::PeerIncompatibleError(<span class="kw-2">ref </span>why) =&gt; <span class="macro">write!</span>(f, <span class="string">"peer is incompatible: {}"</span>, why),
+            TLSError::PeerMisbehavedError(<span class="kw-2">ref </span>why) =&gt; <span class="macro">write!</span>(f, <span class="string">"peer misbehaved: {}"</span>, why),
+            TLSError::AlertReceived(<span class="kw-2">ref </span>alert) =&gt; <span class="macro">write!</span>(f, <span class="string">"received fatal alert: {:?}"</span>, alert),
+            TLSError::WebPKIError(<span class="kw-2">ref </span>err) =&gt; <span class="macro">write!</span>(f, <span class="string">"invalid certificate: {:?}"</span>, err),
+            TLSError::CorruptMessage =&gt; <span class="macro">write!</span>(f, <span class="string">"received corrupt message"</span>),
+            TLSError::NoCertificatesPresented =&gt; <span class="macro">write!</span>(f, <span class="string">"peer sent no certificates"</span>),
+            TLSError::DecryptError =&gt; <span class="macro">write!</span>(f, <span class="string">"cannot decrypt peer's message"</span>),
+            TLSError::PeerSentOversizedRecord =&gt; <span class="macro">write!</span>(f, <span class="string">"peer sent excess record size"</span>),
+            TLSError::HandshakeNotComplete =&gt; <span class="macro">write!</span>(f, <span class="string">"handshake not complete"</span>),
+            TLSError::NoApplicationProtocol =&gt; <span class="macro">write!</span>(f, <span class="string">"peer doesn't support any known protocol"</span>),
+            TLSError::InvalidSCT(<span class="kw-2">ref </span>err) =&gt; <span class="macro">write!</span>(f, <span class="string">"invalid certificate timestamp: {:?}"</span>, err),
+            TLSError::FailedToGetCurrentTime =&gt; <span class="macro">write!</span>(f, <span class="string">"failed to get current time"</span>),
+            TLSError::General(<span class="kw-2">ref </span>err) =&gt; <span class="macro">write!</span>(f, <span class="string">"unexpected error: {}"</span>, err), <span class="comment">// (please file a bug)
         </span>}
     }
 }
@@ -316,12 +317,12 @@
             TLSError::CorruptMessagePayload(ContentType::Alert),
             TLSError::NoCertificatesPresented,
             TLSError::DecryptError,
-            TLSError::PeerIncompatibleError(<span class="string">&quot;no tls1.2&quot;</span>.to_string()),
-            TLSError::PeerMisbehavedError(<span class="string">&quot;inconsistent something&quot;</span>.to_string()),
+            TLSError::PeerIncompatibleError(<span class="string">"no tls1.2"</span>.to_string()),
+            TLSError::PeerMisbehavedError(<span class="string">"inconsistent something"</span>.to_string()),
             TLSError::AlertReceived(AlertDescription::ExportRestriction),
             TLSError::WebPKIError(webpki::Error::ExtensionValueInvalid),
             TLSError::InvalidSCT(sct::Error::MalformedSCT),
-            TLSError::General(<span class="string">&quot;undocumented error&quot;</span>.to_string()),
+            TLSError::General(<span class="string">"undocumented error"</span>.to_string()),
             TLSError::FailedToGetCurrentTime,
             TLSError::HandshakeNotComplete,
             TLSError::PeerSentOversizedRecord,
@@ -329,8 +330,8 @@
         ];
 
         <span class="kw">for </span>err <span class="kw">in </span>all {
-            <span class="macro">println!</span>(<span class="string">&quot;{:?}:&quot;</span>, err);
-            <span class="macro">println!</span>(<span class="string">&quot;  fmt &#39;{}&#39;&quot;</span>, err);
+            <span class="macro">println!</span>(<span class="string">"{:?}:"</span>, err);
+            <span class="macro">println!</span>(<span class="string">"  fmt '{}'"</span>, err);
         }
     }
 }

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/hyper-0.14.28/src/proto/h2/server.rs`."><title>server.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="hyper" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/hyper-0.14.28/src/proto/h2/server.rs`."><title>server.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="hyper" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -557,7 +558,7 @@
 <span class="kw">use </span>std::marker::Unpin;
 <span class="kw">use </span>std::pin::Pin;
 <span class="kw">use </span>std::task::{Context, Poll};
-<span class="attr">#[cfg(feature = <span class="string">&quot;runtime&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"runtime"</span>)]
 </span><span class="kw">use </span>std::time::Duration;
 
 <span class="kw">use </span>bytes::Bytes;
@@ -582,7 +583,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::upgrade::{OnUpgrade, Pending, Upgraded};
 <span class="kw">use crate</span>::{Body, Response};
 
-<span class="comment">// Our defaults are chosen for the &quot;majority&quot; case, which usually are not
+<span class="comment">// Our defaults are chosen for the "majority" case, which usually are not
 // resource constrained, and so the spec default of 64kb can be too limiting
 // for performance.
 //
@@ -592,7 +593,7 @@
 </span><span class="kw">const </span>DEFAULT_STREAM_WINDOW: u32 = <span class="number">1024 </span>* <span class="number">1024</span>; <span class="comment">// 1mb
 </span><span class="kw">const </span>DEFAULT_MAX_FRAME_SIZE: u32 = <span class="number">1024 </span>* <span class="number">16</span>; <span class="comment">// 16kb
 </span><span class="kw">const </span>DEFAULT_MAX_SEND_BUF_SIZE: usize = <span class="number">1024 </span>* <span class="number">400</span>; <span class="comment">// 400kb
-</span><span class="kw">const </span>DEFAULT_SETTINGS_MAX_HEADER_LIST_SIZE: u32 = <span class="number">16 </span>&lt;&lt; <span class="number">20</span>; <span class="comment">// 16 MB &quot;sane default&quot; taken from golang http2
+</span><span class="kw">const </span>DEFAULT_SETTINGS_MAX_HEADER_LIST_SIZE: u32 = <span class="number">16 </span>&lt;&lt; <span class="number">20</span>; <span class="comment">// 16 MB "sane default" taken from golang http2
 
 </span><span class="attr">#[derive(Clone, Debug)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>Config {
@@ -603,9 +604,9 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) enable_connect_protocol: bool,
     <span class="kw">pub</span>(<span class="kw">crate</span>) max_concurrent_streams: <span class="prelude-ty">Option</span>&lt;u32&gt;,
     <span class="kw">pub</span>(<span class="kw">crate</span>) max_pending_accept_reset_streams: <span class="prelude-ty">Option</span>&lt;usize&gt;,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;runtime&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"runtime"</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) keep_alive_interval: <span class="prelude-ty">Option</span>&lt;Duration&gt;,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;runtime&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"runtime"</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) keep_alive_timeout: Duration,
     <span class="kw">pub</span>(<span class="kw">crate</span>) max_send_buffer_size: usize,
     <span class="kw">pub</span>(<span class="kw">crate</span>) max_header_list_size: u32,
@@ -621,9 +622,9 @@
             enable_connect_protocol: <span class="bool-val">false</span>,
             max_concurrent_streams: <span class="prelude-val">None</span>,
             max_pending_accept_reset_streams: <span class="prelude-val">None</span>,
-            <span class="attr">#[cfg(feature = <span class="string">&quot;runtime&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"runtime"</span>)]
             </span>keep_alive_interval: <span class="prelude-val">None</span>,
-            <span class="attr">#[cfg(feature = <span class="string">&quot;runtime&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"runtime"</span>)]
             </span>keep_alive_timeout: Duration::from_secs(<span class="number">20</span>),
             max_send_buffer_size: DEFAULT_MAX_SEND_BUF_SIZE,
             max_header_list_size: DEFAULT_SETTINGS_MAX_HEADER_LIST_SIZE,
@@ -669,7 +670,7 @@
     </span>T: AsyncRead + AsyncWrite + Unpin,
     S: HttpService&lt;Body, ResBody = B&gt;,
     S::Error: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
-    B: HttpBody + <span class="lifetime">&#39;static</span>,
+    B: HttpBody + <span class="lifetime">'static</span>,
     E: ConnStreamExec&lt;S::Future, B&gt;,
 {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(io: T, service: S, config: <span class="kw-2">&amp;</span>Config, exec: E) -&gt; Server&lt;T, S, B, E&gt; {
@@ -699,13 +700,13 @@
 
         <span class="kw">let </span>ping_config = ping::Config {
             bdp_initial_window: bdp,
-            <span class="attr">#[cfg(feature = <span class="string">&quot;runtime&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"runtime"</span>)]
             </span>keep_alive_interval: config.keep_alive_interval,
-            <span class="attr">#[cfg(feature = <span class="string">&quot;runtime&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"runtime"</span>)]
             </span>keep_alive_timeout: config.keep_alive_timeout,
             <span class="comment">// If keep-alive is enabled for servers, always enabled while
             // idle, so it can more aggressively close dead connections.
-            </span><span class="attr">#[cfg(feature = <span class="string">&quot;runtime&quot;</span>)]
+            </span><span class="attr">#[cfg(feature = <span class="string">"runtime"</span>)]
             </span>keep_alive_while_idle: <span class="bool-val">true</span>,
         };
 
@@ -720,7 +721,7 @@
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>graceful_shutdown(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="macro">trace!</span>(<span class="string">&quot;graceful_shutdown&quot;</span>);
+        <span class="macro">trace!</span>(<span class="string">"graceful_shutdown"</span>);
         <span class="kw">match </span><span class="self">self</span>.state {
             State::Handshaking { .. } =&gt; {
                 <span class="comment">// fall-through, to replace state with Closed
@@ -744,12 +745,12 @@
     </span>T: AsyncRead + AsyncWrite + Unpin,
     S: HttpService&lt;Body, ResBody = B&gt;,
     S::Error: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
-    B: HttpBody + <span class="lifetime">&#39;static</span>,
+    B: HttpBody + <span class="lifetime">'static</span>,
     E: ConnStreamExec&lt;S::Future, B&gt;,
 {
     <span class="kw">type </span>Output = <span class="kw">crate</span>::Result&lt;Dispatched&gt;;
 
-    <span class="kw">fn </span>poll(<span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+    <span class="kw">fn </span>poll(<span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
         <span class="kw">let </span>me = <span class="kw-2">&amp;mut *</span><span class="self">self</span>;
         <span class="kw">loop </span>{
             <span class="kw">let </span>next = <span class="kw">match </span>me.state {
@@ -759,7 +760,7 @@
                 } =&gt; {
                     <span class="kw">let </span><span class="kw-2">mut </span>conn = <span class="macro">ready!</span>(Pin::new(hs).poll(cx).map_err(<span class="kw">crate</span>::Error::new_h2))<span class="question-mark">?</span>;
                     <span class="kw">let </span>ping = <span class="kw">if </span>ping_config.is_enabled() {
-                        <span class="kw">let </span>pp = conn.ping_pong().expect(<span class="string">&quot;conn.ping_pong&quot;</span>);
+                        <span class="kw">let </span>pp = conn.ping_pong().expect(<span class="string">"conn.ping_pong"</span>);
                         <span class="prelude-val">Some</span>(ping::channel(pp, ping_config.clone()))
                     } <span class="kw">else </span>{
                         <span class="prelude-val">None
@@ -788,11 +789,11 @@
 <span class="kw">impl</span>&lt;T, B&gt; Serving&lt;T, B&gt;
 <span class="kw">where
     </span>T: AsyncRead + AsyncWrite + Unpin,
-    B: HttpBody + <span class="lifetime">&#39;static</span>,
+    B: HttpBody + <span class="lifetime">'static</span>,
 {
     <span class="kw">fn </span>poll_server&lt;S, E&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
         service: <span class="kw-2">&amp;mut </span>S,
         exec: <span class="kw-2">&amp;mut </span>E,
     ) -&gt; Poll&lt;<span class="kw">crate</span>::Result&lt;()&gt;&gt;
@@ -815,20 +816,20 @@
                         <span class="comment">// use `poll_closed` instead of `poll_accept`,
                         // in order to avoid accepting a request.
                         </span><span class="macro">ready!</span>(<span class="self">self</span>.conn.poll_closed(cx).map_err(<span class="kw">crate</span>::Error::new_h2))<span class="question-mark">?</span>;
-                        <span class="macro">trace!</span>(<span class="string">&quot;incoming connection complete&quot;</span>);
+                        <span class="macro">trace!</span>(<span class="string">"incoming connection complete"</span>);
                         <span class="kw">return </span>Poll::Ready(<span class="prelude-val">Ok</span>(()));
                     }
                     Poll::Ready(<span class="prelude-val">Err</span>(err)) =&gt; {
                         <span class="kw">let </span>err = <span class="kw">crate</span>::Error::new_user_service(err);
-                        <span class="macro">debug!</span>(<span class="string">&quot;service closed: {}&quot;</span>, err);
+                        <span class="macro">debug!</span>(<span class="string">"service closed: {}"</span>, err);
 
                         <span class="kw">let </span>reason = err.h2_reason();
                         <span class="kw">if </span>reason == Reason::NO_ERROR {
                             <span class="comment">// NO_ERROR is only used for graceful shutdowns...
-                            </span><span class="macro">trace!</span>(<span class="string">&quot;interpreting NO_ERROR user error as graceful_shutdown&quot;</span>);
+                            </span><span class="macro">trace!</span>(<span class="string">"interpreting NO_ERROR user error as graceful_shutdown"</span>);
                             <span class="self">self</span>.conn.graceful_shutdown();
                         } <span class="kw">else </span>{
-                            <span class="macro">trace!</span>(<span class="string">&quot;abruptly shutting down with {:?}&quot;</span>, reason);
+                            <span class="macro">trace!</span>(<span class="string">"abruptly shutting down with {:?}"</span>, reason);
                             <span class="self">self</span>.conn.abrupt_shutdown(reason);
                         }
                         <span class="self">self</span>.closing = <span class="prelude-val">Some</span>(err);
@@ -839,7 +840,7 @@
                 <span class="comment">// When the service is ready, accepts an incoming request.
                 </span><span class="kw">match </span><span class="macro">ready!</span>(<span class="self">self</span>.conn.poll_accept(cx)) {
                     <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>((req, <span class="kw-2">mut </span>respond))) =&gt; {
-                        <span class="macro">trace!</span>(<span class="string">&quot;incoming request&quot;</span>);
+                        <span class="macro">trace!</span>(<span class="string">"incoming request"</span>);
                         <span class="kw">let </span>content_length = headers::content_length_parse_all(req.headers());
                         <span class="kw">let </span>ping = <span class="self">self
                             </span>.ping
@@ -862,7 +863,7 @@
                             )
                         } <span class="kw">else </span>{
                             <span class="kw">if </span>content_length.map_or(<span class="bool-val">false</span>, |len| len != <span class="number">0</span>) {
-                                <span class="macro">warn!</span>(<span class="string">&quot;h2 connect request with non-zero body not supported&quot;</span>);
+                                <span class="macro">warn!</span>(<span class="string">"h2 connect request with non-zero body not supported"</span>);
                                 respond.send_reset(h2::Reason::INTERNAL_ERROR);
                                 <span class="kw">return </span>Poll::Ready(<span class="prelude-val">Ok</span>(()));
                             }
@@ -895,7 +896,7 @@
                             ping.ensure_not_timed_out()<span class="question-mark">?</span>;
                         }
 
-                        <span class="macro">trace!</span>(<span class="string">&quot;incoming connection complete&quot;</span>);
+                        <span class="macro">trace!</span>(<span class="string">"incoming connection complete"</span>);
                         <span class="kw">return </span>Poll::Ready(<span class="prelude-val">Ok</span>(()));
                     }
                 }
@@ -904,24 +905,24 @@
 
         <span class="macro">debug_assert!</span>(
             <span class="self">self</span>.closing.is_some(),
-            <span class="string">&quot;poll_server broke loop without closing&quot;
+            <span class="string">"poll_server broke loop without closing"
         </span>);
 
         <span class="macro">ready!</span>(<span class="self">self</span>.conn.poll_closed(cx).map_err(<span class="kw">crate</span>::Error::new_h2))<span class="question-mark">?</span>;
 
-        Poll::Ready(<span class="prelude-val">Err</span>(<span class="self">self</span>.closing.take().expect(<span class="string">&quot;polled after error&quot;</span>)))
+        Poll::Ready(<span class="prelude-val">Err</span>(<span class="self">self</span>.closing.take().expect(<span class="string">"polled after error"</span>)))
     }
 
-    <span class="kw">fn </span>poll_ping(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) {
+    <span class="kw">fn </span>poll_ping(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) {
         <span class="kw">if let </span><span class="prelude-val">Some</span>((<span class="kw">_</span>, <span class="kw-2">ref mut </span>estimator)) = <span class="self">self</span>.ping {
             <span class="kw">match </span>estimator.poll(cx) {
                 Poll::Ready(ping::Ponged::SizeUpdate(wnd)) =&gt; {
                     <span class="self">self</span>.conn.set_target_window_size(wnd);
                     <span class="kw">let _ </span>= <span class="self">self</span>.conn.set_initial_window_size(wnd);
                 }
-                <span class="attr">#[cfg(feature = <span class="string">&quot;runtime&quot;</span>)]
+                <span class="attr">#[cfg(feature = <span class="string">"runtime"</span>)]
                 </span>Poll::Ready(ping::Ponged::KeepAliveTimedOut) =&gt; {
-                    <span class="macro">debug!</span>(<span class="string">&quot;keep-alive timed out, closing connection&quot;</span>);
+                    <span class="macro">debug!</span>(<span class="string">"keep-alive timed out, closing connection"</span>);
                     <span class="self">self</span>.conn.abrupt_shutdown(h2::Reason::NO_ERROR);
                 }
                 Poll::Pending =&gt; {}
@@ -987,7 +988,7 @@
         <span class="kw">match </span><span class="macro-nonterminal">$me</span>.reply.send_response(<span class="macro-nonterminal">$res</span>, <span class="macro-nonterminal">$eos</span>) {
             <span class="prelude-val">Ok</span>(tx) =&gt; tx,
             <span class="prelude-val">Err</span>(e) =&gt; {
-                <span class="macro">debug!</span>(<span class="string">&quot;send response error: {}&quot;</span>, e);
+                <span class="macro">debug!</span>(<span class="string">"send response error: {}"</span>, e);
                 <span class="macro-nonterminal">$me</span>.reply.send_reset(Reason::INTERNAL_ERROR);
                 <span class="kw">return </span>Poll::Ready(<span class="prelude-val">Err</span>(<span class="kw">crate</span>::Error::new_h2(e)));
             }
@@ -999,11 +1000,11 @@
 <span class="kw">where
     </span>F: Future&lt;Output = <span class="prelude-ty">Result</span>&lt;Response&lt;B&gt;, E&gt;&gt;,
     B: HttpBody,
-    B::Data: <span class="lifetime">&#39;static</span>,
+    B::Data: <span class="lifetime">'static</span>,
     B::Error: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
     E: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
 {
-    <span class="kw">fn </span>poll2(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="kw">crate</span>::Result&lt;()&gt;&gt; {
+    <span class="kw">fn </span>poll2(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="kw">crate</span>::Result&lt;()&gt;&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>me = <span class="self">self</span>.project();
         <span class="kw">loop </span>{
             <span class="kw">let </span>next = <span class="kw">match </span>me.state.as_mut().project() {
@@ -1019,14 +1020,14 @@
                             </span><span class="kw">if let </span>Poll::Ready(reason) =
                                 me.reply.poll_reset(cx).map_err(<span class="kw">crate</span>::Error::new_h2)<span class="question-mark">?
                             </span>{
-                                <span class="macro">debug!</span>(<span class="string">&quot;stream received RST_STREAM: {:?}&quot;</span>, reason);
+                                <span class="macro">debug!</span>(<span class="string">"stream received RST_STREAM: {:?}"</span>, reason);
                                 <span class="kw">return </span>Poll::Ready(<span class="prelude-val">Err</span>(<span class="kw">crate</span>::Error::new_h2(reason.into())));
                             }
                             <span class="kw">return </span>Poll::Pending;
                         }
                         Poll::Ready(<span class="prelude-val">Err</span>(e)) =&gt; {
                             <span class="kw">let </span>err = <span class="kw">crate</span>::Error::new_user_service(e);
-                            <span class="macro">warn!</span>(<span class="string">&quot;http2 service errored: {}&quot;</span>, err);
+                            <span class="macro">warn!</span>(<span class="string">"http2 service errored: {}"</span>, err);
                             me.reply.send_reset(err.h2_reason());
                             <span class="kw">return </span>Poll::Ready(<span class="prelude-val">Err</span>(err));
                         }
@@ -1036,7 +1037,7 @@
                     <span class="kw">let </span><span class="kw-2">mut </span>res = ::http::Response::from_parts(head, ());
                     <span class="kw">super</span>::strip_connection_headers(res.headers_mut(), <span class="bool-val">false</span>);
 
-                    <span class="comment">// set Date header if it isn&#39;t already set...
+                    <span class="comment">// set Date header if it isn't already set...
                     </span>res.headers_mut()
                         .entry(::http::header::DATE)
                         .or_insert_with(date::update_and_header_value);
@@ -1046,7 +1047,7 @@
                             <span class="kw">if </span>headers::content_length_parse_all(res.headers())
                                 .map_or(<span class="bool-val">false</span>, |len| len != <span class="number">0</span>)
                             {
-                                <span class="macro">warn!</span>(<span class="string">&quot;h2 successful response to CONNECT request with body not supported&quot;</span>);
+                                <span class="macro">warn!</span>(<span class="string">"h2 successful response to CONNECT request with body not supported"</span>);
                                 me.reply.send_reset(h2::Reason::INTERNAL_ERROR);
                                 <span class="kw">return </span>Poll::Ready(<span class="prelude-val">Err</span>(<span class="kw">crate</span>::Error::new_user_header()));
                             }
@@ -1092,16 +1093,16 @@
 <span class="kw">where
     </span>F: Future&lt;Output = <span class="prelude-ty">Result</span>&lt;Response&lt;B&gt;, E&gt;&gt;,
     B: HttpBody,
-    B::Data: <span class="lifetime">&#39;static</span>,
+    B::Data: <span class="lifetime">'static</span>,
     B::Error: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
     E: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
 {
     <span class="kw">type </span>Output = ();
 
-    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
         <span class="self">self</span>.poll2(cx).map(|res| {
             <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = res {
-                <span class="macro">debug!</span>(<span class="string">&quot;stream error: {}&quot;</span>, e);
+                <span class="macro">debug!</span>(<span class="string">"stream error: {}"</span>, e);
             }
         })
     }

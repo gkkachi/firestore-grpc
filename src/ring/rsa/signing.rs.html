@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ring-0.16.20/src/rsa/signing.rs`."><title>signing.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="ring" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ring-0.16.20/src/rsa/signing.rs`."><title>signing.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="ring" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -649,7 +650,7 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
@@ -693,7 +694,7 @@
     /// 2048 or 3072 bits. The public exponent must be at least 65537.
     ///
     /// This will generate a 2048-bit RSA private key of the correct form using
-    /// OpenSSL&#39;s command line tool:
+    /// OpenSSL's command line tool:
     ///
     /// ```sh
     ///    openssl genpkey -algorithm RSA \
@@ -738,7 +739,7 @@
     ///   regarding these expectations are not done.
     /// * Section 6.4.1.2.1, Step 3: Since neither the public key nor the
     ///   expected modulus length is provided as a parameter, the consistency
-    ///   check between these values and the private key&#39;s value of n isn&#39;t
+    ///   check between these values and the private key's value of n isn't
     ///   done.
     /// * Section 6.4.1.2.1, Step 5: No primality tests are done, both for
     ///   performance reasons and to avoid any side channels that such tests
@@ -747,7 +748,7 @@
     ///     * *ring* has a slightly looser lower bound for the values of `p`
     ///     and `q` than what the NIST document specifies. This looser lower
     ///     bound matches what most other crypto libraries do. The check might
-    ///     be tightened to meet NIST&#39;s requirements in the future. Similarly,
+    ///     be tightened to meet NIST's requirements in the future. Similarly,
     ///     the check that `p` and `q` are not too close together is skipped
     ///     currently, but may be added in the future.
     ///     - The validity of the mathematical relationship of `dP`, `dQ`, `e`
@@ -760,10 +761,10 @@
     ///     pair.
     ///
     ///     * `d` is not fully validated, neither at construction nor during
-    ///     signing. This is OK as far as *ring*&#39;s usage of the key is
+    ///     signing. This is OK as far as *ring*'s usage of the key is
     ///     concerned because *ring* never uses the value of `d` (*ring* always
     ///     uses `p`, `q`, `dP` and `dQ` via the Chinese Remainder Theorem,
-    ///     instead). However, *ring*&#39;s checks would not be sufficient for
+    ///     instead). However, *ring*'s checks would not be sufficient for
     ///     validating a key pair for use by some other system; that other
     ///     system must check the value of `d` itself if `d` is to be used.
     ///
@@ -782,7 +783,7 @@
     /// [RFC 5958]:
     ///     https://tools.ietf.org/html/rfc5958
     </span><span class="kw">pub fn </span>from_pkcs8(pkcs8: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, KeyRejected&gt; {
-        <span class="kw">const </span>RSA_ENCRYPTION: <span class="kw-2">&amp;</span>[u8] = <span class="macro">include_bytes!</span>(<span class="string">&quot;../data/alg-rsa-encryption.der&quot;</span>);
+        <span class="kw">const </span>RSA_ENCRYPTION: <span class="kw-2">&amp;</span>[u8] = <span class="macro">include_bytes!</span>(<span class="string">"../data/alg-rsa-encryption.der"</span>);
         <span class="kw">let </span>(der, <span class="kw">_</span>) = pkcs8::unwrap_key_(
             untrusted::Input::from(<span class="kw-2">&amp;</span>RSA_ENCRYPTION),
             pkcs8::Version::V1Only,
@@ -824,9 +825,9 @@
             <span class="kw">return </span><span class="prelude-val">Err</span>(KeyRejected::version_not_supported());
         }
 
-        <span class="kw">fn </span>positive_integer&lt;<span class="lifetime">&#39;a</span>&gt;(
-            input: <span class="kw-2">&amp;mut </span>untrusted::Reader&lt;<span class="lifetime">&#39;a</span>&gt;,
-        ) -&gt; <span class="prelude-ty">Result</span>&lt;io::Positive&lt;<span class="lifetime">&#39;a</span>&gt;, KeyRejected&gt; {
+        <span class="kw">fn </span>positive_integer&lt;<span class="lifetime">'a</span>&gt;(
+            input: <span class="kw-2">&amp;mut </span>untrusted::Reader&lt;<span class="lifetime">'a</span>&gt;,
+        ) -&gt; <span class="prelude-ty">Result</span>&lt;io::Positive&lt;<span class="lifetime">'a</span>&gt;, KeyRejected&gt; {
             der::positive_integer(input)
                 .map_err(|error::Unspecified| KeyRejected::invalid_encoding())
         }
@@ -890,7 +891,7 @@
         // Step 3.a is done below, out of order.
         // Step 3.b is unneeded since `n_bits` is derived here from `n`.
 
-        // 6.4.1.4.3 says to skip 6.4.1.2.1 Step 4. (We don&#39;t need to recover
+        // 6.4.1.4.3 says to skip 6.4.1.2.1 Step 4. (We don't need to recover
         // the prime factors since they are already given.)
 
         // 6.4.1.4.3 - Step 5.
@@ -933,7 +934,7 @@
         // 6.4.1.4.3 - Step 3.a (out of order).
         //
         // Verify that p * q == n. We restrict ourselves to modular
-        // multiplication. We rely on the fact that we&#39;ve verified
+        // multiplication. We rely on the fact that we've verified
         // 0 &lt; q &lt; p &lt; n. We check that q and p are close to sqrt(n) and then
         // assume that these preconditions are enough to let us assume that
         // checking p * q == 0 (mod n) is equivalent to checking p * q == n.
@@ -962,7 +963,7 @@
         <span class="kw">if </span>!(half_n_bits &lt; d_bits) {
             <span class="kw">return </span><span class="prelude-val">Err</span>(KeyRejected::inconsistent_components());
         }
-        <span class="comment">// XXX: This check should be `d &lt; LCM(p - 1, q - 1)`, but we don&#39;t have
+        <span class="comment">// XXX: This check should be `d &lt; LCM(p - 1, q - 1)`, but we don't have
         // a good way of calculating LCM, so it is omitted, as explained above.
         </span>d.verify_less_than_modulus(<span class="kw-2">&amp;</span>public_key.n)
             .map_err(|error::Unspecified| KeyRejected::inconsistent_components())<span class="question-mark">?</span>;
@@ -995,7 +996,7 @@
         </span>};
 
         <span class="comment">// Steps 7.d and 7.e are omitted per the documentation above, and
-        // because we don&#39;t (in the long term) have a good way to do modulo
+        // because we don't (in the long term) have a good way to do modulo
         // with an even modulus.
 
         // Step 7.f.
@@ -1018,7 +1019,7 @@
         })
     }
 
-    <span class="doccomment">/// Returns the length in bytes of the key pair&#39;s public modulus.
+    <span class="doccomment">/// Returns the length in bytes of the key pair's public modulus.
     ///
     /// A signature has the same length as the public modulus.
     </span><span class="kw">pub fn </span>public_modulus_len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
@@ -1061,7 +1062,7 @@
 
     <span class="doccomment">/// The public modulus (n).
     </span><span class="kw">pub fn </span>modulus(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Positive {
-        <span class="comment">// Parsing won&#39;t fail because we serialized it ourselves.
+        <span class="comment">// Parsing won't fail because we serialized it ourselves.
         </span><span class="kw">let </span>(public_key, _exponent) =
             <span class="kw">super</span>::parse_public_key(untrusted::Input::from(<span class="self">self</span>.as_ref())).unwrap();
         public_key
@@ -1069,7 +1070,7 @@
 
     <span class="doccomment">/// The public exponent (e).
     </span><span class="kw">pub fn </span>exponent(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Positive {
-        <span class="comment">// Parsing won&#39;t fail because we serialized it ourselves.
+        <span class="comment">// Parsing won't fail because we serialized it ourselves.
         </span><span class="kw">let </span>(_public_key, exponent) =
             <span class="kw">super</span>::parse_public_key(untrusted::Input::from(<span class="self">self</span>.as_ref())).unwrap();
         exponent
@@ -1094,10 +1095,10 @@
         </span><span class="kw">let </span>dP = bigint::PrivateExponent::from_be_bytes_padded(dP, <span class="kw-2">&amp;</span>p)
             .map_err(|error::Unspecified| KeyRejected::inconsistent_components())<span class="question-mark">?</span>;
 
-        <span class="comment">// XXX: Steps 7.d and 7.e are omitted. We don&#39;t check that
-        // `dP == d % (p - 1)` because we don&#39;t (in the long term) have a good
+        <span class="comment">// XXX: Steps 7.d and 7.e are omitted. We don't check that
+        // `dP == d % (p - 1)` because we don't (in the long term) have a good
         // way to do modulo with an even modulus. Instead we just check that
-        // `1 &lt;= dP &lt; p - 1`. We&#39;ll check it, to some unknown extent, when we
+        // `1 &lt;= dP &lt; p - 1`. We'll check it, to some unknown extent, when we
         // do the private key operation, since we verify that the result of the
         // private key operation using the CRT parameters is consistent with `n`
         // and `e`. TODO: Either prove that what we do is sufficient, or make
@@ -1127,7 +1128,7 @@
 }
 
 <span class="comment">// Type-level representations of the different moduli used in RSA signing, in
-// addition to `super::N`. See `super::bigint`&#39;s modulue-level documentation.
+// addition to `super::N`. See `super::bigint`'s modulue-level documentation.
 
 </span><span class="attr">#[derive(Copy, Clone)]
 </span><span class="kw">enum </span>P {}
@@ -1163,7 +1164,7 @@
     <span class="doccomment">/// Sign `msg`. `msg` is digested using the digest algorithm from
     /// `padding_alg` and the digest is then padded using the padding algorithm
     /// from `padding_alg`. The signature it written into `signature`;
-    /// `signature`&#39;s length must be exactly the length returned by
+    /// `signature`'s length must be exactly the length returned by
     /// `public_modulus_len()`. `rng` may be used to randomize the padding
     /// (e.g. for PSS).
     ///
@@ -1178,7 +1179,7 @@
     /// platforms, it is done less perfectly.
     </span><span class="kw">pub fn </span>sign(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        padding_alg: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><span class="kw">dyn </span>RsaEncoding,
+        padding_alg: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><span class="kw">dyn </span>RsaEncoding,
         rng: <span class="kw-2">&amp;</span><span class="kw">dyn </span>rand::SecureRandom,
         msg: <span class="kw-2">&amp;</span>[u8],
         signature: <span class="kw-2">&amp;mut </span>[u8],
@@ -1192,7 +1193,7 @@
         padding_alg.encode(<span class="kw-2">&amp;</span>m_hash, signature, mod_bits, rng)<span class="question-mark">?</span>;
 
         <span class="comment">// RFC 8017 Section 5.1.2: RSADP, using the Chinese Remainder Theorem
-        // with Garner&#39;s algorithm.
+        // with Garner's algorithm.
 
         </span><span class="kw">let </span>n = <span class="kw-2">&amp;</span><span class="self">self</span>.public.n;
 
@@ -1207,7 +1208,7 @@
         <span class="kw">let </span>c_mod_qq = bigint::elem_reduced_once(<span class="kw-2">&amp;</span>c, <span class="kw-2">&amp;</span><span class="self">self</span>.qq);
         <span class="kw">let </span>m_2 = elem_exp_consttime(<span class="kw-2">&amp;</span>c_mod_qq, <span class="kw-2">&amp;</span><span class="self">self</span>.q)<span class="question-mark">?</span>;
 
-        <span class="comment">// Step 2.b.ii isn&#39;t needed since there are only two primes.
+        <span class="comment">// Step 2.b.ii isn't needed since there are only two primes.
 
         // Step 2.b.iii.
         </span><span class="kw">let </span>p = <span class="kw-2">&amp;</span><span class="self">self</span>.p.modulus;
@@ -1215,7 +1216,7 @@
         <span class="kw">let </span>m_1_minus_m_2 = bigint::elem_sub(m_1, <span class="kw-2">&amp;</span>m_2, p);
         <span class="kw">let </span>h = bigint::elem_mul(<span class="kw-2">&amp;</span><span class="self">self</span>.qInv, m_1_minus_m_2, p);
 
-        <span class="comment">// Step 2.b.iv. The reduction in the modular multiplication isn&#39;t
+        <span class="comment">// Step 2.b.iv. The reduction in the modular multiplication isn't
         // necessary because `h &lt; p` and `p * q == n` implies `h * q &lt; n`.
         // Modular arithmetic is used simply to avoid implementing
         // non-modular arithmetic.
@@ -1224,11 +1225,11 @@
         <span class="kw">let </span>m_2 = bigint::elem_widen(m_2, n);
         <span class="kw">let </span>m = bigint::elem_add(m_2, q_times_h, n);
 
-        <span class="comment">// Step 2.b.v isn&#39;t needed since there are only two primes.
+        <span class="comment">// Step 2.b.v isn't needed since there are only two primes.
 
         // Verify the result to protect against fault attacks as described
-        // in &quot;On the Importance of Checking Cryptographic Protocols for
-        // Faults&quot; by Dan Boneh, Richard A. DeMillo, and Richard J. Lipton.
+        // in "On the Importance of Checking Cryptographic Protocols for
+        // Faults" by Dan Boneh, Richard A. DeMillo, and Richard J. Lipton.
         // This check is cheap assuming `e` is small, which is ensured during
         // `KeyPair` construction. Note that this is the only validation of `e`
         // that is done other than basic checks on its size, oddness, and
@@ -1242,7 +1243,7 @@
 
         <span class="comment">// Step 3.
         //
-        // See Falko Strenzke, &quot;Manger&#39;s Attack revisited&quot;, ICICS 2010.
+        // See Falko Strenzke, "Manger's Attack revisited", ICICS 2010.
         </span>m.fill_be_bytes(signature);
 
         <span class="prelude-val">Ok</span>(())
@@ -1257,15 +1258,15 @@
     <span class="kw">use </span>alloc::vec;
 
     <span class="comment">// `KeyPair::sign` requires that the output buffer is the same length as
-    // the public key modulus. Test what happens when it isn&#39;t the same length.
+    // the public key modulus. Test what happens when it isn't the same length.
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>test_signature_rsa_pkcs1_sign_output_buffer_len() {
-        <span class="comment">// Sign the message &quot;hello, world&quot;, using PKCS#1 v1.5 padding and the
+        <span class="comment">// Sign the message "hello, world", using PKCS#1 v1.5 padding and the
         // SHA256 digest algorithm.
-        </span><span class="kw">const </span>MESSAGE: <span class="kw-2">&amp;</span>[u8] = <span class="string">b&quot;hello, world&quot;</span>;
+        </span><span class="kw">const </span>MESSAGE: <span class="kw-2">&amp;</span>[u8] = <span class="string">b"hello, world"</span>;
         <span class="kw">let </span>rng = rand::SystemRandom::new();
 
-        <span class="kw">const </span>PRIVATE_KEY_DER: <span class="kw-2">&amp;</span>[u8] = <span class="macro">include_bytes!</span>(<span class="string">&quot;signature_rsa_example_private_key.der&quot;</span>);
+        <span class="kw">const </span>PRIVATE_KEY_DER: <span class="kw-2">&amp;</span>[u8] = <span class="macro">include_bytes!</span>(<span class="string">"signature_rsa_example_private_key.der"</span>);
         <span class="kw">let </span>key_pair = signature::RsaKeyPair::from_der(PRIVATE_KEY_DER).unwrap();
 
         <span class="comment">// The output buffer is one byte too short.

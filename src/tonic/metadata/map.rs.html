@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tonic-0.6.2/src/metadata/map.rs`."><title>map.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="tonic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../tonic/index.html"><img src="https://raw.githubusercontent.com/tokio-rs/website/master/public/img/icons/tonic.svg" alt="tonic"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tonic-0.6.2/src/metadata/map.rs`."><title>map.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="tonic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><a class="sub-logo-container" href="../../../tonic/index.html"><img src="https://raw.githubusercontent.com/tokio-rs/website/master/public/img/icons/tonic.svg" alt="tonic"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2740,18 +2741,18 @@
 /// # use tonic::metadata::*;
 /// let mut map = MetadataMap::new();
 ///
-/// map.insert(&quot;x-host&quot;, &quot;example.com&quot;.parse().unwrap());
-/// map.insert(&quot;x-number&quot;, &quot;123&quot;.parse().unwrap());
-/// map.insert_bin(&quot;trace-proto-bin&quot;, MetadataValue::from_bytes(b&quot;[binary data]&quot;));
+/// map.insert("x-host", "example.com".parse().unwrap());
+/// map.insert("x-number", "123".parse().unwrap());
+/// map.insert_bin("trace-proto-bin", MetadataValue::from_bytes(b"[binary data]"));
 ///
-/// assert!(map.contains_key(&quot;x-host&quot;));
-/// assert!(!map.contains_key(&quot;x-location&quot;));
+/// assert!(map.contains_key("x-host"));
+/// assert!(!map.contains_key("x-location"));
 ///
-/// assert_eq!(map.get(&quot;x-host&quot;).unwrap(), &quot;example.com&quot;);
+/// assert_eq!(map.get("x-host").unwrap(), "example.com");
 ///
-/// map.remove(&quot;x-host&quot;);
+/// map.remove("x-host");
 ///
-/// assert!(!map.contains_key(&quot;x-host&quot;));
+/// assert!(!map.contains_key("x-host"));
 /// ```
 </span><span class="attr">#[derive(Clone, Debug, Default)]
 </span><span class="kw">pub struct </span>MetadataMap {
@@ -2763,28 +2764,28 @@
 /// Yields `KeyAndValueRef` values. The same header name may be yielded
 /// more than once if it has more than one associated value.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>Iter&lt;<span class="lifetime">&#39;a</span>&gt; {
-    inner: http::header::Iter&lt;<span class="lifetime">&#39;a</span>, http::header::HeaderValue&gt;,
+</span><span class="kw">pub struct </span>Iter&lt;<span class="lifetime">'a</span>&gt; {
+    inner: http::header::Iter&lt;<span class="lifetime">'a</span>, http::header::HeaderValue&gt;,
 }
 
 <span class="doccomment">/// Reference to a key and an associated value in a `MetadataMap`. It can point
-/// to either an ascii or a binary (&quot;*-bin&quot;) key.
+/// to either an ascii or a binary ("*-bin") key.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub enum </span>KeyAndValueRef&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub enum </span>KeyAndValueRef&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// An ascii metadata key and value.
-    </span>Ascii(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataKey&lt;Ascii&gt;, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataValue&lt;Ascii&gt;),
+    </span>Ascii(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataKey&lt;Ascii&gt;, <span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataValue&lt;Ascii&gt;),
     <span class="doccomment">/// A binary metadata key and value.
-    </span>Binary(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataKey&lt;Binary&gt;, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataValue&lt;Binary&gt;),
+    </span>Binary(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataKey&lt;Binary&gt;, <span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataValue&lt;Binary&gt;),
 }
 
 <span class="doccomment">/// Reference to a key and an associated value in a `MetadataMap`. It can point
-/// to either an ascii or a binary (&quot;*-bin&quot;) key.
+/// to either an ascii or a binary ("*-bin") key.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub enum </span>KeyAndMutValueRef&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub enum </span>KeyAndMutValueRef&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// An ascii metadata key and value.
-    </span>Ascii(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataKey&lt;Ascii&gt;, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>MetadataValue&lt;Ascii&gt;),
+    </span>Ascii(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataKey&lt;Ascii&gt;, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>MetadataValue&lt;Ascii&gt;),
     <span class="doccomment">/// A binary metadata key and value.
-    </span>Binary(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataKey&lt;Binary&gt;, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>MetadataValue&lt;Binary&gt;),
+    </span>Binary(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataKey&lt;Binary&gt;, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>MetadataValue&lt;Binary&gt;),
 }
 
 <span class="doccomment">/// `MetadataMap` entry iterator.
@@ -2792,14 +2793,14 @@
 /// Yields `(&amp;MetadataKey, &amp;mut value)` tuples. The same header name may be yielded
 /// more than once if it has more than one associated value.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>IterMut&lt;<span class="lifetime">&#39;a</span>&gt; {
-    inner: http::header::IterMut&lt;<span class="lifetime">&#39;a</span>, http::header::HeaderValue&gt;,
+</span><span class="kw">pub struct </span>IterMut&lt;<span class="lifetime">'a</span>&gt; {
+    inner: http::header::IterMut&lt;<span class="lifetime">'a</span>, http::header::HeaderValue&gt;,
 }
 
 <span class="doccomment">/// A drain iterator of all values associated with a single metadata key.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>ValueDrain&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; {
-    inner: http::header::ValueDrain&lt;<span class="lifetime">&#39;a</span>, http::header::HeaderValue&gt;,
+</span><span class="kw">pub struct </span>ValueDrain&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; {
+    inner: http::header::ValueDrain&lt;<span class="lifetime">'a</span>, http::header::HeaderValue&gt;,
     phantom: PhantomData&lt;VE&gt;,
 }
 
@@ -2808,18 +2809,18 @@
 /// Yields `KeyRef` values. Each header name is yielded only once, even if it
 /// has more than one associated value.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>Keys&lt;<span class="lifetime">&#39;a</span>&gt; {
-    inner: http::header::Keys&lt;<span class="lifetime">&#39;a</span>, http::header::HeaderValue&gt;,
+</span><span class="kw">pub struct </span>Keys&lt;<span class="lifetime">'a</span>&gt; {
+    inner: http::header::Keys&lt;<span class="lifetime">'a</span>, http::header::HeaderValue&gt;,
 }
 
 <span class="doccomment">/// Reference to a key in a `MetadataMap`. It can point
-/// to either an ascii or a binary (&quot;*-bin&quot;) key.
+/// to either an ascii or a binary ("*-bin") key.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub enum </span>KeyRef&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub enum </span>KeyRef&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// An ascii metadata key and value.
-    </span>Ascii(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataKey&lt;Ascii&gt;),
+    </span>Ascii(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataKey&lt;Ascii&gt;),
     <span class="doccomment">/// A binary metadata key and value.
-    </span>Binary(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataKey&lt;Binary&gt;),
+    </span>Binary(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataKey&lt;Binary&gt;),
 }
 
 <span class="doccomment">/// `MetadataMap` value iterator.
@@ -2827,53 +2828,53 @@
 /// Yields `ValueRef` values. Each value contained in the `MetadataMap` will be
 /// yielded.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>Values&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>Values&lt;<span class="lifetime">'a</span>&gt; {
     <span class="comment">// Need to use http::header::Iter and not http::header::Values to be able
     // to know if a value is binary or not.
-    </span>inner: http::header::Iter&lt;<span class="lifetime">&#39;a</span>, http::header::HeaderValue&gt;,
+    </span>inner: http::header::Iter&lt;<span class="lifetime">'a</span>, http::header::HeaderValue&gt;,
 }
 
 <span class="doccomment">/// Reference to a value in a `MetadataMap`. It can point
-/// to either an ascii or a binary (&quot;*-bin&quot; key) value.
+/// to either an ascii or a binary ("*-bin" key) value.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub enum </span>ValueRef&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub enum </span>ValueRef&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// An ascii metadata key and value.
-    </span>Ascii(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataValue&lt;Ascii&gt;),
+    </span>Ascii(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataValue&lt;Ascii&gt;),
     <span class="doccomment">/// A binary metadata key and value.
-    </span>Binary(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataValue&lt;Binary&gt;),
+    </span>Binary(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataValue&lt;Binary&gt;),
 }
 
 <span class="doccomment">/// `MetadataMap` value iterator.
 ///
 /// Each value contained in the `MetadataMap` will be yielded.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>ValuesMut&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>ValuesMut&lt;<span class="lifetime">'a</span>&gt; {
     <span class="comment">// Need to use http::header::IterMut and not http::header::ValuesMut to be
     // able to know if a value is binary or not.
-    </span>inner: http::header::IterMut&lt;<span class="lifetime">&#39;a</span>, http::header::HeaderValue&gt;,
+    </span>inner: http::header::IterMut&lt;<span class="lifetime">'a</span>, http::header::HeaderValue&gt;,
 }
 
 <span class="doccomment">/// Reference to a value in a `MetadataMap`. It can point
-/// to either an ascii or a binary (&quot;*-bin&quot; key) value.
+/// to either an ascii or a binary ("*-bin" key) value.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub enum </span>ValueRefMut&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub enum </span>ValueRefMut&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// An ascii metadata key and value.
-    </span>Ascii(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>MetadataValue&lt;Ascii&gt;),
+    </span>Ascii(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>MetadataValue&lt;Ascii&gt;),
     <span class="doccomment">/// A binary metadata key and value.
-    </span>Binary(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>MetadataValue&lt;Binary&gt;),
+    </span>Binary(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>MetadataValue&lt;Binary&gt;),
 }
 
 <span class="doccomment">/// An iterator of all values associated with a single metadata key.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>ValueIter&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; {
-    inner: <span class="prelude-ty">Option</span>&lt;http::header::ValueIter&lt;<span class="lifetime">&#39;a</span>, http::header::HeaderValue&gt;&gt;,
+</span><span class="kw">pub struct </span>ValueIter&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; {
+    inner: <span class="prelude-ty">Option</span>&lt;http::header::ValueIter&lt;<span class="lifetime">'a</span>, http::header::HeaderValue&gt;&gt;,
     phantom: PhantomData&lt;VE&gt;,
 }
 
 <span class="doccomment">/// An iterator of all values associated with a single metadata key.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>ValueIterMut&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; {
-    inner: http::header::ValueIterMut&lt;<span class="lifetime">&#39;a</span>, http::header::HeaderValue&gt;,
+</span><span class="kw">pub struct </span>ValueIterMut&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; {
+    inner: http::header::ValueIterMut&lt;<span class="lifetime">'a</span>, http::header::HeaderValue&gt;,
     phantom: PhantomData&lt;VE&gt;,
 }
 
@@ -2882,28 +2883,28 @@
 /// This struct is returned by `MetadataMap::get_all` and
 /// `MetadataMap::get_all_bin`.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>GetAll&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; {
-    inner: <span class="prelude-ty">Option</span>&lt;http::header::GetAll&lt;<span class="lifetime">&#39;a</span>, http::header::HeaderValue&gt;&gt;,
+</span><span class="kw">pub struct </span>GetAll&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; {
+    inner: <span class="prelude-ty">Option</span>&lt;http::header::GetAll&lt;<span class="lifetime">'a</span>, http::header::HeaderValue&gt;&gt;,
     phantom: PhantomData&lt;VE&gt;,
 }
 
 <span class="doccomment">/// A view into a single location in a `MetadataMap`, which may be vacant or
 /// occupied.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub enum </span>Entry&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; {
+</span><span class="kw">pub enum </span>Entry&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; {
     <span class="doccomment">/// An occupied entry
-    </span>Occupied(OccupiedEntry&lt;<span class="lifetime">&#39;a</span>, VE&gt;),
+    </span>Occupied(OccupiedEntry&lt;<span class="lifetime">'a</span>, VE&gt;),
 
     <span class="doccomment">/// A vacant entry
-    </span>Vacant(VacantEntry&lt;<span class="lifetime">&#39;a</span>, VE&gt;),
+    </span>Vacant(VacantEntry&lt;<span class="lifetime">'a</span>, VE&gt;),
 }
 
 <span class="doccomment">/// A view into a single empty location in a `MetadataMap`.
 ///
 /// This struct is returned as part of the `Entry` enum.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>VacantEntry&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; {
-    inner: http::header::VacantEntry&lt;<span class="lifetime">&#39;a</span>, http::header::HeaderValue&gt;,
+</span><span class="kw">pub struct </span>VacantEntry&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; {
+    inner: http::header::VacantEntry&lt;<span class="lifetime">'a</span>, http::header::HeaderValue&gt;,
     phantom: PhantomData&lt;VE&gt;,
 }
 
@@ -2911,24 +2912,24 @@
 ///
 /// This struct is returned as part of the `Entry` enum.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>OccupiedEntry&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; {
-    inner: http::header::OccupiedEntry&lt;<span class="lifetime">&#39;a</span>, http::header::HeaderValue&gt;,
+</span><span class="kw">pub struct </span>OccupiedEntry&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; {
+    inner: http::header::OccupiedEntry&lt;<span class="lifetime">'a</span>, http::header::HeaderValue&gt;,
     phantom: PhantomData&lt;VE&gt;,
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>GRPC_TIMEOUT_HEADER: <span class="kw-2">&amp;</span>str = <span class="string">&quot;grpc-timeout&quot;</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>GRPC_TIMEOUT_HEADER: <span class="kw-2">&amp;</span>str = <span class="string">"grpc-timeout"</span>;
 
 <span class="comment">// ===== impl MetadataMap =====
 
 </span><span class="kw">impl </span>MetadataMap {
     <span class="comment">// Headers reserved by the gRPC protocol.
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>GRPC_RESERVED_HEADERS: [<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str; <span class="number">6</span>] = [
-        <span class="string">&quot;te&quot;</span>,
-        <span class="string">&quot;user-agent&quot;</span>,
-        <span class="string">&quot;content-type&quot;</span>,
-        <span class="string">&quot;grpc-message&quot;</span>,
-        <span class="string">&quot;grpc-message-type&quot;</span>,
-        <span class="string">&quot;grpc-status&quot;</span>,
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>GRPC_RESERVED_HEADERS: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">6</span>] = [
+        <span class="string">"te"</span>,
+        <span class="string">"user-agent"</span>,
+        <span class="string">"content-type"</span>,
+        <span class="string">"grpc-message"</span>,
+        <span class="string">"grpc-message-type"</span>,
+        <span class="string">"grpc-status"</span>,
     ];
 
     <span class="doccomment">/// Create an empty `MetadataMap`.
@@ -2961,11 +2962,11 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// map.insert(&quot;x-host&quot;, &quot;example.com&quot;.parse().unwrap());
+    /// map.insert("x-host", "example.com".parse().unwrap());
     ///
     /// let http_map = map.into_headers();
     ///
-    /// assert_eq!(http_map.get(&quot;x-host&quot;).unwrap(), &quot;example.com&quot;);
+    /// assert_eq!(http_map.get("x-host").unwrap(), "example.com");
     /// ```
     </span><span class="kw">pub fn </span>into_headers(<span class="self">self</span>) -&gt; http::HeaderMap {
         <span class="self">self</span>.headers
@@ -2981,8 +2982,8 @@
     <span class="doccomment">/// Create an empty `MetadataMap` with the specified capacity.
     ///
     /// The returned map will allocate internal storage in order to hold about
-    /// `capacity` elements without reallocating. However, this is a &quot;best
-    /// effort&quot; as there are usage patterns that could cause additional
+    /// `capacity` elements without reallocating. However, this is a "best
+    /// effort" as there are usage patterns that could cause additional
     /// allocations before `capacity` metadata entries are stored in the map.
     ///
     /// More capacity than requested may be allocated.
@@ -3017,12 +3018,12 @@
     ///
     /// assert_eq!(0, map.len());
     ///
-    /// map.insert(&quot;x-host-ip&quot;, &quot;127.0.0.1&quot;.parse().unwrap());
-    /// map.insert_bin(&quot;x-host-name-bin&quot;, MetadataValue::from_bytes(b&quot;localhost&quot;));
+    /// map.insert("x-host-ip", "127.0.0.1".parse().unwrap());
+    /// map.insert_bin("x-host-name-bin", MetadataValue::from_bytes(b"localhost"));
     ///
     /// assert_eq!(2, map.len());
     ///
-    /// map.append(&quot;x-host-ip&quot;, &quot;text/html&quot;.parse().unwrap());
+    /// map.append("x-host-ip", "text/html".parse().unwrap());
     ///
     /// assert_eq!(3, map.len());
     /// ```
@@ -3043,12 +3044,12 @@
     ///
     /// assert_eq!(0, map.keys_len());
     ///
-    /// map.insert(&quot;x-host-ip&quot;, &quot;127.0.0.1&quot;.parse().unwrap());
-    /// map.insert_bin(&quot;x-host-name-bin&quot;, MetadataValue::from_bytes(b&quot;localhost&quot;));
+    /// map.insert("x-host-ip", "127.0.0.1".parse().unwrap());
+    /// map.insert_bin("x-host-name-bin", MetadataValue::from_bytes(b"localhost"));
     ///
     /// assert_eq!(2, map.keys_len());
     ///
-    /// map.append(&quot;x-host-ip&quot;, &quot;text/html&quot;.parse().unwrap());
+    /// map.append("x-host-ip", "text/html".parse().unwrap());
     ///
     /// assert_eq!(2, map.keys_len());
     /// ```
@@ -3066,7 +3067,7 @@
     ///
     /// assert!(map.is_empty());
     ///
-    /// map.insert(&quot;x-host&quot;, &quot;hello.world&quot;.parse().unwrap());
+    /// map.insert("x-host", "hello.world".parse().unwrap());
     ///
     /// assert!(!map.is_empty());
     /// ```
@@ -3082,7 +3083,7 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// map.insert(&quot;x-host&quot;, &quot;hello.world&quot;.parse().unwrap());
+    /// map.insert("x-host", "hello.world".parse().unwrap());
     ///
     /// map.clear();
     /// assert!(map.is_empty());
@@ -3106,7 +3107,7 @@
     ///
     /// assert_eq!(0, map.capacity());
     ///
-    /// map.insert(&quot;x-host&quot;, &quot;hello.world&quot;.parse().unwrap());
+    /// map.insert("x-host", "hello.world".parse().unwrap());
     /// assert_eq!(6, map.capacity());
     /// ```
     </span><span class="kw">pub fn </span>capacity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
@@ -3117,7 +3118,7 @@
     /// inserted into the `MetadataMap`.
     ///
     /// The metadata map may reserve more space to avoid frequent reallocations.
-    /// Like with `with_capacity`, this will be a &quot;best effort&quot; to avoid
+    /// Like with `with_capacity`, this will be a "best effort" to avoid
     /// allocations until `additional` more custom metadata is inserted. Certain
     /// usage patterns could cause additional allocations before the number is
     /// reached.
@@ -3132,15 +3133,15 @@
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     /// map.reserve(10);
-    /// # map.insert(&quot;x-host&quot;, &quot;bar&quot;.parse().unwrap());
+    /// # map.insert("x-host", "bar".parse().unwrap());
     /// ```
     </span><span class="kw">pub fn </span>reserve(<span class="kw-2">&amp;mut </span><span class="self">self</span>, additional: usize) {
         <span class="self">self</span>.headers.reserve(additional);
     }
 
     <span class="doccomment">/// Returns a reference to the value associated with the key. This method
-    /// is for ascii metadata entries (those whose names don&#39;t end with
-    /// &quot;-bin&quot;). For binary entries, use get_bin.
+    /// is for ascii metadata entries (those whose names don't end with
+    /// "-bin"). For binary entries, use get_bin.
     ///
     /// If there are multiple values associated with the key, then the first one
     /// is returned. Use `get_all` to get all values associated with a given
@@ -3151,27 +3152,27 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// assert!(map.get(&quot;x-host&quot;).is_none());
+    /// assert!(map.get("x-host").is_none());
     ///
-    /// map.insert(&quot;x-host&quot;, &quot;hello&quot;.parse().unwrap());
-    /// assert_eq!(map.get(&quot;x-host&quot;).unwrap(), &amp;&quot;hello&quot;);
-    /// assert_eq!(map.get(&quot;x-host&quot;).unwrap(), &amp;&quot;hello&quot;);
+    /// map.insert("x-host", "hello".parse().unwrap());
+    /// assert_eq!(map.get("x-host").unwrap(), &amp;"hello");
+    /// assert_eq!(map.get("x-host").unwrap(), &amp;"hello");
     ///
-    /// map.append(&quot;x-host&quot;, &quot;world&quot;.parse().unwrap());
-    /// assert_eq!(map.get(&quot;x-host&quot;).unwrap(), &amp;&quot;hello&quot;);
+    /// map.append("x-host", "world".parse().unwrap());
+    /// assert_eq!(map.get("x-host").unwrap(), &amp;"hello");
     ///
     /// // Attempting to read a key of the wrong type fails by not
     /// // finding anything.
-    /// map.append_bin(&quot;host-bin&quot;, MetadataValue::from_bytes(b&quot;world&quot;));
-    /// assert!(map.get(&quot;host-bin&quot;).is_none());
-    /// assert!(map.get(&quot;host-bin&quot;.to_string()).is_none());
-    /// assert!(map.get(&amp;(&quot;host-bin&quot;.to_string())).is_none());
+    /// map.append_bin("host-bin", MetadataValue::from_bytes(b"world"));
+    /// assert!(map.get("host-bin").is_none());
+    /// assert!(map.get("host-bin".to_string()).is_none());
+    /// assert!(map.get(&amp;("host-bin".to_string())).is_none());
     ///
     /// // Attempting to read an invalid key string fails by not
     /// // finding anything.
-    /// assert!(map.get(&quot;host{}bin&quot;).is_none());
-    /// assert!(map.get(&quot;host{}bin&quot;.to_string()).is_none());
-    /// assert!(map.get(&amp;(&quot;host{}bin&quot;.to_string())).is_none());
+    /// assert!(map.get("host{}bin").is_none());
+    /// assert!(map.get("host{}bin".to_string()).is_none());
+    /// assert!(map.get(&amp;("host{}bin".to_string())).is_none());
     /// ```
     </span><span class="kw">pub fn </span>get&lt;K&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: K) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>MetadataValue&lt;Ascii&gt;&gt;
     <span class="kw">where
@@ -3180,34 +3181,34 @@
         key.get(<span class="self">self</span>)
     }
 
-    <span class="doccomment">/// Like get, but for Binary keys (for example &quot;trace-proto-bin&quot;).
+    <span class="doccomment">/// Like get, but for Binary keys (for example "trace-proto-bin").
     ///
     /// # Examples
     ///
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// assert!(map.get_bin(&quot;trace-proto-bin&quot;).is_none());
+    /// assert!(map.get_bin("trace-proto-bin").is_none());
     ///
-    /// map.insert_bin(&quot;trace-proto-bin&quot;, MetadataValue::from_bytes(b&quot;hello&quot;));
-    /// assert_eq!(map.get_bin(&quot;trace-proto-bin&quot;).unwrap(), &amp;&quot;hello&quot;);
-    /// assert_eq!(map.get_bin(&quot;trace-proto-bin&quot;).unwrap(), &amp;&quot;hello&quot;);
+    /// map.insert_bin("trace-proto-bin", MetadataValue::from_bytes(b"hello"));
+    /// assert_eq!(map.get_bin("trace-proto-bin").unwrap(), &amp;"hello");
+    /// assert_eq!(map.get_bin("trace-proto-bin").unwrap(), &amp;"hello");
     ///
-    /// map.append_bin(&quot;trace-proto-bin&quot;, MetadataValue::from_bytes(b&quot;world&quot;));
-    /// assert_eq!(map.get_bin(&quot;trace-proto-bin&quot;).unwrap(), &amp;&quot;hello&quot;);
+    /// map.append_bin("trace-proto-bin", MetadataValue::from_bytes(b"world"));
+    /// assert_eq!(map.get_bin("trace-proto-bin").unwrap(), &amp;"hello");
     ///
     /// // Attempting to read a key of the wrong type fails by not
     /// // finding anything.
-    /// map.append(&quot;host&quot;, &quot;world&quot;.parse().unwrap());
-    /// assert!(map.get_bin(&quot;host&quot;).is_none());
-    /// assert!(map.get_bin(&quot;host&quot;.to_string()).is_none());
-    /// assert!(map.get_bin(&amp;(&quot;host&quot;.to_string())).is_none());
+    /// map.append("host", "world".parse().unwrap());
+    /// assert!(map.get_bin("host").is_none());
+    /// assert!(map.get_bin("host".to_string()).is_none());
+    /// assert!(map.get_bin(&amp;("host".to_string())).is_none());
     ///
     /// // Attempting to read an invalid key string fails by not
     /// // finding anything.
-    /// assert!(map.get_bin(&quot;host{}-bin&quot;).is_none());
-    /// assert!(map.get_bin(&quot;host{}-bin&quot;.to_string()).is_none());
-    /// assert!(map.get_bin(&amp;(&quot;host{}-bin&quot;.to_string())).is_none());
+    /// assert!(map.get_bin("host{}-bin").is_none());
+    /// assert!(map.get_bin("host{}-bin".to_string()).is_none());
+    /// assert!(map.get_bin(&amp;("host{}-bin".to_string())).is_none());
     /// ```
     </span><span class="kw">pub fn </span>get_bin&lt;K&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: K) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>MetadataValue&lt;Binary&gt;&gt;
     <span class="kw">where
@@ -3217,8 +3218,8 @@
     }
 
     <span class="doccomment">/// Returns a mutable reference to the value associated with the key. This
-    /// method is for ascii metadata entries (those whose names don&#39;t end with
-    /// &quot;-bin&quot;). For binary entries, use get_mut_bin.
+    /// method is for ascii metadata entries (those whose names don't end with
+    /// "-bin"). For binary entries, use get_mut_bin.
     ///
     /// If there are multiple values associated with the key, then the first one
     /// is returned. Use `entry` to get all values associated with a given
@@ -3229,23 +3230,23 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::default();
-    /// map.insert(&quot;x-host&quot;, &quot;hello&quot;.parse().unwrap());
-    /// map.get_mut(&quot;x-host&quot;).unwrap().set_sensitive(true);
+    /// map.insert("x-host", "hello".parse().unwrap());
+    /// map.get_mut("x-host").unwrap().set_sensitive(true);
     ///
-    /// assert!(map.get(&quot;x-host&quot;).unwrap().is_sensitive());
+    /// assert!(map.get("x-host").unwrap().is_sensitive());
     ///
     /// // Attempting to read a key of the wrong type fails by not
     /// // finding anything.
-    /// map.append_bin(&quot;host-bin&quot;, MetadataValue::from_bytes(b&quot;world&quot;));
-    /// assert!(map.get_mut(&quot;host-bin&quot;).is_none());
-    /// assert!(map.get_mut(&quot;host-bin&quot;.to_string()).is_none());
-    /// assert!(map.get_mut(&amp;(&quot;host-bin&quot;.to_string())).is_none());
+    /// map.append_bin("host-bin", MetadataValue::from_bytes(b"world"));
+    /// assert!(map.get_mut("host-bin").is_none());
+    /// assert!(map.get_mut("host-bin".to_string()).is_none());
+    /// assert!(map.get_mut(&amp;("host-bin".to_string())).is_none());
     ///
     /// // Attempting to read an invalid key string fails by not
     /// // finding anything.
-    /// assert!(map.get_mut(&quot;host{}&quot;).is_none());
-    /// assert!(map.get_mut(&quot;host{}&quot;.to_string()).is_none());
-    /// assert!(map.get_mut(&amp;(&quot;host{}&quot;.to_string())).is_none());
+    /// assert!(map.get_mut("host{}").is_none());
+    /// assert!(map.get_mut("host{}".to_string()).is_none());
+    /// assert!(map.get_mut(&amp;("host{}".to_string())).is_none());
     /// ```
     </span><span class="kw">pub fn </span>get_mut&lt;K&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: K) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>MetadataValue&lt;Ascii&gt;&gt;
     <span class="kw">where
@@ -3254,30 +3255,30 @@
         key.get_mut(<span class="self">self</span>)
     }
 
-    <span class="doccomment">/// Like get_mut, but for Binary keys (for example &quot;trace-proto-bin&quot;).
+    <span class="doccomment">/// Like get_mut, but for Binary keys (for example "trace-proto-bin").
     ///
     /// # Examples
     ///
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::default();
-    /// map.insert_bin(&quot;trace-proto-bin&quot;, MetadataValue::from_bytes(b&quot;hello&quot;));
-    /// map.get_bin_mut(&quot;trace-proto-bin&quot;).unwrap().set_sensitive(true);
+    /// map.insert_bin("trace-proto-bin", MetadataValue::from_bytes(b"hello"));
+    /// map.get_bin_mut("trace-proto-bin").unwrap().set_sensitive(true);
     ///
-    /// assert!(map.get_bin(&quot;trace-proto-bin&quot;).unwrap().is_sensitive());
+    /// assert!(map.get_bin("trace-proto-bin").unwrap().is_sensitive());
     ///
     /// // Attempting to read a key of the wrong type fails by not
     /// // finding anything.
-    /// map.append(&quot;host&quot;, &quot;world&quot;.parse().unwrap());
-    /// assert!(map.get_bin_mut(&quot;host&quot;).is_none());
-    /// assert!(map.get_bin_mut(&quot;host&quot;.to_string()).is_none());
-    /// assert!(map.get_bin_mut(&amp;(&quot;host&quot;.to_string())).is_none());
+    /// map.append("host", "world".parse().unwrap());
+    /// assert!(map.get_bin_mut("host").is_none());
+    /// assert!(map.get_bin_mut("host".to_string()).is_none());
+    /// assert!(map.get_bin_mut(&amp;("host".to_string())).is_none());
     ///
     /// // Attempting to read an invalid key string fails by not
     /// // finding anything.
-    /// assert!(map.get_bin_mut(&quot;host{}-bin&quot;).is_none());
-    /// assert!(map.get_bin_mut(&quot;host{}-bin&quot;.to_string()).is_none());
-    /// assert!(map.get_bin_mut(&amp;(&quot;host{}-bin&quot;.to_string())).is_none());
+    /// assert!(map.get_bin_mut("host{}-bin").is_none());
+    /// assert!(map.get_bin_mut("host{}-bin".to_string()).is_none());
+    /// assert!(map.get_bin_mut(&amp;("host{}-bin".to_string())).is_none());
     /// ```
     </span><span class="kw">pub fn </span>get_bin_mut&lt;K&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: K) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>MetadataValue&lt;Binary&gt;&gt;
     <span class="kw">where
@@ -3287,7 +3288,7 @@
     }
 
     <span class="doccomment">/// Returns a view of all values associated with a key. This method is for
-    /// ascii metadata entries (those whose names don&#39;t end with &quot;-bin&quot;). For
+    /// ascii metadata entries (those whose names don't end with "-bin"). For
     /// binary entries, use get_all_bin.
     ///
     /// The returned view does not incur any allocations and allows iterating
@@ -3302,32 +3303,32 @@
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     ///
-    /// map.insert(&quot;x-host&quot;, &quot;hello&quot;.parse().unwrap());
-    /// map.append(&quot;x-host&quot;, &quot;goodbye&quot;.parse().unwrap());
+    /// map.insert("x-host", "hello".parse().unwrap());
+    /// map.append("x-host", "goodbye".parse().unwrap());
     ///
     /// {
-    ///     let view = map.get_all(&quot;x-host&quot;);
+    ///     let view = map.get_all("x-host");
     ///
     ///     let mut iter = view.iter();
-    ///     assert_eq!(&amp;&quot;hello&quot;, iter.next().unwrap());
-    ///     assert_eq!(&amp;&quot;goodbye&quot;, iter.next().unwrap());
+    ///     assert_eq!(&amp;"hello", iter.next().unwrap());
+    ///     assert_eq!(&amp;"goodbye", iter.next().unwrap());
     ///     assert!(iter.next().is_none());
     /// }
     ///
     /// // Attempting to read a key of the wrong type fails by not
     /// // finding anything.
-    /// map.append_bin(&quot;host-bin&quot;, MetadataValue::from_bytes(b&quot;world&quot;));
-    /// assert!(map.get_all(&quot;host-bin&quot;).iter().next().is_none());
-    /// assert!(map.get_all(&quot;host-bin&quot;.to_string()).iter().next().is_none());
-    /// assert!(map.get_all(&amp;(&quot;host-bin&quot;.to_string())).iter().next().is_none());
+    /// map.append_bin("host-bin", MetadataValue::from_bytes(b"world"));
+    /// assert!(map.get_all("host-bin").iter().next().is_none());
+    /// assert!(map.get_all("host-bin".to_string()).iter().next().is_none());
+    /// assert!(map.get_all(&amp;("host-bin".to_string())).iter().next().is_none());
     ///
     /// // Attempting to read an invalid key string fails by not
     /// // finding anything.
-    /// assert!(map.get_all(&quot;host{}&quot;).iter().next().is_none());
-    /// assert!(map.get_all(&quot;host{}&quot;.to_string()).iter().next().is_none());
-    /// assert!(map.get_all(&amp;(&quot;host{}&quot;.to_string())).iter().next().is_none());
+    /// assert!(map.get_all("host{}").iter().next().is_none());
+    /// assert!(map.get_all("host{}".to_string()).iter().next().is_none());
+    /// assert!(map.get_all(&amp;("host{}".to_string())).iter().next().is_none());
     /// ```
-    </span><span class="kw">pub fn </span>get_all&lt;K&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: K) -&gt; GetAll&lt;<span class="lifetime">&#39;_</span>, Ascii&gt;
+    </span><span class="kw">pub fn </span>get_all&lt;K&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: K) -&gt; GetAll&lt;<span class="lifetime">'_</span>, Ascii&gt;
     <span class="kw">where
         </span>K: AsMetadataKey&lt;Ascii&gt;,
     {
@@ -3337,7 +3338,7 @@
         }
     }
 
-    <span class="doccomment">/// Like get_all, but for Binary keys (for example &quot;trace-proto-bin&quot;).
+    <span class="doccomment">/// Like get_all, but for Binary keys (for example "trace-proto-bin").
     ///
     /// # Examples
     ///
@@ -3345,32 +3346,32 @@
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     ///
-    /// map.insert_bin(&quot;trace-proto-bin&quot;, MetadataValue::from_bytes(b&quot;hello&quot;));
-    /// map.append_bin(&quot;trace-proto-bin&quot;, MetadataValue::from_bytes(b&quot;goodbye&quot;));
+    /// map.insert_bin("trace-proto-bin", MetadataValue::from_bytes(b"hello"));
+    /// map.append_bin("trace-proto-bin", MetadataValue::from_bytes(b"goodbye"));
     ///
     /// {
-    ///     let view = map.get_all_bin(&quot;trace-proto-bin&quot;);
+    ///     let view = map.get_all_bin("trace-proto-bin");
     ///
     ///     let mut iter = view.iter();
-    ///     assert_eq!(&amp;&quot;hello&quot;, iter.next().unwrap());
-    ///     assert_eq!(&amp;&quot;goodbye&quot;, iter.next().unwrap());
+    ///     assert_eq!(&amp;"hello", iter.next().unwrap());
+    ///     assert_eq!(&amp;"goodbye", iter.next().unwrap());
     ///     assert!(iter.next().is_none());
     /// }
     ///
     /// // Attempting to read a key of the wrong type fails by not
     /// // finding anything.
-    /// map.append(&quot;host&quot;, &quot;world&quot;.parse().unwrap());
-    /// assert!(map.get_all_bin(&quot;host&quot;).iter().next().is_none());
-    /// assert!(map.get_all_bin(&quot;host&quot;.to_string()).iter().next().is_none());
-    /// assert!(map.get_all_bin(&amp;(&quot;host&quot;.to_string())).iter().next().is_none());
+    /// map.append("host", "world".parse().unwrap());
+    /// assert!(map.get_all_bin("host").iter().next().is_none());
+    /// assert!(map.get_all_bin("host".to_string()).iter().next().is_none());
+    /// assert!(map.get_all_bin(&amp;("host".to_string())).iter().next().is_none());
     ///
     /// // Attempting to read an invalid key string fails by not
     /// // finding anything.
-    /// assert!(map.get_all_bin(&quot;host{}-bin&quot;).iter().next().is_none());
-    /// assert!(map.get_all_bin(&quot;host{}-bin&quot;.to_string()).iter().next().is_none());
-    /// assert!(map.get_all_bin(&amp;(&quot;host{}-bin&quot;.to_string())).iter().next().is_none());
+    /// assert!(map.get_all_bin("host{}-bin").iter().next().is_none());
+    /// assert!(map.get_all_bin("host{}-bin".to_string()).iter().next().is_none());
+    /// assert!(map.get_all_bin(&amp;("host{}-bin".to_string())).iter().next().is_none());
     /// ```
-    </span><span class="kw">pub fn </span>get_all_bin&lt;K&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: K) -&gt; GetAll&lt;<span class="lifetime">&#39;_</span>, Binary&gt;
+    </span><span class="kw">pub fn </span>get_all_bin&lt;K&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: K) -&gt; GetAll&lt;<span class="lifetime">'_</span>, Binary&gt;
     <span class="kw">where
         </span>K: AsMetadataKey&lt;Binary&gt;,
     {
@@ -3388,17 +3389,17 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// assert!(!map.contains_key(&quot;x-host&quot;));
+    /// assert!(!map.contains_key("x-host"));
     ///
-    /// map.append_bin(&quot;host-bin&quot;, MetadataValue::from_bytes(b&quot;world&quot;));
-    /// map.insert(&quot;x-host&quot;, &quot;world&quot;.parse().unwrap());
+    /// map.append_bin("host-bin", MetadataValue::from_bytes(b"world"));
+    /// map.insert("x-host", "world".parse().unwrap());
     ///
     /// // contains_key works for both Binary and Ascii keys:
-    /// assert!(map.contains_key(&quot;x-host&quot;));
-    /// assert!(map.contains_key(&quot;host-bin&quot;));
+    /// assert!(map.contains_key("x-host"));
+    /// assert!(map.contains_key("host-bin"));
     ///
     /// // contains_key returns false for invalid keys:
-    /// assert!(!map.contains_key(&quot;x{}host&quot;));
+    /// assert!(!map.contains_key("x{}host"));
     /// ```
     </span><span class="kw">pub fn </span>contains_key&lt;K&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: K) -&gt; bool
     <span class="kw">where
@@ -3419,20 +3420,20 @@
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     ///
-    /// map.insert(&quot;x-word&quot;, &quot;hello&quot;.parse().unwrap());
-    /// map.append(&quot;x-word&quot;, &quot;goodbye&quot;.parse().unwrap());
-    /// map.insert(&quot;x-number&quot;, &quot;123&quot;.parse().unwrap());
+    /// map.insert("x-word", "hello".parse().unwrap());
+    /// map.append("x-word", "goodbye".parse().unwrap());
+    /// map.insert("x-number", "123".parse().unwrap());
     ///
     /// for key_and_value in map.iter() {
     ///     match key_and_value {
     ///         KeyAndValueRef::Ascii(ref key, ref value) =&gt;
-    ///             println!(&quot;Ascii: {:?}: {:?}&quot;, key, value),
+    ///             println!("Ascii: {:?}: {:?}", key, value),
     ///         KeyAndValueRef::Binary(ref key, ref value) =&gt;
-    ///             println!(&quot;Binary: {:?}: {:?}&quot;, key, value),
+    ///             println!("Binary: {:?}: {:?}", key, value),
     ///     }
     /// }
     /// ```
-    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Iter&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Iter&lt;<span class="lifetime">'_</span>&gt; {
         Iter {
             inner: <span class="self">self</span>.headers.iter(),
         }
@@ -3450,9 +3451,9 @@
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     ///
-    /// map.insert(&quot;x-word&quot;, &quot;hello&quot;.parse().unwrap());
-    /// map.append(&quot;x-word&quot;, &quot;goodbye&quot;.parse().unwrap());
-    /// map.insert(&quot;x-number&quot;, &quot;123&quot;.parse().unwrap());
+    /// map.insert("x-word", "hello".parse().unwrap());
+    /// map.append("x-word", "goodbye".parse().unwrap());
+    /// map.insert("x-number", "123".parse().unwrap());
     ///
     /// for key_and_value in map.iter_mut() {
     ///     match key_and_value {
@@ -3463,7 +3464,7 @@
     ///     }
     /// }
     /// ```
-    </span><span class="kw">pub fn </span>iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; IterMut&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; IterMut&lt;<span class="lifetime">'_</span>&gt; {
         IterMut {
             inner: <span class="self">self</span>.headers.iter_mut(),
         }
@@ -3481,21 +3482,21 @@
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     ///
-    /// map.insert(&quot;x-word&quot;, &quot;hello&quot;.parse().unwrap());
-    /// map.append(&quot;x-word&quot;, &quot;goodbye&quot;.parse().unwrap());
-    /// map.insert_bin(&quot;x-number-bin&quot;, MetadataValue::from_bytes(b&quot;123&quot;));
+    /// map.insert("x-word", "hello".parse().unwrap());
+    /// map.append("x-word", "goodbye".parse().unwrap());
+    /// map.insert_bin("x-number-bin", MetadataValue::from_bytes(b"123"));
     ///
     /// for key in map.keys() {
     ///     match key {
     ///         KeyRef::Ascii(ref key) =&gt;
-    ///             println!(&quot;Ascii key: {:?}&quot;, key),
+    ///             println!("Ascii key: {:?}", key),
     ///         KeyRef::Binary(ref key) =&gt;
-    ///             println!(&quot;Binary key: {:?}&quot;, key),
+    ///             println!("Binary key: {:?}", key),
     ///     }
-    ///     println!(&quot;{:?}&quot;, key);
+    ///     println!("{:?}", key);
     /// }
     /// ```
-    </span><span class="kw">pub fn </span>keys(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Keys&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>keys(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Keys&lt;<span class="lifetime">'_</span>&gt; {
         Keys {
             inner: <span class="self">self</span>.headers.keys(),
         }
@@ -3512,21 +3513,21 @@
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     ///
-    /// map.insert(&quot;x-word&quot;, &quot;hello&quot;.parse().unwrap());
-    /// map.append(&quot;x-word&quot;, &quot;goodbye&quot;.parse().unwrap());
-    /// map.insert_bin(&quot;x-number-bin&quot;, MetadataValue::from_bytes(b&quot;123&quot;));
+    /// map.insert("x-word", "hello".parse().unwrap());
+    /// map.append("x-word", "goodbye".parse().unwrap());
+    /// map.insert_bin("x-number-bin", MetadataValue::from_bytes(b"123"));
     ///
     /// for value in map.values() {
     ///     match value {
     ///         ValueRef::Ascii(ref value) =&gt;
-    ///             println!(&quot;Ascii value: {:?}&quot;, value),
+    ///             println!("Ascii value: {:?}", value),
     ///         ValueRef::Binary(ref value) =&gt;
-    ///             println!(&quot;Binary value: {:?}&quot;, value),
+    ///             println!("Binary value: {:?}", value),
     ///     }
-    ///     println!(&quot;{:?}&quot;, value);
+    ///     println!("{:?}", value);
     /// }
     /// ```
-    </span><span class="kw">pub fn </span>values(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Values&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>values(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Values&lt;<span class="lifetime">'_</span>&gt; {
         Values {
             inner: <span class="self">self</span>.headers.iter(),
         }
@@ -3543,9 +3544,9 @@
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::default();
     ///
-    /// map.insert(&quot;x-word&quot;, &quot;hello&quot;.parse().unwrap());
-    /// map.append(&quot;x-word&quot;, &quot;goodbye&quot;.parse().unwrap());
-    /// map.insert(&quot;x-number&quot;, &quot;123&quot;.parse().unwrap());
+    /// map.insert("x-word", "hello".parse().unwrap());
+    /// map.append("x-word", "goodbye".parse().unwrap());
+    /// map.insert("x-number", "123".parse().unwrap());
     ///
     /// for value in map.values_mut() {
     ///     match value {
@@ -3556,13 +3557,13 @@
     ///     }
     /// }
     /// ```
-    </span><span class="kw">pub fn </span>values_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; ValuesMut&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>values_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; ValuesMut&lt;<span class="lifetime">'_</span>&gt; {
         ValuesMut {
             inner: <span class="self">self</span>.headers.iter_mut(),
         }
     }
 
-    <span class="doccomment">/// Gets the given ascii key&#39;s corresponding entry in the map for in-place
+    <span class="doccomment">/// Gets the given ascii key's corresponding entry in the map for in-place
     /// manipulation. For binary keys, use `entry_bin`.
     ///
     /// # Examples
@@ -3572,44 +3573,44 @@
     /// let mut map = MetadataMap::default();
     ///
     /// let headers = &amp;[
-    ///     &quot;content-length&quot;,
-    ///     &quot;x-hello&quot;,
-    ///     &quot;Content-Length&quot;,
-    ///     &quot;x-world&quot;,
+    ///     "content-length",
+    ///     "x-hello",
+    ///     "Content-Length",
+    ///     "x-world",
     /// ];
     ///
     /// for &amp;header in headers {
-    ///     let counter = map.entry(header).unwrap().or_insert(&quot;&quot;.parse().unwrap());
-    ///     *counter = format!(&quot;{}{}&quot;, counter.to_str().unwrap(), &quot;1&quot;).parse().unwrap();
+    ///     let counter = map.entry(header).unwrap().or_insert("".parse().unwrap());
+    ///     *counter = format!("{}{}", counter.to_str().unwrap(), "1").parse().unwrap();
     /// }
     ///
-    /// assert_eq!(map.get(&quot;content-length&quot;).unwrap(), &quot;11&quot;);
-    /// assert_eq!(map.get(&quot;x-hello&quot;).unwrap(), &quot;1&quot;);
+    /// assert_eq!(map.get("content-length").unwrap(), "11");
+    /// assert_eq!(map.get("x-hello").unwrap(), "1");
     ///
     /// // Gracefully handles parting invalid key strings
-    /// assert!(!map.entry(&quot;a{}b&quot;).is_ok());
+    /// assert!(!map.entry("a{}b").is_ok());
     ///
     /// // Attempting to read a key of the wrong type fails by not
     /// // finding anything.
-    /// map.append_bin(&quot;host-bin&quot;, MetadataValue::from_bytes(b&quot;world&quot;));
-    /// assert!(!map.entry(&quot;host-bin&quot;).is_ok());
-    /// assert!(!map.entry(&quot;host-bin&quot;.to_string()).is_ok());
-    /// assert!(!map.entry(&amp;(&quot;host-bin&quot;.to_string())).is_ok());
+    /// map.append_bin("host-bin", MetadataValue::from_bytes(b"world"));
+    /// assert!(!map.entry("host-bin").is_ok());
+    /// assert!(!map.entry("host-bin".to_string()).is_ok());
+    /// assert!(!map.entry(&amp;("host-bin".to_string())).is_ok());
     ///
     /// // Attempting to read an invalid key string fails by not
     /// // finding anything.
-    /// assert!(!map.entry(&quot;host{}&quot;).is_ok());
-    /// assert!(!map.entry(&quot;host{}&quot;.to_string()).is_ok());
-    /// assert!(!map.entry(&amp;(&quot;host{}&quot;.to_string())).is_ok());
+    /// assert!(!map.entry("host{}").is_ok());
+    /// assert!(!map.entry("host{}".to_string()).is_ok());
+    /// assert!(!map.entry(&amp;("host{}".to_string())).is_ok());
     /// ```
-    </span><span class="kw">pub fn </span>entry&lt;K&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: K) -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">&#39;_</span>, Ascii&gt;, InvalidMetadataKey&gt;
+    </span><span class="kw">pub fn </span>entry&lt;K&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: K) -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">'_</span>, Ascii&gt;, InvalidMetadataKey&gt;
     <span class="kw">where
         </span>K: AsMetadataKey&lt;Ascii&gt;,
     {
         <span class="self">self</span>.generic_entry::&lt;Ascii, K&gt;(key)
     }
 
-    <span class="doccomment">/// Gets the given Binary key&#39;s corresponding entry in the map for in-place
+    <span class="doccomment">/// Gets the given Binary key's corresponding entry in the map for in-place
     /// manipulation.
     ///
     /// # Examples
@@ -3620,34 +3621,34 @@
     /// let mut map = MetadataMap::default();
     ///
     /// let headers = &amp;[
-    ///     &quot;content-length-bin&quot;,
-    ///     &quot;x-hello-bin&quot;,
-    ///     &quot;Content-Length-bin&quot;,
-    ///     &quot;x-world-bin&quot;,
+    ///     "content-length-bin",
+    ///     "x-hello-bin",
+    ///     "Content-Length-bin",
+    ///     "x-world-bin",
     /// ];
     ///
     /// for &amp;header in headers {
-    ///     let counter = map.entry_bin(header).unwrap().or_insert(MetadataValue::from_bytes(b&quot;&quot;));
-    ///     *counter = MetadataValue::from_bytes(format!(&quot;{}{}&quot;, str::from_utf8(counter.to_bytes().unwrap().as_ref()).unwrap(), &quot;1&quot;).as_bytes());
+    ///     let counter = map.entry_bin(header).unwrap().or_insert(MetadataValue::from_bytes(b""));
+    ///     *counter = MetadataValue::from_bytes(format!("{}{}", str::from_utf8(counter.to_bytes().unwrap().as_ref()).unwrap(), "1").as_bytes());
     /// }
     ///
-    /// assert_eq!(map.get_bin(&quot;content-length-bin&quot;).unwrap(), &quot;11&quot;);
-    /// assert_eq!(map.get_bin(&quot;x-hello-bin&quot;).unwrap(), &quot;1&quot;);
+    /// assert_eq!(map.get_bin("content-length-bin").unwrap(), "11");
+    /// assert_eq!(map.get_bin("x-hello-bin").unwrap(), "1");
     ///
     /// // Attempting to read a key of the wrong type fails by not
     /// // finding anything.
-    /// map.append(&quot;host&quot;, &quot;world&quot;.parse().unwrap());
-    /// assert!(!map.entry_bin(&quot;host&quot;).is_ok());
-    /// assert!(!map.entry_bin(&quot;host&quot;.to_string()).is_ok());
-    /// assert!(!map.entry_bin(&amp;(&quot;host&quot;.to_string())).is_ok());
+    /// map.append("host", "world".parse().unwrap());
+    /// assert!(!map.entry_bin("host").is_ok());
+    /// assert!(!map.entry_bin("host".to_string()).is_ok());
+    /// assert!(!map.entry_bin(&amp;("host".to_string())).is_ok());
     ///
     /// // Attempting to read an invalid key string fails by not
     /// // finding anything.
-    /// assert!(!map.entry_bin(&quot;host{}-bin&quot;).is_ok());
-    /// assert!(!map.entry_bin(&quot;host{}-bin&quot;.to_string()).is_ok());
-    /// assert!(!map.entry_bin(&amp;(&quot;host{}-bin&quot;.to_string())).is_ok());
+    /// assert!(!map.entry_bin("host{}-bin").is_ok());
+    /// assert!(!map.entry_bin("host{}-bin".to_string()).is_ok());
+    /// assert!(!map.entry_bin(&amp;("host{}-bin".to_string())).is_ok());
     /// ```
-    </span><span class="kw">pub fn </span>entry_bin&lt;K&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: K) -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">&#39;_</span>, Binary&gt;, InvalidMetadataKey&gt;
+    </span><span class="kw">pub fn </span>entry_bin&lt;K&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: K) -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">'_</span>, Binary&gt;, InvalidMetadataKey&gt;
     <span class="kw">where
         </span>K: AsMetadataKey&lt;Binary&gt;,
     {
@@ -3657,7 +3658,7 @@
     <span class="kw">fn </span>generic_entry&lt;VE: ValueEncoding, K&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         key: K,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">&#39;_</span>, VE&gt;, InvalidMetadataKey&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">'_</span>, VE&gt;, InvalidMetadataKey&gt;
     <span class="kw">where
         </span>K: AsMetadataKey&lt;VE&gt;,
     {
@@ -3700,25 +3701,25 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// assert!(map.insert(&quot;x-host&quot;, &quot;world&quot;.parse().unwrap()).is_none());
+    /// assert!(map.insert("x-host", "world".parse().unwrap()).is_none());
     /// assert!(!map.is_empty());
     ///
-    /// let mut prev = map.insert(&quot;x-host&quot;, &quot;earth&quot;.parse().unwrap()).unwrap();
-    /// assert_eq!(&quot;world&quot;, prev);
+    /// let mut prev = map.insert("x-host", "earth".parse().unwrap()).unwrap();
+    /// assert_eq!("world", prev);
     /// ```
     ///
     /// ```should_panic
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     /// // Trying to insert a key that is not valid panics.
-    /// map.insert(&quot;x{}host&quot;, &quot;world&quot;.parse().unwrap());
+    /// map.insert("x{}host", "world".parse().unwrap());
     /// ```
     ///
     /// ```should_panic
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     /// // Trying to insert a key that is binary panics (use insert_bin).
-    /// map.insert(&quot;x-host-bin&quot;, &quot;world&quot;.parse().unwrap());
+    /// map.insert("x-host-bin", "world".parse().unwrap());
     /// ```
     </span><span class="kw">pub fn </span>insert&lt;K&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: K, val: MetadataValue&lt;Ascii&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;MetadataValue&lt;Ascii&gt;&gt;
     <span class="kw">where
@@ -3727,7 +3728,7 @@
         key.insert(<span class="self">self</span>, val)
     }
 
-    <span class="doccomment">/// Like insert, but for Binary keys (for example &quot;trace-proto-bin&quot;).
+    <span class="doccomment">/// Like insert, but for Binary keys (for example "trace-proto-bin").
     ///
     /// This method panics when the given key is a string and it cannot be
     /// converted to a MetadataKey&lt;Binary&gt;.
@@ -3737,25 +3738,25 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// assert!(map.insert_bin(&quot;trace-proto-bin&quot;, MetadataValue::from_bytes(b&quot;world&quot;)).is_none());
+    /// assert!(map.insert_bin("trace-proto-bin", MetadataValue::from_bytes(b"world")).is_none());
     /// assert!(!map.is_empty());
     ///
-    /// let mut prev = map.insert_bin(&quot;trace-proto-bin&quot;, MetadataValue::from_bytes(b&quot;earth&quot;)).unwrap();
-    /// assert_eq!(&quot;world&quot;, prev);
+    /// let mut prev = map.insert_bin("trace-proto-bin", MetadataValue::from_bytes(b"earth")).unwrap();
+    /// assert_eq!("world", prev);
     /// ```
     ///
     /// ```should_panic
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::default();
     /// // Attempting to add a binary metadata entry with an invalid name
-    /// map.insert_bin(&quot;trace-proto&quot;, MetadataValue::from_bytes(b&quot;hello&quot;)); // This line panics!
+    /// map.insert_bin("trace-proto", MetadataValue::from_bytes(b"hello")); // This line panics!
     /// ```
     ///
     /// ```should_panic
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     /// // Trying to insert a key that is not valid panics.
-    /// map.insert_bin(&quot;x{}host-bin&quot;, MetadataValue::from_bytes(b&quot;world&quot;)); // This line panics!
+    /// map.insert_bin("x{}host-bin", MetadataValue::from_bytes(b"world")); // This line panics!
     /// ```
     </span><span class="kw">pub fn </span>insert_bin&lt;K&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
@@ -3787,29 +3788,29 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// assert!(map.insert(&quot;x-host&quot;, &quot;world&quot;.parse().unwrap()).is_none());
+    /// assert!(map.insert("x-host", "world".parse().unwrap()).is_none());
     /// assert!(!map.is_empty());
     ///
-    /// map.append(&quot;x-host&quot;, &quot;earth&quot;.parse().unwrap());
+    /// map.append("x-host", "earth".parse().unwrap());
     ///
-    /// let values = map.get_all(&quot;x-host&quot;);
+    /// let values = map.get_all("x-host");
     /// let mut i = values.iter();
-    /// assert_eq!(&quot;world&quot;, *i.next().unwrap());
-    /// assert_eq!(&quot;earth&quot;, *i.next().unwrap());
+    /// assert_eq!("world", *i.next().unwrap());
+    /// assert_eq!("earth", *i.next().unwrap());
     /// ```
     ///
     /// ```should_panic
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     /// // Trying to append a key that is not valid panics.
-    /// map.append(&quot;x{}host&quot;, &quot;world&quot;.parse().unwrap()); // This line panics!
+    /// map.append("x{}host", "world".parse().unwrap()); // This line panics!
     /// ```
     ///
     /// ```should_panic
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     /// // Trying to append a key that is binary panics (use append_bin).
-    /// map.append(&quot;x-host-bin&quot;, &quot;world&quot;.parse().unwrap()); // This line panics!
+    /// map.append("x-host-bin", "world".parse().unwrap()); // This line panics!
     /// ```
     </span><span class="kw">pub fn </span>append&lt;K&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: K, value: MetadataValue&lt;Ascii&gt;) -&gt; bool
     <span class="kw">where
@@ -3818,7 +3819,7 @@
         key.append(<span class="self">self</span>, value)
     }
 
-    <span class="doccomment">/// Like append, but for binary keys (for example &quot;trace-proto-bin&quot;).
+    <span class="doccomment">/// Like append, but for binary keys (for example "trace-proto-bin").
     ///
     /// This method panics when the given key is a string and it cannot be
     /// converted to a MetadataKey&lt;Binary&gt;.
@@ -3828,29 +3829,29 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// assert!(map.insert_bin(&quot;trace-proto-bin&quot;, MetadataValue::from_bytes(b&quot;world&quot;)).is_none());
+    /// assert!(map.insert_bin("trace-proto-bin", MetadataValue::from_bytes(b"world")).is_none());
     /// assert!(!map.is_empty());
     ///
-    /// map.append_bin(&quot;trace-proto-bin&quot;, MetadataValue::from_bytes(b&quot;earth&quot;));
+    /// map.append_bin("trace-proto-bin", MetadataValue::from_bytes(b"earth"));
     ///
-    /// let values = map.get_all_bin(&quot;trace-proto-bin&quot;);
+    /// let values = map.get_all_bin("trace-proto-bin");
     /// let mut i = values.iter();
-    /// assert_eq!(&quot;world&quot;, *i.next().unwrap());
-    /// assert_eq!(&quot;earth&quot;, *i.next().unwrap());
+    /// assert_eq!("world", *i.next().unwrap());
+    /// assert_eq!("earth", *i.next().unwrap());
     /// ```
     ///
     /// ```should_panic
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     /// // Trying to append a key that is not valid panics.
-    /// map.append_bin(&quot;x{}host-bin&quot;, MetadataValue::from_bytes(b&quot;world&quot;)); // This line panics!
+    /// map.append_bin("x{}host-bin", MetadataValue::from_bytes(b"world")); // This line panics!
     /// ```
     ///
     /// ```should_panic
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     /// // Trying to append a key that is ascii panics (use append).
-    /// map.append_bin(&quot;x-host&quot;, MetadataValue::from_bytes(b&quot;world&quot;)); // This line panics!
+    /// map.append_bin("x-host", MetadataValue::from_bytes(b"world")); // This line panics!
     /// ```
     </span><span class="kw">pub fn </span>append_bin&lt;K&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: K, value: MetadataValue&lt;Binary&gt;) -&gt; bool
     <span class="kw">where
@@ -3872,25 +3873,25 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// map.insert(&quot;x-host&quot;, &quot;hello.world&quot;.parse().unwrap());
+    /// map.insert("x-host", "hello.world".parse().unwrap());
     ///
-    /// let prev = map.remove(&quot;x-host&quot;).unwrap();
-    /// assert_eq!(&quot;hello.world&quot;, prev);
+    /// let prev = map.remove("x-host").unwrap();
+    /// assert_eq!("hello.world", prev);
     ///
-    /// assert!(map.remove(&quot;x-host&quot;).is_none());
+    /// assert!(map.remove("x-host").is_none());
     ///
     /// // Attempting to remove a key of the wrong type fails by not
     /// // finding anything.
-    /// map.append_bin(&quot;host-bin&quot;, MetadataValue::from_bytes(b&quot;world&quot;));
-    /// assert!(map.remove(&quot;host-bin&quot;).is_none());
-    /// assert!(map.remove(&quot;host-bin&quot;.to_string()).is_none());
-    /// assert!(map.remove(&amp;(&quot;host-bin&quot;.to_string())).is_none());
+    /// map.append_bin("host-bin", MetadataValue::from_bytes(b"world"));
+    /// assert!(map.remove("host-bin").is_none());
+    /// assert!(map.remove("host-bin".to_string()).is_none());
+    /// assert!(map.remove(&amp;("host-bin".to_string())).is_none());
     ///
     /// // Attempting to remove an invalid key string fails by not
     /// // finding anything.
-    /// assert!(map.remove(&quot;host{}&quot;).is_none());
-    /// assert!(map.remove(&quot;host{}&quot;.to_string()).is_none());
-    /// assert!(map.remove(&amp;(&quot;host{}&quot;.to_string())).is_none());
+    /// assert!(map.remove("host{}").is_none());
+    /// assert!(map.remove("host{}".to_string()).is_none());
+    /// assert!(map.remove(&amp;("host{}".to_string())).is_none());
     /// ```
     </span><span class="kw">pub fn </span>remove&lt;K&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: K) -&gt; <span class="prelude-ty">Option</span>&lt;MetadataValue&lt;Ascii&gt;&gt;
     <span class="kw">where
@@ -3899,32 +3900,32 @@
         key.remove(<span class="self">self</span>)
     }
 
-    <span class="doccomment">/// Like remove, but for Binary keys (for example &quot;trace-proto-bin&quot;).
+    <span class="doccomment">/// Like remove, but for Binary keys (for example "trace-proto-bin").
     ///
     /// # Examples
     ///
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// map.insert_bin(&quot;trace-proto-bin&quot;, MetadataValue::from_bytes(b&quot;hello.world&quot;));
+    /// map.insert_bin("trace-proto-bin", MetadataValue::from_bytes(b"hello.world"));
     ///
-    /// let prev = map.remove_bin(&quot;trace-proto-bin&quot;).unwrap();
-    /// assert_eq!(&quot;hello.world&quot;, prev);
+    /// let prev = map.remove_bin("trace-proto-bin").unwrap();
+    /// assert_eq!("hello.world", prev);
     ///
-    /// assert!(map.remove_bin(&quot;trace-proto-bin&quot;).is_none());
+    /// assert!(map.remove_bin("trace-proto-bin").is_none());
     ///
     /// // Attempting to remove a key of the wrong type fails by not
     /// // finding anything.
-    /// map.append(&quot;host&quot;, &quot;world&quot;.parse().unwrap());
-    /// assert!(map.remove_bin(&quot;host&quot;).is_none());
-    /// assert!(map.remove_bin(&quot;host&quot;.to_string()).is_none());
-    /// assert!(map.remove_bin(&amp;(&quot;host&quot;.to_string())).is_none());
+    /// map.append("host", "world".parse().unwrap());
+    /// assert!(map.remove_bin("host").is_none());
+    /// assert!(map.remove_bin("host".to_string()).is_none());
+    /// assert!(map.remove_bin(&amp;("host".to_string())).is_none());
     ///
     /// // Attempting to remove an invalid key string fails by not
     /// // finding anything.
-    /// assert!(map.remove_bin(&quot;host{}-bin&quot;).is_none());
-    /// assert!(map.remove_bin(&quot;host{}-bin&quot;.to_string()).is_none());
-    /// assert!(map.remove_bin(&amp;(&quot;host{}-bin&quot;.to_string())).is_none());
+    /// assert!(map.remove_bin("host{}-bin").is_none());
+    /// assert!(map.remove_bin("host{}-bin".to_string()).is_none());
+    /// assert!(map.remove_bin(&amp;("host{}-bin".to_string())).is_none());
     /// ```
     </span><span class="kw">pub fn </span>remove_bin&lt;K&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: K) -&gt; <span class="prelude-ty">Option</span>&lt;MetadataValue&lt;Binary&gt;&gt;
     <span class="kw">where
@@ -3940,8 +3941,8 @@
 
 <span class="comment">// ===== impl Iter =====
 
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Iterator <span class="kw">for </span>Iter&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span>Item = KeyAndValueRef&lt;<span class="lifetime">&#39;a</span>&gt;;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Iterator <span class="kw">for </span>Iter&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Item = KeyAndValueRef&lt;<span class="lifetime">'a</span>&gt;;
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="self">self</span>.inner.next().map(|item| {
@@ -3967,8 +3968,8 @@
 
 <span class="comment">// ===== impl IterMut =====
 
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Iterator <span class="kw">for </span>IterMut&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span>Item = KeyAndMutValueRef&lt;<span class="lifetime">&#39;a</span>&gt;;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Iterator <span class="kw">for </span>IterMut&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Item = KeyAndMutValueRef&lt;<span class="lifetime">'a</span>&gt;;
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="self">self</span>.inner.next().map(|item| {
@@ -3994,7 +3995,7 @@
 
 <span class="comment">// ===== impl ValueDrain =====
 
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; Iterator <span class="kw">for </span>ValueDrain&lt;<span class="lifetime">&#39;a</span>, VE&gt; {
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; Iterator <span class="kw">for </span>ValueDrain&lt;<span class="lifetime">'a</span>, VE&gt; {
     <span class="kw">type </span>Item = MetadataValue&lt;VE&gt;;
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
@@ -4010,8 +4011,8 @@
 
 <span class="comment">// ===== impl Keys =====
 
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Iterator <span class="kw">for </span>Keys&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span>Item = KeyRef&lt;<span class="lifetime">&#39;a</span>&gt;;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Iterator <span class="kw">for </span>Keys&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Item = KeyRef&lt;<span class="lifetime">'a</span>&gt;;
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="self">self</span>.inner.next().map(|key| {
@@ -4028,12 +4029,12 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ExactSizeIterator <span class="kw">for </span>Keys&lt;<span class="lifetime">&#39;a</span>&gt; {}
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ExactSizeIterator <span class="kw">for </span>Keys&lt;<span class="lifetime">'a</span>&gt; {}
 
 <span class="comment">// ===== impl Values ====
 
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Iterator <span class="kw">for </span>Values&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span>Item = ValueRef&lt;<span class="lifetime">&#39;a</span>&gt;;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Iterator <span class="kw">for </span>Values&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Item = ValueRef&lt;<span class="lifetime">'a</span>&gt;;
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="self">self</span>.inner.next().map(|item| {
@@ -4053,8 +4054,8 @@
 
 <span class="comment">// ===== impl Values ====
 
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Iterator <span class="kw">for </span>ValuesMut&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span>Item = ValueRefMut&lt;<span class="lifetime">&#39;a</span>&gt;;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Iterator <span class="kw">for </span>ValuesMut&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Item = ValueRefMut&lt;<span class="lifetime">'a</span>&gt;;
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="self">self</span>.inner.next().map(|item| {
@@ -4074,11 +4075,11 @@
 
 <span class="comment">// ===== impl ValueIter =====
 
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; Iterator <span class="kw">for </span>ValueIter&lt;<span class="lifetime">&#39;a</span>, VE&gt;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; Iterator <span class="kw">for </span>ValueIter&lt;<span class="lifetime">'a</span>, VE&gt;
 <span class="kw">where
-    </span>VE: <span class="lifetime">&#39;a</span>,
+    </span>VE: <span class="lifetime">'a</span>,
 {
-    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataValue&lt;VE&gt;;
+    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataValue&lt;VE&gt;;
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="kw">match </span><span class="self">self</span>.inner {
@@ -4097,9 +4098,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; DoubleEndedIterator <span class="kw">for </span>ValueIter&lt;<span class="lifetime">&#39;a</span>, VE&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; DoubleEndedIterator <span class="kw">for </span>ValueIter&lt;<span class="lifetime">'a</span>, VE&gt;
 <span class="kw">where
-    </span>VE: <span class="lifetime">&#39;a</span>,
+    </span>VE: <span class="lifetime">'a</span>,
 {
     <span class="kw">fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="kw">match </span><span class="self">self</span>.inner {
@@ -4113,11 +4114,11 @@
 
 <span class="comment">// ===== impl ValueIterMut =====
 
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; Iterator <span class="kw">for </span>ValueIterMut&lt;<span class="lifetime">&#39;a</span>, VE&gt;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; Iterator <span class="kw">for </span>ValueIterMut&lt;<span class="lifetime">'a</span>, VE&gt;
 <span class="kw">where
-    </span>VE: <span class="lifetime">&#39;a</span>,
+    </span>VE: <span class="lifetime">'a</span>,
 {
-    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>MetadataValue&lt;VE&gt;;
+    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>MetadataValue&lt;VE&gt;;
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="self">self</span>.inner
@@ -4126,9 +4127,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; DoubleEndedIterator <span class="kw">for </span>ValueIterMut&lt;<span class="lifetime">&#39;a</span>, VE&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; DoubleEndedIterator <span class="kw">for </span>ValueIterMut&lt;<span class="lifetime">'a</span>, VE&gt;
 <span class="kw">where
-    </span>VE: <span class="lifetime">&#39;a</span>,
+    </span>VE: <span class="lifetime">'a</span>,
 {
     <span class="kw">fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="self">self</span>.inner
@@ -4139,7 +4140,7 @@
 
 <span class="comment">// ===== impl Entry =====
 
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; Entry&lt;<span class="lifetime">&#39;a</span>, VE&gt; {
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; Entry&lt;<span class="lifetime">'a</span>, VE&gt; {
     <span class="doccomment">/// Ensures a value is in the entry by inserting the default if empty.
     ///
     /// Returns a mutable reference to the **first** value in the entry.
@@ -4151,23 +4152,23 @@
     /// let mut map: MetadataMap = MetadataMap::default();
     ///
     /// let keys = &amp;[
-    ///     &quot;content-length&quot;,
-    ///     &quot;x-hello&quot;,
-    ///     &quot;Content-Length&quot;,
-    ///     &quot;x-world&quot;,
+    ///     "content-length",
+    ///     "x-hello",
+    ///     "Content-Length",
+    ///     "x-world",
     /// ];
     ///
     /// for &amp;key in keys {
     ///     let counter = map.entry(key)
-    ///         .expect(&quot;valid key names&quot;)
-    ///         .or_insert(&quot;&quot;.parse().unwrap());
-    ///     *counter = format!(&quot;{}{}&quot;, counter.to_str().unwrap(), &quot;1&quot;).parse().unwrap();
+    ///         .expect("valid key names")
+    ///         .or_insert("".parse().unwrap());
+    ///     *counter = format!("{}{}", counter.to_str().unwrap(), "1").parse().unwrap();
     /// }
     ///
-    /// assert_eq!(map.get(&quot;content-length&quot;).unwrap(), &quot;11&quot;);
-    /// assert_eq!(map.get(&quot;x-hello&quot;).unwrap(), &quot;1&quot;);
+    /// assert_eq!(map.get("content-length").unwrap(), "11");
+    /// assert_eq!(map.get("x-hello").unwrap(), "1");
     /// ```
-    </span><span class="kw">pub fn </span>or_insert(<span class="self">self</span>, default: MetadataValue&lt;VE&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>MetadataValue&lt;VE&gt; {
+    </span><span class="kw">pub fn </span>or_insert(<span class="self">self</span>, default: MetadataValue&lt;VE&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>MetadataValue&lt;VE&gt; {
         <span class="kw">use </span><span class="self">self</span>::Entry::<span class="kw-2">*</span>;
 
         <span class="kw">match </span><span class="self">self </span>{
@@ -4190,10 +4191,10 @@
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     ///
-    /// let res = map.entry(&quot;x-hello&quot;).unwrap()
-    ///     .or_insert_with(|| &quot;world&quot;.parse().unwrap());
+    /// let res = map.entry("x-hello").unwrap()
+    ///     .or_insert_with(|| "world".parse().unwrap());
     ///
-    /// assert_eq!(res, &quot;world&quot;);
+    /// assert_eq!(res, "world");
     /// ```
     ///
     /// The default function is not called if the entry exists in the map.
@@ -4201,19 +4202,19 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// map.insert(&quot;host&quot;, &quot;world&quot;.parse().unwrap());
+    /// map.insert("host", "world".parse().unwrap());
     ///
-    /// let res = map.entry(&quot;host&quot;)
-    ///     .expect(&quot;host is a valid string&quot;)
+    /// let res = map.entry("host")
+    ///     .expect("host is a valid string")
     ///     .or_insert_with(|| unreachable!());
     ///
     ///
-    /// assert_eq!(res, &quot;world&quot;);
+    /// assert_eq!(res, "world");
     /// ```
     </span><span class="kw">pub fn </span>or_insert_with&lt;F: FnOnce() -&gt; MetadataValue&lt;VE&gt;&gt;(
         <span class="self">self</span>,
         default: F,
-    ) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>MetadataValue&lt;VE&gt; {
+    ) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>MetadataValue&lt;VE&gt; {
         <span class="kw">use </span><span class="self">self</span>::Entry::<span class="kw-2">*</span>;
 
         <span class="kw">match </span><span class="self">self </span>{
@@ -4222,7 +4223,7 @@
         }
     }
 
-    <span class="doccomment">/// Returns a reference to the entry&#39;s key
+    <span class="doccomment">/// Returns a reference to the entry's key
     ///
     /// # Examples
     ///
@@ -4230,7 +4231,7 @@
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     ///
-    /// assert_eq!(map.entry(&quot;x-hello&quot;).unwrap().key(), &quot;x-hello&quot;);
+    /// assert_eq!(map.entry("x-hello").unwrap().key(), "x-hello");
     /// ```
     </span><span class="kw">pub fn </span>key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>MetadataKey&lt;VE&gt; {
         <span class="kw">use </span><span class="self">self</span>::Entry::<span class="kw-2">*</span>;
@@ -4244,8 +4245,8 @@
 
 <span class="comment">// ===== impl VacantEntry =====
 
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; VacantEntry&lt;<span class="lifetime">&#39;a</span>, VE&gt; {
-    <span class="doccomment">/// Returns a reference to the entry&#39;s key
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; VacantEntry&lt;<span class="lifetime">'a</span>, VE&gt; {
+    <span class="doccomment">/// Returns a reference to the entry's key
     ///
     /// # Examples
     ///
@@ -4253,7 +4254,7 @@
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     ///
-    /// assert_eq!(map.entry(&quot;x-hello&quot;).unwrap().key(), &quot;x-hello&quot;);
+    /// assert_eq!(map.entry("x-hello").unwrap().key(), "x-hello");
     /// ```
     </span><span class="kw">pub fn </span>key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>MetadataKey&lt;VE&gt; {
         MetadataKey::unchecked_from_header_name_ref(<span class="self">self</span>.inner.key())
@@ -4267,8 +4268,8 @@
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     ///
-    /// if let Entry::Vacant(v) = map.entry(&quot;x-hello&quot;).unwrap() {
-    ///     assert_eq!(v.into_key().as_str(), &quot;x-hello&quot;);
+    /// if let Entry::Vacant(v) = map.entry("x-hello").unwrap() {
+    ///     assert_eq!(v.into_key().as_str(), "x-hello");
     /// }
     /// ```
     </span><span class="kw">pub fn </span>into_key(<span class="self">self</span>) -&gt; MetadataKey&lt;VE&gt; {
@@ -4277,7 +4278,7 @@
 
     <span class="doccomment">/// Insert the value into the entry.
     ///
-    /// The value will be associated with this entry&#39;s key. A mutable reference
+    /// The value will be associated with this entry's key. A mutable reference
     /// to the inserted value will be returned.
     ///
     /// # Examples
@@ -4286,19 +4287,19 @@
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     ///
-    /// if let Entry::Vacant(v) = map.entry(&quot;x-hello&quot;).unwrap() {
-    ///     v.insert(&quot;world&quot;.parse().unwrap());
+    /// if let Entry::Vacant(v) = map.entry("x-hello").unwrap() {
+    ///     v.insert("world".parse().unwrap());
     /// }
     ///
-    /// assert_eq!(map.get(&quot;x-hello&quot;).unwrap(), &quot;world&quot;);
+    /// assert_eq!(map.get("x-hello").unwrap(), "world");
     /// ```
-    </span><span class="kw">pub fn </span>insert(<span class="self">self</span>, value: MetadataValue&lt;VE&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>MetadataValue&lt;VE&gt; {
+    </span><span class="kw">pub fn </span>insert(<span class="self">self</span>, value: MetadataValue&lt;VE&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>MetadataValue&lt;VE&gt; {
         MetadataValue::unchecked_from_mut_header_value_ref(<span class="self">self</span>.inner.insert(value.inner))
     }
 
     <span class="doccomment">/// Insert the value into the entry.
     ///
-    /// The value will be associated with this entry&#39;s key. The new
+    /// The value will be associated with this entry's key. The new
     /// `OccupiedEntry` is returned, allowing for further manipulation.
     ///
     /// # Examples
@@ -4307,14 +4308,14 @@
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
     ///
-    /// if let Entry::Vacant(v) = map.entry(&quot;x-hello&quot;).unwrap() {
-    ///     let mut e = v.insert_entry(&quot;world&quot;.parse().unwrap());
-    ///     e.insert(&quot;world2&quot;.parse().unwrap());
+    /// if let Entry::Vacant(v) = map.entry("x-hello").unwrap() {
+    ///     let mut e = v.insert_entry("world".parse().unwrap());
+    ///     e.insert("world2".parse().unwrap());
     /// }
     ///
-    /// assert_eq!(map.get(&quot;x-hello&quot;).unwrap(), &quot;world2&quot;);
+    /// assert_eq!(map.get("x-hello").unwrap(), "world2");
     /// ```
-    </span><span class="kw">pub fn </span>insert_entry(<span class="self">self</span>, value: MetadataValue&lt;VE&gt;) -&gt; OccupiedEntry&lt;<span class="lifetime">&#39;a</span>, Ascii&gt; {
+    </span><span class="kw">pub fn </span>insert_entry(<span class="self">self</span>, value: MetadataValue&lt;VE&gt;) -&gt; OccupiedEntry&lt;<span class="lifetime">'a</span>, Ascii&gt; {
         OccupiedEntry {
             inner: <span class="self">self</span>.inner.insert_entry(value.inner),
             phantom: PhantomData,
@@ -4324,18 +4325,18 @@
 
 <span class="comment">// ===== impl OccupiedEntry =====
 
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; OccupiedEntry&lt;<span class="lifetime">&#39;a</span>, VE&gt; {
-    <span class="doccomment">/// Returns a reference to the entry&#39;s key.
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; OccupiedEntry&lt;<span class="lifetime">'a</span>, VE&gt; {
+    <span class="doccomment">/// Returns a reference to the entry's key.
     ///
     /// # Examples
     ///
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// map.insert(&quot;host&quot;, &quot;world&quot;.parse().unwrap());
+    /// map.insert("host", "world".parse().unwrap());
     ///
-    /// if let Entry::Occupied(e) = map.entry(&quot;host&quot;).unwrap() {
-    ///     assert_eq!(&quot;host&quot;, e.key());
+    /// if let Entry::Occupied(e) = map.entry("host").unwrap() {
+    ///     assert_eq!("host", e.key());
     /// }
     /// ```
     </span><span class="kw">pub fn </span>key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>MetadataKey&lt;VE&gt; {
@@ -4355,14 +4356,14 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// map.insert(&quot;host&quot;, &quot;hello.world&quot;.parse().unwrap());
+    /// map.insert("host", "hello.world".parse().unwrap());
     ///
-    /// if let Entry::Occupied(mut e) = map.entry(&quot;host&quot;).unwrap() {
-    ///     assert_eq!(e.get(), &amp;&quot;hello.world&quot;);
+    /// if let Entry::Occupied(mut e) = map.entry("host").unwrap() {
+    ///     assert_eq!(e.get(), &amp;"hello.world");
     ///
-    ///     e.append(&quot;hello.earth&quot;.parse().unwrap());
+    ///     e.append("hello.earth".parse().unwrap());
     ///
-    ///     assert_eq!(e.get(), &amp;&quot;hello.world&quot;);
+    ///     assert_eq!(e.get(), &amp;"hello.world");
     /// }
     /// ```
     </span><span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>MetadataValue&lt;VE&gt; {
@@ -4382,11 +4383,11 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::default();
-    /// map.insert(&quot;host&quot;, &quot;hello.world&quot;.parse().unwrap());
+    /// map.insert("host", "hello.world".parse().unwrap());
     ///
-    /// if let Entry::Occupied(mut e) = map.entry(&quot;host&quot;).unwrap() {
+    /// if let Entry::Occupied(mut e) = map.entry("host").unwrap() {
     ///     e.get_mut().set_sensitive(true);
-    ///     assert_eq!(e.get(), &amp;&quot;hello.world&quot;);
+    ///     assert_eq!(e.get(), &amp;"hello.world");
     ///     assert!(e.get().is_sensitive());
     /// }
     /// ```
@@ -4408,16 +4409,16 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::default();
-    /// map.insert(&quot;host&quot;, &quot;hello.world&quot;.parse().unwrap());
-    /// map.append(&quot;host&quot;, &quot;hello.earth&quot;.parse().unwrap());
+    /// map.insert("host", "hello.world".parse().unwrap());
+    /// map.append("host", "hello.earth".parse().unwrap());
     ///
-    /// if let Entry::Occupied(e) = map.entry(&quot;host&quot;).unwrap() {
+    /// if let Entry::Occupied(e) = map.entry("host").unwrap() {
     ///     e.into_mut().set_sensitive(true);
     /// }
     ///
-    /// assert!(map.get(&quot;host&quot;).unwrap().is_sensitive());
+    /// assert!(map.get("host").unwrap().is_sensitive());
     /// ```
-    </span><span class="kw">pub fn </span>into_mut(<span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>MetadataValue&lt;VE&gt; {
+    </span><span class="kw">pub fn </span>into_mut(<span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>MetadataValue&lt;VE&gt; {
         MetadataValue::unchecked_from_mut_header_value_ref(<span class="self">self</span>.inner.into_mut())
     }
 
@@ -4431,14 +4432,14 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// map.insert(&quot;host&quot;, &quot;hello.world&quot;.parse().unwrap());
+    /// map.insert("host", "hello.world".parse().unwrap());
     ///
-    /// if let Entry::Occupied(mut e) = map.entry(&quot;host&quot;).unwrap() {
-    ///     let mut prev = e.insert(&quot;earth&quot;.parse().unwrap());
-    ///     assert_eq!(&quot;hello.world&quot;, prev);
+    /// if let Entry::Occupied(mut e) = map.entry("host").unwrap() {
+    ///     let mut prev = e.insert("earth".parse().unwrap());
+    ///     assert_eq!("hello.world", prev);
     /// }
     ///
-    /// assert_eq!(&quot;earth&quot;, map.get(&quot;host&quot;).unwrap());
+    /// assert_eq!("earth", map.get("host").unwrap());
     /// ```
     </span><span class="kw">pub fn </span>insert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: MetadataValue&lt;VE&gt;) -&gt; MetadataValue&lt;VE&gt; {
         <span class="kw">let </span>header_value = <span class="self">self</span>.inner.insert(value.inner);
@@ -4455,19 +4456,19 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// map.insert(&quot;host&quot;, &quot;world&quot;.parse().unwrap());
-    /// map.append(&quot;host&quot;, &quot;world2&quot;.parse().unwrap());
+    /// map.insert("host", "world".parse().unwrap());
+    /// map.append("host", "world2".parse().unwrap());
     ///
-    /// if let Entry::Occupied(mut e) = map.entry(&quot;host&quot;).unwrap() {
-    ///     let mut prev = e.insert_mult(&quot;earth&quot;.parse().unwrap());
-    ///     assert_eq!(&quot;world&quot;, prev.next().unwrap());
-    ///     assert_eq!(&quot;world2&quot;, prev.next().unwrap());
+    /// if let Entry::Occupied(mut e) = map.entry("host").unwrap() {
+    ///     let mut prev = e.insert_mult("earth".parse().unwrap());
+    ///     assert_eq!("world", prev.next().unwrap());
+    ///     assert_eq!("world2", prev.next().unwrap());
     ///     assert!(prev.next().is_none());
     /// }
     ///
-    /// assert_eq!(&quot;earth&quot;, map.get(&quot;host&quot;).unwrap());
+    /// assert_eq!("earth", map.get("host").unwrap());
     /// ```
-    </span><span class="kw">pub fn </span>insert_mult(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: MetadataValue&lt;VE&gt;) -&gt; ValueDrain&lt;<span class="lifetime">&#39;_</span>, VE&gt; {
+    </span><span class="kw">pub fn </span>insert_mult(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: MetadataValue&lt;VE&gt;) -&gt; ValueDrain&lt;<span class="lifetime">'_</span>, VE&gt; {
         ValueDrain {
             inner: <span class="self">self</span>.inner.insert_mult(value.inner),
             phantom: PhantomData,
@@ -4476,7 +4477,7 @@
 
     <span class="doccomment">/// Insert the value into the entry.
     ///
-    /// The new value is appended to the end of the entry&#39;s value list. All
+    /// The new value is appended to the end of the entry's value list. All
     /// previous values associated with the entry are retained.
     ///
     /// # Examples
@@ -4484,16 +4485,16 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// map.insert(&quot;host&quot;, &quot;world&quot;.parse().unwrap());
+    /// map.insert("host", "world".parse().unwrap());
     ///
-    /// if let Entry::Occupied(mut e) = map.entry(&quot;host&quot;).unwrap() {
-    ///     e.append(&quot;earth&quot;.parse().unwrap());
+    /// if let Entry::Occupied(mut e) = map.entry("host").unwrap() {
+    ///     e.append("earth".parse().unwrap());
     /// }
     ///
-    /// let values = map.get_all(&quot;host&quot;);
+    /// let values = map.get_all("host");
     /// let mut i = values.iter();
-    /// assert_eq!(&quot;world&quot;, *i.next().unwrap());
-    /// assert_eq!(&quot;earth&quot;, *i.next().unwrap());
+    /// assert_eq!("world", *i.next().unwrap());
+    /// assert_eq!("earth", *i.next().unwrap());
     /// ```
     </span><span class="kw">pub fn </span>append(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: MetadataValue&lt;VE&gt;) {
         <span class="self">self</span>.inner.append(value.inner)
@@ -4509,14 +4510,14 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// map.insert(&quot;host&quot;, &quot;world&quot;.parse().unwrap());
+    /// map.insert("host", "world".parse().unwrap());
     ///
-    /// if let Entry::Occupied(e) = map.entry(&quot;host&quot;).unwrap() {
+    /// if let Entry::Occupied(e) = map.entry("host").unwrap() {
     ///     let mut prev = e.remove();
-    ///     assert_eq!(&quot;world&quot;, prev);
+    ///     assert_eq!("world", prev);
     /// }
     ///
-    /// assert!(!map.contains_key(&quot;host&quot;));
+    /// assert!(!map.contains_key("host"));
     /// ```
     </span><span class="kw">pub fn </span>remove(<span class="self">self</span>) -&gt; MetadataValue&lt;VE&gt; {
         <span class="kw">let </span>value = <span class="self">self</span>.inner.remove();
@@ -4534,15 +4535,15 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// map.insert(&quot;host&quot;, &quot;world&quot;.parse().unwrap());
+    /// map.insert("host", "world".parse().unwrap());
     ///
-    /// if let Entry::Occupied(e) = map.entry(&quot;host&quot;).unwrap() {
+    /// if let Entry::Occupied(e) = map.entry("host").unwrap() {
     ///     let (key, mut prev) = e.remove_entry();
-    ///     assert_eq!(&quot;host&quot;, key.as_str());
-    ///     assert_eq!(&quot;world&quot;, prev);
+    ///     assert_eq!("host", key.as_str());
+    ///     assert_eq!("world", prev);
     /// }
     ///
-    /// assert!(!map.contains_key(&quot;host&quot;));
+    /// assert!(!map.contains_key("host"));
     /// ```
     </span><span class="kw">pub fn </span>remove_entry(<span class="self">self</span>) -&gt; (MetadataKey&lt;VE&gt;, MetadataValue&lt;VE&gt;) {
         <span class="kw">let </span>(name, value) = <span class="self">self</span>.inner.remove_entry();
@@ -4556,7 +4557,7 @@
     ///
     /// The key and all values associated with the entry are removed and
     /// returned.
-    </span><span class="kw">pub fn </span>remove_entry_mult(<span class="self">self</span>) -&gt; (MetadataKey&lt;VE&gt;, ValueDrain&lt;<span class="lifetime">&#39;a</span>, VE&gt;) {
+    </span><span class="kw">pub fn </span>remove_entry_mult(<span class="self">self</span>) -&gt; (MetadataKey&lt;VE&gt;, ValueDrain&lt;<span class="lifetime">'a</span>, VE&gt;) {
         <span class="kw">let </span>(name, value_drain) = <span class="self">self</span>.inner.remove_entry_mult();
         (
             MetadataKey::unchecked_from_header_name(name),
@@ -4576,17 +4577,17 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// map.insert(&quot;host&quot;, &quot;world&quot;.parse().unwrap());
-    /// map.append(&quot;host&quot;, &quot;earth&quot;.parse().unwrap());
+    /// map.insert("host", "world".parse().unwrap());
+    /// map.append("host", "earth".parse().unwrap());
     ///
-    /// if let Entry::Occupied(e) = map.entry(&quot;host&quot;).unwrap() {
+    /// if let Entry::Occupied(e) = map.entry("host").unwrap() {
     ///     let mut iter = e.iter();
-    ///     assert_eq!(&amp;&quot;world&quot;, iter.next().unwrap());
-    ///     assert_eq!(&amp;&quot;earth&quot;, iter.next().unwrap());
+    ///     assert_eq!(&amp;"world", iter.next().unwrap());
+    ///     assert_eq!(&amp;"earth", iter.next().unwrap());
     ///     assert!(iter.next().is_none());
     /// }
     /// ```
-    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ValueIter&lt;<span class="lifetime">&#39;_</span>, VE&gt; {
+    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ValueIter&lt;<span class="lifetime">'_</span>, VE&gt; {
         ValueIter {
             inner: <span class="prelude-val">Some</span>(<span class="self">self</span>.inner.iter()),
             phantom: PhantomData,
@@ -4603,21 +4604,21 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::default();
-    /// map.insert(&quot;host&quot;, &quot;world&quot;.parse().unwrap());
-    /// map.append(&quot;host&quot;, &quot;earth&quot;.parse().unwrap());
+    /// map.insert("host", "world".parse().unwrap());
+    /// map.append("host", "earth".parse().unwrap());
     ///
-    /// if let Entry::Occupied(mut e) = map.entry(&quot;host&quot;).unwrap() {
+    /// if let Entry::Occupied(mut e) = map.entry("host").unwrap() {
     ///     for e in e.iter_mut() {
     ///         e.set_sensitive(true);
     ///     }
     /// }
     ///
-    /// let mut values = map.get_all(&quot;host&quot;);
+    /// let mut values = map.get_all("host");
     /// let mut i = values.iter();
     /// assert!(i.next().unwrap().is_sensitive());
     /// assert!(i.next().unwrap().is_sensitive());
     /// ```
-    </span><span class="kw">pub fn </span>iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; ValueIterMut&lt;<span class="lifetime">&#39;_</span>, VE&gt; {
+    </span><span class="kw">pub fn </span>iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; ValueIterMut&lt;<span class="lifetime">'_</span>, VE&gt; {
         ValueIterMut {
             inner: <span class="self">self</span>.inner.iter_mut(),
             phantom: PhantomData,
@@ -4625,14 +4626,14 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; IntoIterator <span class="kw">for </span>OccupiedEntry&lt;<span class="lifetime">&#39;a</span>, VE&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; IntoIterator <span class="kw">for </span>OccupiedEntry&lt;<span class="lifetime">'a</span>, VE&gt;
 <span class="kw">where
-    </span>VE: <span class="lifetime">&#39;a</span>,
+    </span>VE: <span class="lifetime">'a</span>,
 {
-    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>MetadataValue&lt;VE&gt;;
-    <span class="kw">type </span>IntoIter = ValueIterMut&lt;<span class="lifetime">&#39;a</span>, VE&gt;;
+    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>MetadataValue&lt;VE&gt;;
+    <span class="kw">type </span>IntoIter = ValueIterMut&lt;<span class="lifetime">'a</span>, VE&gt;;
 
-    <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; ValueIterMut&lt;<span class="lifetime">&#39;a</span>, VE&gt; {
+    <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; ValueIterMut&lt;<span class="lifetime">'a</span>, VE&gt; {
         ValueIterMut {
             inner: <span class="self">self</span>.inner.into_iter(),
             phantom: PhantomData,
@@ -4640,27 +4641,27 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>OccupiedEntry&lt;<span class="lifetime">&#39;a</span>, VE&gt; {
-    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataValue&lt;VE&gt;;
-    <span class="kw">type </span>IntoIter = ValueIter&lt;<span class="lifetime">&#39;a</span>, VE&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>: <span class="lifetime">'a</span>, VE: ValueEncoding&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'b </span>OccupiedEntry&lt;<span class="lifetime">'a</span>, VE&gt; {
+    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataValue&lt;VE&gt;;
+    <span class="kw">type </span>IntoIter = ValueIter&lt;<span class="lifetime">'a</span>, VE&gt;;
 
-    <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; ValueIter&lt;<span class="lifetime">&#39;a</span>, VE&gt; {
+    <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; ValueIter&lt;<span class="lifetime">'a</span>, VE&gt; {
         <span class="self">self</span>.iter()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span><span class="kw-2">mut </span>OccupiedEntry&lt;<span class="lifetime">&#39;a</span>, VE&gt; {
-    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>MetadataValue&lt;VE&gt;;
-    <span class="kw">type </span>IntoIter = ValueIterMut&lt;<span class="lifetime">&#39;a</span>, VE&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>: <span class="lifetime">'a</span>, VE: ValueEncoding&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'b </span><span class="kw-2">mut </span>OccupiedEntry&lt;<span class="lifetime">'a</span>, VE&gt; {
+    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>MetadataValue&lt;VE&gt;;
+    <span class="kw">type </span>IntoIter = ValueIterMut&lt;<span class="lifetime">'a</span>, VE&gt;;
 
-    <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; ValueIterMut&lt;<span class="lifetime">&#39;a</span>, VE&gt; {
+    <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; ValueIterMut&lt;<span class="lifetime">'a</span>, VE&gt; {
         <span class="self">self</span>.iter_mut()
     }
 }
 
 <span class="comment">// ===== impl GetAll =====
 
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; GetAll&lt;<span class="lifetime">&#39;a</span>, VE&gt; {
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; GetAll&lt;<span class="lifetime">'a</span>, VE&gt; {
     <span class="doccomment">/// Returns an iterator visiting all values associated with the entry.
     ///
     /// Values are iterated in insertion order.
@@ -4670,16 +4671,16 @@
     /// ```
     /// # use tonic::metadata::*;
     /// let mut map = MetadataMap::new();
-    /// map.insert(&quot;x-host&quot;, &quot;hello.world&quot;.parse().unwrap());
-    /// map.append(&quot;x-host&quot;, &quot;hello.earth&quot;.parse().unwrap());
+    /// map.insert("x-host", "hello.world".parse().unwrap());
+    /// map.append("x-host", "hello.earth".parse().unwrap());
     ///
-    /// let values = map.get_all(&quot;x-host&quot;);
+    /// let values = map.get_all("x-host");
     /// let mut iter = values.iter();
-    /// assert_eq!(&amp;&quot;hello.world&quot;, iter.next().unwrap());
-    /// assert_eq!(&amp;&quot;hello.earth&quot;, iter.next().unwrap());
+    /// assert_eq!(&amp;"hello.world", iter.next().unwrap());
+    /// assert_eq!(&amp;"hello.earth", iter.next().unwrap());
     /// assert!(iter.next().is_none());
     /// ```
-    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ValueIter&lt;<span class="lifetime">&#39;a</span>, VE&gt; {
+    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ValueIter&lt;<span class="lifetime">'a</span>, VE&gt; {
         ValueIter {
             inner: <span class="self">self</span>.inner.as_ref().map(|inner| inner.iter()),
             phantom: PhantomData,
@@ -4687,20 +4688,20 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; PartialEq <span class="kw">for </span>GetAll&lt;<span class="lifetime">&#39;a</span>, VE&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; PartialEq <span class="kw">for </span>GetAll&lt;<span class="lifetime">'a</span>, VE&gt; {
     <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
         <span class="self">self</span>.inner.iter().eq(other.inner.iter())
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; IntoIterator <span class="kw">for </span>GetAll&lt;<span class="lifetime">&#39;a</span>, VE&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; IntoIterator <span class="kw">for </span>GetAll&lt;<span class="lifetime">'a</span>, VE&gt;
 <span class="kw">where
-    </span>VE: <span class="lifetime">&#39;a</span>,
+    </span>VE: <span class="lifetime">'a</span>,
 {
-    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataValue&lt;VE&gt;;
-    <span class="kw">type </span>IntoIter = ValueIter&lt;<span class="lifetime">&#39;a</span>, VE&gt;;
+    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataValue&lt;VE&gt;;
+    <span class="kw">type </span>IntoIter = ValueIter&lt;<span class="lifetime">'a</span>, VE&gt;;
 
-    <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; ValueIter&lt;<span class="lifetime">&#39;a</span>, VE&gt; {
+    <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; ValueIter&lt;<span class="lifetime">'a</span>, VE&gt; {
         ValueIter {
             inner: <span class="self">self</span>.inner.map(|inner| inner.into_iter()),
             phantom: PhantomData,
@@ -4708,11 +4709,11 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>GetAll&lt;<span class="lifetime">&#39;a</span>, VE&gt; {
-    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataValue&lt;VE&gt;;
-    <span class="kw">type </span>IntoIter = ValueIter&lt;<span class="lifetime">&#39;a</span>, VE&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>: <span class="lifetime">'a</span>, VE: ValueEncoding&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'b </span>GetAll&lt;<span class="lifetime">'a</span>, VE&gt; {
+    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataValue&lt;VE&gt;;
+    <span class="kw">type </span>IntoIter = ValueIter&lt;<span class="lifetime">'a</span>, VE&gt;;
 
-    <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; ValueIter&lt;<span class="lifetime">&#39;a</span>, VE&gt; {
+    <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; ValueIter&lt;<span class="lifetime">'a</span>, VE&gt; {
         ValueIter {
             inner: (<span class="kw-2">&amp;</span><span class="self">self</span>.inner).as_ref().map(|inner| inner.into_iter()),
             phantom: PhantomData,
@@ -4731,10 +4732,10 @@
     </span><span class="kw">pub trait </span>IntoMetadataKey&lt;VE: ValueEncoding&gt;: Sealed&lt;VE&gt; {}
 
     <span class="comment">// All methods are on this pub(super) trait, instead of `IntoMetadataKey`,
-    // so that they aren&#39;t publicly exposed to the world.
+    // so that they aren't publicly exposed to the world.
     //
     // Being on the `IntoMetadataKey` trait would mean users could call
-    // `&quot;host&quot;.insert(&amp;mut map, &quot;localhost&quot;)`.
+    // `"host".insert(&amp;mut map, "localhost")`.
     //
     // Ultimately, this allows us to adjust the signatures of these methods
     // without breaking any external crate.
@@ -4771,7 +4772,7 @@
 
     <span class="kw">impl</span>&lt;VE: ValueEncoding&gt; IntoMetadataKey&lt;VE&gt; <span class="kw">for </span>MetadataKey&lt;VE&gt; {}
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; Sealed&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataKey&lt;VE&gt; {
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; Sealed&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataKey&lt;VE&gt; {
         <span class="attr">#[doc(hidden)]
         #[inline]
         </span><span class="kw">fn </span>insert(
@@ -4790,9 +4791,9 @@
         }
     }
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; IntoMetadataKey&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataKey&lt;VE&gt; {}
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; IntoMetadataKey&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataKey&lt;VE&gt; {}
 
-    <span class="kw">impl</span>&lt;VE: ValueEncoding&gt; Sealed&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+    <span class="kw">impl</span>&lt;VE: ValueEncoding&gt; Sealed&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
         <span class="attr">#[doc(hidden)]
         #[inline]
         </span><span class="kw">fn </span>insert(
@@ -4817,7 +4818,7 @@
         }
     }
 
-    <span class="kw">impl</span>&lt;VE: ValueEncoding&gt; IntoMetadataKey&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {}
+    <span class="kw">impl</span>&lt;VE: ValueEncoding&gt; IntoMetadataKey&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {}
 }
 
 <span class="kw">mod </span>as_metadata_key {
@@ -4830,10 +4831,10 @@
     </span><span class="kw">pub trait </span>AsMetadataKey&lt;VE: ValueEncoding&gt;: Sealed&lt;VE&gt; {}
 
     <span class="comment">// All methods are on this pub(super) trait, instead of `AsMetadataKey`,
-    // so that they aren&#39;t publicly exposed to the world.
+    // so that they aren't publicly exposed to the world.
     //
     // Being on the `AsMetadataKey` trait would mean users could call
-    // `&quot;host&quot;.find(&amp;map)`.
+    // `"host".find(&amp;map)`.
     //
     // Ultimately, this allows us to adjust the signatures of these methods
     // without breaking any external crate.
@@ -4845,11 +4846,11 @@
         </span><span class="kw">fn </span>get_mut(<span class="self">self</span>, map: <span class="kw-2">&amp;mut </span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>MetadataValue&lt;VE&gt;&gt;;
 
         <span class="attr">#[doc(hidden)]
-        </span><span class="kw">fn </span>get_all(<span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;GetAll&lt;<span class="lifetime">&#39;_</span>, HeaderValue&gt;&gt;;
+        </span><span class="kw">fn </span>get_all(<span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;GetAll&lt;<span class="lifetime">'_</span>, HeaderValue&gt;&gt;;
 
         <span class="attr">#[doc(hidden)]
         </span><span class="kw">fn </span>entry(<span class="self">self</span>, map: <span class="kw-2">&amp;mut </span>MetadataMap)
-            -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">&#39;_</span>, HeaderValue&gt;, InvalidMetadataKey&gt;;
+            -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">'_</span>, HeaderValue&gt;, InvalidMetadataKey&gt;;
 
         <span class="attr">#[doc(hidden)]
         </span><span class="kw">fn </span>remove(<span class="self">self</span>, map: <span class="kw-2">&amp;mut </span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;MetadataValue&lt;VE&gt;&gt;;
@@ -4876,7 +4877,7 @@
 
         <span class="attr">#[doc(hidden)]
         #[inline]
-        </span><span class="kw">fn </span>get_all(<span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;GetAll&lt;<span class="lifetime">&#39;_</span>, HeaderValue&gt;&gt; {
+        </span><span class="kw">fn </span>get_all(<span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;GetAll&lt;<span class="lifetime">'_</span>, HeaderValue&gt;&gt; {
             <span class="prelude-val">Some</span>(map.headers.get_all(<span class="self">self</span>.inner))
         }
 
@@ -4885,7 +4886,7 @@
         </span><span class="kw">fn </span>entry(
             <span class="self">self</span>,
             map: <span class="kw-2">&amp;mut </span>MetadataMap,
-        ) -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">&#39;_</span>, HeaderValue&gt;, InvalidMetadataKey&gt; {
+        ) -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">'_</span>, HeaderValue&gt;, InvalidMetadataKey&gt; {
             <span class="prelude-val">Ok</span>(map.headers.entry(<span class="self">self</span>.inner))
         }
 
@@ -4900,7 +4901,7 @@
 
     <span class="kw">impl</span>&lt;VE: ValueEncoding&gt; AsMetadataKey&lt;VE&gt; <span class="kw">for </span>MetadataKey&lt;VE&gt; {}
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; Sealed&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataKey&lt;VE&gt; {
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; Sealed&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataKey&lt;VE&gt; {
         <span class="attr">#[doc(hidden)]
         #[inline]
         </span><span class="kw">fn </span>get(<span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>MetadataValue&lt;VE&gt;&gt; {
@@ -4919,7 +4920,7 @@
 
         <span class="attr">#[doc(hidden)]
         #[inline]
-        </span><span class="kw">fn </span>get_all(<span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;GetAll&lt;<span class="lifetime">&#39;_</span>, HeaderValue&gt;&gt; {
+        </span><span class="kw">fn </span>get_all(<span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;GetAll&lt;<span class="lifetime">'_</span>, HeaderValue&gt;&gt; {
             <span class="prelude-val">Some</span>(map.headers.get_all(<span class="kw-2">&amp;</span><span class="self">self</span>.inner))
         }
 
@@ -4928,7 +4929,7 @@
         </span><span class="kw">fn </span>entry(
             <span class="self">self</span>,
             map: <span class="kw-2">&amp;mut </span>MetadataMap,
-        ) -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">&#39;_</span>, HeaderValue&gt;, InvalidMetadataKey&gt; {
+        ) -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">'_</span>, HeaderValue&gt;, InvalidMetadataKey&gt; {
             <span class="prelude-val">Ok</span>(map.headers.entry(<span class="kw-2">&amp;</span><span class="self">self</span>.inner))
         }
 
@@ -4941,9 +4942,9 @@
         }
     }
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; AsMetadataKey&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataKey&lt;VE&gt; {}
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; AsMetadataKey&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataKey&lt;VE&gt; {}
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; Sealed&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str {
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; Sealed&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>str {
         <span class="attr">#[doc(hidden)]
         #[inline]
         </span><span class="kw">fn </span>get(<span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>MetadataValue&lt;VE&gt;&gt; {
@@ -4968,7 +4969,7 @@
 
         <span class="attr">#[doc(hidden)]
         #[inline]
-        </span><span class="kw">fn </span>get_all(<span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;GetAll&lt;<span class="lifetime">&#39;_</span>, HeaderValue&gt;&gt; {
+        </span><span class="kw">fn </span>get_all(<span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;GetAll&lt;<span class="lifetime">'_</span>, HeaderValue&gt;&gt; {
             <span class="kw">if </span>!VE::is_valid_key(<span class="self">self</span>) {
                 <span class="kw">return </span><span class="prelude-val">None</span>;
             }
@@ -4980,7 +4981,7 @@
         </span><span class="kw">fn </span>entry(
             <span class="self">self</span>,
             map: <span class="kw-2">&amp;mut </span>MetadataMap,
-        ) -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">&#39;_</span>, HeaderValue&gt;, InvalidMetadataKey&gt; {
+        ) -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">'_</span>, HeaderValue&gt;, InvalidMetadataKey&gt; {
             <span class="kw">if </span>!VE::is_valid_key(<span class="self">self</span>) {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(InvalidMetadataKey::new());
             }
@@ -5003,7 +5004,7 @@
         }
     }
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; AsMetadataKey&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str {}
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; AsMetadataKey&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>str {}
 
     <span class="kw">impl</span>&lt;VE: ValueEncoding&gt; Sealed&lt;VE&gt; <span class="kw">for </span>String {
         <span class="attr">#[doc(hidden)]
@@ -5030,7 +5031,7 @@
 
         <span class="attr">#[doc(hidden)]
         #[inline]
-        </span><span class="kw">fn </span>get_all(<span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;GetAll&lt;<span class="lifetime">&#39;_</span>, HeaderValue&gt;&gt; {
+        </span><span class="kw">fn </span>get_all(<span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;GetAll&lt;<span class="lifetime">'_</span>, HeaderValue&gt;&gt; {
             <span class="kw">if </span>!VE::is_valid_key(<span class="self">self</span>.as_str()) {
                 <span class="kw">return </span><span class="prelude-val">None</span>;
             }
@@ -5042,7 +5043,7 @@
         </span><span class="kw">fn </span>entry(
             <span class="self">self</span>,
             map: <span class="kw-2">&amp;mut </span>MetadataMap,
-        ) -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">&#39;_</span>, HeaderValue&gt;, InvalidMetadataKey&gt; {
+        ) -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">'_</span>, HeaderValue&gt;, InvalidMetadataKey&gt; {
             <span class="kw">if </span>!VE::is_valid_key(<span class="self">self</span>.as_str()) {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(InvalidMetadataKey::new());
             }
@@ -5066,7 +5067,7 @@
 
     <span class="kw">impl</span>&lt;VE: ValueEncoding&gt; AsMetadataKey&lt;VE&gt; <span class="kw">for </span>String {}
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; Sealed&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String {
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; Sealed&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>String {
         <span class="attr">#[doc(hidden)]
         #[inline]
         </span><span class="kw">fn </span>get(<span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>MetadataValue&lt;VE&gt;&gt; {
@@ -5091,7 +5092,7 @@
 
         <span class="attr">#[doc(hidden)]
         #[inline]
-        </span><span class="kw">fn </span>get_all(<span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;GetAll&lt;<span class="lifetime">&#39;_</span>, HeaderValue&gt;&gt; {
+        </span><span class="kw">fn </span>get_all(<span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; <span class="prelude-ty">Option</span>&lt;GetAll&lt;<span class="lifetime">'_</span>, HeaderValue&gt;&gt; {
             <span class="kw">if </span>!VE::is_valid_key(<span class="self">self</span>) {
                 <span class="kw">return </span><span class="prelude-val">None</span>;
             }
@@ -5103,7 +5104,7 @@
         </span><span class="kw">fn </span>entry(
             <span class="self">self</span>,
             map: <span class="kw-2">&amp;mut </span>MetadataMap,
-        ) -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">&#39;_</span>, HeaderValue&gt;, InvalidMetadataKey&gt; {
+        ) -&gt; <span class="prelude-ty">Result</span>&lt;Entry&lt;<span class="lifetime">'_</span>, HeaderValue&gt;, InvalidMetadataKey&gt; {
             <span class="kw">if </span>!VE::is_valid_key(<span class="self">self</span>) {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(InvalidMetadataKey::new());
             }
@@ -5125,7 +5126,7 @@
         }
     }
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; AsMetadataKey&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String {}
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; AsMetadataKey&lt;VE&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>String {}
 }
 
 <span class="kw">mod </span>as_encoding_agnostic_metadata_key {
@@ -5133,15 +5134,15 @@
     <span class="kw">use </span><span class="kw">crate</span>::metadata::key::MetadataKey;
 
     <span class="doccomment">/// A marker trait used to identify values that can be used as search keys
-    /// to a `MetadataMap`, for operations that don&#39;t expose the actual value.
+    /// to a `MetadataMap`, for operations that don't expose the actual value.
     </span><span class="kw">pub trait </span>AsEncodingAgnosticMetadataKey: Sealed {}
 
     <span class="comment">// All methods are on this pub(super) trait, instead of
-    // `AsEncodingAgnosticMetadataKey`, so that they aren&#39;t publicly exposed to
+    // `AsEncodingAgnosticMetadataKey`, so that they aren't publicly exposed to
     // the world.
     //
     // Being on the `AsEncodingAgnosticMetadataKey` trait would mean users could
-    // call `&quot;host&quot;.contains_key(&amp;map)`.
+    // call `"host".contains_key(&amp;map)`.
     //
     // Ultimately, this allows us to adjust the signatures of these methods
     // without breaking any external crate.
@@ -5162,7 +5163,7 @@
 
     <span class="kw">impl</span>&lt;VE: ValueEncoding&gt; AsEncodingAgnosticMetadataKey <span class="kw">for </span>MetadataKey&lt;VE&gt; {}
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; Sealed <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataKey&lt;VE&gt; {
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; Sealed <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataKey&lt;VE&gt; {
         <span class="attr">#[doc(hidden)]
         #[inline]
         </span><span class="kw">fn </span>contains_key(<span class="kw-2">&amp;</span><span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; bool {
@@ -5170,9 +5171,9 @@
         }
     }
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, VE: ValueEncoding&gt; AsEncodingAgnosticMetadataKey <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>MetadataKey&lt;VE&gt; {}
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, VE: ValueEncoding&gt; AsEncodingAgnosticMetadataKey <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetadataKey&lt;VE&gt; {}
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Sealed <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str {
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Sealed <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>str {
         <span class="attr">#[doc(hidden)]
         #[inline]
         </span><span class="kw">fn </span>contains_key(<span class="kw-2">&amp;</span><span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; bool {
@@ -5180,7 +5181,7 @@
         }
     }
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; AsEncodingAgnosticMetadataKey <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str {}
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; AsEncodingAgnosticMetadataKey <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>str {}
 
     <span class="kw">impl </span>Sealed <span class="kw">for </span>String {
         <span class="attr">#[doc(hidden)]
@@ -5192,7 +5193,7 @@
 
     <span class="kw">impl </span>AsEncodingAgnosticMetadataKey <span class="kw">for </span>String {}
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Sealed <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String {
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Sealed <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>String {
         <span class="attr">#[doc(hidden)]
         #[inline]
         </span><span class="kw">fn </span>contains_key(<span class="kw-2">&amp;</span><span class="self">self</span>, map: <span class="kw-2">&amp;</span>MetadataMap) -&gt; bool {
@@ -5200,7 +5201,7 @@
         }
     }
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; AsEncodingAgnosticMetadataKey <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String {}
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; AsEncodingAgnosticMetadataKey <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>String {}
 }
 
 <span class="attr">#[cfg(test)]
@@ -5210,18 +5211,18 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_from_headers_takes_http_headers() {
         <span class="kw">let </span><span class="kw-2">mut </span>http_map = http::HeaderMap::new();
-        http_map.insert(<span class="string">&quot;x-host&quot;</span>, <span class="string">&quot;example.com&quot;</span>.parse().unwrap());
+        http_map.insert(<span class="string">"x-host"</span>, <span class="string">"example.com"</span>.parse().unwrap());
 
         <span class="kw">let </span>map = MetadataMap::from_headers(http_map);
 
-        <span class="macro">assert_eq!</span>(map.get(<span class="string">&quot;x-host&quot;</span>).unwrap(), <span class="string">&quot;example.com&quot;</span>);
+        <span class="macro">assert_eq!</span>(map.get(<span class="string">"x-host"</span>).unwrap(), <span class="string">"example.com"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_to_headers_encoding() {
         <span class="kw">use </span><span class="kw">crate</span>::Code;
         <span class="kw">use </span><span class="kw">crate</span>::Status;
-        <span class="kw">let </span>special_char_message = <span class="string">&quot;Beyond ascii \t\n\r🌶️💉💧🐮🍺&quot;</span>;
+        <span class="kw">let </span>special_char_message = <span class="string">"Beyond ascii \t\n\r🌶️💉💧🐮🍺"</span>;
         <span class="kw">let </span>s1 = Status::new(Code::Unknown, special_char_message);
 
         <span class="macro">assert_eq!</span>(s1.message(), special_char_message);
@@ -5236,17 +5237,17 @@
     </span><span class="kw">fn </span>test_iter_categorizes_ascii_entries() {
         <span class="kw">let </span><span class="kw-2">mut </span>map = MetadataMap::new();
 
-        map.insert(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.parse().unwrap());
-        map.append_bin(<span class="string">&quot;x-word-bin&quot;</span>, MetadataValue::from_bytes(<span class="string">b&quot;goodbye&quot;</span>));
-        map.insert_bin(<span class="string">&quot;x-number-bin&quot;</span>, MetadataValue::from_bytes(<span class="string">b&quot;123&quot;</span>));
+        map.insert(<span class="string">"x-word"</span>, <span class="string">"hello"</span>.parse().unwrap());
+        map.append_bin(<span class="string">"x-word-bin"</span>, MetadataValue::from_bytes(<span class="string">b"goodbye"</span>));
+        map.insert_bin(<span class="string">"x-number-bin"</span>, MetadataValue::from_bytes(<span class="string">b"123"</span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>found_x_word = <span class="bool-val">false</span>;
         <span class="kw">for </span>key_and_value <span class="kw">in </span>map.iter() {
             <span class="kw">if let </span>KeyAndValueRef::Ascii(<span class="kw-2">ref </span>key, <span class="kw-2">ref </span>_value) = key_and_value {
-                <span class="kw">if </span>key.as_str() == <span class="string">&quot;x-word&quot; </span>{
+                <span class="kw">if </span>key.as_str() == <span class="string">"x-word" </span>{
                     found_x_word = <span class="bool-val">true</span>;
                 } <span class="kw">else </span>{
-                    <span class="macro">panic!</span>(<span class="string">&quot;Unexpected key&quot;</span>);
+                    <span class="macro">panic!</span>(<span class="string">"Unexpected key"</span>);
                 }
             }
         }
@@ -5257,16 +5258,16 @@
     </span><span class="kw">fn </span>test_iter_categorizes_binary_entries() {
         <span class="kw">let </span><span class="kw-2">mut </span>map = MetadataMap::new();
 
-        map.insert(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.parse().unwrap());
-        map.append_bin(<span class="string">&quot;x-word-bin&quot;</span>, MetadataValue::from_bytes(<span class="string">b&quot;goodbye&quot;</span>));
+        map.insert(<span class="string">"x-word"</span>, <span class="string">"hello"</span>.parse().unwrap());
+        map.append_bin(<span class="string">"x-word-bin"</span>, MetadataValue::from_bytes(<span class="string">b"goodbye"</span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>found_x_word_bin = <span class="bool-val">false</span>;
         <span class="kw">for </span>key_and_value <span class="kw">in </span>map.iter() {
             <span class="kw">if let </span>KeyAndValueRef::Binary(<span class="kw-2">ref </span>key, <span class="kw-2">ref </span>_value) = key_and_value {
-                <span class="kw">if </span>key.as_str() == <span class="string">&quot;x-word-bin&quot; </span>{
+                <span class="kw">if </span>key.as_str() == <span class="string">"x-word-bin" </span>{
                     found_x_word_bin = <span class="bool-val">true</span>;
                 } <span class="kw">else </span>{
-                    <span class="macro">panic!</span>(<span class="string">&quot;Unexpected key&quot;</span>);
+                    <span class="macro">panic!</span>(<span class="string">"Unexpected key"</span>);
                 }
             }
         }
@@ -5277,17 +5278,17 @@
     </span><span class="kw">fn </span>test_iter_mut_categorizes_ascii_entries() {
         <span class="kw">let </span><span class="kw-2">mut </span>map = MetadataMap::new();
 
-        map.insert(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.parse().unwrap());
-        map.append_bin(<span class="string">&quot;x-word-bin&quot;</span>, MetadataValue::from_bytes(<span class="string">b&quot;goodbye&quot;</span>));
-        map.insert_bin(<span class="string">&quot;x-number-bin&quot;</span>, MetadataValue::from_bytes(<span class="string">b&quot;123&quot;</span>));
+        map.insert(<span class="string">"x-word"</span>, <span class="string">"hello"</span>.parse().unwrap());
+        map.append_bin(<span class="string">"x-word-bin"</span>, MetadataValue::from_bytes(<span class="string">b"goodbye"</span>));
+        map.insert_bin(<span class="string">"x-number-bin"</span>, MetadataValue::from_bytes(<span class="string">b"123"</span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>found_x_word = <span class="bool-val">false</span>;
         <span class="kw">for </span>key_and_value <span class="kw">in </span>map.iter_mut() {
             <span class="kw">if let </span>KeyAndMutValueRef::Ascii(<span class="kw-2">ref </span>key, <span class="kw-2">ref </span>_value) = key_and_value {
-                <span class="kw">if </span>key.as_str() == <span class="string">&quot;x-word&quot; </span>{
+                <span class="kw">if </span>key.as_str() == <span class="string">"x-word" </span>{
                     found_x_word = <span class="bool-val">true</span>;
                 } <span class="kw">else </span>{
-                    <span class="macro">panic!</span>(<span class="string">&quot;Unexpected key&quot;</span>);
+                    <span class="macro">panic!</span>(<span class="string">"Unexpected key"</span>);
                 }
             }
         }
@@ -5298,16 +5299,16 @@
     </span><span class="kw">fn </span>test_iter_mut_categorizes_binary_entries() {
         <span class="kw">let </span><span class="kw-2">mut </span>map = MetadataMap::new();
 
-        map.insert(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.parse().unwrap());
-        map.append_bin(<span class="string">&quot;x-word-bin&quot;</span>, MetadataValue::from_bytes(<span class="string">b&quot;goodbye&quot;</span>));
+        map.insert(<span class="string">"x-word"</span>, <span class="string">"hello"</span>.parse().unwrap());
+        map.append_bin(<span class="string">"x-word-bin"</span>, MetadataValue::from_bytes(<span class="string">b"goodbye"</span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>found_x_word_bin = <span class="bool-val">false</span>;
         <span class="kw">for </span>key_and_value <span class="kw">in </span>map.iter_mut() {
             <span class="kw">if let </span>KeyAndMutValueRef::Binary(<span class="kw-2">ref </span>key, <span class="kw-2">ref </span>_value) = key_and_value {
-                <span class="kw">if </span>key.as_str() == <span class="string">&quot;x-word-bin&quot; </span>{
+                <span class="kw">if </span>key.as_str() == <span class="string">"x-word-bin" </span>{
                     found_x_word_bin = <span class="bool-val">true</span>;
                 } <span class="kw">else </span>{
-                    <span class="macro">panic!</span>(<span class="string">&quot;Unexpected key&quot;</span>);
+                    <span class="macro">panic!</span>(<span class="string">"Unexpected key"</span>);
                 }
             }
         }
@@ -5318,17 +5319,17 @@
     </span><span class="kw">fn </span>test_keys_categorizes_ascii_entries() {
         <span class="kw">let </span><span class="kw-2">mut </span>map = MetadataMap::new();
 
-        map.insert(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.parse().unwrap());
-        map.append_bin(<span class="string">&quot;x-word-bin&quot;</span>, MetadataValue::from_bytes(<span class="string">b&quot;goodbye&quot;</span>));
-        map.insert_bin(<span class="string">&quot;x-number-bin&quot;</span>, MetadataValue::from_bytes(<span class="string">b&quot;123&quot;</span>));
+        map.insert(<span class="string">"x-word"</span>, <span class="string">"hello"</span>.parse().unwrap());
+        map.append_bin(<span class="string">"x-word-bin"</span>, MetadataValue::from_bytes(<span class="string">b"goodbye"</span>));
+        map.insert_bin(<span class="string">"x-number-bin"</span>, MetadataValue::from_bytes(<span class="string">b"123"</span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>found_x_word = <span class="bool-val">false</span>;
         <span class="kw">for </span>key <span class="kw">in </span>map.keys() {
             <span class="kw">if let </span>KeyRef::Ascii(key) = key {
-                <span class="kw">if </span>key.as_str() == <span class="string">&quot;x-word&quot; </span>{
+                <span class="kw">if </span>key.as_str() == <span class="string">"x-word" </span>{
                     found_x_word = <span class="bool-val">true</span>;
                 } <span class="kw">else </span>{
-                    <span class="macro">panic!</span>(<span class="string">&quot;Unexpected key&quot;</span>);
+                    <span class="macro">panic!</span>(<span class="string">"Unexpected key"</span>);
                 }
             }
         }
@@ -5339,16 +5340,16 @@
     </span><span class="kw">fn </span>test_keys_categorizes_binary_entries() {
         <span class="kw">let </span><span class="kw-2">mut </span>map = MetadataMap::new();
 
-        map.insert(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.parse().unwrap());
-        map.insert_bin(<span class="string">&quot;x-number-bin&quot;</span>, MetadataValue::from_bytes(<span class="string">b&quot;123&quot;</span>));
+        map.insert(<span class="string">"x-word"</span>, <span class="string">"hello"</span>.parse().unwrap());
+        map.insert_bin(<span class="string">"x-number-bin"</span>, MetadataValue::from_bytes(<span class="string">b"123"</span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>found_x_number_bin = <span class="bool-val">false</span>;
         <span class="kw">for </span>key <span class="kw">in </span>map.keys() {
             <span class="kw">if let </span>KeyRef::Binary(key) = key {
-                <span class="kw">if </span>key.as_str() == <span class="string">&quot;x-number-bin&quot; </span>{
+                <span class="kw">if </span>key.as_str() == <span class="string">"x-number-bin" </span>{
                     found_x_number_bin = <span class="bool-val">true</span>;
                 } <span class="kw">else </span>{
-                    <span class="macro">panic!</span>(<span class="string">&quot;Unexpected key&quot;</span>);
+                    <span class="macro">panic!</span>(<span class="string">"Unexpected key"</span>);
                 }
             }
         }
@@ -5359,17 +5360,17 @@
     </span><span class="kw">fn </span>test_values_categorizes_ascii_entries() {
         <span class="kw">let </span><span class="kw-2">mut </span>map = MetadataMap::new();
 
-        map.insert(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.parse().unwrap());
-        map.append_bin(<span class="string">&quot;x-word-bin&quot;</span>, MetadataValue::from_bytes(<span class="string">b&quot;goodbye&quot;</span>));
-        map.insert_bin(<span class="string">&quot;x-number-bin&quot;</span>, MetadataValue::from_bytes(<span class="string">b&quot;123&quot;</span>));
+        map.insert(<span class="string">"x-word"</span>, <span class="string">"hello"</span>.parse().unwrap());
+        map.append_bin(<span class="string">"x-word-bin"</span>, MetadataValue::from_bytes(<span class="string">b"goodbye"</span>));
+        map.insert_bin(<span class="string">"x-number-bin"</span>, MetadataValue::from_bytes(<span class="string">b"123"</span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>found_x_word = <span class="bool-val">false</span>;
         <span class="kw">for </span>value <span class="kw">in </span>map.values() {
             <span class="kw">if let </span>ValueRef::Ascii(value) = value {
-                <span class="kw">if </span><span class="kw-2">*</span>value == <span class="string">&quot;hello&quot; </span>{
+                <span class="kw">if </span><span class="kw-2">*</span>value == <span class="string">"hello" </span>{
                     found_x_word = <span class="bool-val">true</span>;
                 } <span class="kw">else </span>{
-                    <span class="macro">panic!</span>(<span class="string">&quot;Unexpected key&quot;</span>);
+                    <span class="macro">panic!</span>(<span class="string">"Unexpected key"</span>);
                 }
             }
         }
@@ -5380,13 +5381,13 @@
     </span><span class="kw">fn </span>test_values_categorizes_binary_entries() {
         <span class="kw">let </span><span class="kw-2">mut </span>map = MetadataMap::new();
 
-        map.insert(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.parse().unwrap());
-        map.append_bin(<span class="string">&quot;x-word-bin&quot;</span>, MetadataValue::from_bytes(<span class="string">b&quot;goodbye&quot;</span>));
+        map.insert(<span class="string">"x-word"</span>, <span class="string">"hello"</span>.parse().unwrap());
+        map.append_bin(<span class="string">"x-word-bin"</span>, MetadataValue::from_bytes(<span class="string">b"goodbye"</span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>found_x_word_bin = <span class="bool-val">false</span>;
         <span class="kw">for </span>value_ref <span class="kw">in </span>map.values() {
             <span class="kw">if let </span>ValueRef::Binary(value) = value_ref {
-                <span class="macro">assert_eq!</span>(<span class="kw-2">*</span>value, <span class="string">&quot;goodbye&quot;</span>);
+                <span class="macro">assert_eq!</span>(<span class="kw-2">*</span>value, <span class="string">"goodbye"</span>);
                 found_x_word_bin = <span class="bool-val">true</span>;
             }
         }
@@ -5397,14 +5398,14 @@
     </span><span class="kw">fn </span>test_values_mut_categorizes_ascii_entries() {
         <span class="kw">let </span><span class="kw-2">mut </span>map = MetadataMap::new();
 
-        map.insert(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.parse().unwrap());
-        map.append_bin(<span class="string">&quot;x-word-bin&quot;</span>, MetadataValue::from_bytes(<span class="string">b&quot;goodbye&quot;</span>));
-        map.insert_bin(<span class="string">&quot;x-number-bin&quot;</span>, MetadataValue::from_bytes(<span class="string">b&quot;123&quot;</span>));
+        map.insert(<span class="string">"x-word"</span>, <span class="string">"hello"</span>.parse().unwrap());
+        map.append_bin(<span class="string">"x-word-bin"</span>, MetadataValue::from_bytes(<span class="string">b"goodbye"</span>));
+        map.insert_bin(<span class="string">"x-number-bin"</span>, MetadataValue::from_bytes(<span class="string">b"123"</span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>found_x_word = <span class="bool-val">false</span>;
         <span class="kw">for </span>value_ref <span class="kw">in </span>map.values_mut() {
             <span class="kw">if let </span>ValueRefMut::Ascii(value) = value_ref {
-                <span class="macro">assert_eq!</span>(<span class="kw-2">*</span>value, <span class="string">&quot;hello&quot;</span>);
+                <span class="macro">assert_eq!</span>(<span class="kw-2">*</span>value, <span class="string">"hello"</span>);
                 found_x_word = <span class="bool-val">true</span>;
             }
         }
@@ -5415,13 +5416,13 @@
     </span><span class="kw">fn </span>test_values_mut_categorizes_binary_entries() {
         <span class="kw">let </span><span class="kw-2">mut </span>map = MetadataMap::new();
 
-        map.insert(<span class="string">&quot;x-word&quot;</span>, <span class="string">&quot;hello&quot;</span>.parse().unwrap());
-        map.append_bin(<span class="string">&quot;x-word-bin&quot;</span>, MetadataValue::from_bytes(<span class="string">b&quot;goodbye&quot;</span>));
+        map.insert(<span class="string">"x-word"</span>, <span class="string">"hello"</span>.parse().unwrap());
+        map.append_bin(<span class="string">"x-word-bin"</span>, MetadataValue::from_bytes(<span class="string">b"goodbye"</span>));
 
         <span class="kw">let </span><span class="kw-2">mut </span>found_x_word_bin = <span class="bool-val">false</span>;
         <span class="kw">for </span>value <span class="kw">in </span>map.values_mut() {
             <span class="kw">if let </span>ValueRefMut::Binary(value) = value {
-                <span class="macro">assert_eq!</span>(<span class="kw-2">*</span>value, <span class="string">&quot;goodbye&quot;</span>);
+                <span class="macro">assert_eq!</span>(<span class="kw-2">*</span>value, <span class="string">"goodbye"</span>);
                 found_x_word_bin = <span class="bool-val">true</span>;
             }
         }
@@ -5432,14 +5433,14 @@
     </span><span class="kw">fn </span>value_drain_is_send_sync() {
         <span class="kw">fn </span>is_send_sync&lt;T: Send + Sync&gt;() {}
 
-        is_send_sync::&lt;Iter&lt;<span class="lifetime">&#39;_</span>&gt;&gt;();
-        is_send_sync::&lt;IterMut&lt;<span class="lifetime">&#39;_</span>&gt;&gt;();
+        is_send_sync::&lt;Iter&lt;<span class="lifetime">'_</span>&gt;&gt;();
+        is_send_sync::&lt;IterMut&lt;<span class="lifetime">'_</span>&gt;&gt;();
 
-        is_send_sync::&lt;ValueDrain&lt;<span class="lifetime">&#39;_</span>, Ascii&gt;&gt;();
-        is_send_sync::&lt;ValueDrain&lt;<span class="lifetime">&#39;_</span>, Binary&gt;&gt;();
+        is_send_sync::&lt;ValueDrain&lt;<span class="lifetime">'_</span>, Ascii&gt;&gt;();
+        is_send_sync::&lt;ValueDrain&lt;<span class="lifetime">'_</span>, Binary&gt;&gt;();
 
-        is_send_sync::&lt;ValueIterMut&lt;<span class="lifetime">&#39;_</span>, Ascii&gt;&gt;();
-        is_send_sync::&lt;ValueIterMut&lt;<span class="lifetime">&#39;_</span>, Binary&gt;&gt;();
+        is_send_sync::&lt;ValueIterMut&lt;<span class="lifetime">'_</span>, Ascii&gt;&gt;();
+        is_send_sync::&lt;ValueIterMut&lt;<span class="lifetime">'_</span>, Binary&gt;&gt;();
     }
 }
 </code></pre></div></section></main></body></html>

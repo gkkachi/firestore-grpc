@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tower-0.4.13/src/ready_cache/cache.rs`."><title>cache.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="tower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tower-0.4.13/src/ready_cache/cache.rs`."><title>cache.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="tower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -544,7 +545,7 @@
 ///
 /// Note that the by-index accessors are provided to support use cases (like
 /// power-of-two-choices load balancing) where the caller does not care to keep
-/// track of each service&#39;s key. Instead, it needs only to access _some_ ready
+/// track of each service's key. Instead, it needs only to access _some_ ready
 /// service. In such a case, it should be noted that calls to
 /// [`ReadyCache::poll_pending`] and [`ReadyCache::evict`] may perturb the order of
 /// the ready set, so any cached indexes should be discarded after such a call.
@@ -628,10 +629,10 @@
             pending_cancel_txs,
             ready,
         } = <span class="self">self</span>;
-        f.debug_struct(<span class="string">&quot;ReadyCache&quot;</span>)
-            .field(<span class="string">&quot;pending&quot;</span>, pending)
-            .field(<span class="string">&quot;pending_cancel_txs&quot;</span>, pending_cancel_txs)
-            .field(<span class="string">&quot;ready&quot;</span>, ready)
+        f.debug_struct(<span class="string">"ReadyCache"</span>)
+            .field(<span class="string">"pending"</span>, pending)
+            .field(<span class="string">"pending_cancel_txs"</span>, pending_cancel_txs)
+            .field(<span class="string">"ready"</span>, ready)
             .finish()
     }
 }
@@ -761,13 +762,13 @@
     /// [`poll_pending`]: crate::ready_cache::cache::ReadyCache::poll_pending
     /// [`push`]: crate::ready_cache::cache::ReadyCache::push
     /// [`call_ready_index`]: crate::ready_cache::cache::ReadyCache::call_ready_index
-    </span><span class="kw">pub fn </span>poll_pending(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Result</span>&lt;(), error::Failed&lt;K&gt;&gt;&gt; {
+    </span><span class="kw">pub fn </span>poll_pending(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Result</span>&lt;(), error::Failed&lt;K&gt;&gt;&gt; {
         <span class="kw">loop </span>{
             <span class="kw">match </span>Pin::new(<span class="kw-2">&amp;mut </span><span class="self">self</span>.pending).poll_next(cx) {
                 Poll::Pending =&gt; <span class="kw">return </span>Poll::Pending,
                 Poll::Ready(<span class="prelude-val">None</span>) =&gt; <span class="kw">return </span>Poll::Ready(<span class="prelude-val">Ok</span>(())),
                 Poll::Ready(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>((key, svc, cancel_rx)))) =&gt; {
-                    <span class="macro">trace!</span>(<span class="string">&quot;endpoint ready&quot;</span>);
+                    <span class="macro">trace!</span>(<span class="string">"endpoint ready"</span>);
                     <span class="kw">let </span>cancel_tx = <span class="self">self</span>.pending_cancel_txs.swap_remove(<span class="kw-2">&amp;</span>key);
                     <span class="kw">if let </span><span class="prelude-val">Some</span>(cancel_tx) = cancel_tx {
                         <span class="comment">// Keep track of the cancelation so that it need not be
@@ -776,12 +777,12 @@
                     } <span class="kw">else </span>{
                         <span class="macro">assert!</span>(
                             cancel_tx.is_some(),
-                            <span class="string">&quot;services that become ready must have a pending cancelation&quot;
+                            <span class="string">"services that become ready must have a pending cancelation"
                         </span>);
                     }
                 }
                 Poll::Ready(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(PendingError::Canceled(<span class="kw">_</span>)))) =&gt; {
-                    <span class="macro">debug!</span>(<span class="string">&quot;endpoint canceled&quot;</span>);
+                    <span class="macro">debug!</span>(<span class="string">"endpoint canceled"</span>);
                     <span class="comment">// The cancellation for this service was removed in order to
                     // cause this cancellation.
                 </span>}
@@ -789,7 +790,7 @@
                     <span class="kw">let </span>cancel_tx = <span class="self">self</span>.pending_cancel_txs.swap_remove(<span class="kw-2">&amp;</span>key);
                     <span class="macro">assert!</span>(
                         cancel_tx.is_some(),
-                        <span class="string">&quot;services that return an error must have a pending cancelation&quot;
+                        <span class="string">"services that return an error must have a pending cancelation"
                     </span>);
                     <span class="kw">return </span><span class="prelude-val">Err</span>(error::Failed(key, e.into())).into();
                 }
@@ -803,7 +804,7 @@
     /// returned if the endpoint fails.
     </span><span class="kw">pub fn </span>check_ready&lt;Q: Hash + Equivalent&lt;K&gt;&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
         key: <span class="kw-2">&amp;</span>Q,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool, error::Failed&lt;K&gt;&gt; {
         <span class="kw">match </span><span class="self">self</span>.ready.get_full_mut(key) {
@@ -820,7 +821,7 @@
     /// If the service errors, it is removed and dropped and the error is returned.
     </span><span class="kw">pub fn </span>check_ready_index(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
         index: usize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool, error::Failed&lt;K&gt;&gt; {
         <span class="kw">let </span>svc = <span class="kw">match </span><span class="self">self</span>.ready.get_index_mut(index) {
@@ -834,10 +835,10 @@
                 </span><span class="kw">let </span>(key, (svc, cancel)) = <span class="self">self
                     </span>.ready
                     .swap_remove_index(index)
-                    .expect(<span class="string">&quot;invalid ready index&quot;</span>);
+                    .expect(<span class="string">"invalid ready index"</span>);
 
                 <span class="comment">// If a new version of this service has been added to the
-                // unready set, don&#39;t overwrite it.
+                // unready set, don't overwrite it.
                 </span><span class="kw">if </span>!<span class="self">self</span>.pending_contains(<span class="kw-2">&amp;</span>key) {
                     <span class="self">self</span>.push_pending(key, svc, cancel);
                 }
@@ -849,7 +850,7 @@
                 </span><span class="kw">let </span>(key, <span class="kw">_</span>) = <span class="self">self
                     </span>.ready
                     .swap_remove_index(index)
-                    .expect(<span class="string">&quot;invalid ready index&quot;</span>);
+                    .expect(<span class="string">"invalid ready index"</span>);
                 <span class="prelude-val">Err</span>(error::Failed(key, e.into()))
             }
         }
@@ -864,7 +865,7 @@
         <span class="kw">let </span>(index, <span class="kw">_</span>, <span class="kw">_</span>) = <span class="self">self
             </span>.ready
             .get_full_mut(key)
-            .expect(<span class="string">&quot;check_ready was not called&quot;</span>);
+            .expect(<span class="string">"check_ready was not called"</span>);
         <span class="self">self</span>.call_ready_index(index, req)
     }
 
@@ -877,12 +878,12 @@
         <span class="kw">let </span>(key, (<span class="kw-2">mut </span>svc, cancel)) = <span class="self">self
             </span>.ready
             .swap_remove_index(index)
-            .expect(<span class="string">&quot;check_ready_index was not called&quot;</span>);
+            .expect(<span class="string">"check_ready_index was not called"</span>);
 
         <span class="kw">let </span>fut = svc.call(req);
 
         <span class="comment">// If a new version of this service has been added to the
-        // unready set, don&#39;t overwrite it.
+        // unready set, don't overwrite it.
         </span><span class="kw">if </span>!<span class="self">self</span>.pending_contains(<span class="kw-2">&amp;</span>key) {
             <span class="self">self</span>.push_pending(key, svc, cancel);
         }
@@ -921,26 +922,26 @@
 {
     <span class="kw">type </span>Output = <span class="prelude-ty">Result</span>&lt;(K, S, CancelRx), PendingError&lt;K, S::Error&gt;&gt;;
 
-    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
         <span class="kw">let </span>this = <span class="self">self</span>.project();
         <span class="comment">// Before checking whether the service is ready, check to see whether
         // readiness has been canceled.
-        </span><span class="kw">let </span>CancelRx(cancel) = this.cancel.as_mut().expect(<span class="string">&quot;polled after complete&quot;</span>);
+        </span><span class="kw">let </span>CancelRx(cancel) = this.cancel.as_mut().expect(<span class="string">"polled after complete"</span>);
         <span class="kw">if </span>cancel.canceled.load(Ordering::SeqCst) {
-            <span class="kw">let </span>key = this.key.take().expect(<span class="string">&quot;polled after complete&quot;</span>);
+            <span class="kw">let </span>key = this.key.take().expect(<span class="string">"polled after complete"</span>);
             <span class="kw">return </span><span class="prelude-val">Err</span>(PendingError::Canceled(key)).into();
         }
 
         <span class="kw">match </span>this
             .ready
             .as_mut()
-            .expect(<span class="string">&quot;polled after ready&quot;</span>)
+            .expect(<span class="string">"polled after ready"</span>)
             .poll_ready(cx)
         {
             Poll::Pending =&gt; {
                 <span class="comment">// Before returning Pending, register interest in cancelation so
                 // that this future is polled again if the state changes.
-                </span><span class="kw">let </span>CancelRx(cancel) = this.cancel.as_mut().expect(<span class="string">&quot;polled after complete&quot;</span>);
+                </span><span class="kw">let </span>CancelRx(cancel) = this.cancel.as_mut().expect(<span class="string">"polled after complete"</span>);
                 cancel.waker.register(cx.waker());
                 <span class="comment">// Because both the cancel receiver and cancel sender are held
                 // by the `ReadyCache` (i.e., on a single task), then it must
@@ -948,17 +949,17 @@
                 // polling a `Pending` service.
                 </span><span class="macro">assert!</span>(
                     !cancel.canceled.load(Ordering::SeqCst),
-                    <span class="string">&quot;cancelation cannot be notified while polling a pending service&quot;
+                    <span class="string">"cancelation cannot be notified while polling a pending service"
                 </span>);
                 Poll::Pending
             }
             Poll::Ready(<span class="prelude-val">Ok</span>(())) =&gt; {
-                <span class="kw">let </span>key = this.key.take().expect(<span class="string">&quot;polled after complete&quot;</span>);
-                <span class="kw">let </span>cancel = this.cancel.take().expect(<span class="string">&quot;polled after complete&quot;</span>);
-                <span class="prelude-val">Ok</span>((key, this.ready.take().expect(<span class="string">&quot;polled after ready&quot;</span>), cancel)).into()
+                <span class="kw">let </span>key = this.key.take().expect(<span class="string">"polled after complete"</span>);
+                <span class="kw">let </span>cancel = this.cancel.take().expect(<span class="string">"polled after complete"</span>);
+                <span class="prelude-val">Ok</span>((key, this.ready.take().expect(<span class="string">"polled after ready"</span>), cancel)).into()
             }
             Poll::Ready(<span class="prelude-val">Err</span>(e)) =&gt; {
-                <span class="kw">let </span>key = this.key.take().expect(<span class="string">&quot;polled after compete&quot;</span>);
+                <span class="kw">let </span>key = this.key.take().expect(<span class="string">"polled after compete"</span>);
                 <span class="prelude-val">Err</span>(PendingError::Inner(key, e)).into()
             }
         }
@@ -977,10 +978,10 @@
             ready,
             _pd,
         } = <span class="self">self</span>;
-        f.debug_struct(<span class="string">&quot;Pending&quot;</span>)
-            .field(<span class="string">&quot;key&quot;</span>, key)
-            .field(<span class="string">&quot;cancel&quot;</span>, cancel)
-            .field(<span class="string">&quot;ready&quot;</span>, ready)
+        f.debug_struct(<span class="string">"Pending"</span>)
+            .field(<span class="string">"key"</span>, key)
+            .field(<span class="string">"cancel"</span>, cancel)
+            .field(<span class="string">"ready"</span>, ready)
             .finish()
     }
 }

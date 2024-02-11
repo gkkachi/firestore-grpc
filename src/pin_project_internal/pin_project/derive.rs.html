@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pin-project-internal-1.1.4/src/pin_project/derive.rs`."><title>derive.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pin_project_internal" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pin-project-internal-1.1.4/src/pin_project/derive.rs`."><title>derive.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pin_project_internal" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1172,7 +1173,7 @@
             parse_enum(<span class="kw-2">&amp;mut </span>cx, data, <span class="kw-2">&amp;mut </span>generate)<span class="question-mark">?</span>;
         }
         Data::Union(<span class="kw">_</span>) =&gt; {
-            <span class="macro">bail!</span>(input, <span class="string">&quot;#[pin_project] attribute may only be used on structs or enums&quot;</span>);
+            <span class="macro">bail!</span>(input, <span class="string">"#[pin_project] attribute may only be used on structs or enums"</span>);
         }
     }
 
@@ -1194,7 +1195,7 @@
         }
     }
 
-    <span class="kw">fn </span>into_tokens(<span class="self">self</span>, cx: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; TokenStream {
+    <span class="kw">fn </span>into_tokens(<span class="self">self</span>, cx: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; TokenStream {
         <span class="kw">let </span><span class="kw-2">mut </span>tokens = <span class="self">self</span>.exposed;
         <span class="kw">let </span>scoped = <span class="self">self</span>.scoped;
 
@@ -1207,7 +1208,7 @@
             // This makes it impossible for user code to refer to these types.
             // However, this prevents Rustdoc from displaying docs for any
             // of our types. In particular, users cannot see the
-            // automatically generated `Unpin` impl for the &#39;__UnpinStruct&#39; types
+            // automatically generated `Unpin` impl for the '__UnpinStruct' types
             //
             // Previously, we provided a flag to correctly document the
             // automatically generated `Unpin` impl by using def-site hygiene,
@@ -1253,7 +1254,7 @@
 }
 
 <span class="doccomment">/// Returns attributes used on projected types.
-</span><span class="kw">fn </span>proj_allowed_lints(cx: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; (TokenStream, TokenStream, TokenStream) {
+</span><span class="kw">fn </span>proj_allowed_lints(cx: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; (TokenStream, TokenStream, TokenStream) {
     <span class="kw">let </span>large_enum_variant = <span class="kw">if </span>cx.kind == Enum {
         <span class="prelude-val">Some</span>(<span class="macro">quote! </span>{
             <span class="attr">#[allow(variant_size_differences)]
@@ -1288,13 +1289,13 @@
     (proj_mut, proj_ref, proj_own)
 }
 
-<span class="kw">struct </span>Context&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">struct </span>Context&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// The original type.
-    </span>orig: OriginalType&lt;<span class="lifetime">&#39;a</span>&gt;,
+    </span>orig: OriginalType&lt;<span class="lifetime">'a</span>&gt;,
     <span class="doccomment">/// The projected types.
     </span>proj: ProjectedType,
     <span class="doccomment">/// Types of the pinned fields.
-    </span>pinned_fields: Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Type&gt;,
+    </span>pinned_fields: Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>Type&gt;,
     <span class="doccomment">/// Kind of the original type: struct or enum
     </span>kind: TypeKind,
 
@@ -1310,12 +1311,12 @@
     </span>project_replace: ProjReplace,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Context&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Context&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>new(
-        attrs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[Attribute],
-        vis: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Visibility,
-        ident: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Ident,
-        generics: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Generics,
+        attrs: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[Attribute],
+        vis: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Visibility,
+        ident: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Ident,
+        generics: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Generics,
         kind: TypeKind,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span>Args { pinned_drop, unpin_impl, project, project_ref, project_replace } =
@@ -1326,10 +1327,10 @@
             .filter_map(Option::as_ref)
             .find(|name| <span class="kw-2">**</span>name == ident)
         {
-            <span class="macro">bail!</span>(name, <span class="string">&quot;name `{}` is the same as the original type name&quot;</span>, name);
+            <span class="macro">bail!</span>(name, <span class="string">"name `{}` is the same as the original type name"</span>, name);
         }
 
-        <span class="kw">let </span><span class="kw-2">mut </span>lifetime_name = String::from(<span class="string">&quot;&#39;pin&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>lifetime_name = String::from(<span class="string">"'pin"</span>);
         determine_lifetime_name(<span class="kw-2">&amp;mut </span>lifetime_name, generics);
         <span class="kw">let </span>lifetime = Lifetime::new(<span class="kw-2">&amp;</span>lifetime_name, Span::call_site());
 
@@ -1348,7 +1349,7 @@
         <span class="kw">let </span>own_ident = project_replace
             .ident()
             .cloned()
-            .unwrap_or_else(|| <span class="macro">format_ident!</span>(<span class="string">&quot;__{}ProjectionOwned&quot;</span>, ident));
+            .unwrap_or_else(|| <span class="macro">format_ident!</span>(<span class="string">"__{}ProjectionOwned"</span>, ident));
 
         <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
             kind,
@@ -1359,8 +1360,8 @@
             project_replace,
             proj: ProjectedType {
                 vis: determine_visibility(vis),
-                mut_ident: project.unwrap_or_else(|| <span class="macro">format_ident!</span>(<span class="string">&quot;__{}Projection&quot;</span>, ident)),
-                ref_ident: project_ref.unwrap_or_else(|| <span class="macro">format_ident!</span>(<span class="string">&quot;__{}ProjectionRef&quot;</span>, ident)),
+                mut_ident: project.unwrap_or_else(|| <span class="macro">format_ident!</span>(<span class="string">"__{}Projection"</span>, ident)),
+                ref_ident: project_ref.unwrap_or_else(|| <span class="macro">format_ident!</span>(<span class="string">"__{}ProjectionRef"</span>, ident)),
                 own_ident,
                 lifetime,
                 generics: proj_generics,
@@ -1380,15 +1381,15 @@
 
 <span class="kw">use </span>TypeKind::{Enum, Struct};
 
-<span class="kw">struct </span>OriginalType&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">struct </span>OriginalType&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Attributes of the original type.
-    </span>attrs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[Attribute],
+    </span>attrs: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[Attribute],
     <span class="doccomment">/// Visibility of the original type.
-    </span>vis: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Visibility,
+    </span>vis: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Visibility,
     <span class="doccomment">/// Name of the original type.
-    </span>ident: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Ident,
+    </span>ident: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Ident,
     <span class="doccomment">/// Generics of the original type.
-    </span>generics: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Generics,
+    </span>generics: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Generics,
 }
 
 <span class="kw">struct </span>ProjectedType {
@@ -1430,7 +1431,7 @@
 
 <span class="kw">fn </span>validate_struct(ident: <span class="kw-2">&amp;</span>Ident, fields: <span class="kw-2">&amp;</span>Fields) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
     <span class="kw">if </span>fields.is_empty() {
-        <span class="kw">let </span>msg = <span class="string">&quot;#[pin_project] attribute may not be used on structs with zero fields&quot;</span>;
+        <span class="kw">let </span>msg = <span class="string">"#[pin_project] attribute may not be used on structs with zero fields"</span>;
         <span class="kw">if let </span>Fields::Unit = fields {
             <span class="macro">bail!</span>(ident, msg)
         }
@@ -1443,14 +1444,14 @@
     <span class="kw">if </span>variants.is_empty() {
         <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(
             brace_token.span.join(),
-            <span class="string">&quot;#[pin_project] attribute may not be used on enums without variants&quot;</span>,
+            <span class="string">"#[pin_project] attribute may not be used on enums without variants"</span>,
         ));
     }
     <span class="kw">let </span>has_field = variants.iter().try_fold(<span class="bool-val">false</span>, |has_field, v| {
         <span class="kw">if let </span><span class="prelude-val">Some</span>((<span class="kw">_</span>, e)) = <span class="kw-2">&amp;</span>v.discriminant {
-            <span class="macro">bail!</span>(e, <span class="string">&quot;#[pin_project] attribute may not be used on enums with discriminants&quot;</span>);
+            <span class="macro">bail!</span>(e, <span class="string">"#[pin_project] attribute may not be used on enums with discriminants"</span>);
         } <span class="kw">else if let </span><span class="prelude-val">Some</span>(attr) = v.attrs.find(PIN) {
-            <span class="macro">bail!</span>(attr, <span class="string">&quot;#[pin] attribute may only be used on fields of structs or variants&quot;</span>);
+            <span class="macro">bail!</span>(attr, <span class="string">"#[pin] attribute may only be used on fields of structs or variants"</span>);
         } <span class="kw">else if </span>v.fields.is_empty() {
             <span class="prelude-val">Ok</span>(has_field)
         } <span class="kw">else </span>{
@@ -1460,13 +1461,13 @@
     <span class="kw">if </span>has_field {
         <span class="prelude-val">Ok</span>(())
     } <span class="kw">else </span>{
-        <span class="macro">bail!</span>(variants, <span class="string">&quot;#[pin_project] attribute may not be used on enums with zero fields&quot;</span>);
+        <span class="macro">bail!</span>(variants, <span class="string">"#[pin_project] attribute may not be used on enums with zero fields"</span>);
     }
 }
 
-<span class="kw">fn </span>parse_struct&lt;<span class="lifetime">&#39;a</span>&gt;(
-    cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;a</span>&gt;,
-    fields: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Fields,
+<span class="kw">fn </span>parse_struct&lt;<span class="lifetime">'a</span>&gt;(
+    cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'a</span>&gt;,
+    fields: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Fields,
     generate: <span class="kw-2">&amp;mut </span>GenerateTokens,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
     <span class="comment">// Do this first for a better error message.
@@ -1546,15 +1547,15 @@
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="kw">fn </span>parse_enum&lt;<span class="lifetime">&#39;a</span>&gt;(
-    cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;a</span>&gt;,
-    DataEnum { brace_token, variants, .. }: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>DataEnum,
+<span class="kw">fn </span>parse_enum&lt;<span class="lifetime">'a</span>&gt;(
+    cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'a</span>&gt;,
+    DataEnum { brace_token, variants, .. }: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>DataEnum,
     generate: <span class="kw-2">&amp;mut </span>GenerateTokens,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
     <span class="kw">if let </span>ProjReplace::Unnamed { span } = <span class="kw-2">&amp;</span>cx.project_replace {
         <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(
             <span class="kw-2">*</span>span,
-            <span class="string">&quot;`project_replace` argument requires a value when used on enums&quot;</span>,
+            <span class="string">"`project_replace` argument requires a value when used on enums"</span>,
         ));
     }
 
@@ -1631,7 +1632,7 @@
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="kw">fn </span>visit_variants&lt;<span class="lifetime">&#39;a</span>&gt;(cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;a</span>&gt;, variants: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Variants) -&gt; <span class="prelude-ty">Result</span>&lt;ProjectedVariants&gt; {
+<span class="kw">fn </span>visit_variants&lt;<span class="lifetime">'a</span>&gt;(cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'a</span>&gt;, variants: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Variants) -&gt; <span class="prelude-ty">Result</span>&lt;ProjectedVariants&gt; {
     <span class="kw">let </span><span class="kw-2">mut </span>proj_variants = TokenStream::new();
     <span class="kw">let </span><span class="kw-2">mut </span>proj_ref_variants = TokenStream::new();
     <span class="kw">let </span><span class="kw-2">mut </span>proj_own_variants = TokenStream::new();
@@ -1688,10 +1689,10 @@
     })
 }
 
-<span class="kw">fn </span>visit_fields&lt;<span class="lifetime">&#39;a</span>&gt;(
-    cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;a</span>&gt;,
+<span class="kw">fn </span>visit_fields&lt;<span class="lifetime">'a</span>&gt;(
+    cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'a</span>&gt;,
     variant_ident: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Ident&gt;,
-    fields: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Fields,
+    fields: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Fields,
     delim: Delimiter,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;ProjectedFields&gt; {
     <span class="kw">fn </span>surround(delim: Delimiter, tokens: TokenStream) -&gt; TokenStream {
@@ -1709,7 +1710,7 @@
     <span class="kw">for </span>(i, Field { attrs, vis, ident, colon_token, ty, mutability: <span class="kw">_ </span>}) <span class="kw">in
         </span>fields.iter().enumerate()
     {
-        <span class="kw">let </span>binding = ident.clone().unwrap_or_else(|| <span class="macro">format_ident!</span>(<span class="string">&quot;_{}&quot;</span>, i));
+        <span class="kw">let </span>binding = ident.clone().unwrap_or_else(|| <span class="macro">format_ident!</span>(<span class="string">"_{}"</span>, i));
         proj_pat.extend(<span class="macro">quote!</span>(#binding,));
         <span class="kw">let </span>lifetime = <span class="kw-2">&amp;</span>cx.proj.lifetime;
         <span class="kw">if </span>attrs.position_exact(PIN)<span class="question-mark">?</span>.is_some() {
@@ -1773,7 +1774,7 @@
 ///
 /// Note: `pinned_fields` must be in declaration order.
 </span><span class="kw">fn </span>proj_own_body(
-    cx: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+    cx: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
     variant_ident: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Ident&gt;,
     proj_move: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Group&gt;,
     pinned_fields: <span class="kw-2">&amp;</span>[Ident],
@@ -1815,7 +1816,7 @@
 /// - `UnpinImpl::Unsafe` - Implements `Unpin` via `UnsafeUnpin` impl.
 /// - `UnpinImpl::Negative` - Generates `Unpin` impl with bounds that will never be true.
 /// - `UnpinImpl::Default` - Generates `Unpin` impl that requires `Unpin` for all pinned fields.
-</span><span class="kw">fn </span>make_unpin_impl(cx: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; TokenStream {
+</span><span class="kw">fn </span>make_unpin_impl(cx: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; TokenStream {
     <span class="kw">match </span>cx.unpin_impl {
         UnpinImpl::Unsafe(span) =&gt; {
             <span class="kw">let </span><span class="kw-2">mut </span>proj_generics = cx.proj.generics.clone();
@@ -1864,9 +1865,9 @@
 
                 <span class="comment">// Generate a dummy impl of `UnsafeUnpin`, to ensure that the user cannot implement it.
                 //
-                // To ensure that users don&#39;t accidentally write a non-functional `UnsafeUnpin`
+                // To ensure that users don't accidentally write a non-functional `UnsafeUnpin`
                 // impls, we emit one ourselves. If the user ends up writing an `UnsafeUnpin`
-                // impl, they&#39;ll get a &quot;conflicting implementations of trait&quot; error when
+                // impl, they'll get a "conflicting implementations of trait" error when
                 // coherence checks are run.
                 </span><span class="attr">#[doc(hidden)]
                 </span>#unsafety <span class="kw">impl </span>#proj_impl_generics _pin_project::UnsafeUnpin
@@ -1882,7 +1883,7 @@
             <span class="comment">// Generate a field in our new struct for every
             // pinned field in the original type.
             </span><span class="kw">let </span>fields = cx.pinned_fields.iter().enumerate().map(|(i, ty)| {
-                <span class="kw">let </span>field_ident = <span class="macro">format_ident!</span>(<span class="string">&quot;__field{}&quot;</span>, i);
+                <span class="kw">let </span>field_ident = <span class="macro">format_ident!</span>(<span class="string">"__field{}"</span>, i);
                 <span class="macro">quote!</span>(#field_ident: #ty)
             });
 
@@ -1890,8 +1891,8 @@
             // and lifetimes that are actually used by the pinned fields
             // (as opposed to those only used by unpinned fields).
             // However, this would be tricky and error-prone, since
-            // it&#39;s possible for users to create types that would alias
-            // with generic parameters (e.g. &#39;struct T&#39;).
+            // it's possible for users to create types that would alias
+            // with generic parameters (e.g. 'struct T').
             //
             // Instead, we generate a use of every single type parameter
             // and lifetime used in the original struct. For type parameters,
@@ -1906,16 +1907,16 @@
             // ```
             //
             // This ensures that any unused type parameters
-            // don&#39;t end up with `Unpin` bounds.
+            // don't end up with `Unpin` bounds.
             </span><span class="kw">let </span>lifetime_fields = cx.orig.generics.lifetimes().enumerate().map(
                 |(i, LifetimeParam { lifetime, .. })| {
-                    <span class="kw">let </span>field_ident = <span class="macro">format_ident!</span>(<span class="string">&quot;__lifetime{}&quot;</span>, i);
+                    <span class="kw">let </span>field_ident = <span class="macro">format_ident!</span>(<span class="string">"__lifetime{}"</span>, i);
                     <span class="macro">quote!</span>(#field_ident: <span class="kw-2">&amp;</span>#lifetime ())
                 },
             );
 
             <span class="kw">let </span>orig_ident = cx.orig.ident;
-            <span class="kw">let </span>struct_ident = <span class="macro">format_ident!</span>(<span class="string">&quot;__{}&quot;</span>, orig_ident);
+            <span class="kw">let </span>struct_ident = <span class="macro">format_ident!</span>(<span class="string">"__{}"</span>, orig_ident);
             <span class="kw">let </span>vis = cx.orig.vis;
             <span class="kw">let </span>lifetime = <span class="kw-2">&amp;</span>cx.proj.lifetime;
             <span class="kw">let </span>type_params = cx.orig.generics.type_params().map(|t| <span class="kw-2">&amp;</span>t.ident);
@@ -1929,7 +1930,7 @@
 
             <span class="macro">quote! </span>{
                 <span class="comment">// This needs to have the same visibility as the original type,
-                // due to the limitations of the &#39;public in private&#39; error.
+                // due to the limitations of the 'public in private' error.
                 //
                 // Our goal is to implement the public trait `Unpin` for
                 // a potentially public user type. Because of this, rust
@@ -1937,7 +1938,7 @@
                 // our `Unpin` impl also be public. This means that our generated
                 // `__UnpinStruct` type must also be public.
                 // However, we ensure that the user can never actually reference
-                // this &#39;public&#39; type by creating this type in the inside of `const`.
+                // this 'public' type by creating this type in the inside of `const`.
                 </span><span class="attr">#[allow(missing_debug_implementations)]
                 </span>#vis <span class="kw">struct </span>#struct_ident #proj_generics #where_clause {
                     __pin_project_use_generics: _pin_project::__private::AlwaysUnpin&lt;
@@ -1956,9 +1957,9 @@
 
                 <span class="comment">// Generate a dummy impl of `UnsafeUnpin`, to ensure that the user cannot implement it.
                 //
-                // To ensure that users don&#39;t accidentally write a non-functional `UnsafeUnpin`
+                // To ensure that users don't accidentally write a non-functional `UnsafeUnpin`
                 // impls, we emit one ourselves. If the user ends up writing an `UnsafeUnpin`
-                // impl, they&#39;ll get a &quot;conflicting implementations of trait&quot; error when
+                // impl, they'll get a "conflicting implementations of trait" error when
                 // coherence checks are run.
                 </span><span class="attr">#[doc(hidden)]
                 </span><span class="kw">unsafe impl </span>#proj_impl_generics _pin_project::UnsafeUnpin
@@ -1977,7 +1978,7 @@
 /// - `Some` - implements `Drop` via `PinnedDrop` impl.
 /// - `None` - generates code that ensures that `Drop` trait is not implemented,
 ///            instead of generating `Drop` impl.
-</span><span class="kw">fn </span>make_drop_impl(cx: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; TokenStream {
+</span><span class="kw">fn </span>make_drop_impl(cx: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; TokenStream {
     <span class="kw">let </span>ident = cx.orig.ident;
     <span class="kw">let </span>(impl_generics, ty_generics, where_clause) = cx.orig.generics.split_for_impl();
 
@@ -1992,7 +1993,7 @@
                 <span class="attr">#[allow(clippy::missing_inline_in_public_items)]
                 </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
                     #unsafety {
-                        <span class="comment">// Safety - we&#39;re in &#39;drop&#39;, so we know that &#39;self&#39; will
+                        <span class="comment">// Safety - we're in 'drop', so we know that 'self' will
                         // never move again.
                         </span><span class="kw">let </span>__pinned_self = _pin_project::__private::Pin::new_unchecked(<span class="self">self</span>);
                         <span class="comment">// We call `pinned_drop` only once. Since `PinnedDrop::drop`
@@ -2005,7 +2006,7 @@
         }
     } <span class="kw">else </span>{
         <span class="comment">// If the user does not provide a `PinnedDrop` impl,
-        // we need to ensure that they don&#39;t provide a `Drop` impl of their
+        // we need to ensure that they don't provide a `Drop` impl of their
         // own.
         // Based on https://github.com/upsuper/assert-impl/blob/f503255b292ab0ba8d085b657f4065403cfa46eb/src/lib.rs#L80-L87
         //
@@ -2014,11 +2015,11 @@
         //
         // Another approach would be to provide an empty Drop impl,
         // which would conflict with a user-provided Drop impl.
-        // However, this would trigger the compiler&#39;s special handling
+        // However, this would trigger the compiler's special handling
         // of Drop types (e.g. fields cannot be moved out of a Drop type).
         // This approach prevents the creation of needless Drop impls,
         // giving users more flexibility.
-        </span><span class="kw">let </span>trait_ident = <span class="macro">format_ident!</span>(<span class="string">&quot;{}MustNotImplDrop&quot;</span>, ident);
+        </span><span class="kw">let </span>trait_ident = <span class="macro">format_ident!</span>(<span class="string">"{}MustNotImplDrop"</span>, ident);
 
         <span class="macro">quote! </span>{
             <span class="comment">// There are two possible cases:
@@ -2035,13 +2036,13 @@
 
             <span class="comment">// Generate a dummy impl of `PinnedDrop`, to ensure that the user cannot implement it.
             // Since the user did not pass `PinnedDrop` to `#[pin_project]`, any `PinnedDrop`
-            // impl will not actually be called. Unfortunately, we can&#39;t detect this situation
+            // impl will not actually be called. Unfortunately, we can't detect this situation
             // directly from either the `#[pin_project]` or `#[pinned_drop]` attributes, since
-            // we don&#39;t know what other attributes/impl may exist.
+            // we don't know what other attributes/impl may exist.
             //
-            // To ensure that users don&#39;t accidentally write a non-functional `PinnedDrop`
+            // To ensure that users don't accidentally write a non-functional `PinnedDrop`
             // impls, we emit one ourselves. If the user ends up writing a `PinnedDrop` impl,
-            // they&#39;ll get a &quot;conflicting implementations of trait&quot; error when coherence
+            // they'll get a "conflicting implementations of trait" error when coherence
             // checks are run.
             </span><span class="attr">#[doc(hidden)]
             </span><span class="kw">impl </span>#impl_generics _pin_project::__private::PinnedDrop <span class="kw">for </span>#ident #ty_generics
@@ -2060,7 +2061,7 @@
 ///
 /// On enums, only methods that the returned projected type is named will be generated.
 </span><span class="kw">fn </span>make_proj_impl(
-    cx: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+    cx: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
     proj_body: <span class="kw-2">&amp;</span>TokenStream,
     proj_ref_body: <span class="kw-2">&amp;</span>TokenStream,
     proj_own_body: <span class="kw-2">&amp;</span>TokenStream,
@@ -2159,25 +2160,25 @@
 /// - Checks the attributes of structs to ensure there is no `[repr(packed)]`.
 /// - Generates a function that borrows fields without an unsafe block and
 ///   forbidding `unaligned_references` lint.
-</span><span class="kw">fn </span>ensure_not_packed(orig: <span class="kw-2">&amp;</span>OriginalType&lt;<span class="lifetime">&#39;_</span>&gt;, fields: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Fields&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;TokenStream&gt; {
+</span><span class="kw">fn </span>ensure_not_packed(orig: <span class="kw-2">&amp;</span>OriginalType&lt;<span class="lifetime">'_</span>&gt;, fields: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Fields&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;TokenStream&gt; {
     <span class="kw">for </span>attr <span class="kw">in </span>orig.attrs {
         <span class="kw">if let </span>Meta::List(<span class="kw-2">ref </span>list) = attr.meta {
-            <span class="kw">if </span>list.path.is_ident(<span class="string">&quot;repr&quot;</span>) {
+            <span class="kw">if </span>list.path.is_ident(<span class="string">"repr"</span>) {
                 <span class="kw">for </span>repr <span class="kw">in </span>list.parse_args_with(Punctuated::&lt;Meta, <span class="macro">Token!</span>[,]&gt;::parse_terminated)<span class="question-mark">? </span>{
-                    <span class="kw">if </span>repr.path().is_ident(<span class="string">&quot;packed&quot;</span>) {
+                    <span class="kw">if </span>repr.path().is_ident(<span class="string">"packed"</span>) {
                         <span class="kw">let </span>msg = <span class="kw">if </span>fields.is_none() {
                             <span class="comment">// #[repr(packed)] cannot be apply on enums and will be rejected by rustc.
                             // However, we should not rely on the behavior of rustc that rejects this.
                             // https://github.com/taiki-e/pin-project/pull/324#discussion_r612388001
-                            </span><span class="string">&quot;#[repr(packed)] attribute should be applied to a struct or union&quot;
+                            </span><span class="string">"#[repr(packed)] attribute should be applied to a struct or union"
                         </span>} <span class="kw">else if </span>repr.require_name_value().is_ok() {
-                            <span class="comment">// #[repr(packed = &quot;&quot;)] is not valid format of #[repr(packed)] and will be
+                            <span class="comment">// #[repr(packed = "")] is not valid format of #[repr(packed)] and will be
                             // rejected by rustc.
                             // However, we should not rely on the behavior of rustc that rejects this.
                             // https://github.com/taiki-e/pin-project/pull/324#discussion_r612388001
-                            </span><span class="string">&quot;#[repr(packed)] attribute should not be name-value pair&quot;
+                            </span><span class="string">"#[repr(packed)] attribute should not be name-value pair"
                         </span>} <span class="kw">else </span>{
-                            <span class="string">&quot;#[pin_project] attribute may not be used on #[repr(packed)] types&quot;
+                            <span class="string">"#[pin_project] attribute may not be used on #[repr(packed)] types"
                         </span>};
                         <span class="macro">bail!</span>(repr, msg);
                     }
@@ -2192,9 +2193,9 @@
     };
 
     <span class="comment">// Workaround for https://github.com/taiki-e/pin-project/issues/32
-    // Through the tricky use of proc macros, it&#39;s possible to bypass
+    // Through the tricky use of proc macros, it's possible to bypass
     // the above check for the `repr` attribute.
-    // To ensure that it&#39;s impossible to use pin projections on a `#[repr(packed)]`
+    // To ensure that it's impossible to use pin projections on a `#[repr(packed)]`
     // struct, we generate code like this:
     //
     // ```
@@ -2212,7 +2213,7 @@
     //
     // If the struct ends up having `#[repr(packed)]` applied somehow,
     // this will generate an (unfriendly) error message. Under all reasonable
-    // circumstances, we&#39;ll detect the `#[repr(packed)]` attribute, and generate
+    // circumstances, we'll detect the `#[repr(packed)]` attribute, and generate
     // a much nicer error above.
     //
     // There is one exception: If the type of a struct field has an alignment of 1
@@ -2223,14 +2224,14 @@
     //
     // Fortunately, this should have no observable consequence - `#[repr(packed)]`
     // is essentially a no-op on such a type. Nevertheless, we include a test
-    // to ensure that the compiler doesn&#39;t ever try to copy the fields on
+    // to ensure that the compiler doesn't ever try to copy the fields on
     // such a struct when trying to drop it - which is reason we prevent
     // `#[repr(packed)]` in the first place.
     //
     // See also https://github.com/taiki-e/pin-project/pull/34.
     //
     // Note:
-    // - Lint-based tricks aren&#39;t perfect, but they&#39;re much better than nothing:
+    // - Lint-based tricks aren't perfect, but they're much better than nothing:
     //   https://github.com/taiki-e/pin-project-lite/issues/26
     //
     // - Enable both unaligned_references and safe_packed_borrows lints

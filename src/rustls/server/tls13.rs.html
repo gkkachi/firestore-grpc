@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-0.19.1/src/server/tls13.rs`."><title>tls13.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="rustls" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-0.19.1/src/server/tls13.rs`."><title>tls13.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="rustls" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1203,7 +1204,7 @@
     KeyScheduleEarly, KeyScheduleHandshake, KeyScheduleNonSecret, KeyScheduleTraffic,
     KeyScheduleTrafficWithClientFinishedPending,
 };
-<span class="attr">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"logging"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::log::{debug, trace, warn};
 <span class="kw">use </span><span class="kw">crate</span>::msgs::base::{Payload, PayloadU8};
 <span class="kw">use </span><span class="kw">crate</span>::msgs::ccs::ChangeCipherSpecPayload;
@@ -1237,7 +1238,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::sign;
 <span class="kw">use </span><span class="kw">crate</span>::suites;
 <span class="kw">use </span><span class="kw">crate</span>::verify;
-<span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
 </span><span class="kw">use crate</span>::{msgs::handshake::NewSessionTicketExtension, quic, session::Protocol};
 
 <span class="kw">use </span><span class="kw">crate</span>::server::common::{ClientCertDetails, HandshakeDetails};
@@ -1325,7 +1326,7 @@
         <span class="comment">// Do key exchange
         </span><span class="kw">let </span>kxr = suites::KeyExchange::start_ecdhe(share.group)
             .and_then(|kx| kx.complete(<span class="kw-2">&amp;</span>share.payload.<span class="number">0</span>))
-            .ok_or_else(|| TLSError::PeerMisbehavedError(<span class="string">&quot;key exchange failed&quot;</span>.to_string()))<span class="question-mark">?</span>;
+            .ok_or_else(|| TLSError::PeerMisbehavedError(<span class="string">"key exchange failed"</span>.to_string()))<span class="question-mark">?</span>;
 
         <span class="kw">let </span>kse = KeyShareEntry::new(share.group, kxr.pubkey.as_ref());
         extensions.push(ServerExtension::KeyShare(kse));
@@ -1353,7 +1354,7 @@
 
         hs::check_aligned_handshake(sess)<span class="question-mark">?</span>;
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
         </span><span class="kw">let </span>client_hello_hash = <span class="self">self
             </span>.handshake
             .transcript
@@ -1364,7 +1365,7 @@
                 <span class="kw-2">&amp;</span>[],
             );
 
-        <span class="macro">trace!</span>(<span class="string">&quot;sending server hello {:?}&quot;</span>, sh);
+        <span class="macro">trace!</span>(<span class="string">"sending server hello {:?}"</span>, sh);
         <span class="self">self</span>.handshake
             .transcript
             .add_message(<span class="kw-2">&amp;</span>sh);
@@ -1375,7 +1376,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>key_schedule = <span class="kw">if let </span><span class="prelude-val">Some</span>(psk) = resuming_psk {
             <span class="kw">let </span>early_key_schedule = KeyScheduleEarly::new(suite.hkdf_algorithm, psk);
 
-            <span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
             </span>{
                 <span class="kw">if </span>sess.common.protocol == Protocol::Quic {
                     <span class="kw">let </span>client_early_traffic_secret = early_key_schedule
@@ -1417,7 +1418,7 @@
             .record_layer
             .set_message_decrypter(cipher::new_tls13_read(suite, <span class="kw-2">&amp;</span>read_key));
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
         </span>{
             sess.common.quic.hs_secrets = <span class="prelude-val">Some</span>(quic::Secrets {
                 client: read_key,
@@ -1464,7 +1465,7 @@
             }),
         };
 
-        <span class="macro">trace!</span>(<span class="string">&quot;Requesting retry {:?}&quot;</span>, m);
+        <span class="macro">trace!</span>(<span class="string">"Requesting retry {:?}"</span>, m);
         <span class="self">self</span>.handshake
             .transcript
             .rollup_for_hrr();
@@ -1496,7 +1497,7 @@
             }),
         };
 
-        <span class="macro">trace!</span>(<span class="string">&quot;sending encrypted extensions {:?}&quot;</span>, ee);
+        <span class="macro">trace!</span>(<span class="string">"sending encrypted extensions {:?}"</span>, ee);
         <span class="self">self</span>.handshake
             .transcript
             .add_message(<span class="kw-2">&amp;</span>ee);
@@ -1529,10 +1530,10 @@
             .verifier
             .client_auth_root_subjects(sess.get_sni())
             .ok_or_else(|| {
-                <span class="macro">debug!</span>(<span class="string">&quot;could not determine root subjects based on SNI&quot;</span>);
+                <span class="macro">debug!</span>(<span class="string">"could not determine root subjects based on SNI"</span>);
                 sess.common
                     .send_fatal_alert(AlertDescription::AccessDenied);
-                TLSError::General(<span class="string">&quot;client rejected by client_auth_root_subjects&quot;</span>.into())
+                TLSError::General(<span class="string">"client rejected by client_auth_root_subjects"</span>.into())
             })<span class="question-mark">?</span>;
 
         <span class="kw">if </span>!names.is_empty() {
@@ -1549,7 +1550,7 @@
             }),
         };
 
-        <span class="macro">trace!</span>(<span class="string">&quot;Sending CertificateRequest {:?}&quot;</span>, m);
+        <span class="macro">trace!</span>(<span class="string">"Sending CertificateRequest {:?}"</span>, m);
         <span class="self">self</span>.handshake
             .transcript
             .add_message(<span class="kw-2">&amp;</span>m);
@@ -1573,7 +1574,7 @@
         }
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(end_entity_cert) = cert_entries.first_mut() {
-            <span class="comment">// Apply OCSP response to first certificate (we don&#39;t support OCSP
+            <span class="comment">// Apply OCSP response to first certificate (we don't support OCSP
             // except for leaf certs).
             </span><span class="kw">if </span><span class="self">self</span>.send_cert_status {
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(ocsp) = server_key.take_ocsp() {
@@ -1604,7 +1605,7 @@
             }),
         };
 
-        <span class="macro">trace!</span>(<span class="string">&quot;sending certificate {:?}&quot;</span>, c);
+        <span class="macro">trace!</span>(<span class="string">"sending certificate {:?}"</span>, c);
         <span class="self">self</span>.handshake
             .transcript
             .add_message(<span class="kw-2">&amp;</span>c);
@@ -1627,7 +1628,7 @@
         <span class="kw">let </span>signing_key = <span class="kw-2">&amp;</span>server_key.key;
         <span class="kw">let </span>signer = signing_key
             .choose_scheme(schemes)
-            .ok_or_else(|| hs::incompatible(sess, <span class="string">&quot;no overlapping sigschemes&quot;</span>))<span class="question-mark">?</span>;
+            .ok_or_else(|| hs::incompatible(sess, <span class="string">"no overlapping sigschemes"</span>))<span class="question-mark">?</span>;
 
         <span class="kw">let </span>scheme = signer.get_scheme();
         <span class="kw">let </span>sig = signer.sign(<span class="kw-2">&amp;</span>message)<span class="question-mark">?</span>;
@@ -1643,7 +1644,7 @@
             }),
         };
 
-        <span class="macro">trace!</span>(<span class="string">&quot;sending certificate-verify {:?}&quot;</span>, m);
+        <span class="macro">trace!</span>(<span class="string">"sending certificate-verify {:?}"</span>, m);
         <span class="self">self</span>.handshake
             .transcript
             .add_message(<span class="kw-2">&amp;</span>m);
@@ -1672,7 +1673,7 @@
             }),
         };
 
-        <span class="macro">trace!</span>(<span class="string">&quot;sending finished {:?}&quot;</span>, m);
+        <span class="macro">trace!</span>(<span class="string">"sending finished {:?}"</span>, m);
         <span class="self">self</span>.handshake
             .transcript
             .add_message(<span class="kw-2">&amp;</span>m);
@@ -1707,7 +1708,7 @@
             <span class="kw-2">&amp;</span><span class="self">self</span>.handshake.randoms.client,
         );
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
         </span>{
             sess.common.quic.traffic_secrets = <span class="prelude-val">Some</span>(quic::Secrets {
                 client: _read_key,
@@ -1749,16 +1750,16 @@
         )<span class="question-mark">?</span>;
 
         <span class="kw">if </span>client_hello.compression_methods.len() != <span class="number">1 </span>{
-            <span class="kw">return </span><span class="prelude-val">Err</span>(hs::illegal_param(sess, <span class="string">&quot;client offered wrong compressions&quot;</span>));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(hs::illegal_param(sess, <span class="string">"client offered wrong compressions"</span>));
         }
 
         <span class="kw">let </span>groups_ext = client_hello
             .get_namedgroups_extension()
-            .ok_or_else(|| hs::incompatible(sess, <span class="string">&quot;client didn&#39;t describe groups&quot;</span>))<span class="question-mark">?</span>;
+            .ok_or_else(|| hs::incompatible(sess, <span class="string">"client didn't describe groups"</span>))<span class="question-mark">?</span>;
 
         <span class="kw">let </span><span class="kw-2">mut </span>sigschemes_ext = client_hello
             .get_sigalgs_extension()
-            .ok_or_else(|| hs::incompatible(sess, <span class="string">&quot;client didn&#39;t describe sigschemes&quot;</span>))<span class="question-mark">?
+            .ok_or_else(|| hs::incompatible(sess, <span class="string">"client didn't describe sigschemes"</span>))<span class="question-mark">?
             </span>.clone();
 
         <span class="kw">let </span>tls13_schemes = sign::supported_sign_tls13();
@@ -1766,10 +1767,10 @@
 
         <span class="kw">let </span>shares_ext = client_hello
             .get_keyshare_extension()
-            .ok_or_else(|| hs::incompatible(sess, <span class="string">&quot;client didn&#39;t send keyshares&quot;</span>))<span class="question-mark">?</span>;
+            .ok_or_else(|| hs::incompatible(sess, <span class="string">"client didn't send keyshares"</span>))<span class="question-mark">?</span>;
 
         <span class="kw">if </span>client_hello.has_keyshare_extension_with_duplicates() {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(hs::illegal_param(sess, <span class="string">&quot;client sent duplicate keyshares&quot;</span>));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(hs::illegal_param(sess, <span class="string">"client sent duplicate keyshares"</span>));
         }
 
         <span class="kw">let </span>share_groups: Vec&lt;NamedGroup&gt; = shares_ext
@@ -1785,7 +1786,7 @@
             .cloned();
 
         <span class="kw">if </span>chosen_group.is_none() {
-            <span class="comment">// We don&#39;t have a suitable key share.  Choose a suitable group and
+            <span class="comment">// We don't have a suitable key share.  Choose a suitable group and
             // send a HelloRetryRequest.
             </span><span class="kw">let </span>retry_group_maybe = supported_groups
                 .iter()
@@ -1798,7 +1799,7 @@
 
             <span class="kw">if let </span><span class="prelude-val">Some</span>(group) = retry_group_maybe {
                 <span class="kw">if </span><span class="self">self</span>.done_retry {
-                    <span class="kw">return </span><span class="prelude-val">Err</span>(hs::illegal_param(sess, <span class="string">&quot;did not follow retry request&quot;</span>));
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(hs::illegal_param(sess, <span class="string">"did not follow retry request"</span>));
                 }
 
                 <span class="self">self</span>.emit_hello_retry_request(sess, group);
@@ -1806,7 +1807,7 @@
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="self">self</span>.into_expect_retried_client_hello());
             }
 
-            <span class="kw">return </span><span class="prelude-val">Err</span>(hs::incompatible(sess, <span class="string">&quot;no kx group overlap with client&quot;</span>));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(hs::incompatible(sess, <span class="string">"no kx group overlap with client"</span>));
         }
 
         <span class="kw">let </span>chosen_group = chosen_group.unwrap();
@@ -1819,17 +1820,17 @@
         <span class="kw">let </span><span class="kw-2">mut </span>resumedata = <span class="prelude-val">None</span>;
         <span class="kw">if let </span><span class="prelude-val">Some</span>(psk_offer) = client_hello.get_psk() {
             <span class="kw">if </span>!client_hello.check_psk_ext_is_last() {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(hs::illegal_param(sess, <span class="string">&quot;psk extension in wrong position&quot;</span>));
+                <span class="kw">return </span><span class="prelude-val">Err</span>(hs::illegal_param(sess, <span class="string">"psk extension in wrong position"</span>));
             }
 
             <span class="kw">if </span>psk_offer.binders.is_empty() {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(hs::decode_error(sess, <span class="string">&quot;psk extension missing binder&quot;</span>));
+                <span class="kw">return </span><span class="prelude-val">Err</span>(hs::decode_error(sess, <span class="string">"psk extension missing binder"</span>));
             }
 
             <span class="kw">if </span>psk_offer.binders.len() != psk_offer.identities.len() {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(hs::illegal_param(
                     sess,
-                    <span class="string">&quot;psk extension mismatched ids/binders&quot;</span>,
+                    <span class="string">"psk extension mismatched ids/binders"</span>,
                 ));
             }
 
@@ -1846,7 +1847,7 @@
                     sess.common
                         .send_fatal_alert(AlertDescription::DecryptError);
                     <span class="kw">return </span><span class="prelude-val">Err</span>(TLSError::PeerMisbehavedError(
-                        <span class="string">&quot;client sent wrong binder&quot;</span>.to_string(),
+                        <span class="string">"client sent wrong binder"</span>.to_string(),
                     ));
                 }
 
@@ -1857,7 +1858,7 @@
         }
 
         <span class="kw">if </span>!client_hello.psk_mode_offered(PSKKeyExchangeMode::PSK_DHE_KE) {
-            <span class="macro">debug!</span>(<span class="string">&quot;Client unwilling to resume, DHE_KE not offered&quot;</span>);
+            <span class="macro">debug!</span>(<span class="string">"Client unwilling to resume, DHE_KE not offered"</span>);
             <span class="self">self</span>.send_ticket = <span class="bool-val">false</span>;
             chosen_psk_index = <span class="prelude-val">None</span>;
             resumedata = <span class="prelude-val">None</span>;
@@ -1948,11 +1949,11 @@
             .transcript
             .add_message(<span class="kw-2">&amp;</span>m);
 
-        <span class="comment">// We don&#39;t send any CertificateRequest extensions, so any extensions
+        <span class="comment">// We don't send any CertificateRequest extensions, so any extensions
         // here are illegal.
         </span><span class="kw">if </span>certp.any_entry_has_extension() {
             <span class="kw">return </span><span class="prelude-val">Err</span>(TLSError::PeerMisbehavedError(
-                <span class="string">&quot;client sent unsolicited cert extension&quot;</span>.to_string(),
+                <span class="string">"client sent unsolicited cert extension"</span>.to_string(),
             ));
         }
 
@@ -1963,15 +1964,15 @@
             .verifier
             .client_auth_mandatory(sess.get_sni())
             .ok_or_else(|| {
-                <span class="macro">debug!</span>(<span class="string">&quot;could not determine if client auth is mandatory based on SNI&quot;</span>);
+                <span class="macro">debug!</span>(<span class="string">"could not determine if client auth is mandatory based on SNI"</span>);
                 sess.common
                     .send_fatal_alert(AlertDescription::AccessDenied);
-                TLSError::General(<span class="string">&quot;client rejected by client_auth_mandatory&quot;</span>.into())
+                TLSError::General(<span class="string">"client rejected by client_auth_mandatory"</span>.into())
             })<span class="question-mark">?</span>;
 
         <span class="kw">if </span>cert_chain.is_empty() {
             <span class="kw">if </span>!mandatory {
-                <span class="macro">debug!</span>(<span class="string">&quot;client auth requested but no certificate supplied&quot;</span>);
+                <span class="macro">debug!</span>(<span class="string">"client auth requested but no certificate supplied"</span>);
                 <span class="self">self</span>.handshake
                     .transcript
                     .abandon_client_auth();
@@ -1987,7 +1988,7 @@
             .get_verifier()
             .verify_client_cert(<span class="kw-2">&amp;</span>cert_chain, sess.get_sni())
             .or_else(|err| {
-                hs::incompatible(sess, <span class="string">&quot;certificate invalid&quot;</span>);
+                hs::incompatible(sess, <span class="string">"certificate invalid"</span>);
                 <span class="prelude-val">Err</span>(err)
             })<span class="question-mark">?</span>;
 
@@ -2046,7 +2047,7 @@
             <span class="kw">return </span><span class="prelude-val">Err</span>(e);
         }
 
-        <span class="macro">trace!</span>(<span class="string">&quot;client CertificateVerify OK&quot;</span>);
+        <span class="macro">trace!</span>(<span class="string">"client CertificateVerify OK"</span>);
         sess.client_cert_chain = <span class="prelude-val">Some</span>(<span class="self">self</span>.client_cert.take_chain());
 
         <span class="self">self</span>.handshake
@@ -2056,7 +2057,7 @@
     }
 }
 
-<span class="comment">// --- Process client&#39;s Finished ---
+<span class="comment">// --- Process client's Finished ---
 </span><span class="kw">fn </span>get_server_session_value(
     handshake: <span class="kw-2">&amp;mut </span>HandshakeDetails,
     key_schedule: <span class="kw-2">&amp;</span>KeyScheduleTraffic,
@@ -2114,11 +2115,11 @@
         }
 
         <span class="kw">let </span>ticket = maybe_ticket.unwrap();
-        <span class="kw">let </span>age_add = rand::random_u32(); <span class="comment">// nb, we don&#39;t do 0-RTT data, so whatever
+        <span class="kw">let </span>age_add = rand::random_u32(); <span class="comment">// nb, we don't do 0-RTT data, so whatever
         </span><span class="attr">#[allow(unused_mut)]
         </span><span class="kw">let </span><span class="kw-2">mut </span>payload =
             NewSessionTicketPayloadTLS13::new(ticket_lifetime, age_add, nonce, ticket);
-        <span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
         </span>{
             <span class="kw">if </span>sess.config.max_early_data_size &gt; <span class="number">0 </span>&amp;&amp; sess.common.protocol == Protocol::Quic {
                 payload
@@ -2137,7 +2138,7 @@
             }),
         };
 
-        <span class="macro">trace!</span>(<span class="string">&quot;sending new ticket {:?}&quot;</span>, m);
+        <span class="macro">trace!</span>(<span class="string">"sending new ticket {:?}"</span>, m);
         handshake.transcript.add_message(<span class="kw-2">&amp;</span>m);
         sess.common.send_msg(m, <span class="bool-val">true</span>);
     }
@@ -2161,7 +2162,7 @@
             <span class="attr">#[allow(unused_mut)]
             </span><span class="kw">let </span><span class="kw-2">mut </span>payload =
                 NewSessionTicketPayloadTLS13::new(stateful_lifetime, age_add, nonce, id);
-            <span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
             </span>{
                 <span class="kw">if </span>sess.config.max_early_data_size &gt; <span class="number">0 </span>&amp;&amp; sess.common.protocol == Protocol::Quic {
                     payload
@@ -2180,11 +2181,11 @@
                 }),
             };
 
-            <span class="macro">trace!</span>(<span class="string">&quot;sending new stateful ticket {:?}&quot;</span>, m);
+            <span class="macro">trace!</span>(<span class="string">"sending new stateful ticket {:?}"</span>, m);
             handshake.transcript.add_message(<span class="kw-2">&amp;</span>m);
             sess.common.send_msg(m, <span class="bool-val">true</span>);
         } <span class="kw">else </span>{
-            <span class="macro">trace!</span>(<span class="string">&quot;resumption not available; not issuing ticket&quot;</span>);
+            <span class="macro">trace!</span>(<span class="string">"resumption not available; not issuing ticket"</span>);
         }
     }
 }
@@ -2210,7 +2211,7 @@
             .map_err(|<span class="kw">_</span>| {
                 sess.common
                     .send_fatal_alert(AlertDescription::DecryptError);
-                <span class="macro">warn!</span>(<span class="string">&quot;Finished wrong&quot;</span>);
+                <span class="macro">warn!</span>(<span class="string">"Finished wrong"</span>);
                 TLSError::DecryptError
             })
             .map(|<span class="kw">_</span>| verify::FinishedMessageVerified::assertion())<span class="question-mark">?</span>;
@@ -2249,7 +2250,7 @@
 
         sess.common.start_traffic();
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
         </span>{
             <span class="kw">if </span>sess.common.protocol == Protocol::Quic {
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(Box::new(ExpectQUICTraffic {
@@ -2282,13 +2283,13 @@
         sess: <span class="kw-2">&amp;mut </span>ServerSessionImpl,
         kur: <span class="kw-2">&amp;</span>KeyUpdateRequest,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), TLSError&gt; {
-        <span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
         </span>{
             <span class="kw">if let </span>Protocol::Quic = sess.common.protocol {
                 sess.common
                     .send_fatal_alert(AlertDescription::UnexpectedMessage);
-                <span class="kw">let </span>msg = <span class="string">&quot;KeyUpdate received in QUIC connection&quot;</span>.to_string();
-                <span class="macro">warn!</span>(<span class="string">&quot;{}&quot;</span>, msg);
+                <span class="kw">let </span>msg = <span class="string">"KeyUpdate received in QUIC connection"</span>.to_string();
+                <span class="macro">warn!</span>(<span class="string">"{}"</span>, msg);
                 <span class="kw">return </span><span class="prelude-val">Err</span>(TLSError::PeerMisbehavedError(msg));
             }
         }
@@ -2370,13 +2371,13 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
 </span><span class="kw">pub struct </span>ExpectQUICTraffic {
     key_schedule: KeyScheduleTraffic,
     _fin_verified: verify::FinishedMessageVerified,
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
 </span><span class="kw">impl </span>hs::State <span class="kw">for </span>ExpectQUICTraffic {
     <span class="kw">fn </span>handle(<span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;, <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>ServerSessionImpl, m: Message) -&gt; hs::NextStateOrError {
         <span class="comment">// reject all messages

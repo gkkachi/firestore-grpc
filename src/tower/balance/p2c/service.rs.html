@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tower-0.4.13/src/balance/p2c/service.rs`."><title>service.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="tower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tower-0.4.13/src/balance/p2c/service.rs`."><title>service.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="tower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -385,10 +386,10 @@
     D::Key: Hash + fmt::Debug,
     D::Service: fmt::Debug,
 {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;Balance&quot;</span>)
-            .field(<span class="string">&quot;discover&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.discover)
-            .field(<span class="string">&quot;services&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.services)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"Balance"</span>)
+            .field(<span class="string">"discover"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.discover)
+            .field(<span class="string">"services"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.services)
             .finish()
     }
 }
@@ -421,7 +422,7 @@
 {
     <span class="doccomment">/// Constructs a load balancer that uses operating system entropy.
     </span><span class="kw">pub fn </span>new(discover: D) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::from_rng(discover, <span class="kw-2">&amp;mut </span>rand::thread_rng()).expect(<span class="string">&quot;ThreadRNG must be valid&quot;</span>)
+        <span class="self">Self</span>::from_rng(discover, <span class="kw-2">&amp;mut </span>rand::thread_rng()).expect(<span class="string">"ThreadRNG must be valid"</span>)
     }
 
     <span class="doccomment">/// Constructs a load balancer seeded with the provided random number generator.
@@ -462,9 +463,9 @@
     /// Removals may alter the order of either `ready` or `not_ready`.
     </span><span class="kw">fn </span>update_pending_from_discover(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Result</span>&lt;(), error::Discover&gt;&gt;&gt; {
-        <span class="macro">debug!</span>(<span class="string">&quot;updating from discover&quot;</span>);
+        <span class="macro">debug!</span>(<span class="string">"updating from discover"</span>);
         <span class="kw">loop </span>{
             <span class="kw">match </span><span class="macro">ready!</span>(Pin::new(<span class="kw-2">&amp;mut </span><span class="self">self</span>.discover).poll_discover(cx))
                 .transpose()
@@ -472,11 +473,11 @@
             </span>{
                 <span class="prelude-val">None </span>=&gt; <span class="kw">return </span>Poll::Ready(<span class="prelude-val">None</span>),
                 <span class="prelude-val">Some</span>(Change::Remove(key)) =&gt; {
-                    <span class="macro">trace!</span>(<span class="string">&quot;remove&quot;</span>);
+                    <span class="macro">trace!</span>(<span class="string">"remove"</span>);
                     <span class="self">self</span>.services.evict(<span class="kw-2">&amp;</span>key);
                 }
                 <span class="prelude-val">Some</span>(Change::Insert(key, svc)) =&gt; {
-                    <span class="macro">trace!</span>(<span class="string">&quot;insert&quot;</span>);
+                    <span class="macro">trace!</span>(<span class="string">"insert"</span>);
                     <span class="comment">// If this service already existed in the set, it will be
                     // replaced as the new one becomes ready.
                     </span><span class="self">self</span>.services.push(key, svc);
@@ -485,7 +486,7 @@
         }
     }
 
-    <span class="kw">fn </span>promote_pending_to_ready(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) {
+    <span class="kw">fn </span>promote_pending_to_ready(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) {
         <span class="kw">loop </span>{
             <span class="kw">match </span><span class="self">self</span>.services.poll_pending(cx) {
                 Poll::Ready(<span class="prelude-val">Ok</span>(())) =&gt; {
@@ -501,14 +502,14 @@
                 Poll::Ready(<span class="prelude-val">Err</span>(error)) =&gt; {
                     <span class="comment">// An individual service was lost; continue processing
                     // pending services.
-                    </span><span class="macro">debug!</span>(%error, <span class="string">&quot;dropping failed endpoint&quot;</span>);
+                    </span><span class="macro">debug!</span>(%error, <span class="string">"dropping failed endpoint"</span>);
                 }
             }
         }
         <span class="macro">trace!</span>(
             ready = %<span class="self">self</span>.services.ready_len(),
             pending = %<span class="self">self</span>.services.pending_len(),
-            <span class="string">&quot;poll_unready&quot;
+            <span class="string">"poll_unready"
         </span>);
     }
 
@@ -524,7 +525,7 @@
 
                 <span class="kw">let </span>aidx = idxs.index(<span class="number">0</span>);
                 <span class="kw">let </span>bidx = idxs.index(<span class="number">1</span>);
-                <span class="macro">debug_assert_ne!</span>(aidx, bidx, <span class="string">&quot;random indices must be distinct&quot;</span>);
+                <span class="macro">debug_assert_ne!</span>(aidx, bidx, <span class="string">"random indices must be distinct"</span>);
 
                 <span class="kw">let </span>aload = <span class="self">self</span>.ready_index_load(aidx);
                 <span class="kw">let </span>bload = <span class="self">self</span>.ready_index_load(bidx);
@@ -535,8 +536,8 @@
                     a.load = <span class="question-mark">?</span>aload,
                     b.index = bidx,
                     b.load = <span class="question-mark">?</span>bload,
-                    chosen = <span class="kw">if </span>chosen == aidx { <span class="string">&quot;a&quot; </span>} <span class="kw">else </span>{ <span class="string">&quot;b&quot; </span>},
-                    <span class="string">&quot;p2c&quot;</span>,
+                    chosen = <span class="kw">if </span>chosen == aidx { <span class="string">"a" </span>} <span class="kw">else </span>{ <span class="string">"b" </span>},
+                    <span class="string">"p2c"</span>,
                 );
                 <span class="prelude-val">Some</span>(chosen)
             }
@@ -545,7 +546,7 @@
 
     <span class="doccomment">/// Accesses a ready endpoint by index and returns its current load.
     </span><span class="kw">fn </span>ready_index_load(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize) -&gt; &lt;D::Service <span class="kw">as </span>Load&gt;::Metric {
-        <span class="kw">let </span>(<span class="kw">_</span>, svc) = <span class="self">self</span>.services.get_ready_index(index).expect(<span class="string">&quot;invalid index&quot;</span>);
+        <span class="kw">let </span>(<span class="kw">_</span>, svc) = <span class="self">self</span>.services.get_ready_index(index).expect(<span class="string">"invalid index"</span>);
         svc.load()
     }
 
@@ -570,7 +571,7 @@
         <span class="kw">fn</span>(&lt;D::Service <span class="kw">as </span>Service&lt;Req&gt;&gt;::Error) -&gt; <span class="kw">crate</span>::BoxError,
     &gt;;
 
-    <span class="kw">fn </span>poll_ready(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;&gt; {
+    <span class="kw">fn </span>poll_ready(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;&gt; {
         <span class="comment">// `ready_index` may have already been set by a prior invocation. These
         // updates cannot disturb the order of existing ready services.
         </span><span class="kw">let _ </span>= <span class="self">self</span>.update_pending_from_discover(cx)<span class="question-mark">?</span>;
@@ -592,12 +593,12 @@
                     }
                     <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>) =&gt; {
                         <span class="comment">// The service is no longer ready. Try to find a new one.
-                        </span><span class="macro">trace!</span>(<span class="string">&quot;ready service became unavailable&quot;</span>);
+                        </span><span class="macro">trace!</span>(<span class="string">"ready service became unavailable"</span>);
                     }
                     <span class="prelude-val">Err</span>(Failed(<span class="kw">_</span>, error)) =&gt; {
                         <span class="comment">// The ready endpoint failed, so log the error and try
                         // to find a new one.
-                        </span><span class="macro">debug!</span>(%error, <span class="string">&quot;endpoint failed&quot;</span>);
+                        </span><span class="macro">debug!</span>(%error, <span class="string">"endpoint failed"</span>);
                     }
                 }
             }
@@ -615,7 +616,7 @@
     }
 
     <span class="kw">fn </span>call(<span class="kw-2">&amp;mut </span><span class="self">self</span>, request: Req) -&gt; <span class="self">Self</span>::Future {
-        <span class="kw">let </span>index = <span class="self">self</span>.ready_index.take().expect(<span class="string">&quot;called before ready&quot;</span>);
+        <span class="kw">let </span>index = <span class="self">self</span>.ready_index.take().expect(<span class="string">"called before ready"</span>);
         <span class="self">self</span>.services
             .call_ready_index(index, request)
             .map_err(Into::into)
@@ -625,22 +626,22 @@
 <span class="kw">impl</span>&lt;K, S: Service&lt;Req&gt;, Req&gt; Future <span class="kw">for </span>UnreadyService&lt;K, S, Req&gt; {
     <span class="kw">type </span>Output = <span class="prelude-ty">Result</span>&lt;(K, S), (K, Error&lt;S::Error&gt;)&gt;;
 
-    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
         <span class="kw">let </span>this = <span class="self">self</span>.project();
 
         <span class="kw">if let </span>Poll::Ready(<span class="prelude-val">Ok</span>(())) = this.cancel.poll(cx) {
-            <span class="kw">let </span>key = this.key.take().expect(<span class="string">&quot;polled after ready&quot;</span>);
+            <span class="kw">let </span>key = this.key.take().expect(<span class="string">"polled after ready"</span>);
             <span class="kw">return </span>Poll::Ready(<span class="prelude-val">Err</span>((key, Error::Canceled)));
         }
 
         <span class="kw">let </span>res = <span class="macro">ready!</span>(this
             .service
             .as_mut()
-            .expect(<span class="string">&quot;poll after ready&quot;</span>)
+            .expect(<span class="string">"poll after ready"</span>)
             .poll_ready(cx));
 
-        <span class="kw">let </span>key = this.key.take().expect(<span class="string">&quot;polled after ready&quot;</span>);
-        <span class="kw">let </span>svc = this.service.take().expect(<span class="string">&quot;polled after ready&quot;</span>);
+        <span class="kw">let </span>key = this.key.take().expect(<span class="string">"polled after ready"</span>);
+        <span class="kw">let </span>svc = this.service.take().expect(<span class="string">"polled after ready"</span>);
 
         <span class="kw">match </span>res {
             <span class="prelude-val">Ok</span>(()) =&gt; Poll::Ready(<span class="prelude-val">Ok</span>((key, svc))),
@@ -661,10 +662,10 @@
             service,
             _req,
         } = <span class="self">self</span>;
-        f.debug_struct(<span class="string">&quot;UnreadyService&quot;</span>)
-            .field(<span class="string">&quot;key&quot;</span>, key)
-            .field(<span class="string">&quot;cancel&quot;</span>, cancel)
-            .field(<span class="string">&quot;service&quot;</span>, service)
+        f.debug_struct(<span class="string">"UnreadyService"</span>)
+            .field(<span class="string">"key"</span>, key)
+            .field(<span class="string">"cancel"</span>, cancel)
+            .field(<span class="string">"service"</span>, service)
             .finish()
     }
 }

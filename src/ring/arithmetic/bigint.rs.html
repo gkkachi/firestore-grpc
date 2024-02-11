@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ring-0.16.20/src/arithmetic/bigint.rs`."><title>bigint.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="ring" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ring-0.16.20/src/arithmetic/bigint.rs`."><title>bigint.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="ring" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1631,7 +1632,7 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
@@ -1652,12 +1653,12 @@
 //! In some calculations we need to deal with multiple rings at once. For
 //! example, RSA private key operations operate in the rings ℤ/nℤ, ℤ/pℤ, and
 //! ℤ/qℤ. Types and functions dealing with such rings are all parameterized
-//! over a type `M` to ensure that we don&#39;t wrongly mix up the math, e.g. by
+//! over a type `M` to ensure that we don't wrongly mix up the math, e.g. by
 //! multiplying an element of ℤ/pℤ by an element of ℤ/qℤ modulo q. This follows
-//! the &quot;unit&quot; pattern described in [Static checking of units in Servo].
+//! the "unit" pattern described in [Static checking of units in Servo].
 //!
 //! `Elem` also uses the static unit checking pattern to statically track the
-//! Montgomery factors that need to be canceled out in each value using it&#39;s
+//! Montgomery factors that need to be canceled out in each value using it's
 //! `E` parameter.
 //!
 //! [Static checking of units in Servo]:
@@ -1722,7 +1723,7 @@
         input: untrusted::Input,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, error::KeyRejected&gt; {
         <span class="comment">// Reject leading zeros. Also reject the value zero ([0]) because zero
-        // isn&#39;t positive.
+        // isn't positive.
         </span><span class="kw">if </span>untrusted::Reader::new(input).peek(<span class="number">0</span>) {
             <span class="kw">return </span><span class="prelude-val">Err</span>(error::KeyRejected::invalid_encoding());
         }
@@ -1816,12 +1817,12 @@
     // just looking at the lowest `N0_LIMBS_USED` limbs. This is what makes
     // Montgomery multiplication efficient.
     //
-    // As shown in Algorithm 1 of &quot;Fast Prime Field Elliptic Curve Cryptography
-    // with 256 Bit Primes&quot; by Shay Gueron and Vlad Krasnov, in the loop of a
+    // As shown in Algorithm 1 of "Fast Prime Field Elliptic Curve Cryptography
+    // with 256 Bit Primes" by Shay Gueron and Vlad Krasnov, in the loop of a
     // multi-limb Montgomery multiplication of a * b (mod n), given the
     // unreduced product t == a * b, we repeatedly calculate:
     //
-    //    t1 := t % r         |t1| is |t|&#39;s lowest limb (see previous paragraph).
+    //    t1 := t % r         |t1| is |t|'s lowest limb (see previous paragraph).
     //    t2 := t1*n0*n
     //    t3 := t + t2
     //    t := t3 / r         copy all limbs of |t3| except the lowest to |t|.
@@ -1841,7 +1842,7 @@
     // n0, the negative inverse of n (mod r).
     //
     // TODO(perf): Not all 32-bit platforms actually make use of n0[1]. For the
-    // ones that don&#39;t, we could use a shorter `R` value and use faster `Limb`
+    // ones that don't, we could use a shorter `R` value and use faster `Limb`
     // calculations instead of double-precision `u64` calculations.
     </span>n0: N0,
 
@@ -1850,7 +1851,7 @@
 
 <span class="kw">impl</span>&lt;M: PublicModulus&gt; core::fmt::Debug <span class="kw">for </span>Modulus&lt;M&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>::core::fmt::Formatter) -&gt; <span class="prelude-ty">Result</span>&lt;(), ::core::fmt::Error&gt; {
-        fmt.debug_struct(<span class="string">&quot;Modulus&quot;</span>)
+        fmt.debug_struct(<span class="string">"Modulus"</span>)
             <span class="comment">// TODO: Print modulus value.
             </span>.finish()
     }
@@ -1892,11 +1893,11 @@
         // done by taking the lowest `N0_LIMBS_USED` limbs of `n`.
         </span><span class="attr">#[allow(clippy::useless_conversion)]
         </span><span class="kw">let </span>n0 = {
-            <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+            <span class="kw">extern </span><span class="string">"C" </span>{
                 <span class="kw">fn </span>GFp_bn_neg_inv_mod_r_u64(n: u64) -&gt; u64;
             }
 
-            <span class="comment">// XXX: u64::from isn&#39;t guaranteed to be constant time.
+            <span class="comment">// XXX: u64::from isn't guaranteed to be constant time.
             </span><span class="kw">let </span><span class="kw-2">mut </span>n_mod_r: u64 = u64::from(n[<span class="number">0</span>]);
 
             <span class="kw">if </span>N0_LIMBS_USED == <span class="number">2 </span>{
@@ -1977,13 +1978,13 @@
     }
 }
 
-<span class="kw">struct </span>PartialModulus&lt;<span class="lifetime">&#39;a</span>, M&gt; {
-    limbs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[Limb],
+<span class="kw">struct </span>PartialModulus&lt;<span class="lifetime">'a</span>, M&gt; {
+    limbs: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[Limb],
     n0: N0,
     m: PhantomData&lt;M&gt;,
 }
 
-<span class="kw">impl</span>&lt;M&gt; PartialModulus&lt;<span class="lifetime">&#39;_</span>, M&gt; {
+<span class="kw">impl</span>&lt;M&gt; PartialModulus&lt;<span class="lifetime">'_</span>, M&gt; {
     <span class="comment">// TODO: XXX Avoid duplication with `Modulus`.
     </span><span class="kw">fn </span>zero(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Elem&lt;M, R&gt; {
         <span class="kw">let </span>width = Width {
@@ -2030,7 +2031,7 @@
 
 <span class="kw">impl</span>&lt;M, E: ReductionEncoding&gt; Elem&lt;M, E&gt; {
     <span class="kw">fn </span>decode_once(<span class="self">self</span>, m: <span class="kw-2">&amp;</span>Modulus&lt;M&gt;) -&gt; Elem&lt;M, &lt;E <span class="kw">as </span>ReductionEncoding&gt;::Output&gt; {
-        <span class="comment">// A multiplication isn&#39;t required since we&#39;re multiplying by the
+        <span class="comment">// A multiplication isn't required since we're multiplying by the
         // unencoded value one (1); only a Montgomery reduction is needed.
         // However the only non-multiplication Montgomery reduction function we
         // have requires the input to be large, so we avoid using it here.
@@ -2067,7 +2068,7 @@
 
     <span class="attr">#[inline]
     </span><span class="kw">pub fn </span>fill_be_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>, out: <span class="kw-2">&amp;mut </span>[u8]) {
-        <span class="comment">// See Falko Strenzke, &quot;Manger&#39;s Attack revisited&quot;, ICICS 2010.
+        <span class="comment">// See Falko Strenzke, "Manger's Attack revisited", ICICS 2010.
         </span>limb::big_endian_from_limbs(<span class="kw-2">&amp;</span><span class="self">self</span>.limbs, out)
     }
 
@@ -2109,7 +2110,7 @@
 }
 
 <span class="kw">fn </span>elem_mul_by_2&lt;M, AF&gt;(a: <span class="kw-2">&amp;mut </span>Elem&lt;M, AF&gt;, m: <span class="kw-2">&amp;</span>PartialModulus&lt;M&gt;) {
-    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+    <span class="kw">extern </span><span class="string">"C" </span>{
         <span class="kw">fn </span>LIMBS_shl_mod(r: <span class="kw-2">*mut </span>Limb, a: <span class="kw-2">*const </span>Limb, m: <span class="kw-2">*const </span>Limb, num_limbs: c::size_t);
     }
     <span class="kw">unsafe </span>{
@@ -2177,7 +2178,7 @@
 
 <span class="comment">// TODO: Document why this works for all Montgomery factors.
 </span><span class="kw">pub fn </span>elem_add&lt;M, E&gt;(<span class="kw-2">mut </span>a: Elem&lt;M, E&gt;, b: Elem&lt;M, E&gt;, m: <span class="kw-2">&amp;</span>Modulus&lt;M&gt;) -&gt; Elem&lt;M, E&gt; {
-    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+    <span class="kw">extern </span><span class="string">"C" </span>{
         <span class="comment">// `r` and `a` may alias.
         </span><span class="kw">fn </span>LIMBS_add_mod(
             r: <span class="kw-2">*mut </span>Limb,
@@ -2201,7 +2202,7 @@
 
 <span class="comment">// TODO: Document why this works for all Montgomery factors.
 </span><span class="kw">pub fn </span>elem_sub&lt;M, E&gt;(<span class="kw-2">mut </span>a: Elem&lt;M, E&gt;, b: <span class="kw-2">&amp;</span>Elem&lt;M, E&gt;, m: <span class="kw-2">&amp;</span>Modulus&lt;M&gt;) -&gt; Elem&lt;M, E&gt; {
-    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+    <span class="kw">extern </span><span class="string">"C" </span>{
         <span class="comment">// `r` and `a` may alias.
         </span><span class="kw">fn </span>LIMBS_sub_mod(
             r: <span class="kw-2">*mut </span>Limb,
@@ -2293,7 +2294,7 @@
             <span class="kw">return </span><span class="prelude-val">Err</span>(error::KeyRejected::too_large());
         }
         <span class="kw">let </span>value = input.read_all(error::KeyRejected::invalid_encoding(), |input| {
-            <span class="comment">// The exponent can&#39;t be zero and it can&#39;t be prefixed with
+            <span class="comment">// The exponent can't be zero and it can't be prefixed with
             // zero-valued bytes.
             </span><span class="kw">if </span>input.peek(<span class="number">0</span>) {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(error::KeyRejected::invalid_encoding());
@@ -2337,7 +2338,7 @@
 // exponentiation-by-squaring implementation in `elem_exp_vartime`. In
 // particular, it helps mitigate theoretical resource exhaustion attacks. 33
 // bits was chosen as the limit based on the recommendations in [1] and
-// [2]. Windows CryptoAPI (at least older versions) doesn&#39;t support values
+// [2]. Windows CryptoAPI (at least older versions) doesn't support values
 // larger than 32 bits [3], so it is unlikely that exponents larger than 32
 // bits are being used for anything Windows commonly does.
 //
@@ -2360,7 +2361,7 @@
 
 <span class="doccomment">/// Calculates base**exponent (mod m).
 </span><span class="kw">fn </span>elem_exp_vartime_&lt;M&gt;(base: Elem&lt;M, R&gt;, exponent: u64, m: <span class="kw-2">&amp;</span>PartialModulus&lt;M&gt;) -&gt; Elem&lt;M, R&gt; {
-    <span class="comment">// Use what [Knuth] calls the &quot;S-and-X binary method&quot;, i.e. variable-time
+    <span class="comment">// Use what [Knuth] calls the "S-and-X binary method", i.e. variable-time
     // square-and-multiply that scans the exponent from the most significant
     // bit to the least significant bit (left-to-right). Left-to-right requires
     // less storage compared to right-to-left scanning, at the cost of needing
@@ -2371,7 +2372,7 @@
     // of 2. During Montgomery setup the exponent is almost always a power of two,
     // with Hamming weight 1. As explained in [Knuth], exponentiation by squaring
     // is the most efficient algorithm when the Hamming weight is 2 or less. It
-    // isn&#39;t the most efficient for all other, uncommon, exponent values but any
+    // isn't the most efficient for all other, uncommon, exponent values but any
     // suboptimality is bounded by `PUBLIC_EXPONENT_MAX_VALUE`.
     //
     // This implementation is slightly simplified by taking advantage of the
@@ -2434,7 +2435,7 @@
     }
 }
 
-<span class="attr">#[cfg(not(target_arch = <span class="string">&quot;x86_64&quot;</span>))]
+<span class="attr">#[cfg(not(target_arch = <span class="string">"x86_64"</span>))]
 </span><span class="kw">pub fn </span>elem_exp_consttime&lt;M&gt;(
     base: Elem&lt;M, R&gt;,
     exponent: <span class="kw-2">&amp;</span>PrivateExponent&lt;M&gt;,
@@ -2450,7 +2451,7 @@
     <span class="kw">let </span><span class="kw-2">mut </span>table = <span class="macro">vec!</span>[<span class="number">0</span>; TABLE_ENTRIES * num_limbs];
 
     <span class="kw">fn </span>gather&lt;M&gt;(table: <span class="kw-2">&amp;</span>[Limb], i: Window, r: <span class="kw-2">&amp;mut </span>Elem&lt;M, R&gt;) {
-        <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+        <span class="kw">extern </span><span class="string">"C" </span>{
             <span class="kw">fn </span>LIMBS_select_512_32(
                 r: <span class="kw-2">*mut </span>Limb,
                 table: <span class="kw-2">*const </span>Limb,
@@ -2522,7 +2523,7 @@
     <span class="prelude-val">Ok</span>(r)
 }
 
-<span class="doccomment">/// Uses Fermat&#39;s Little Theorem to calculate modular inverse in constant time.
+<span class="doccomment">/// Uses Fermat's Little Theorem to calculate modular inverse in constant time.
 </span><span class="kw">pub fn </span>elem_inverse_consttime&lt;M: Prime&gt;(
     a: Elem&lt;M, R&gt;,
     m: <span class="kw-2">&amp;</span>Modulus&lt;M&gt;,
@@ -2530,7 +2531,7 @@
     elem_exp_consttime(a, <span class="kw-2">&amp;</span>PrivateExponent::for_flt(<span class="kw-2">&amp;</span>m), m)
 }
 
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">pub fn </span>elem_exp_consttime&lt;M&gt;(
     base: Elem&lt;M, R&gt;,
     exponent: <span class="kw-2">&amp;</span>PrivateExponent&lt;M&gt;,
@@ -2540,7 +2541,7 @@
     // is aligned to `MOD_EXP_CTIME_MIN_CACHE_LINE_WIDTH` bytes, which was/is
     // 64 in OpenSSL. Similarly, OpenSSL uses the x86_64 assembly functions by
     // giving it only inputs `tmp`, `am`, and `np` that immediately follow the
-    // table. The code seems to &quot;work&quot; even when the inputs aren&#39;t exactly
+    // table. The code seems to "work" even when the inputs aren't exactly
     // like that but the side channel defenses might not be as effective. All
     // the awkwardness here stems from trying to use the assembly code like
     // OpenSSL does.
@@ -2577,7 +2578,7 @@
     entry_mut(state, M, num_limbs).copy_from_slice(<span class="kw-2">&amp;</span>m.limbs);
 
     <span class="kw">fn </span>scatter(table: <span class="kw-2">&amp;mut </span>[Limb], state: <span class="kw-2">&amp;</span>[Limb], i: Window, num_limbs: usize) {
-        <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+        <span class="kw">extern </span><span class="string">"C" </span>{
             <span class="kw">fn </span>GFp_bn_scatter5(a: <span class="kw-2">*const </span>Limb, a_len: c::size_t, table: <span class="kw-2">*mut </span>Limb, i: Window);
         }
         <span class="kw">unsafe </span>{
@@ -2591,7 +2592,7 @@
     }
 
     <span class="kw">fn </span>gather(table: <span class="kw-2">&amp;</span>[Limb], state: <span class="kw-2">&amp;mut </span>[Limb], i: Window, num_limbs: usize) {
-        <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+        <span class="kw">extern </span><span class="string">"C" </span>{
             <span class="kw">fn </span>GFp_bn_gather5(r: <span class="kw-2">*mut </span>Limb, a_len: c::size_t, table: <span class="kw-2">*const </span>Limb, i: Window);
         }
         <span class="kw">unsafe </span>{
@@ -2613,7 +2614,7 @@
     }
 
     <span class="kw">fn </span>gather_mul_base(table: <span class="kw-2">&amp;</span>[Limb], state: <span class="kw-2">&amp;mut </span>[Limb], n0: <span class="kw-2">&amp;</span>N0, i: Window, num_limbs: usize) {
-        <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+        <span class="kw">extern </span><span class="string">"C" </span>{
             <span class="kw">fn </span>GFp_bn_mul_mont_gather5(
                 rp: <span class="kw-2">*mut </span>Limb,
                 ap: <span class="kw-2">*const </span>Limb,
@@ -2638,7 +2639,7 @@
     }
 
     <span class="kw">fn </span>power(table: <span class="kw-2">&amp;</span>[Limb], state: <span class="kw-2">&amp;mut </span>[Limb], n0: <span class="kw-2">&amp;</span>N0, i: Window, num_limbs: usize) {
-        <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+        <span class="kw">extern </span><span class="string">"C" </span>{
             <span class="kw">fn </span>GFp_bn_power5(
                 r: <span class="kw-2">*mut </span>Limb,
                 a: <span class="kw-2">*const </span>Limb,
@@ -2696,7 +2697,7 @@
         },
     );
 
-    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+    <span class="kw">extern </span><span class="string">"C" </span>{
         <span class="kw">fn </span>GFp_bn_from_montgomery(
             r: <span class="kw-2">*mut </span>Limb,
             a: <span class="kw-2">*const </span>Limb,
@@ -2818,12 +2819,12 @@
 <span class="kw">impl </span>From&lt;u64&gt; <span class="kw">for </span>N0 {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>from(n0: u64) -&gt; <span class="self">Self </span>{
-        <span class="attr">#[cfg(target_pointer_width = <span class="string">&quot;64&quot;</span>)]
+        <span class="attr">#[cfg(target_pointer_width = <span class="string">"64"</span>)]
         </span>{
             <span class="self">Self</span>([n0, <span class="number">0</span>])
         }
 
-        <span class="attr">#[cfg(target_pointer_width = <span class="string">&quot;32&quot;</span>)]
+        <span class="attr">#[cfg(target_pointer_width = <span class="string">"32"</span>)]
         </span>{
             <span class="self">Self</span>([n0 <span class="kw">as </span>Limb, (n0 &gt;&gt; LIMB_BITS) <span class="kw">as </span>Limb])
         }
@@ -2836,10 +2837,10 @@
     <span class="macro">debug_assert_eq!</span>(a.len(), m.len());
 
     <span class="attr">#[cfg(any(
-        target_arch = <span class="string">&quot;aarch64&quot;</span>,
-        target_arch = <span class="string">&quot;arm&quot;</span>,
-        target_arch = <span class="string">&quot;x86_64&quot;</span>,
-        target_arch = <span class="string">&quot;x86&quot;
+        target_arch = <span class="string">"aarch64"</span>,
+        target_arch = <span class="string">"arm"</span>,
+        target_arch = <span class="string">"x86_64"</span>,
+        target_arch = <span class="string">"x86"
     </span>))]
     </span><span class="kw">unsafe </span>{
         GFp_bn_mul_mont(
@@ -2853,10 +2854,10 @@
     }
 
     <span class="attr">#[cfg(not(any(
-        target_arch = <span class="string">&quot;aarch64&quot;</span>,
-        target_arch = <span class="string">&quot;arm&quot;</span>,
-        target_arch = <span class="string">&quot;x86_64&quot;</span>,
-        target_arch = <span class="string">&quot;x86&quot;
+        target_arch = <span class="string">"aarch64"</span>,
+        target_arch = <span class="string">"arm"</span>,
+        target_arch = <span class="string">"x86_64"</span>,
+        target_arch = <span class="string">"x86"
     </span>)))]
     </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>tmp = [<span class="number">0</span>; <span class="number">2 </span>* MODULUS_MAX_LIMBS];
@@ -2867,7 +2868,7 @@
 }
 
 <span class="kw">fn </span>limbs_from_mont_in_place(r: <span class="kw-2">&amp;mut </span>[Limb], tmp: <span class="kw-2">&amp;mut </span>[Limb], m: <span class="kw-2">&amp;</span>[Limb], n0: <span class="kw-2">&amp;</span>N0) {
-    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+    <span class="kw">extern </span><span class="string">"C" </span>{
         <span class="kw">fn </span>GFp_bn_from_montgomery_in_place(
             r: <span class="kw-2">*mut </span>Limb,
             num_r: c::size_t,
@@ -2893,10 +2894,10 @@
 }
 
 <span class="attr">#[cfg(not(any(
-    target_arch = <span class="string">&quot;aarch64&quot;</span>,
-    target_arch = <span class="string">&quot;arm&quot;</span>,
-    target_arch = <span class="string">&quot;x86_64&quot;</span>,
-    target_arch = <span class="string">&quot;x86&quot;
+    target_arch = <span class="string">"aarch64"</span>,
+    target_arch = <span class="string">"arm"</span>,
+    target_arch = <span class="string">"x86_64"</span>,
+    target_arch = <span class="string">"x86"
 </span>)))]
 </span><span class="kw">fn </span>limbs_mul(r: <span class="kw-2">&amp;mut </span>[Limb], a: <span class="kw-2">&amp;</span>[Limb], b: <span class="kw-2">&amp;</span>[Limb]) {
     <span class="macro">debug_assert_eq!</span>(r.len(), <span class="number">2 </span>* a.len());
@@ -2917,17 +2918,17 @@
 }
 
 <span class="doccomment">/// r = a * b
-</span><span class="attr">#[cfg(not(target_arch = <span class="string">&quot;x86_64&quot;</span>))]
+</span><span class="attr">#[cfg(not(target_arch = <span class="string">"x86_64"</span>))]
 </span><span class="kw">fn </span>limbs_mont_product(r: <span class="kw-2">&amp;mut </span>[Limb], a: <span class="kw-2">&amp;</span>[Limb], b: <span class="kw-2">&amp;</span>[Limb], m: <span class="kw-2">&amp;</span>[Limb], n0: <span class="kw-2">&amp;</span>N0) {
     <span class="macro">debug_assert_eq!</span>(r.len(), m.len());
     <span class="macro">debug_assert_eq!</span>(a.len(), m.len());
     <span class="macro">debug_assert_eq!</span>(b.len(), m.len());
 
     <span class="attr">#[cfg(any(
-        target_arch = <span class="string">&quot;aarch64&quot;</span>,
-        target_arch = <span class="string">&quot;arm&quot;</span>,
-        target_arch = <span class="string">&quot;x86_64&quot;</span>,
-        target_arch = <span class="string">&quot;x86&quot;
+        target_arch = <span class="string">"aarch64"</span>,
+        target_arch = <span class="string">"arm"</span>,
+        target_arch = <span class="string">"x86_64"</span>,
+        target_arch = <span class="string">"x86"
     </span>))]
     </span><span class="kw">unsafe </span>{
         GFp_bn_mul_mont(
@@ -2941,10 +2942,10 @@
     }
 
     <span class="attr">#[cfg(not(any(
-        target_arch = <span class="string">&quot;aarch64&quot;</span>,
-        target_arch = <span class="string">&quot;arm&quot;</span>,
-        target_arch = <span class="string">&quot;x86_64&quot;</span>,
-        target_arch = <span class="string">&quot;x86&quot;
+        target_arch = <span class="string">"aarch64"</span>,
+        target_arch = <span class="string">"arm"</span>,
+        target_arch = <span class="string">"x86_64"</span>,
+        target_arch = <span class="string">"x86"
     </span>)))]
     </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>tmp = [<span class="number">0</span>; <span class="number">2 </span>* MODULUS_MAX_LIMBS];
@@ -2958,10 +2959,10 @@
 </span><span class="kw">fn </span>limbs_mont_square(r: <span class="kw-2">&amp;mut </span>[Limb], m: <span class="kw-2">&amp;</span>[Limb], n0: <span class="kw-2">&amp;</span>N0) {
     <span class="macro">debug_assert_eq!</span>(r.len(), m.len());
     <span class="attr">#[cfg(any(
-        target_arch = <span class="string">&quot;aarch64&quot;</span>,
-        target_arch = <span class="string">&quot;arm&quot;</span>,
-        target_arch = <span class="string">&quot;x86_64&quot;</span>,
-        target_arch = <span class="string">&quot;x86&quot;
+        target_arch = <span class="string">"aarch64"</span>,
+        target_arch = <span class="string">"arm"</span>,
+        target_arch = <span class="string">"x86_64"</span>,
+        target_arch = <span class="string">"x86"
     </span>))]
     </span><span class="kw">unsafe </span>{
         GFp_bn_mul_mont(
@@ -2975,10 +2976,10 @@
     }
 
     <span class="attr">#[cfg(not(any(
-        target_arch = <span class="string">&quot;aarch64&quot;</span>,
-        target_arch = <span class="string">&quot;arm&quot;</span>,
-        target_arch = <span class="string">&quot;x86_64&quot;</span>,
-        target_arch = <span class="string">&quot;x86&quot;
+        target_arch = <span class="string">"aarch64"</span>,
+        target_arch = <span class="string">"arm"</span>,
+        target_arch = <span class="string">"x86_64"</span>,
+        target_arch = <span class="string">"x86"
     </span>)))]
     </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>tmp = [<span class="number">0</span>; <span class="number">2 </span>* MODULUS_MAX_LIMBS];
@@ -2988,14 +2989,14 @@
     }
 }
 
-<span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+<span class="kw">extern </span><span class="string">"C" </span>{
     <span class="attr">#[cfg(any(
-        target_arch = <span class="string">&quot;aarch64&quot;</span>,
-        target_arch = <span class="string">&quot;arm&quot;</span>,
-        target_arch = <span class="string">&quot;x86_64&quot;</span>,
-        target_arch = <span class="string">&quot;x86&quot;
+        target_arch = <span class="string">"aarch64"</span>,
+        target_arch = <span class="string">"arm"</span>,
+        target_arch = <span class="string">"x86_64"</span>,
+        target_arch = <span class="string">"x86"
     </span>))]
-    </span><span class="comment">// `r` and/or &#39;a&#39; and/or &#39;b&#39; may alias.
+    </span><span class="comment">// `r` and/or 'a' and/or 'b' may alias.
     </span><span class="kw">fn </span>GFp_bn_mul_mont(
         r: <span class="kw-2">*mut </span>Limb,
         a: <span class="kw-2">*const </span>Limb,
@@ -3009,10 +3010,10 @@
     </span><span class="attr">#[cfg(any(
         test,
         not(any(
-            target_arch = <span class="string">&quot;aarch64&quot;</span>,
-            target_arch = <span class="string">&quot;arm&quot;</span>,
-            target_arch = <span class="string">&quot;x86_64&quot;</span>,
-            target_arch = <span class="string">&quot;x86&quot;
+            target_arch = <span class="string">"aarch64"</span>,
+            target_arch = <span class="string">"arm"</span>,
+            target_arch = <span class="string">"x86_64"</span>,
+            target_arch = <span class="string">"x86"
         </span>))
     ))]
     #[must_use]
@@ -3033,17 +3034,17 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_elem_exp_consttime() {
         test::run(
-            <span class="macro">test_file!</span>(<span class="string">&quot;bigint_elem_exp_consttime_tests.txt&quot;</span>),
+            <span class="macro">test_file!</span>(<span class="string">"bigint_elem_exp_consttime_tests.txt"</span>),
             |section, test_case| {
-                <span class="macro">assert_eq!</span>(section, <span class="string">&quot;&quot;</span>);
+                <span class="macro">assert_eq!</span>(section, <span class="string">""</span>);
 
-                <span class="kw">let </span>m = consume_modulus::&lt;M&gt;(test_case, <span class="string">&quot;M&quot;</span>);
-                <span class="kw">let </span>expected_result = consume_elem(test_case, <span class="string">&quot;ModExp&quot;</span>, <span class="kw-2">&amp;</span>m);
-                <span class="kw">let </span>base = consume_elem(test_case, <span class="string">&quot;A&quot;</span>, <span class="kw-2">&amp;</span>m);
+                <span class="kw">let </span>m = consume_modulus::&lt;M&gt;(test_case, <span class="string">"M"</span>);
+                <span class="kw">let </span>expected_result = consume_elem(test_case, <span class="string">"ModExp"</span>, <span class="kw-2">&amp;</span>m);
+                <span class="kw">let </span>base = consume_elem(test_case, <span class="string">"A"</span>, <span class="kw-2">&amp;</span>m);
                 <span class="kw">let </span>e = {
-                    <span class="kw">let </span>bytes = test_case.consume_bytes(<span class="string">&quot;E&quot;</span>);
+                    <span class="kw">let </span>bytes = test_case.consume_bytes(<span class="string">"E"</span>);
                     PrivateExponent::from_be_bytes_padded(untrusted::Input::from(<span class="kw-2">&amp;</span>bytes), <span class="kw-2">&amp;</span>m)
-                        .expect(<span class="string">&quot;valid exponent&quot;</span>)
+                        .expect(<span class="string">"valid exponent"</span>)
                 };
                 <span class="kw">let </span>base = into_encoded(base, <span class="kw-2">&amp;</span>m);
                 <span class="kw">let </span>actual_result = elem_exp_consttime(base, <span class="kw-2">&amp;</span>e, <span class="kw-2">&amp;</span>m).unwrap();
@@ -3055,20 +3056,20 @@
     }
 
     <span class="comment">// TODO: fn test_elem_exp_vartime() using
-    // &quot;src/rsa/bigint_elem_exp_vartime_tests.txt&quot;. See that file for details.
+    // "src/rsa/bigint_elem_exp_vartime_tests.txt". See that file for details.
     // In the meantime, the function is tested indirectly via the RSA
     // verification and signing tests.
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>test_elem_mul() {
         test::run(
-            <span class="macro">test_file!</span>(<span class="string">&quot;bigint_elem_mul_tests.txt&quot;</span>),
+            <span class="macro">test_file!</span>(<span class="string">"bigint_elem_mul_tests.txt"</span>),
             |section, test_case| {
-                <span class="macro">assert_eq!</span>(section, <span class="string">&quot;&quot;</span>);
+                <span class="macro">assert_eq!</span>(section, <span class="string">""</span>);
 
-                <span class="kw">let </span>m = consume_modulus::&lt;M&gt;(test_case, <span class="string">&quot;M&quot;</span>);
-                <span class="kw">let </span>expected_result = consume_elem(test_case, <span class="string">&quot;ModMul&quot;</span>, <span class="kw-2">&amp;</span>m);
-                <span class="kw">let </span>a = consume_elem(test_case, <span class="string">&quot;A&quot;</span>, <span class="kw-2">&amp;</span>m);
-                <span class="kw">let </span>b = consume_elem(test_case, <span class="string">&quot;B&quot;</span>, <span class="kw-2">&amp;</span>m);
+                <span class="kw">let </span>m = consume_modulus::&lt;M&gt;(test_case, <span class="string">"M"</span>);
+                <span class="kw">let </span>expected_result = consume_elem(test_case, <span class="string">"ModMul"</span>, <span class="kw-2">&amp;</span>m);
+                <span class="kw">let </span>a = consume_elem(test_case, <span class="string">"A"</span>, <span class="kw-2">&amp;</span>m);
+                <span class="kw">let </span>b = consume_elem(test_case, <span class="string">"B"</span>, <span class="kw-2">&amp;</span>m);
 
                 <span class="kw">let </span>b = into_encoded(b, <span class="kw-2">&amp;</span>m);
                 <span class="kw">let </span>a = into_encoded(a, <span class="kw-2">&amp;</span>m);
@@ -3084,13 +3085,13 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_elem_squared() {
         test::run(
-            <span class="macro">test_file!</span>(<span class="string">&quot;bigint_elem_squared_tests.txt&quot;</span>),
+            <span class="macro">test_file!</span>(<span class="string">"bigint_elem_squared_tests.txt"</span>),
             |section, test_case| {
-                <span class="macro">assert_eq!</span>(section, <span class="string">&quot;&quot;</span>);
+                <span class="macro">assert_eq!</span>(section, <span class="string">""</span>);
 
-                <span class="kw">let </span>m = consume_modulus::&lt;M&gt;(test_case, <span class="string">&quot;M&quot;</span>);
-                <span class="kw">let </span>expected_result = consume_elem(test_case, <span class="string">&quot;ModSquare&quot;</span>, <span class="kw-2">&amp;</span>m);
-                <span class="kw">let </span>a = consume_elem(test_case, <span class="string">&quot;A&quot;</span>, <span class="kw-2">&amp;</span>m);
+                <span class="kw">let </span>m = consume_modulus::&lt;M&gt;(test_case, <span class="string">"M"</span>);
+                <span class="kw">let </span>expected_result = consume_elem(test_case, <span class="string">"ModSquare"</span>, <span class="kw-2">&amp;</span>m);
+                <span class="kw">let </span>a = consume_elem(test_case, <span class="string">"A"</span>, <span class="kw-2">&amp;</span>m);
 
                 <span class="kw">let </span>a = into_encoded(a, <span class="kw-2">&amp;</span>m);
                 <span class="kw">let </span>actual_result = elem_squared(a, <span class="kw-2">&amp;</span>m.as_partial());
@@ -3105,18 +3106,18 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_elem_reduced() {
         test::run(
-            <span class="macro">test_file!</span>(<span class="string">&quot;bigint_elem_reduced_tests.txt&quot;</span>),
+            <span class="macro">test_file!</span>(<span class="string">"bigint_elem_reduced_tests.txt"</span>),
             |section, test_case| {
-                <span class="macro">assert_eq!</span>(section, <span class="string">&quot;&quot;</span>);
+                <span class="macro">assert_eq!</span>(section, <span class="string">""</span>);
 
                 <span class="kw">struct </span>MM {}
                 <span class="kw">unsafe impl </span>SmallerModulus&lt;MM&gt; <span class="kw">for </span>M {}
                 <span class="kw">unsafe impl </span>NotMuchSmallerModulus&lt;MM&gt; <span class="kw">for </span>M {}
 
-                <span class="kw">let </span>m = consume_modulus::&lt;M&gt;(test_case, <span class="string">&quot;M&quot;</span>);
-                <span class="kw">let </span>expected_result = consume_elem(test_case, <span class="string">&quot;R&quot;</span>, <span class="kw-2">&amp;</span>m);
+                <span class="kw">let </span>m = consume_modulus::&lt;M&gt;(test_case, <span class="string">"M"</span>);
+                <span class="kw">let </span>expected_result = consume_elem(test_case, <span class="string">"R"</span>, <span class="kw-2">&amp;</span>m);
                 <span class="kw">let </span>a =
-                    consume_elem_unchecked::&lt;MM&gt;(test_case, <span class="string">&quot;A&quot;</span>, expected_result.limbs.len() * <span class="number">2</span>);
+                    consume_elem_unchecked::&lt;MM&gt;(test_case, <span class="string">"A"</span>, expected_result.limbs.len() * <span class="number">2</span>);
 
                 <span class="kw">let </span>actual_result = elem_reduced(<span class="kw-2">&amp;</span>a, <span class="kw-2">&amp;</span>m);
                 <span class="kw">let </span>oneRR = m.oneRR();
@@ -3131,19 +3132,19 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_elem_reduced_once() {
         test::run(
-            <span class="macro">test_file!</span>(<span class="string">&quot;bigint_elem_reduced_once_tests.txt&quot;</span>),
+            <span class="macro">test_file!</span>(<span class="string">"bigint_elem_reduced_once_tests.txt"</span>),
             |section, test_case| {
-                <span class="macro">assert_eq!</span>(section, <span class="string">&quot;&quot;</span>);
+                <span class="macro">assert_eq!</span>(section, <span class="string">""</span>);
 
                 <span class="kw">struct </span>N {}
                 <span class="kw">struct </span>QQ {}
                 <span class="kw">unsafe impl </span>SmallerModulus&lt;N&gt; <span class="kw">for </span>QQ {}
                 <span class="kw">unsafe impl </span>SlightlySmallerModulus&lt;N&gt; <span class="kw">for </span>QQ {}
 
-                <span class="kw">let </span>qq = consume_modulus::&lt;QQ&gt;(test_case, <span class="string">&quot;QQ&quot;</span>);
-                <span class="kw">let </span>expected_result = consume_elem::&lt;QQ&gt;(test_case, <span class="string">&quot;R&quot;</span>, <span class="kw-2">&amp;</span>qq);
-                <span class="kw">let </span>n = consume_modulus::&lt;N&gt;(test_case, <span class="string">&quot;N&quot;</span>);
-                <span class="kw">let </span>a = consume_elem::&lt;N&gt;(test_case, <span class="string">&quot;A&quot;</span>, <span class="kw-2">&amp;</span>n);
+                <span class="kw">let </span>qq = consume_modulus::&lt;QQ&gt;(test_case, <span class="string">"QQ"</span>);
+                <span class="kw">let </span>expected_result = consume_elem::&lt;QQ&gt;(test_case, <span class="string">"R"</span>, <span class="kw-2">&amp;</span>qq);
+                <span class="kw">let </span>n = consume_modulus::&lt;N&gt;(test_case, <span class="string">"N"</span>);
+                <span class="kw">let </span>a = consume_elem::&lt;N&gt;(test_case, <span class="string">"A"</span>, <span class="kw-2">&amp;</span>n);
 
                 <span class="kw">let </span>actual_result = elem_reduced_once(<span class="kw-2">&amp;</span>a, <span class="kw-2">&amp;</span>qq);
                 assert_elem_eq(<span class="kw-2">&amp;</span>actual_result, <span class="kw-2">&amp;</span>expected_result);
@@ -3159,7 +3160,7 @@
             <span class="kw-2">&amp;</span>[<span class="number">0xff</span>; LIMB_BYTES * MODULUS_MIN_LIMBS],
         ))
         .unwrap();
-        <span class="macro">assert_eq!</span>(<span class="string">&quot;Modulus&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, modulus));
+        <span class="macro">assert_eq!</span>(<span class="string">"Modulus"</span>, <span class="macro">format!</span>(<span class="string">"{:?}"</span>, modulus));
     }
 
     <span class="attr">#[test]
@@ -3167,7 +3168,7 @@
         <span class="kw">let </span>exponent =
             PublicExponent::from_be_bytes(untrusted::Input::from(<span class="kw-2">&amp;</span>[<span class="number">0x1</span>, <span class="number">0x00</span>, <span class="number">0x01</span>]), <span class="number">65537</span>)
                 .unwrap();
-        <span class="macro">assert_eq!</span>(<span class="string">&quot;PublicExponent(65537)&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, exponent));
+        <span class="macro">assert_eq!</span>(<span class="string">"PublicExponent(65537)"</span>, <span class="macro">format!</span>(<span class="string">"{:?}"</span>, exponent));
     }
 
     <span class="kw">fn </span>consume_elem&lt;M&gt;(
@@ -3212,7 +3213,7 @@
 
     <span class="kw">fn </span>assert_elem_eq&lt;M, E&gt;(a: <span class="kw-2">&amp;</span>Elem&lt;M, E&gt;, b: <span class="kw-2">&amp;</span>Elem&lt;M, E&gt;) {
         <span class="kw">if </span>elem_verify_equal_consttime(<span class="kw-2">&amp;</span>a, b).is_err() {
-            <span class="macro">panic!</span>(<span class="string">&quot;{:x?} != {:x?}&quot;</span>, <span class="kw-2">&amp;*</span>a.limbs, <span class="kw-2">&amp;*</span>b.limbs);
+            <span class="macro">panic!</span>(<span class="string">"{:x?} != {:x?}"</span>, <span class="kw-2">&amp;*</span>a.limbs, <span class="kw-2">&amp;*</span>b.limbs);
         }
     }
 
@@ -3243,10 +3244,10 @@
             <span class="macro">assert_eq!</span>(r.len(), a.len()); <span class="comment">// Sanity check
             </span><span class="kw">let </span>actual_retval =
                 <span class="kw">unsafe </span>{ GFp_limbs_mul_add_limb(r.as_mut_ptr(), a.as_ptr(), <span class="kw-2">*</span>w, a.len()) };
-            <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span>r, expected_r, <span class="string">&quot;{}: {:x?} != {:x?}&quot;</span>, i, <span class="kw-2">&amp;</span>r[..], expected_r);
+            <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span>r, expected_r, <span class="string">"{}: {:x?} != {:x?}"</span>, i, <span class="kw-2">&amp;</span>r[..], expected_r);
             <span class="macro">assert_eq!</span>(
                 actual_retval, <span class="kw-2">*</span>expected_retval,
-                <span class="string">&quot;{}: {:x?} != {:x?}&quot;</span>,
+                <span class="string">"{}: {:x?} != {:x?}"</span>,
                 i, actual_retval, <span class="kw-2">*</span>expected_retval
             );
         }

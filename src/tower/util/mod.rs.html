@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tower-0.4.13/src/util/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="tower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tower-0.4.13/src/util/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="tower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1147,7 +1148,7 @@
 /// adapters
 </span><span class="kw">pub trait </span>ServiceExt&lt;Request&gt;: tower_service::Service&lt;Request&gt; {
     <span class="doccomment">/// Yields a mutable reference to the service when it is ready to accept a request.
-    </span><span class="kw">fn </span>ready(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Ready&lt;<span class="lifetime">&#39;_</span>, <span class="self">Self</span>, Request&gt;
+    </span><span class="kw">fn </span>ready(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Ready&lt;<span class="lifetime">'_</span>, <span class="self">Self</span>, Request&gt;
     <span class="kw">where
         </span><span class="self">Self</span>: Sized,
     {
@@ -1156,11 +1157,11 @@
 
     <span class="doccomment">/// Yields a mutable reference to the service when it is ready to accept a request.
     </span><span class="attr">#[deprecated(
-        since = <span class="string">&quot;0.4.6&quot;</span>,
-        note = <span class="string">&quot;please use the `ServiceExt::ready` method instead&quot;
+        since = <span class="string">"0.4.6"</span>,
+        note = <span class="string">"please use the `ServiceExt::ready` method instead"
     </span>)]
     #[allow(deprecated)]
-    </span><span class="kw">fn </span>ready_and(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; ReadyAnd&lt;<span class="lifetime">&#39;_</span>, <span class="self">Self</span>, Request&gt;
+    </span><span class="kw">fn </span>ready_and(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; ReadyAnd&lt;<span class="lifetime">'_</span>, <span class="self">Self</span>, Request&gt;
     <span class="kw">where
         </span><span class="self">Self</span>: Sized,
     {
@@ -1200,12 +1201,12 @@
         CallAll::new(<span class="self">self</span>, reqs)
     }
 
-    <span class="doccomment">/// Executes a new future after this service&#39;s future resolves. This does
+    <span class="doccomment">/// Executes a new future after this service's future resolves. This does
     /// not alter the behaviour of the [`poll_ready`] method.
     ///
     /// This method can be used to change the [`Response`] type of the service
     /// into a different type. You can use this method to chain along a computation once the
-    /// service&#39;s response has been resolved.
+    /// service's response has been resolved.
     ///
     /// [`Response`]: crate::Service::Response
     /// [`poll_ready`]: crate::Service::poll_ready
@@ -1232,12 +1233,12 @@
     /// #   type Error = u8;
     /// #   type Future = futures_util::future::Ready&lt;Result&lt;Record, u8&gt;&gt;;
     /// #
-    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
+    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
     /// #       Poll::Ready(Ok(()))
     /// #   }
     /// #
     /// #   fn call(&amp;mut self, request: u32) -&gt; Self::Future {
-    /// #       futures_util::future::ready(Ok(Record { name: &quot;Jack&quot;.into(), age: 32 }))
+    /// #       futures_util::future::ready(Ok(Record { name: "Jack".into(), age: 32 }))
     /// #   }
     /// # }
     /// #
@@ -1246,7 +1247,7 @@
     /// # fn main() {
     /// #    async {
     /// // A service returning Result&lt;Record, _&gt;
-    /// let service = DatabaseService::new(&quot;127.0.0.1:8080&quot;);
+    /// let service = DatabaseService::new("127.0.0.1:8080");
     ///
     /// // Map the response into a new response
     /// let mut new_service = service.and_then(|record: Record| async move {
@@ -1268,13 +1269,13 @@
         AndThen::new(<span class="self">self</span>, f)
     }
 
-    <span class="doccomment">/// Maps this service&#39;s response value to a different value. This does not
+    <span class="doccomment">/// Maps this service's response value to a different value. This does not
     /// alter the behaviour of the [`poll_ready`] method.
     ///
     /// This method can be used to change the [`Response`] type of the service
     /// into a different type. It is similar to the [`Result::map`]
     /// method. You can use this method to chain along a computation once the
-    /// service&#39;s response has been resolved.
+    /// service's response has been resolved.
     ///
     /// [`Response`]: crate::Service::Response
     /// [`poll_ready`]: crate::Service::poll_ready
@@ -1301,19 +1302,19 @@
     /// #   type Error = u8;
     /// #   type Future = futures_util::future::Ready&lt;Result&lt;Record, u8&gt;&gt;;
     /// #
-    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
+    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
     /// #       Poll::Ready(Ok(()))
     /// #   }
     /// #
     /// #   fn call(&amp;mut self, request: u32) -&gt; Self::Future {
-    /// #       futures_util::future::ready(Ok(Record { name: &quot;Jack&quot;.into(), age: 32 }))
+    /// #       futures_util::future::ready(Ok(Record { name: "Jack".into(), age: 32 }))
     /// #   }
     /// # }
     /// #
     /// # fn main() {
     /// #    async {
     /// // A service returning Result&lt;Record, _&gt;
-    /// let service = DatabaseService::new(&quot;127.0.0.1:8080&quot;);
+    /// let service = DatabaseService::new("127.0.0.1:8080");
     ///
     /// // Map the response into a new response
     /// let mut new_service = service.map_response(|record| record.name);
@@ -1337,7 +1338,7 @@
         MapResponse::new(<span class="self">self</span>, f)
     }
 
-    <span class="doccomment">/// Maps this service&#39;s error value to a different value. This does not
+    <span class="doccomment">/// Maps this service's error value to a different value. This does not
     /// alter the behaviour of the [`poll_ready`] method.
     ///
     /// This method can be used to change the [`Error`] type of the service
@@ -1368,7 +1369,7 @@
     /// #   type Error = Error;
     /// #   type Future = futures_util::future::Ready&lt;Result&lt;String, Error&gt;&gt;;
     /// #
-    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
+    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
     /// #       Poll::Ready(Ok(()))
     /// #   }
     /// #
@@ -1380,7 +1381,7 @@
     /// # fn main() {
     /// #   async {
     /// // A service returning Result&lt;_, Error&gt;
-    /// let service = DatabaseService::new(&quot;127.0.0.1:8080&quot;);
+    /// let service = DatabaseService::new("127.0.0.1:8080");
     ///
     /// // Map the error to a new error
     /// let mut new_service = service.map_err(|err| err.code);
@@ -1405,30 +1406,30 @@
         MapErr::new(<span class="self">self</span>, f)
     }
 
-    <span class="doccomment">/// Maps this service&#39;s result type (`Result&lt;Self::Response, Self::Error&gt;`)
+    <span class="doccomment">/// Maps this service's result type (`Result&lt;Self::Response, Self::Error&gt;`)
     /// to a different value, regardless of whether the future succeeds or
     /// fails.
     ///
     /// This is similar to the [`map_response`] and [`map_err`] combinators,
-    /// except that the *same* function is invoked when the service&#39;s future
+    /// except that the *same* function is invoked when the service's future
     /// completes, whether it completes successfully or fails. This function
-    /// takes the [`Result`] returned by the service&#39;s future, and returns a
+    /// takes the [`Result`] returned by the service's future, and returns a
     /// [`Result`].
     ///
-    /// Like the standard library&#39;s [`Result::and_then`], this method can be
+    /// Like the standard library's [`Result::and_then`], this method can be
     /// used to implement control flow based on `Result` values. For example, it
     /// may be used to implement error recovery, by turning some [`Err`]
     /// responses from the service into [`Ok`] responses. Similarly, some
     /// successful responses from the service could be rejected, by returning an
     /// [`Err`] conditionally, depending on the value inside the [`Ok`.] Finally,
     /// this method can also be used to implement behaviors that must run when a
-    /// service&#39;s future completes, regardless of whether it succeeded or failed.
+    /// service's future completes, regardless of whether it succeeded or failed.
     ///
     /// This method can be used to change the [`Response`] type of the service
     /// into a different type. It can also be used to change the [`Error`] type
     /// of the service. However, because the [`map_result`] function is not applied
-    /// to the errors returned by the service&#39;s [`poll_ready`] method, it must
-    /// be possible to convert the service&#39;s [`Error`] type into the error type
+    /// to the errors returned by the service's [`poll_ready`] method, it must
+    /// be possible to convert the service's [`Error`] type into the error type
     /// returned by the [`map_result`] function. This is trivial when the function
     /// returns the same error type as the service, but in other cases, it can
     /// be useful to use [`BoxError`] to erase differing error types.
@@ -1463,19 +1464,19 @@
     /// #   type Error = DbError;
     /// #   type Future = futures_util::future::Ready&lt;Result&lt;Vec&lt;Record&gt;, DbError&gt;&gt;;
     /// #
-    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
+    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
     /// #       Poll::Ready(Ok(()))
     /// #   }
     /// #
     /// #   fn call(&amp;mut self, request: u32) -&gt; Self::Future {
-    /// #       futures_util::future::ready(Ok(vec![Record { name: &quot;Jack&quot;.into(), age: 32 }]))
+    /// #       futures_util::future::ready(Ok(vec![Record { name: "Jack".into(), age: 32 }]))
     /// #   }
     /// # }
     /// #
     /// # fn main() {
     /// #    async {
     /// // A service returning Result&lt;Vec&lt;Record&gt;, DbError&gt;
-    /// let service = DatabaseService::new(&quot;127.0.0.1:8080&quot;);
+    /// let service = DatabaseService::new("127.0.0.1:8080");
     ///
     /// // If the database returns no records for the query, we just want an empty `Vec`.
     /// let mut new_service = service.map_result(|result| match result {
@@ -1523,12 +1524,12 @@
     /// #   type Error = DbError;
     /// #   type Future = futures_util::future::Ready&lt;Result&lt;Record, DbError&gt;&gt;;
     /// #
-    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
+    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
     /// #       Poll::Ready(Ok(()))
     /// #   }
     /// #
     /// #   fn call(&amp;mut self, request: u32) -&gt; Self::Future {
-    /// #       futures_util::future::ready(Ok(Record { name: &quot;Jack&quot;.into(), age: 32 }))
+    /// #       futures_util::future::ready(Ok(Record { name: "Jack".into(), age: 32 }))
     /// #   }
     /// # }
     /// #
@@ -1537,7 +1538,7 @@
     /// use tower::BoxError;
     ///
     /// // A service returning Result&lt;Record, DbError&gt;
-    /// let service = DatabaseService::new(&quot;127.0.0.1:8080&quot;);
+    /// let service = DatabaseService::new("127.0.0.1:8080");
     ///
     /// // If the user is zero years old, return an error.
     /// let mut new_service = service.map_result(|result| {
@@ -1545,10 +1546,10 @@
     ///
     ///    if record.age == 0 {
     ///         // Users must have been born to use our app!
-    ///         let app_error = AppError::from(&quot;users cannot be 0 years old!&quot;);
+    ///         let app_error = AppError::from("users cannot be 0 years old!");
     ///
     ///         // Box the error to erase its type (as it can be an `AppError`
-    ///         // *or* the inner service&#39;s `DbError`).
+    ///         // *or* the inner service's `DbError`).
     ///         return Err(BoxError::from(app_error));
     ///     }
     ///
@@ -1587,7 +1588,7 @@
     /// #   type Error = u8;
     /// #   type Future = futures_util::future::Ready&lt;Result&lt;String, u8&gt;&gt;;
     /// #
-    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
+    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
     /// #       Poll::Ready(Ok(()))
     /// #   }
     /// #
@@ -1599,11 +1600,11 @@
     /// # fn main() {
     /// #   async {
     /// // A service returning Result&lt;Record, DbError&gt;
-    /// let service = DatabaseService::new(&quot;127.0.0.1:8080&quot;);
+    /// let service = DatabaseService::new("127.0.0.1:8080");
     ///
     /// // Print a message whenever a query completes.
     /// let mut new_service = service.map_result(|result| {
-    ///     println!(&quot;query completed; success={}&quot;, result.is_ok());
+    ///     println!("query completed; success={}", result.is_ok());
     ///     result
     /// });
     ///
@@ -1658,7 +1659,7 @@
     /// #   type Error = u8;
     /// #   type Future = futures_util::future::Ready&lt;Result&lt;String, u8&gt;&gt;;
     /// #
-    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
+    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
     /// #       Poll::Ready(Ok(()))
     /// #   }
     /// #
@@ -1670,7 +1671,7 @@
     /// # fn main() {
     /// #   async {
     /// // A service taking a String as a request
-    /// let service = DatabaseService::new(&quot;127.0.0.1:8080&quot;);
+    /// let service = DatabaseService::new("127.0.0.1:8080");
     ///
     /// // Map the request to a new request
     /// let mut new_service = service.map_request(|id: u32| id.to_string());
@@ -1726,7 +1727,7 @@
     /// #   type Error = DbError;
     /// #   type Future = futures_util::future::Ready&lt;Result&lt;String, DbError&gt;&gt;;
     /// #
-    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
+    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
     /// #       Poll::Ready(Ok(()))
     /// #   }
     /// #
@@ -1738,14 +1739,14 @@
     /// # fn main() {
     /// #    async {
     /// // A service taking a u32 as a request and returning Result&lt;_, DbError&gt;
-    /// let service = DatabaseService::new(&quot;127.0.0.1:8080&quot;);
+    /// let service = DatabaseService::new("127.0.0.1:8080");
     ///
     /// // Fallibly map the request to a new request
     /// let mut new_service = service
     ///     .filter(|id_str: &amp;str| id_str.parse().map_err(DbError::Parse));
     ///
     /// // Call the new service
-    /// let id = &quot;13&quot;;
+    /// let id = "13";
     /// let response = new_service
     ///     .ready()
     ///     .await?
@@ -1758,8 +1759,8 @@
     ///
     /// [`Filter`]: crate::filter::Filter
     /// [predicate]: crate::filter::Predicate
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;filter&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;filter&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"filter"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"filter"</span>)))]
     </span><span class="kw">fn </span>filter&lt;F, NewRequest&gt;(<span class="self">self</span>, filter: F) -&gt; <span class="kw">crate</span>::filter::Filter&lt;<span class="self">Self</span>, F&gt;
     <span class="kw">where
         </span><span class="self">Self</span>: Sized,
@@ -1800,7 +1801,7 @@
     /// #   type Error = DbError;
     /// #   type Future = futures_util::future::Ready&lt;Result&lt;String, DbError&gt;&gt;;
     /// #
-    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
+    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
     /// #       Poll::Ready(Ok(()))
     /// #   }
     /// #
@@ -1812,7 +1813,7 @@
     /// # fn main() {
     /// #    async {
     /// // A service taking a u32 as a request and returning Result&lt;_, DbError&gt;
-    /// let service = DatabaseService::new(&quot;127.0.0.1:8080&quot;);
+    /// let service = DatabaseService::new("127.0.0.1:8080");
     ///
     /// /// Returns `true` if we should query the database for an ID.
     /// async fn should_query(id: u32) -&gt; bool {
@@ -1845,8 +1846,8 @@
     ///
     /// [`AsyncFilter`]: crate::filter::AsyncFilter
     /// [asynchronous predicate]: crate::filter::AsyncPredicate
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;filter&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;filter&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"filter"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"filter"</span>)))]
     </span><span class="kw">fn </span>filter_async&lt;F, NewRequest&gt;(<span class="self">self</span>, filter: F) -&gt; <span class="kw">crate</span>::filter::AsyncFilter&lt;<span class="self">Self</span>, F&gt;
     <span class="kw">where
         </span><span class="self">Self</span>: Sized,
@@ -1858,15 +1859,15 @@
     <span class="doccomment">/// Composes an asynchronous function *after* this service.
     ///
     /// This takes a function or closure returning a future, and returns a new
-    /// `Service` that chains that function after this service&#39;s [`Future`]. The
-    /// new `Service`&#39;s future will consist of this service&#39;s future, followed
-    /// by the future returned by calling the chained function with the future&#39;s
+    /// `Service` that chains that function after this service's [`Future`]. The
+    /// new `Service`'s future will consist of this service's future, followed
+    /// by the future returned by calling the chained function with the future's
     /// [`Output`] type. The chained function is called regardless of whether
-    /// this service&#39;s future completes with a successful response or with an
+    /// this service's future completes with a successful response or with an
     /// error.
     ///
     /// This method can be thought of as an equivalent to the [`futures`
-    /// crate]&#39;s [`FutureExt::then`] combinator, but acting on `Service`s that
+    /// crate]'s [`FutureExt::then`] combinator, but acting on `Service`s that
     /// _return_ futures, rather than on an individual future. Similarly to that
     /// combinator, [`ServiceExt::then`] can be used to implement asynchronous
     /// error recovery, by calling some asynchronous function with errors
@@ -1876,8 +1877,8 @@
     /// This method can be used to change the [`Response`] type of the service
     /// into a different type. It can also be used to change the [`Error`] type
     /// of the service. However, because the `then` function is not applied
-    /// to the errors returned by the service&#39;s [`poll_ready`] method, it must
-    /// be possible to convert the service&#39;s [`Error`] type into the error type
+    /// to the errors returned by the service's [`poll_ready`] method, it must
+    /// be possible to convert the service's [`Error`] type into the error type
     /// returned by the `then` future. This is trivial when the function
     /// returns the same error type as the service, but in other cases, it can
     /// be useful to use [`BoxError`] to erase differing error types.
@@ -1903,7 +1904,7 @@
     /// #   type Error = DbError;
     /// #   type Future = futures_util::future::Ready&lt;Result&lt;Record, DbError&gt;&gt;;
     /// #
-    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
+    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
     /// #       Poll::Ready(Ok(()))
     /// #   }
     /// #
@@ -1914,7 +1915,7 @@
     /// #
     /// # fn main() {
     /// // A service returning Result&lt;Record, DbError&gt;
-    /// let service = DatabaseService::new(&quot;127.0.0.1:8080&quot;);
+    /// let service = DatabaseService::new("127.0.0.1:8080");
     ///
     /// // An async function that attempts to recover from errors returned by the
     /// // database.
@@ -1966,7 +1967,7 @@
     <span class="doccomment">/// Composes a function that transforms futures produced by the service.
     ///
     /// This takes a function or closure returning a future computed from the future returned by
-    /// the service&#39;s [`call`] method, as opposed to the responses produced by the future.
+    /// the service's [`call`] method, as opposed to the responses produced by the future.
     ///
     /// # Examples
     ///
@@ -1989,7 +1990,7 @@
     /// #   type Error = DbError;
     /// #   type Future = futures_util::future::Ready&lt;Result&lt;Record, DbError&gt;&gt;;
     /// #
-    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
+    /// #   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
     /// #       Poll::Ready(Ok(()))
     /// #   }
     /// #
@@ -2003,7 +2004,7 @@
     /// use tokio::time::timeout;
     ///
     /// // A service returning Result&lt;Record, DbError&gt;
-    /// let service = DatabaseService::new(&quot;127.0.0.1:8080&quot;);
+    /// let service = DatabaseService::new("127.0.0.1:8080");
     /// #    async {
     ///
     /// let mut new_service = service.map_future(|future| async move {
@@ -2023,7 +2024,7 @@
     /// # }
     /// ```
     ///
-    /// Note that normally you wouldn&#39;t implement timeouts like this and instead use [`Timeout`].
+    /// Note that normally you wouldn't implement timeouts like this and instead use [`Timeout`].
     ///
     /// [`call`]: crate::Service::call
     /// [`Timeout`]: crate::timeout::Timeout
@@ -2062,11 +2063,11 @@
     ///
     /// let service: BoxService&lt;Request, Response, BoxError&gt; = service
     ///     .map_request(|req| {
-    ///         println!(&quot;received request&quot;);
+    ///         println!("received request");
     ///         req
     ///     })
     ///     .map_response(|res| {
-    ///         println!(&quot;response produced&quot;);
+    ///         println!("response produced");
     ///         res
     ///     })
     ///     .boxed();
@@ -2079,8 +2080,8 @@
     /// [`boxed_clone`]: Self::boxed_clone
     </span><span class="kw">fn </span>boxed(<span class="self">self</span>) -&gt; BoxService&lt;Request, <span class="self">Self</span>::Response, <span class="self">Self</span>::Error&gt;
     <span class="kw">where
-        </span><span class="self">Self</span>: Sized + Send + <span class="lifetime">&#39;static</span>,
-        <span class="self">Self</span>::Future: Send + <span class="lifetime">&#39;static</span>,
+        </span><span class="self">Self</span>: Sized + Send + <span class="lifetime">'static</span>,
+        <span class="self">Self</span>::Future: Send + <span class="lifetime">'static</span>,
     {
         BoxService::new(<span class="self">self</span>)
     }
@@ -2108,11 +2109,11 @@
     ///
     /// let service: BoxCloneService&lt;Request, Response, BoxError&gt; = service
     ///     .map_request(|req| {
-    ///         println!(&quot;received request&quot;);
+    ///         println!("received request");
     ///         req
     ///     })
     ///     .map_response(|res| {
-    ///         println!(&quot;response produced&quot;);
+    ///         println!("response produced");
     ///         res
     ///     })
     ///     .boxed_clone();
@@ -2128,8 +2129,8 @@
     /// [`boxed`]: Self::boxed
     </span><span class="kw">fn </span>boxed_clone(<span class="self">self</span>) -&gt; BoxCloneService&lt;Request, <span class="self">Self</span>::Response, <span class="self">Self</span>::Error&gt;
     <span class="kw">where
-        </span><span class="self">Self</span>: Clone + Sized + Send + <span class="lifetime">&#39;static</span>,
-        <span class="self">Self</span>::Future: Send + <span class="lifetime">&#39;static</span>,
+        </span><span class="self">Self</span>: Clone + Sized + Send + <span class="lifetime">'static</span>,
+        <span class="self">Self</span>::Future: Send + <span class="lifetime">'static</span>,
     {
         BoxCloneService::new(<span class="self">self</span>)
     }
@@ -2145,7 +2146,7 @@
 /// # use tower::builder::ServiceBuilder;
 /// use tower::util::option_layer;
 /// # use tower::timeout::TimeoutLayer;
-/// # async fn wrap&lt;S&gt;(svc: S) where S: Service&lt;(), Error = &amp;&#39;static str&gt; + &#39;static + Send, S::Future: Send {
+/// # async fn wrap&lt;S&gt;(svc: S) where S: Service&lt;(), Error = &amp;'static str&gt; + 'static + Send, S::Future: Send {
 /// # let timeout = Some(Duration::new(10, 0));
 /// // Layer to apply a timeout if configured
 /// let maybe_timeout = option_layer(timeout.map(TimeoutLayer::new));

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tower-0.4.13/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="tower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tower-0.4.13/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="tower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -299,7 +300,7 @@
 //!
 //! Tower provides an abstraction layer, and generic implementations of various
 //! middleware. This means that the `tower` crate on its own does *not* provide
-//! a working implementation of a network client or server. Instead, Tower&#39;s
+//! a working implementation of a network client or server. Instead, Tower's
 //! [`Service` trait][`Service`] provides an integration point between
 //! application code, libraries providing middleware implementations, and
 //! libraries that implement servers and/or clients for various network
@@ -308,7 +309,7 @@
 //! Depending on your particular use case, you might use Tower in several ways:
 //!
 //! * **Implementing application logic** for a networked program. You might
-//!   use the [`Service`] trait to model your application&#39;s behavior, and use
+//!   use the [`Service`] trait to model your application's behavior, and use
 //!   the middleware [provided by this crate](#modules) and by other libraries
 //!   to add functionality to clients and servers provided by one or more
 //!   protocol implementations.
@@ -352,31 +353,31 @@
 //! [`lspower`]: https://crates.io/crates/lspower
 //! [lsp]: https://microsoft.github.io/language-server-protocol/
 //!
-//! If you&#39;re the maintainer of a crate that supports Tower, we&#39;d love to add
+//! If you're the maintainer of a crate that supports Tower, we'd love to add
 //! your crate to this list! Please [open a PR] adding a brief description of
 //! your library!
 //!
 //! ## Getting Started
 //!
-//! If you&#39;re brand new to Tower and want to start with the basics, we recommend you
+//! If you're brand new to Tower and want to start with the basics, we recommend you
 //! check out some of our [guides].
 //!
 //! The various middleware implementations provided by this crate are feature
 //! flagged, so that users can only compile the parts of Tower they need. By
 //! default, all the optional middleware are disabled.
 //!
-//! To get started using all of Tower&#39;s optional middleware, add this to your
+//! To get started using all of Tower's optional middleware, add this to your
 //! `Cargo.toml`:
 //!
 //! ```toml
-//! tower = { version = &quot;0.4&quot;, features = [&quot;full&quot;] }
+//! tower = { version = "0.4", features = ["full"] }
 //! ```
 //!
 //! Alternatively, you can only enable some features. For example, to enable
 //! only the [`retry`] and [`timeout`][timeouts] middleware, write:
 //!
 //! ```toml
-//! tower = { version = &quot;0.4&quot;, features = [&quot;retry&quot;, &quot;timeout&quot;] }
+//! tower = { version = "0.4", features = ["retry", "timeout"] }
 //! ```
 //!
 //! See [here](#modules) for a complete list of all middleware provided by
@@ -406,68 +407,68 @@
 
 </span><span class="attr">#[macro_use]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>macros;
-<span class="attr">#[cfg(feature = <span class="string">&quot;balance&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;balance&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"balance"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"balance"</span>)))]
 </span><span class="kw">pub mod </span>balance;
-<span class="attr">#[cfg(feature = <span class="string">&quot;buffer&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;buffer&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"buffer"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"buffer"</span>)))]
 </span><span class="kw">pub mod </span>buffer;
-<span class="attr">#[cfg(feature = <span class="string">&quot;discover&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;discover&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"discover"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"discover"</span>)))]
 </span><span class="kw">pub mod </span>discover;
-<span class="attr">#[cfg(feature = <span class="string">&quot;filter&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;filter&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"filter"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"filter"</span>)))]
 </span><span class="kw">pub mod </span>filter;
-<span class="attr">#[cfg(feature = <span class="string">&quot;hedge&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;hedge&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"hedge"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"hedge"</span>)))]
 </span><span class="kw">pub mod </span>hedge;
-<span class="attr">#[cfg(feature = <span class="string">&quot;limit&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;limit&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"limit"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"limit"</span>)))]
 </span><span class="kw">pub mod </span>limit;
-<span class="attr">#[cfg(feature = <span class="string">&quot;load&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;load&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"load"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"load"</span>)))]
 </span><span class="kw">pub mod </span>load;
-<span class="attr">#[cfg(feature = <span class="string">&quot;load-shed&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;load-shed&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"load-shed"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"load-shed"</span>)))]
 </span><span class="kw">pub mod </span>load_shed;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;make&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;make&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"make"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"make"</span>)))]
 </span><span class="kw">pub mod </span>make;
-<span class="attr">#[cfg(feature = <span class="string">&quot;ready-cache&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;ready-cache&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"ready-cache"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"ready-cache"</span>)))]
 </span><span class="kw">pub mod </span>ready_cache;
-<span class="attr">#[cfg(feature = <span class="string">&quot;reconnect&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;reconnect&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"reconnect"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"reconnect"</span>)))]
 </span><span class="kw">pub mod </span>reconnect;
-<span class="attr">#[cfg(feature = <span class="string">&quot;retry&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;retry&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"retry"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"retry"</span>)))]
 </span><span class="kw">pub mod </span>retry;
-<span class="attr">#[cfg(feature = <span class="string">&quot;spawn-ready&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;spawn-ready&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"spawn-ready"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"spawn-ready"</span>)))]
 </span><span class="kw">pub mod </span>spawn_ready;
-<span class="attr">#[cfg(feature = <span class="string">&quot;steer&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;steer&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"steer"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"steer"</span>)))]
 </span><span class="kw">pub mod </span>steer;
-<span class="attr">#[cfg(feature = <span class="string">&quot;timeout&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;timeout&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"timeout"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"timeout"</span>)))]
 </span><span class="kw">pub mod </span>timeout;
-<span class="attr">#[cfg(feature = <span class="string">&quot;util&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;util&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"util"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"util"</span>)))]
 </span><span class="kw">pub mod </span>util;
 
 <span class="kw">pub mod </span>builder;
 <span class="kw">pub mod </span>layer;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;util&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;util&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"util"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"util"</span>)))]
 #[doc(inline)]
 </span><span class="kw">pub use </span><span class="self">self</span>::util::{service_fn, ServiceExt};
 
 <span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span><span class="kw">crate</span>::builder::ServiceBuilder;
-<span class="attr">#[cfg(feature = <span class="string">&quot;make&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;make&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"make"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"make"</span>)))]
 #[doc(inline)]
 </span><span class="kw">pub use </span><span class="kw">crate</span>::make::MakeService;
 <span class="attr">#[doc(inline)]

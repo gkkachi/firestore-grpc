@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-futures-0.2.5/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="tracing_futures" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../tracing_futures/index.html"><img src="https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png" alt="tracing_futures"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-futures-0.2.5/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="tracing_futures" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><a class="sub-logo-container" href="../../tracing_futures/index.html"><img src="https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png" alt="tracing_futures"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -745,8 +746,8 @@
 //! - `futures-01`: Enables compatibility with version 0.1.x of the [`futures`]
 //!   crate.
 //! - `futures-03`: Enables compatibility with version 0.3.x of the `futures`
-//!   crate&#39;s `Spawn` and `LocalSpawn` traits.
-//! - `tokio-alpha`: Enables compatibility with `tokio` 0.2&#39;s alpha releases,
+//!   crate's `Spawn` and `LocalSpawn` traits.
+//! - `tokio-alpha`: Enables compatibility with `tokio` 0.2's alpha releases,
 //!   including the `tokio` 0.2 `Executor` and `TypedExecutor` traits.
 //! - `std`: Depend on the Rust standard library.
 //!
@@ -754,7 +755,7 @@
 //!
 //!   ```toml
 //!   [dependencies]
-//!   tracing-futures = { version = &quot;0.2.5&quot;, default-features = false }
+//!   tracing-futures = { version = "0.2.5", default-features = false }
 //!   ```
 //!
 //! The `tokio`, `std-future` and `std` features are enabled by default.
@@ -780,10 +781,10 @@
 //! supported compiler version is not considered a semver breaking change as
 //! long as doing so complies with this policy.
 //!
-</span><span class="attr">#![doc(html_root_url = <span class="string">&quot;https://docs.rs/tracing-futures/0.2.5&quot;</span>)]
+</span><span class="attr">#![doc(html_root_url = <span class="string">"https://docs.rs/tracing-futures/0.2.5"</span>)]
 #![doc(
-    html_logo_url = <span class="string">&quot;https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png&quot;</span>,
-    issue_tracker_base_url = <span class="string">&quot;https://github.com/tokio-rs/tracing/issues/&quot;
+    html_logo_url = <span class="string">"https://raw.githubusercontent.com/tokio-rs/tracing/master/assets/logo-type.png"</span>,
+    issue_tracker_base_url = <span class="string">"https://github.com/tokio-rs/tracing/issues/"
 </span>)]
 #![warn(
     missing_debug_implementations,
@@ -807,17 +808,17 @@
     unused_parens,
     while_true
 )]
-#![cfg_attr(not(feature = <span class="string">&quot;std&quot;</span>), no_std)]
+#![cfg_attr(not(feature = <span class="string">"std"</span>), no_std)]
 #![cfg_attr(docsrs, feature(doc_cfg), deny(broken_intra_doc_links))]
-#[cfg(feature = <span class="string">&quot;std-future&quot;</span>)]
+#[cfg(feature = <span class="string">"std-future"</span>)]
 </span><span class="kw">use </span>pin_project::pin_project;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>stdlib;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;std-future&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"std-future"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::stdlib::{pin::Pin, task::Context};
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
 </span><span class="kw">use </span>tracing::{dispatcher, Dispatch};
 
 <span class="kw">use </span>tracing::Span;
@@ -852,7 +853,7 @@
     /// };
     ///
     /// my_future
-    ///     .instrument(tracing::info_span!(&quot;my_future&quot;))
+    ///     .instrument(tracing::info_span!("my_future"))
     ///     .await
     /// # }
     /// ```
@@ -879,13 +880,13 @@
     /// use tracing_futures::Instrument;
     ///
     /// # async fn doc() {
-    /// let span = tracing::info_span!(&quot;my_span&quot;);
+    /// let span = tracing::info_span!("my_span");
     /// let _enter = span.enter();
     ///
     /// // ...
     ///
     /// let future = async {
-    ///     tracing::debug!(&quot;this event will occur inside `my_span`&quot;);
+    ///     tracing::debug!("this event will occur inside `my_span`");
     ///     // ...
     /// };
     /// tokio::spawn(future.in_current_span());
@@ -904,8 +905,8 @@
 /// a `tracing` [`Subscriber`].
 ///
 /// [`Subscriber`]: https://docs.rs/tracing/latest/tracing/subscriber/trait.Subscriber.html
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;std&quot;</span>)))]
+</span><span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"std"</span>)))]
 </span><span class="kw">pub trait </span>WithSubscriber: Sized {
     <span class="doccomment">/// Attaches the provided [`Subscriber`] to this type, returning a
     /// `WithDispatch` wrapper.
@@ -950,49 +951,49 @@
 }
 
 <span class="doccomment">/// A future, stream, sink, or executor that has been instrumented with a `tracing` span.
-</span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;std-future&quot;</span>, pin_project)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"std-future"</span>, pin_project)]
 #[derive(Debug, Clone)]
 </span><span class="kw">pub struct </span>Instrumented&lt;T&gt; {
-    <span class="attr">#[cfg(feature = <span class="string">&quot;std-future&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"std-future"</span>)]
     #[pin]
     </span>inner: T,
-    <span class="attr">#[cfg(not(feature = <span class="string">&quot;std-future&quot;</span>))]
+    <span class="attr">#[cfg(not(feature = <span class="string">"std-future"</span>))]
     </span>inner: T,
     span: Span,
 }
 
 <span class="doccomment">/// A future, stream, sink, or executor that has been instrumented with a
 /// `tracing` subscriber.
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;std&quot;</span>)))]
-#[cfg_attr(feature = <span class="string">&quot;std-future&quot;</span>, pin_project)]
+</span><span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"std"</span>)))]
+#[cfg_attr(feature = <span class="string">"std-future"</span>, pin_project)]
 #[derive(Clone, Debug)]
 </span><span class="kw">pub struct </span>WithDispatch&lt;T&gt; {
-    <span class="comment">// cfg_attr doesn&#39;t work inside structs, apparently...
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;std-future&quot;</span>)]
+    <span class="comment">// cfg_attr doesn't work inside structs, apparently...
+    </span><span class="attr">#[cfg(feature = <span class="string">"std-future"</span>)]
     #[pin]
     </span>inner: T,
-    <span class="attr">#[cfg(not(feature = <span class="string">&quot;std-future&quot;</span>))]
+    <span class="attr">#[cfg(not(feature = <span class="string">"std-future"</span>))]
     </span>inner: T,
     dispatch: Dispatch,
 }
 
 <span class="kw">impl</span>&lt;T: Sized&gt; Instrument <span class="kw">for </span>T {}
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;std-future&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;std-future&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"std-future"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"std-future"</span>)))]
 </span><span class="kw">impl</span>&lt;T: <span class="kw">crate</span>::stdlib::future::Future&gt; <span class="kw">crate</span>::stdlib::future::Future <span class="kw">for </span>Instrumented&lt;T&gt; {
     <span class="kw">type </span>Output = T::Output;
 
-    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="kw">crate</span>::stdlib::task::Poll&lt;<span class="self">Self</span>::Output&gt; {
+    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="kw">crate</span>::stdlib::task::Poll&lt;<span class="self">Self</span>::Output&gt; {
         <span class="kw">let </span>this = <span class="self">self</span>.project();
         <span class="kw">let </span>_enter = this.span.enter();
         this.inner.poll(cx)
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;futures-01&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;futures-01&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"futures-01"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"futures-01"</span>)))]
 </span><span class="kw">impl</span>&lt;T: futures_01::Future&gt; futures_01::Future <span class="kw">for </span>Instrumented&lt;T&gt; {
     <span class="kw">type </span>Item = T::Item;
     <span class="kw">type </span>Error = T::Error;
@@ -1003,8 +1004,8 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;futures-01&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;futures-01&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"futures-01"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"futures-01"</span>)))]
 </span><span class="kw">impl</span>&lt;T: futures_01::Stream&gt; futures_01::Stream <span class="kw">for </span>Instrumented&lt;T&gt; {
     <span class="kw">type </span>Item = T::Item;
     <span class="kw">type </span>Error = T::Error;
@@ -1015,8 +1016,8 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;futures-01&quot;</span>)]
-#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;futures-01&quot;</span>)))]
+<span class="attr">#[cfg(feature = <span class="string">"futures-01"</span>)]
+#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"futures-01"</span>)))]
 </span><span class="kw">impl</span>&lt;T: futures_01::Sink&gt; futures_01::Sink <span class="kw">for </span>Instrumented&lt;T&gt; {
     <span class="kw">type </span>SinkItem = T::SinkItem;
     <span class="kw">type </span>SinkError = T::SinkError;
@@ -1035,14 +1036,14 @@
     }
 }
 
-<span class="attr">#[cfg(all(feature = <span class="string">&quot;futures-03&quot;</span>, feature = <span class="string">&quot;std-future&quot;</span>))]
-#[cfg_attr(docsrs, doc(cfg(all(feature = <span class="string">&quot;futures-03&quot;</span>, feature = <span class="string">&quot;std-future&quot;</span>))))]
+<span class="attr">#[cfg(all(feature = <span class="string">"futures-03"</span>, feature = <span class="string">"std-future"</span>))]
+#[cfg_attr(docsrs, doc(cfg(all(feature = <span class="string">"futures-03"</span>, feature = <span class="string">"std-future"</span>))))]
 </span><span class="kw">impl</span>&lt;T: futures::Stream&gt; futures::Stream <span class="kw">for </span>Instrumented&lt;T&gt; {
     <span class="kw">type </span>Item = T::Item;
 
     <span class="kw">fn </span>poll_next(
         <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; futures::task::Poll&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt;&gt; {
         <span class="kw">let </span>this = <span class="self">self</span>.project();
         <span class="kw">let </span>_enter = this.span.enter();
@@ -1050,8 +1051,8 @@
     }
 }
 
-<span class="attr">#[cfg(all(feature = <span class="string">&quot;futures-03&quot;</span>, feature = <span class="string">&quot;std-future&quot;</span>))]
-#[cfg_attr(docsrs, doc(cfg(all(feature = <span class="string">&quot;futures-03&quot;</span>, feature = <span class="string">&quot;std-future&quot;</span>))))]
+<span class="attr">#[cfg(all(feature = <span class="string">"futures-03"</span>, feature = <span class="string">"std-future"</span>))]
+#[cfg_attr(docsrs, doc(cfg(all(feature = <span class="string">"futures-03"</span>, feature = <span class="string">"std-future"</span>))))]
 </span><span class="kw">impl</span>&lt;I, T: futures::Sink&lt;I&gt;&gt; futures::Sink&lt;I&gt; <span class="kw">for </span>Instrumented&lt;T&gt;
 <span class="kw">where
     </span>T: futures::Sink&lt;I&gt;,
@@ -1060,7 +1061,7 @@
 
     <span class="kw">fn </span>poll_ready(
         <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; futures::task::Poll&lt;<span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;&gt; {
         <span class="kw">let </span>this = <span class="self">self</span>.project();
         <span class="kw">let </span>_enter = this.span.enter();
@@ -1075,7 +1076,7 @@
 
     <span class="kw">fn </span>poll_flush(
         <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; futures::task::Poll&lt;<span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;&gt; {
         <span class="kw">let </span>this = <span class="self">self</span>.project();
         <span class="kw">let </span>_enter = this.span.enter();
@@ -1084,7 +1085,7 @@
 
     <span class="kw">fn </span>poll_close(
         <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; futures::task::Poll&lt;<span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;&gt; {
         <span class="kw">let </span>this = <span class="self">self</span>.project();
         <span class="kw">let </span>_enter = this.span.enter();
@@ -1114,15 +1115,15 @@
     }
 
     <span class="doccomment">/// Get a pinned reference to the wrapped type.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;std-future&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;std-future&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"std-future"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"std-future"</span>)))]
     </span><span class="kw">pub fn </span>inner_pin_ref(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; Pin&lt;<span class="kw-2">&amp;</span>T&gt; {
         <span class="self">self</span>.project_ref().inner
     }
 
     <span class="doccomment">/// Get a pinned mutable reference to the wrapped type.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;std-future&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;std-future&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"std-future"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"std-future"</span>)))]
     </span><span class="kw">pub fn </span>inner_pin_mut(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;) -&gt; Pin&lt;<span class="kw-2">&amp;mut </span>T&gt; {
         <span class="self">self</span>.project().inner
     }
@@ -1135,11 +1136,11 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
 </span><span class="kw">impl</span>&lt;T: Sized&gt; WithSubscriber <span class="kw">for </span>T {}
 
-<span class="attr">#[cfg(all(feature = <span class="string">&quot;futures-01&quot;</span>, feature = <span class="string">&quot;std&quot;</span>))]
-#[cfg_attr(docsrs, doc(cfg(all(feature = <span class="string">&quot;futures-01&quot;</span>, feature = <span class="string">&quot;std&quot;</span>))))]
+<span class="attr">#[cfg(all(feature = <span class="string">"futures-01"</span>, feature = <span class="string">"std"</span>))]
+#[cfg_attr(docsrs, doc(cfg(all(feature = <span class="string">"futures-01"</span>, feature = <span class="string">"std"</span>))))]
 </span><span class="kw">impl</span>&lt;T: futures_01::Future&gt; futures_01::Future <span class="kw">for </span>WithDispatch&lt;T&gt; {
     <span class="kw">type </span>Item = T::Item;
     <span class="kw">type </span>Error = T::Error;
@@ -1150,12 +1151,12 @@
     }
 }
 
-<span class="attr">#[cfg(all(feature = <span class="string">&quot;std-future&quot;</span>, feature = <span class="string">&quot;std&quot;</span>))]
-#[cfg_attr(docsrs, doc(cfg(all(feature = <span class="string">&quot;std-future&quot;</span>, feature = <span class="string">&quot;std&quot;</span>))))]
+<span class="attr">#[cfg(all(feature = <span class="string">"std-future"</span>, feature = <span class="string">"std"</span>))]
+#[cfg_attr(docsrs, doc(cfg(all(feature = <span class="string">"std-future"</span>, feature = <span class="string">"std"</span>))))]
 </span><span class="kw">impl</span>&lt;T: <span class="kw">crate</span>::stdlib::future::Future&gt; <span class="kw">crate</span>::stdlib::future::Future <span class="kw">for </span>WithDispatch&lt;T&gt; {
     <span class="kw">type </span>Output = T::Output;
 
-    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="kw">crate</span>::stdlib::task::Poll&lt;<span class="self">Self</span>::Output&gt; {
+    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="kw">crate</span>::stdlib::task::Poll&lt;<span class="self">Self</span>::Output&gt; {
         <span class="kw">let </span>this = <span class="self">self</span>.project();
         <span class="kw">let </span>dispatch = this.dispatch;
         <span class="kw">let </span>future = this.inner;
@@ -1163,7 +1164,7 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
 </span><span class="kw">impl</span>&lt;T&gt; WithDispatch&lt;T&gt; {
     <span class="doccomment">/// Wrap a future, stream, sink or executor with the same subscriber as this WithDispatch.
     </span><span class="kw">pub fn </span>with_dispatch&lt;U&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, inner: U) -&gt; WithDispatch&lt;U&gt; {
@@ -1179,15 +1180,15 @@
     }
 
     <span class="doccomment">/// Get a pinned reference to the wrapped type.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;std-future&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;std-future&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"std-future"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"std-future"</span>)))]
     </span><span class="kw">pub fn </span>inner_pin_ref(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; Pin&lt;<span class="kw-2">&amp;</span>T&gt; {
         <span class="self">self</span>.project_ref().inner
     }
 
     <span class="doccomment">/// Get a pinned mutable reference to the wrapped type.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;std-future&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;std-future&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"std-future"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"std-future"</span>)))]
     </span><span class="kw">pub fn </span>inner_pin_mut(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;) -&gt; Pin&lt;<span class="kw-2">&amp;mut </span>T&gt; {
         <span class="self">self</span>.project().inner
     }
@@ -1211,7 +1212,7 @@
 <span class="attr">#[cfg(test)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span><span class="self">self</span>::support <span class="kw">as </span>test_support;
 <span class="comment">// This has to have the same name as the module in `tracing`.
-</span><span class="attr">#[path = <span class="string">&quot;../../tracing/tests/support/mod.rs&quot;</span>]
+</span><span class="attr">#[path = <span class="string">"../../tracing/tests/support/mod.rs"</span>]
 #[cfg(test)]
 #[allow(unreachable_pub)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>support;
@@ -1220,7 +1221,7 @@
 </span><span class="kw">mod </span>tests {
     <span class="kw">use super</span>::{test_support::<span class="kw-2">*</span>, <span class="kw-2">*</span>};
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;futures-01&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"futures-01"</span>)]
     </span><span class="kw">mod </span>futures_01_tests {
         <span class="kw">use </span>futures_01::{future, stream, task, Async, Future, Stream};
         <span class="kw">use </span>tracing::subscriber::with_default;
@@ -1259,7 +1260,7 @@
                 <span class="kw">if </span><span class="self">self</span>.polls == <span class="self">self</span>.finish_at {
                     <span class="self">self</span>.and_return
                         .take()
-                        .expect(<span class="string">&quot;polled after ready&quot;</span>)
+                        .expect(<span class="string">"polled after ready"</span>)
                         .map(Async::Ready)
                 } <span class="kw">else </span>{
                     task::current().notify();
@@ -1271,16 +1272,16 @@
         <span class="attr">#[test]
         </span><span class="kw">fn </span>future_enter_exit_is_reasonable() {
             <span class="kw">let </span>(subscriber, handle) = subscriber::mock()
-                .enter(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .enter(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .drop_span(span::mock().named(<span class="string">&quot;foo&quot;</span>))
+                .enter(span::mock().named(<span class="string">"foo"</span>))
+                .exit(span::mock().named(<span class="string">"foo"</span>))
+                .enter(span::mock().named(<span class="string">"foo"</span>))
+                .exit(span::mock().named(<span class="string">"foo"</span>))
+                .drop_span(span::mock().named(<span class="string">"foo"</span>))
                 .done()
                 .run_with_handle();
             with_default(subscriber, || {
                 PollN::new_ok(<span class="number">2</span>)
-                    .instrument(<span class="macro">tracing::trace_span!</span>(<span class="string">&quot;foo&quot;</span>))
+                    .instrument(<span class="macro">tracing::trace_span!</span>(<span class="string">"foo"</span>))
                     .wait()
                     .unwrap();
             });
@@ -1290,16 +1291,16 @@
         <span class="attr">#[test]
         </span><span class="kw">fn </span>future_error_ends_span() {
             <span class="kw">let </span>(subscriber, handle) = subscriber::mock()
-                .enter(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .enter(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .drop_span(span::mock().named(<span class="string">&quot;foo&quot;</span>))
+                .enter(span::mock().named(<span class="string">"foo"</span>))
+                .exit(span::mock().named(<span class="string">"foo"</span>))
+                .enter(span::mock().named(<span class="string">"foo"</span>))
+                .exit(span::mock().named(<span class="string">"foo"</span>))
+                .drop_span(span::mock().named(<span class="string">"foo"</span>))
                 .done()
                 .run_with_handle();
             with_default(subscriber, || {
                 PollN::new_err(<span class="number">2</span>)
-                    .instrument(<span class="macro">tracing::trace_span!</span>(<span class="string">&quot;foo&quot;</span>))
+                    .instrument(<span class="macro">tracing::trace_span!</span>(<span class="string">"foo"</span>))
                     .wait()
                     .unwrap_err();
             });
@@ -1310,19 +1311,19 @@
         <span class="attr">#[test]
         </span><span class="kw">fn </span>stream_enter_exit_is_reasonable() {
             <span class="kw">let </span>(subscriber, handle) = subscriber::mock()
-                .enter(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .enter(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .enter(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .enter(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .drop_span(span::mock().named(<span class="string">&quot;foo&quot;</span>))
+                .enter(span::mock().named(<span class="string">"foo"</span>))
+                .exit(span::mock().named(<span class="string">"foo"</span>))
+                .enter(span::mock().named(<span class="string">"foo"</span>))
+                .exit(span::mock().named(<span class="string">"foo"</span>))
+                .enter(span::mock().named(<span class="string">"foo"</span>))
+                .exit(span::mock().named(<span class="string">"foo"</span>))
+                .enter(span::mock().named(<span class="string">"foo"</span>))
+                .exit(span::mock().named(<span class="string">"foo"</span>))
+                .drop_span(span::mock().named(<span class="string">"foo"</span>))
                 .run_with_handle();
             with_default(subscriber, || {
                 stream::iter_ok::&lt;<span class="kw">_</span>, ()&gt;(<span class="kw-2">&amp;</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])
-                    .instrument(<span class="macro">tracing::trace_span!</span>(<span class="string">&quot;foo&quot;</span>))
+                    .instrument(<span class="macro">tracing::trace_span!</span>(<span class="string">"foo"</span>))
                     .for_each(|<span class="kw">_</span>| future::ok(()))
                     .wait()
                     .unwrap();
@@ -1333,25 +1334,25 @@
         <span class="attr">#[test]
         </span><span class="kw">fn </span>span_follows_future_onto_threadpool() {
             <span class="kw">let </span>(subscriber, handle) = subscriber::mock()
-                .enter(span::mock().named(<span class="string">&quot;a&quot;</span>))
-                .enter(span::mock().named(<span class="string">&quot;b&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;b&quot;</span>))
-                .enter(span::mock().named(<span class="string">&quot;b&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;b&quot;</span>))
-                .drop_span(span::mock().named(<span class="string">&quot;b&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;a&quot;</span>))
-                .drop_span(span::mock().named(<span class="string">&quot;a&quot;</span>))
+                .enter(span::mock().named(<span class="string">"a"</span>))
+                .enter(span::mock().named(<span class="string">"b"</span>))
+                .exit(span::mock().named(<span class="string">"b"</span>))
+                .enter(span::mock().named(<span class="string">"b"</span>))
+                .exit(span::mock().named(<span class="string">"b"</span>))
+                .drop_span(span::mock().named(<span class="string">"b"</span>))
+                .exit(span::mock().named(<span class="string">"a"</span>))
+                .drop_span(span::mock().named(<span class="string">"a"</span>))
                 .done()
                 .run_with_handle();
             <span class="kw">let </span><span class="kw-2">mut </span>runtime = tokio::runtime::Runtime::new().unwrap();
             with_default(subscriber, || {
-                <span class="macro">tracing::trace_span!</span>(<span class="string">&quot;a&quot;</span>).in_scope(|| {
+                <span class="macro">tracing::trace_span!</span>(<span class="string">"a"</span>).in_scope(|| {
                     <span class="kw">let </span>future = PollN::new_ok(<span class="number">2</span>)
-                        .instrument(<span class="macro">tracing::trace_span!</span>(<span class="string">&quot;b&quot;</span>))
+                        .instrument(<span class="macro">tracing::trace_span!</span>(<span class="string">"b"</span>))
                         .map(|<span class="kw">_</span>| {
-                            <span class="macro">tracing::trace_span!</span>(<span class="string">&quot;c&quot;</span>).in_scope(|| {
-                                <span class="comment">// &quot;c&quot; happens _outside_ of the instrumented future&#39;s
-                                // span, so we don&#39;t expect it.
+                            <span class="macro">tracing::trace_span!</span>(<span class="string">"c"</span>).in_scope(|| {
+                                <span class="comment">// "c" happens _outside_ of the instrumented future's
+                                // span, so we don't expect it.
                             </span>})
                         });
                     runtime.block_on(Box::new(future)).unwrap();
@@ -1361,7 +1362,7 @@
         }
     }
 
-    <span class="attr">#[cfg(all(feature = <span class="string">&quot;futures-03&quot;</span>, feature = <span class="string">&quot;std-future&quot;</span>))]
+    <span class="attr">#[cfg(all(feature = <span class="string">"futures-03"</span>, feature = <span class="string">"std-future"</span>))]
     </span><span class="kw">mod </span>futures_03_tests {
         <span class="kw">use </span>futures::{future, sink, stream, FutureExt, SinkExt, StreamExt};
         <span class="kw">use </span>tracing::subscriber::with_default;
@@ -1371,18 +1372,18 @@
         <span class="attr">#[test]
         </span><span class="kw">fn </span>stream_enter_exit_is_reasonable() {
             <span class="kw">let </span>(subscriber, handle) = subscriber::mock()
-                .enter(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .enter(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .enter(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .enter(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .drop_span(span::mock().named(<span class="string">&quot;foo&quot;</span>))
+                .enter(span::mock().named(<span class="string">"foo"</span>))
+                .exit(span::mock().named(<span class="string">"foo"</span>))
+                .enter(span::mock().named(<span class="string">"foo"</span>))
+                .exit(span::mock().named(<span class="string">"foo"</span>))
+                .enter(span::mock().named(<span class="string">"foo"</span>))
+                .exit(span::mock().named(<span class="string">"foo"</span>))
+                .enter(span::mock().named(<span class="string">"foo"</span>))
+                .exit(span::mock().named(<span class="string">"foo"</span>))
+                .drop_span(span::mock().named(<span class="string">"foo"</span>))
                 .run_with_handle();
             with_default(subscriber, || {
-                Instrument::instrument(stream::iter(<span class="kw-2">&amp;</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]), <span class="macro">tracing::trace_span!</span>(<span class="string">&quot;foo&quot;</span>))
+                Instrument::instrument(stream::iter(<span class="kw-2">&amp;</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]), <span class="macro">tracing::trace_span!</span>(<span class="string">"foo"</span>))
                     .for_each(|<span class="kw">_</span>| future::ready(()))
                     .now_or_never()
                     .unwrap();
@@ -1393,16 +1394,16 @@
         <span class="attr">#[test]
         </span><span class="kw">fn </span>sink_enter_exit_is_reasonable() {
             <span class="kw">let </span>(subscriber, handle) = subscriber::mock()
-                .enter(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .enter(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .enter(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .exit(span::mock().named(<span class="string">&quot;foo&quot;</span>))
-                .drop_span(span::mock().named(<span class="string">&quot;foo&quot;</span>))
+                .enter(span::mock().named(<span class="string">"foo"</span>))
+                .exit(span::mock().named(<span class="string">"foo"</span>))
+                .enter(span::mock().named(<span class="string">"foo"</span>))
+                .exit(span::mock().named(<span class="string">"foo"</span>))
+                .enter(span::mock().named(<span class="string">"foo"</span>))
+                .exit(span::mock().named(<span class="string">"foo"</span>))
+                .drop_span(span::mock().named(<span class="string">"foo"</span>))
                 .run_with_handle();
             with_default(subscriber, || {
-                Instrument::instrument(sink::drain(), <span class="macro">tracing::trace_span!</span>(<span class="string">&quot;foo&quot;</span>))
+                Instrument::instrument(sink::drain(), <span class="macro">tracing::trace_span!</span>(<span class="string">"foo"</span>))
                     .send(<span class="number">1u8</span>)
                     .now_or_never()
                     .unwrap()

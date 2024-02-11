@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.9.0/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="prost_derive" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.9.0/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="prost_derive" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -468,9 +469,9 @@
 <a href="#468" id="468">468</a>
 <a href="#469" id="469">469</a>
 <a href="#470" id="470">470</a>
-</pre></div><pre class="rust"><code><span class="attr">#![doc(html_root_url = <span class="string">&quot;https://docs.rs/prost-derive/0.9.0&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#![doc(html_root_url = <span class="string">"https://docs.rs/prost-derive/0.9.0"</span>)]
 </span><span class="comment">// The `quote!` macro requires deep recursion.
-</span><span class="attr">#![recursion_limit = <span class="string">&quot;4096&quot;</span>]
+</span><span class="attr">#![recursion_limit = <span class="string">"4096"</span>]
 
 </span><span class="kw">extern crate </span>alloc;
 <span class="kw">extern crate </span>proc_macro;
@@ -495,8 +496,8 @@
 
     <span class="kw">let </span>variant_data = <span class="kw">match </span>input.data {
         Data::Struct(variant_data) =&gt; variant_data,
-        Data::Enum(..) =&gt; <span class="macro">bail!</span>(<span class="string">&quot;Message can not be derived for an enum&quot;</span>),
-        Data::Union(..) =&gt; <span class="macro">bail!</span>(<span class="string">&quot;Message can not be derived for a union&quot;</span>),
+        Data::Enum(..) =&gt; <span class="macro">bail!</span>(<span class="string">"Message can not be derived for an enum"</span>),
+        Data::Union(..) =&gt; <span class="macro">bail!</span>(<span class="string">"Message can not be derived for a union"</span>),
     };
 
     <span class="kw">let </span>generics = <span class="kw-2">&amp;</span>input.generics;
@@ -535,7 +536,7 @@
                 }
                 <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">None</span>,
                 <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(
-                    err.context(<span class="macro">format!</span>(<span class="string">&quot;invalid message field {}.{}&quot;</span>, ident, field_ident))
+                    err.context(<span class="macro">format!</span>(<span class="string">"invalid message field {}.{}"</span>, ident, field_ident))
                 )),
             }
         })
@@ -559,7 +560,7 @@
     tags.sort_unstable();
     tags.dedup();
     <span class="kw">if </span>tags.len() != num_tags {
-        <span class="macro">bail!</span>(<span class="string">&quot;message {} has fields with duplicate tags&quot;</span>, ident);
+        <span class="macro">bail!</span>(<span class="string">"message {} has fields with duplicate tags"</span>, ident);
     }
 
     <span class="kw">let </span>encoded_len = fields
@@ -590,7 +591,7 @@
         <span class="macro">quote!</span>()
     } <span class="kw">else </span>{
         <span class="macro">quote!</span>(
-            <span class="kw">const </span>STRUCT_NAME: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="macro">stringify!</span>(#ident);
+            <span class="kw">const </span>STRUCT_NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="macro">stringify!</span>(#ident);
         )
     };
 
@@ -710,11 +711,11 @@
 
     <span class="kw">let </span>punctuated_variants = <span class="kw">match </span>input.data {
         Data::Enum(DataEnum { variants, .. }) =&gt; variants,
-        Data::Struct(<span class="kw">_</span>) =&gt; <span class="macro">bail!</span>(<span class="string">&quot;Enumeration can not be derived for a struct&quot;</span>),
-        Data::Union(..) =&gt; <span class="macro">bail!</span>(<span class="string">&quot;Enumeration can not be derived for a union&quot;</span>),
+        Data::Struct(<span class="kw">_</span>) =&gt; <span class="macro">bail!</span>(<span class="string">"Enumeration can not be derived for a struct"</span>),
+        Data::Union(..) =&gt; <span class="macro">bail!</span>(<span class="string">"Enumeration can not be derived for a union"</span>),
     };
 
-    <span class="comment">// Map the variants into &#39;fields&#39;.
+    <span class="comment">// Map the variants into 'fields'.
     </span><span class="kw">let </span><span class="kw-2">mut </span>variants: Vec&lt;(Ident, Expr)&gt; = Vec::new();
     <span class="kw">for </span>Variant {
         ident,
@@ -726,18 +727,18 @@
         <span class="kw">match </span>fields {
             Fields::Unit =&gt; (),
             Fields::Named(<span class="kw">_</span>) | Fields::Unnamed(<span class="kw">_</span>) =&gt; {
-                <span class="macro">bail!</span>(<span class="string">&quot;Enumeration variants may not have fields&quot;</span>)
+                <span class="macro">bail!</span>(<span class="string">"Enumeration variants may not have fields"</span>)
             }
         }
 
         <span class="kw">match </span>discriminant {
             <span class="prelude-val">Some</span>((<span class="kw">_</span>, expr)) =&gt; variants.push((ident, expr)),
-            <span class="prelude-val">None </span>=&gt; <span class="macro">bail!</span>(<span class="string">&quot;Enumeration variants must have a disriminant&quot;</span>),
+            <span class="prelude-val">None </span>=&gt; <span class="macro">bail!</span>(<span class="string">"Enumeration variants must have a disriminant"</span>),
         }
     }
 
     <span class="kw">if </span>variants.is_empty() {
-        <span class="macro">panic!</span>(<span class="string">&quot;Enumeration must have at least one variant&quot;</span>);
+        <span class="macro">panic!</span>(<span class="string">"Enumeration must have at least one variant"</span>);
     }
 
     <span class="kw">let </span>default = variants[<span class="number">0</span>].<span class="number">0</span>.clone();
@@ -749,9 +750,9 @@
         |<span class="kw-2">&amp;</span>(<span class="kw-2">ref </span>variant, <span class="kw-2">ref </span>value)| <span class="macro">quote!</span>(#value =&gt; ::core::option::Option::Some(#ident::#variant)),
     );
 
-    <span class="kw">let </span>is_valid_doc = <span class="macro">format!</span>(<span class="string">&quot;Returns `true` if `value` is a variant of `{}`.&quot;</span>, ident);
+    <span class="kw">let </span>is_valid_doc = <span class="macro">format!</span>(<span class="string">"Returns `true` if `value` is a variant of `{}`."</span>, ident);
     <span class="kw">let </span>from_i32_doc = <span class="macro">format!</span>(
-        <span class="string">&quot;Converts an `i32` to a `{}`, or `None` if `value` is not a valid variant.&quot;</span>,
+        <span class="string">"Converts an `i32` to a `{}`, or `None` if `value` is not a valid variant."</span>,
         ident
     );
 
@@ -802,14 +803,14 @@
 
     <span class="kw">let </span>variants = <span class="kw">match </span>input.data {
         Data::Enum(DataEnum { variants, .. }) =&gt; variants,
-        Data::Struct(..) =&gt; <span class="macro">bail!</span>(<span class="string">&quot;Oneof can not be derived for a struct&quot;</span>),
-        Data::Union(..) =&gt; <span class="macro">bail!</span>(<span class="string">&quot;Oneof can not be derived for a union&quot;</span>),
+        Data::Struct(..) =&gt; <span class="macro">bail!</span>(<span class="string">"Oneof can not be derived for a struct"</span>),
+        Data::Union(..) =&gt; <span class="macro">bail!</span>(<span class="string">"Oneof can not be derived for a union"</span>),
     };
 
     <span class="kw">let </span>generics = <span class="kw-2">&amp;</span>input.generics;
     <span class="kw">let </span>(impl_generics, ty_generics, where_clause) = generics.split_for_impl();
 
-    <span class="comment">// Map the variants into &#39;fields&#39;.
+    <span class="comment">// Map the variants into 'fields'.
     </span><span class="kw">let </span><span class="kw-2">mut </span>fields: Vec&lt;(Ident, Field)&gt; = Vec::new();
     <span class="kw">for </span>Variant {
         attrs,
@@ -826,11 +827,11 @@
             }) =&gt; fields,
         };
         <span class="kw">if </span>variant_fields.len() != <span class="number">1 </span>{
-            <span class="macro">bail!</span>(<span class="string">&quot;Oneof enum variants must have a single field&quot;</span>);
+            <span class="macro">bail!</span>(<span class="string">"Oneof enum variants must have a single field"</span>);
         }
         <span class="kw">match </span>Field::new_oneof(attrs)<span class="question-mark">? </span>{
             <span class="prelude-val">Some</span>(field) =&gt; fields.push((variant_ident, field)),
-            <span class="prelude-val">None </span>=&gt; <span class="macro">bail!</span>(<span class="string">&quot;invalid oneof variant: oneof variants may not be ignored&quot;</span>),
+            <span class="prelude-val">None </span>=&gt; <span class="macro">bail!</span>(<span class="string">"invalid oneof variant: oneof variants may not be ignored"</span>),
         }
     }
 
@@ -839,7 +840,7 @@
         .flat_map(|<span class="kw-2">&amp;</span>(<span class="kw-2">ref </span>variant_ident, <span class="kw-2">ref </span>field)| -&gt; <span class="prelude-ty">Result</span>&lt;u32, Error&gt; {
             <span class="kw">if </span>field.tags().len() &gt; <span class="number">1 </span>{
                 <span class="macro">bail!</span>(
-                    <span class="string">&quot;invalid oneof variant {}::{}: oneof variants may only have a single tag&quot;</span>,
+                    <span class="string">"invalid oneof variant {}::{}: oneof variants may only have a single tag"</span>,
                     ident,
                     variant_ident
                 );
@@ -850,7 +851,7 @@
     tags.sort_unstable();
     tags.dedup();
     <span class="kw">if </span>tags.len() != fields.len() {
-        <span class="macro">panic!</span>(<span class="string">&quot;invalid oneof {}: variants have duplicate tags&quot;</span>, ident);
+        <span class="macro">panic!</span>(<span class="string">"invalid oneof {}: variants have duplicate tags"</span>, ident);
     }
 
     <span class="kw">let </span>encode = fields.iter().map(|<span class="kw-2">&amp;</span>(<span class="kw-2">ref </span>variant_ident, <span class="kw-2">ref </span>field)| {
@@ -910,7 +911,7 @@
             <span class="kw">where </span>B: ::prost::bytes::Buf {
                 <span class="kw">match </span>tag {
                     #(#merge,)*
-                    <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(<span class="macro">concat!</span>(<span class="string">&quot;invalid &quot;</span>, <span class="macro">stringify!</span>(#ident), <span class="string">&quot; tag: {}&quot;</span>), tag),
+                    <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(<span class="macro">concat!</span>(<span class="string">"invalid "</span>, <span class="macro">stringify!</span>(#ident), <span class="string">" tag: {}"</span>), tag),
                 }
             }
 

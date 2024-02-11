@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-0.19.1/src/verify.rs`."><title>verify.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustls" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-0.19.1/src/verify.rs`."><title>verify.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustls" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -654,13 +655,13 @@
 <span class="kw">use </span><span class="kw">crate</span>::anchors::{DistinguishedNames, RootCertStore};
 <span class="kw">use </span><span class="kw">crate</span>::error::TLSError;
 <span class="kw">use </span><span class="kw">crate</span>::key::Certificate;
-<span class="attr">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"logging"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::log::{debug, trace, warn};
 <span class="kw">use </span><span class="kw">crate</span>::msgs::enums::SignatureScheme;
 <span class="kw">use </span><span class="kw">crate</span>::msgs::handshake::DigitallySignedStruct;
 <span class="kw">use </span><span class="kw">crate</span>::msgs::handshake::SCTList;
 
-<span class="kw">type </span>SignatureAlgorithms = <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>webpki::SignatureAlgorithm];
+<span class="kw">type </span>SignatureAlgorithms = <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>webpki::SignatureAlgorithm];
 
 <span class="doccomment">/// Which signature verification mechanisms we support.  No particular
 /// order.
@@ -682,7 +683,7 @@
 <span class="doccomment">/// Marker types.  These are used to bind the fact some verification
 /// (certificate chain or handshake signature) has taken place into
 /// protocol states.  We use this to have the compiler check that there
-/// are no &#39;goto fail&#39;-style elisions of important checks before we
+/// are no 'goto fail'-style elisions of important checks before we
 /// reach the traffic stage.
 ///
 /// These types are public, but cannot be directly constructed.  This
@@ -923,7 +924,7 @@
             .map(|<span class="kw">_</span>| cert)<span class="question-mark">?</span>;
 
         <span class="kw">if </span>!ocsp_response.is_empty() {
-            <span class="macro">trace!</span>(<span class="string">&quot;Unvalidated OCSP response: {:?}&quot;</span>, ocsp_response.to_vec());
+            <span class="macro">trace!</span>(<span class="string">"Unvalidated OCSP response: {:?}"</span>, ocsp_response.to_vec());
         }
 
         cert.verify_is_valid_for_dns_name(dns_name)
@@ -961,16 +962,16 @@
     }
 }
 
-<span class="kw">type </span>CertChainAndRoots&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt; = (
-    webpki::EndEntityCert&lt;<span class="lifetime">&#39;a</span>&gt;,
-    Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8]&gt;,
-    Vec&lt;webpki::TrustAnchor&lt;<span class="lifetime">&#39;b</span>&gt;&gt;,
+<span class="kw">type </span>CertChainAndRoots&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>&gt; = (
+    webpki::EndEntityCert&lt;<span class="lifetime">'a</span>&gt;,
+    Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8]&gt;,
+    Vec&lt;webpki::TrustAnchor&lt;<span class="lifetime">'b</span>&gt;&gt;,
 );
 
-<span class="kw">fn </span>prepare&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt;(
-    roots: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>RootCertStore,
-    presented_certs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[Certificate],
-) -&gt; <span class="prelude-ty">Result</span>&lt;CertChainAndRoots&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt;, TLSError&gt; {
+<span class="kw">fn </span>prepare&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>&gt;(
+    roots: <span class="kw-2">&amp;</span><span class="lifetime">'b </span>RootCertStore,
+    presented_certs: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[Certificate],
+) -&gt; <span class="prelude-ty">Result</span>&lt;CertChainAndRoots&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>&gt;, TLSError&gt; {
     <span class="kw">if </span>presented_certs.is_empty() {
         <span class="kw">return </span><span class="prelude-val">Err</span>(TLSError::NoCertificatesPresented);
     }
@@ -978,7 +979,7 @@
     <span class="comment">// EE cert must appear first.
     </span><span class="kw">let </span>cert = webpki::EndEntityCert::from(<span class="kw-2">&amp;</span>presented_certs[<span class="number">0</span>].<span class="number">0</span>).map_err(TLSError::WebPKIError)<span class="question-mark">?</span>;
 
-    <span class="kw">let </span>chain: Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8]&gt; = presented_certs
+    <span class="kw">let </span>chain: Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8]&gt; = presented_certs
         .iter()
         .skip(<span class="number">1</span>)
         .map(|cert| cert.<span class="number">0</span>.as_ref())
@@ -1158,7 +1159,7 @@
         SignatureScheme::RSA_PSS_SHA512 =&gt; <span class="prelude-val">Ok</span>(RSA_PSS_SHA512),
 
         <span class="kw">_ </span>=&gt; {
-            <span class="kw">let </span>error_msg = <span class="macro">format!</span>(<span class="string">&quot;received unadvertised sig scheme {:?}&quot;</span>, scheme);
+            <span class="kw">let </span>error_msg = <span class="macro">format!</span>(<span class="string">"received unadvertised sig scheme {:?}"</span>, scheme);
             <span class="prelude-val">Err</span>(TLSError::PeerMisbehavedError(error_msg))
         }
     }
@@ -1170,7 +1171,7 @@
     message: <span class="kw-2">&amp;</span>[u8],
     sig: <span class="kw-2">&amp;</span>[u8],
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(), webpki::Error&gt; {
-    <span class="comment">// TLS doesn&#39;t itself give us enough info to map to a single webpki::SignatureAlgorithm.
+    <span class="comment">// TLS doesn't itself give us enough info to map to a single webpki::SignatureAlgorithm.
     // Therefore, convert_algs maps to several and we try them all.
     </span><span class="kw">for </span>alg <span class="kw">in </span>algs {
         <span class="kw">match </span>cert.verify_signature(alg, message, sig) {
@@ -1197,7 +1198,7 @@
 
 <span class="kw">fn </span>convert_alg_tls13(
     scheme: SignatureScheme,
-) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>webpki::SignatureAlgorithm, TLSError&gt; {
+) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>webpki::SignatureAlgorithm, TLSError&gt; {
     <span class="kw">use </span><span class="kw">crate</span>::msgs::enums::SignatureScheme::<span class="kw-2">*</span>;
 
     <span class="kw">match </span>scheme {
@@ -1208,7 +1209,7 @@
         RSA_PSS_SHA384 =&gt; <span class="prelude-val">Ok</span>(<span class="kw-2">&amp;</span>webpki::RSA_PSS_2048_8192_SHA384_LEGACY_KEY),
         RSA_PSS_SHA512 =&gt; <span class="prelude-val">Ok</span>(<span class="kw-2">&amp;</span>webpki::RSA_PSS_2048_8192_SHA512_LEGACY_KEY),
         <span class="kw">_ </span>=&gt; {
-            <span class="kw">let </span>error_msg = <span class="macro">format!</span>(<span class="string">&quot;received unsupported sig scheme {:?}&quot;</span>, scheme);
+            <span class="kw">let </span>error_msg = <span class="macro">format!</span>(<span class="string">"received unsupported sig scheme {:?}"</span>, scheme);
             <span class="prelude-val">Err</span>(TLSError::PeerMisbehavedError(error_msg))
         }
     }
@@ -1216,12 +1217,12 @@
 
 <span class="doccomment">/// Constructs the signature message specified in section 4.4.3 of RFC8446.
 </span><span class="kw">pub fn </span>construct_tls13_client_verify_message(handshake_hash: <span class="kw-2">&amp;</span>[u8]) -&gt; Vec&lt;u8&gt; {
-    construct_tls13_verify_message(handshake_hash, <span class="string">b&quot;TLS 1.3, client CertificateVerify\x00&quot;</span>)
+    construct_tls13_verify_message(handshake_hash, <span class="string">b"TLS 1.3, client CertificateVerify\x00"</span>)
 }
 
 <span class="doccomment">/// Constructs the signature message specified in section 4.4.3 of RFC8446.
 </span><span class="kw">pub fn </span>construct_tls13_server_verify_message(handshake_hash: <span class="kw-2">&amp;</span>[u8]) -&gt; Vec&lt;u8&gt; {
-    construct_tls13_verify_message(handshake_hash, <span class="string">b&quot;TLS 1.3, server CertificateVerify\x00&quot;</span>)
+    construct_tls13_verify_message(handshake_hash, <span class="string">b"TLS 1.3, server CertificateVerify\x00"</span>)
 }
 
 <span class="kw">fn </span>construct_tls13_verify_message(handshake_hash: <span class="kw-2">&amp;</span>[u8], context_string_with_0: <span class="kw-2">&amp;</span>[u8]) -&gt; Vec&lt;u8&gt; {
@@ -1264,11 +1265,11 @@
     <span class="kw">let </span><span class="kw-2">mut </span>last_sct_error = <span class="prelude-val">None</span>;
 
     <span class="kw">for </span>sct <span class="kw">in </span>scts {
-        <span class="attr">#[cfg_attr(not(feature = <span class="string">&quot;logging&quot;</span>), allow(unused_variables))]
+        <span class="attr">#[cfg_attr(not(feature = <span class="string">"logging"</span>), allow(unused_variables))]
         </span><span class="kw">match </span>sct::verify_sct(<span class="kw-2">&amp;</span>cert.<span class="number">0</span>, <span class="kw-2">&amp;</span>sct.<span class="number">0</span>, now, logs) {
             <span class="prelude-val">Ok</span>(index) =&gt; {
                 <span class="macro">debug!</span>(
-                    <span class="string">&quot;Valid SCT signed by {} on {}&quot;</span>,
+                    <span class="string">"Valid SCT signed by {} on {}"</span>,
                     logs[index].operated_by, logs[index].description
                 );
                 valid_scts += <span class="number">1</span>;
@@ -1277,16 +1278,16 @@
                 <span class="kw">if </span>e.should_be_fatal() {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(TLSError::InvalidSCT(e));
                 }
-                <span class="macro">debug!</span>(<span class="string">&quot;SCT ignored because {:?}&quot;</span>, e);
+                <span class="macro">debug!</span>(<span class="string">"SCT ignored because {:?}"</span>, e);
                 last_sct_error = <span class="prelude-val">Some</span>(e);
             }
         }
     }
 
     <span class="comment">/* If we were supplied with some logs, and some SCTs,
-     * but couldn&#39;t verify any of them, fail the handshake. */
+     * but couldn't verify any of them, fail the handshake. */
     </span><span class="kw">if </span>!logs.is_empty() &amp;&amp; !scts.is_empty() &amp;&amp; valid_scts == <span class="number">0 </span>{
-        <span class="macro">warn!</span>(<span class="string">&quot;No valid SCTs provided&quot;</span>);
+        <span class="macro">warn!</span>(<span class="string">"No valid SCTs provided"</span>);
         <span class="kw">return </span><span class="prelude-val">Err</span>(TLSError::InvalidSCT(last_sct_error.unwrap()));
     }
 

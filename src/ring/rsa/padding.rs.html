@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ring-0.16.20/src/rsa/padding.rs`."><title>padding.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="ring" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ring-0.16.20/src/rsa/padding.rs`."><title>padding.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="ring" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -605,7 +606,7 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
@@ -616,20 +617,20 @@
 </span><span class="kw">use </span><span class="kw">super</span>::PUBLIC_KEY_PUBLIC_MODULUS_MAX_LEN;
 <span class="kw">use crate</span>::{bits, digest, error, io::der};
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::rand;
 
 <span class="doccomment">/// Common features of both RSA padding encoding and RSA padding verification.
-</span><span class="kw">pub trait </span>Padding: <span class="lifetime">&#39;static </span>+ Sync + <span class="kw">crate</span>::sealed::Sealed + core::fmt::Debug {
+</span><span class="kw">pub trait </span>Padding: <span class="lifetime">'static </span>+ Sync + <span class="kw">crate</span>::sealed::Sealed + core::fmt::Debug {
     <span class="comment">// The digest algorithm used for digesting the message (and maybe for
     // other things).
-    </span><span class="kw">fn </span>digest_alg(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>digest::Algorithm;
+    </span><span class="kw">fn </span>digest_alg(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>digest::Algorithm;
 }
 
 <span class="doccomment">/// An RSA signature encoding as described in [RFC 3447 Section 8].
 ///
 /// [RFC 3447 Section 8]: https://tools.ietf.org/html/rfc3447#section-8
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+</span><span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
 </span><span class="kw">pub trait </span>RsaEncoding: Padding {
     <span class="attr">#[doc(hidden)]
     </span><span class="kw">fn </span>encode(
@@ -656,25 +657,25 @@
 
 <span class="doccomment">/// PKCS#1 1.5 padding as described in [RFC 3447 Section 8.2].
 ///
-/// See &quot;`RSA_PSS_*` Details\&quot; in `ring::signature`&#39;s module-level
+/// See "`RSA_PSS_*` Details\" in `ring::signature`'s module-level
 /// documentation for more details.
 ///
 /// [RFC 3447 Section 8.2]: https://tools.ietf.org/html/rfc3447#section-8.2
 </span><span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>PKCS1 {
-    digest_alg: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>digest::Algorithm,
-    digestinfo_prefix: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[u8],
+    digest_alg: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>digest::Algorithm,
+    digestinfo_prefix: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[u8],
 }
 
 <span class="kw">impl </span><span class="kw">crate</span>::sealed::Sealed <span class="kw">for </span>PKCS1 {}
 
 <span class="kw">impl </span>Padding <span class="kw">for </span>PKCS1 {
-    <span class="kw">fn </span>digest_alg(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>digest::Algorithm {
+    <span class="kw">fn </span>digest_alg(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>digest::Algorithm {
         <span class="self">self</span>.digest_alg
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
 </span><span class="kw">impl </span>RsaEncoding <span class="kw">for </span>PKCS1 {
     <span class="kw">fn </span>encode(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -747,25 +748,25 @@
     RSA_PKCS1_SHA1_FOR_LEGACY_USE_ONLY,
     <span class="kw-2">&amp;</span>digest::SHA1_FOR_LEGACY_USE_ONLY,
     <span class="kw-2">&amp;</span>SHA1_PKCS1_DIGESTINFO_PREFIX,
-    <span class="string">&quot;PKCS#1 1.5 padding using SHA-1 for RSA signatures.&quot;
+    <span class="string">"PKCS#1 1.5 padding using SHA-1 for RSA signatures."
 </span>);
 <span class="macro">rsa_pkcs1_padding!</span>(
     RSA_PKCS1_SHA256,
     <span class="kw-2">&amp;</span>digest::SHA256,
     <span class="kw-2">&amp;</span>SHA256_PKCS1_DIGESTINFO_PREFIX,
-    <span class="string">&quot;PKCS#1 1.5 padding using SHA-256 for RSA signatures.&quot;
+    <span class="string">"PKCS#1 1.5 padding using SHA-256 for RSA signatures."
 </span>);
 <span class="macro">rsa_pkcs1_padding!</span>(
     RSA_PKCS1_SHA384,
     <span class="kw-2">&amp;</span>digest::SHA384,
     <span class="kw-2">&amp;</span>SHA384_PKCS1_DIGESTINFO_PREFIX,
-    <span class="string">&quot;PKCS#1 1.5 padding using SHA-384 for RSA signatures.&quot;
+    <span class="string">"PKCS#1 1.5 padding using SHA-384 for RSA signatures."
 </span>);
 <span class="macro">rsa_pkcs1_padding!</span>(
     RSA_PKCS1_SHA512,
     <span class="kw-2">&amp;</span>digest::SHA512,
     <span class="kw-2">&amp;</span>SHA512_PKCS1_DIGESTINFO_PREFIX,
-    <span class="string">&quot;PKCS#1 1.5 padding using SHA-512 for RSA signatures.&quot;
+    <span class="string">"PKCS#1 1.5 padding using SHA-512 for RSA signatures."
 </span>);
 
 <span class="macro">macro_rules! </span>pkcs1_digestinfo_prefix {
@@ -811,13 +812,13 @@
 
 <span class="doccomment">/// RSA PSS padding as described in [RFC 3447 Section 8.1].
 ///
-/// See &quot;`RSA_PSS_*` Details\&quot; in `ring::signature`&#39;s module-level
+/// See "`RSA_PSS_*` Details\" in `ring::signature`'s module-level
 /// documentation for more details.
 ///
 /// [RFC 3447 Section 8.1]: https://tools.ietf.org/html/rfc3447#section-8.1
 </span><span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>PSS {
-    digest_alg: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>digest::Algorithm,
+    digest_alg: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>digest::Algorithm,
 }
 
 <span class="kw">impl </span><span class="kw">crate</span>::sealed::Sealed <span class="kw">for </span>PSS {}
@@ -827,7 +828,7 @@
 </span><span class="kw">const </span>MAX_SALT_LEN: usize = digest::MAX_OUTPUT_LEN;
 
 <span class="kw">impl </span>Padding <span class="kw">for </span>PSS {
-    <span class="kw">fn </span>digest_alg(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>digest::Algorithm {
+    <span class="kw">fn </span>digest_alg(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>digest::Algorithm {
         <span class="self">self</span>.digest_alg
     }
 }
@@ -846,9 +847,9 @@
 
         <span class="comment">// The `m_out` this function fills is the big-endian-encoded value of `m`
         // from the specification, padded to `k` bytes, where `k` is the length
-        // in bytes of the public modulus. The spec says &quot;Note that emLen will
+        // in bytes of the public modulus. The spec says "Note that emLen will
         // be one less than k if modBits - 1 is divisible by 8 and equal to k
-        // otherwise.&quot; In other words we might need to prefix `em` with a
+        // otherwise." In other words we might need to prefix `em` with a
         // leading zero byte to form a correct value of `m`.
         </span><span class="kw">let </span>em = <span class="kw">if </span>metrics.top_byte_mask == <span class="number">0xff </span>{
             m_out[<span class="number">0</span>] = <span class="number">0</span>;
@@ -918,8 +919,8 @@
         <span class="comment">// RSASSA-PSS-VERIFY Step 2(c). The `m` this function is given is the
         // big-endian-encoded value of `m` from the specification, padded to
         // `k` bytes, where `k` is the length in bytes of the public modulus.
-        // The spec. says &quot;Note that emLen will be one less than k if
-        // modBits - 1 is divisible by 8 and equal to k otherwise,&quot; where `k`
+        // The spec. says "Note that emLen will be one less than k if
+        // modBits - 1 is divisible by 8 and equal to k otherwise," where `k`
         // is the length in octets of the RSA public modulus `n`. In other
         // words, `em` might have an extra leading zero byte that we need to
         // strip before we start the PSS decoding steps which is an artifact of
@@ -998,7 +999,7 @@
 }
 
 <span class="kw">struct </span>PSSMetrics {
-    <span class="attr">#[cfg_attr(not(feature = <span class="string">&quot;alloc&quot;</span>), allow(dead_code))]
+    <span class="attr">#[cfg_attr(not(feature = <span class="string">"alloc"</span>), allow(dead_code))]
     </span>em_len: usize,
     db_len: usize,
     ps_len: usize,
@@ -1009,7 +1010,7 @@
 
 <span class="kw">impl </span>PSSMetrics {
     <span class="kw">fn </span>new(
-        digest_alg: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>digest::Algorithm,
+        digest_alg: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>digest::Algorithm,
         mod_bits: bits::BitLength,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;PSSMetrics, error::Unspecified&gt; {
         <span class="kw">let </span>em_bits = mod_bits.try_sub_1()<span class="question-mark">?</span>;
@@ -1024,9 +1025,9 @@
         </span><span class="kw">let </span>s_len = h_len;
 
         <span class="comment">// Step 3 of both `EMSA-PSS-ENCODE` is `EMSA-PSS-VERIFY` requires that
-        // we reject inputs where &quot;emLen &lt; hLen + sLen + 2&quot;. The definition of
+        // we reject inputs where "emLen &lt; hLen + sLen + 2". The definition of
         // `emBits` in RFC 3447 Sections 9.1.1 and 9.1.2 says `emBits` must be
-        // &quot;at least 8hLen + 8sLen + 9&quot;. Since 9 bits requires two bytes, these
+        // "at least 8hLen + 8sLen + 9". Since 9 bits requires two bytes, these
         // two conditions are equivalent. 9 bits are required as the 0x01
         // before the salt requires 1 bit and the 0xbc after the digest
         // requires 8 bits.
@@ -1049,7 +1050,7 @@
 <span class="comment">// Mask-generating function MGF1 as described in
 // https://tools.ietf.org/html/rfc3447#appendix-B.2.1.
 </span><span class="kw">fn </span>mgf1(
-    digest_alg: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>digest::Algorithm,
+    digest_alg: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>digest::Algorithm,
     seed: <span class="kw-2">&amp;</span>[u8],
     mask: <span class="kw-2">&amp;mut </span>[u8],
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(), error::Unspecified&gt; {
@@ -1071,7 +1072,7 @@
 }
 
 <span class="kw">fn </span>pss_digest(
-    digest_alg: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>digest::Algorithm,
+    digest_alg: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>digest::Algorithm,
     m_hash: <span class="kw-2">&amp;</span>digest::Digest,
     salt: <span class="kw-2">&amp;</span>[u8],
 ) -&gt; digest::Digest {
@@ -1098,23 +1099,23 @@
 <span class="macro">rsa_pss_padding!</span>(
     RSA_PSS_SHA256,
     <span class="kw-2">&amp;</span>digest::SHA256,
-    <span class="string">&quot;RSA PSS padding using SHA-256 for RSA signatures.\n\nSee
-                 \&quot;`RSA_PSS_*` Details\&quot; in `ring::signature`&#39;s module-level
-                 documentation for more details.&quot;
+    <span class="string">"RSA PSS padding using SHA-256 for RSA signatures.\n\nSee
+                 \"`RSA_PSS_*` Details\" in `ring::signature`'s module-level
+                 documentation for more details."
 </span>);
 <span class="macro">rsa_pss_padding!</span>(
     RSA_PSS_SHA384,
     <span class="kw-2">&amp;</span>digest::SHA384,
-    <span class="string">&quot;RSA PSS padding using SHA-384 for RSA signatures.\n\nSee
-                 \&quot;`RSA_PSS_*` Details\&quot; in `ring::signature`&#39;s module-level
-                 documentation for more details.&quot;
+    <span class="string">"RSA PSS padding using SHA-384 for RSA signatures.\n\nSee
+                 \"`RSA_PSS_*` Details\" in `ring::signature`'s module-level
+                 documentation for more details."
 </span>);
 <span class="macro">rsa_pss_padding!</span>(
     RSA_PSS_SHA512,
     <span class="kw-2">&amp;</span>digest::SHA512,
-    <span class="string">&quot;RSA PSS padding using SHA-512 for RSA signatures.\n\nSee
-                 \&quot;`RSA_PSS_*` Details\&quot; in `ring::signature`&#39;s module-level
-                 documentation for more details.&quot;
+    <span class="string">"RSA PSS padding using SHA-512 for RSA signatures.\n\nSee
+                 \"`RSA_PSS_*` Details\" in `ring::signature`'s module-level
+                 documentation for more details."
 </span>);
 
 <span class="attr">#[cfg(test)]
@@ -1126,30 +1127,30 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_pss_padding_verify() {
         test::run(
-            <span class="macro">test_file!</span>(<span class="string">&quot;rsa_pss_padding_tests.txt&quot;</span>),
+            <span class="macro">test_file!</span>(<span class="string">"rsa_pss_padding_tests.txt"</span>),
             |section, test_case| {
-                <span class="macro">assert_eq!</span>(section, <span class="string">&quot;&quot;</span>);
+                <span class="macro">assert_eq!</span>(section, <span class="string">""</span>);
 
-                <span class="kw">let </span>digest_name = test_case.consume_string(<span class="string">&quot;Digest&quot;</span>);
+                <span class="kw">let </span>digest_name = test_case.consume_string(<span class="string">"Digest"</span>);
                 <span class="kw">let </span>alg = <span class="kw">match </span>digest_name.as_ref() {
-                    <span class="string">&quot;SHA256&quot; </span>=&gt; <span class="kw-2">&amp;</span>RSA_PSS_SHA256,
-                    <span class="string">&quot;SHA384&quot; </span>=&gt; <span class="kw-2">&amp;</span>RSA_PSS_SHA384,
-                    <span class="string">&quot;SHA512&quot; </span>=&gt; <span class="kw-2">&amp;</span>RSA_PSS_SHA512,
-                    <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;Unsupported digest: {}&quot;</span>, digest_name),
+                    <span class="string">"SHA256" </span>=&gt; <span class="kw-2">&amp;</span>RSA_PSS_SHA256,
+                    <span class="string">"SHA384" </span>=&gt; <span class="kw-2">&amp;</span>RSA_PSS_SHA384,
+                    <span class="string">"SHA512" </span>=&gt; <span class="kw-2">&amp;</span>RSA_PSS_SHA512,
+                    <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"Unsupported digest: {}"</span>, digest_name),
                 };
 
-                <span class="kw">let </span>msg = test_case.consume_bytes(<span class="string">&quot;Msg&quot;</span>);
+                <span class="kw">let </span>msg = test_case.consume_bytes(<span class="string">"Msg"</span>);
                 <span class="kw">let </span>msg = untrusted::Input::from(<span class="kw-2">&amp;</span>msg);
                 <span class="kw">let </span>m_hash = digest::digest(alg.digest_alg(), msg.as_slice_less_safe());
 
-                <span class="kw">let </span>encoded = test_case.consume_bytes(<span class="string">&quot;EM&quot;</span>);
+                <span class="kw">let </span>encoded = test_case.consume_bytes(<span class="string">"EM"</span>);
                 <span class="kw">let </span>encoded = untrusted::Input::from(<span class="kw-2">&amp;</span>encoded);
 
                 <span class="comment">// Salt is recomputed in verification algorithm.
-                </span><span class="kw">let _ </span>= test_case.consume_bytes(<span class="string">&quot;Salt&quot;</span>);
+                </span><span class="kw">let _ </span>= test_case.consume_bytes(<span class="string">"Salt"</span>);
 
-                <span class="kw">let </span>bit_len = test_case.consume_usize_bits(<span class="string">&quot;Len&quot;</span>);
-                <span class="kw">let </span>is_valid = test_case.consume_string(<span class="string">&quot;Result&quot;</span>) == <span class="string">&quot;P&quot;</span>;
+                <span class="kw">let </span>bit_len = test_case.consume_usize_bits(<span class="string">"Len"</span>);
+                <span class="kw">let </span>is_valid = test_case.consume_string(<span class="string">"Result"</span>) == <span class="string">"P"</span>;
 
                 <span class="kw">let </span>actual_result =
                     encoded.read_all(error::Unspecified, |m| alg.verify(<span class="kw-2">&amp;</span>m_hash, m, bit_len));
@@ -1161,30 +1162,30 @@
     }
 
     <span class="comment">// Tests PSS encoding for various public modulus lengths.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
     #[test]
     </span><span class="kw">fn </span>test_pss_padding_encode() {
         test::run(
-            <span class="macro">test_file!</span>(<span class="string">&quot;rsa_pss_padding_tests.txt&quot;</span>),
+            <span class="macro">test_file!</span>(<span class="string">"rsa_pss_padding_tests.txt"</span>),
             |section, test_case| {
-                <span class="macro">assert_eq!</span>(section, <span class="string">&quot;&quot;</span>);
+                <span class="macro">assert_eq!</span>(section, <span class="string">""</span>);
 
-                <span class="kw">let </span>digest_name = test_case.consume_string(<span class="string">&quot;Digest&quot;</span>);
+                <span class="kw">let </span>digest_name = test_case.consume_string(<span class="string">"Digest"</span>);
                 <span class="kw">let </span>alg = <span class="kw">match </span>digest_name.as_ref() {
-                    <span class="string">&quot;SHA256&quot; </span>=&gt; <span class="kw-2">&amp;</span>RSA_PSS_SHA256,
-                    <span class="string">&quot;SHA384&quot; </span>=&gt; <span class="kw-2">&amp;</span>RSA_PSS_SHA384,
-                    <span class="string">&quot;SHA512&quot; </span>=&gt; <span class="kw-2">&amp;</span>RSA_PSS_SHA512,
-                    <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;Unsupported digest: {}&quot;</span>, digest_name),
+                    <span class="string">"SHA256" </span>=&gt; <span class="kw-2">&amp;</span>RSA_PSS_SHA256,
+                    <span class="string">"SHA384" </span>=&gt; <span class="kw-2">&amp;</span>RSA_PSS_SHA384,
+                    <span class="string">"SHA512" </span>=&gt; <span class="kw-2">&amp;</span>RSA_PSS_SHA512,
+                    <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"Unsupported digest: {}"</span>, digest_name),
                 };
 
-                <span class="kw">let </span>msg = test_case.consume_bytes(<span class="string">&quot;Msg&quot;</span>);
-                <span class="kw">let </span>salt = test_case.consume_bytes(<span class="string">&quot;Salt&quot;</span>);
-                <span class="kw">let </span>encoded = test_case.consume_bytes(<span class="string">&quot;EM&quot;</span>);
-                <span class="kw">let </span>bit_len = test_case.consume_usize_bits(<span class="string">&quot;Len&quot;</span>);
-                <span class="kw">let </span>expected_result = test_case.consume_string(<span class="string">&quot;Result&quot;</span>);
+                <span class="kw">let </span>msg = test_case.consume_bytes(<span class="string">"Msg"</span>);
+                <span class="kw">let </span>salt = test_case.consume_bytes(<span class="string">"Salt"</span>);
+                <span class="kw">let </span>encoded = test_case.consume_bytes(<span class="string">"EM"</span>);
+                <span class="kw">let </span>bit_len = test_case.consume_usize_bits(<span class="string">"Len"</span>);
+                <span class="kw">let </span>expected_result = test_case.consume_string(<span class="string">"Result"</span>);
 
                 <span class="comment">// Only test the valid outputs
-                </span><span class="kw">if </span>expected_result != <span class="string">&quot;P&quot; </span>{
+                </span><span class="kw">if </span>expected_result != <span class="string">"P" </span>{
                     <span class="kw">return </span><span class="prelude-val">Ok</span>(());
                 }
 

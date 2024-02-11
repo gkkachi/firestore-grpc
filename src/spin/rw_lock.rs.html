@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/spin-0.5.2/src/rw_lock.rs`."><title>rw_lock.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="spin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/spin-0.5.2/src/rw_lock.rs`."><title>rw_lock.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="spin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -803,7 +804,7 @@
 /// Writable or upgradeable guards can be downgraded through their respective `downgrade`
 /// functions.
 ///
-/// Based on Facebook&#39;s
+/// Based on Facebook's
 /// [`folly/RWSpinLock.h`](https://github.com/facebook/folly/blob/a0394d84f2d5c3e50ebfd0566f9d3acb52cfab5a/folly/synchronization/RWSpinLock.h).
 /// This implementation is unfair to writers - if the lock always has readers, then no writers will
 /// ever get a chance. Using an upgradeable lock guard can *somewhat* alleviate this issue as no
@@ -847,8 +848,8 @@
 /// When the guard falls out of scope it will decrement the read count,
 /// potentially releasing the lock.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>RwLockReadGuard&lt;<span class="lifetime">&#39;a</span>, T: <span class="lifetime">&#39;a </span>+ <span class="question-mark">?</span>Sized&gt; {
-    lock: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>AtomicUsize,
+</span><span class="kw">pub struct </span>RwLockReadGuard&lt;<span class="lifetime">'a</span>, T: <span class="lifetime">'a </span>+ <span class="question-mark">?</span>Sized&gt; {
+    lock: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>AtomicUsize,
     data: NonNull&lt;T&gt;,
 }
 
@@ -856,11 +857,11 @@
 ///
 /// When the guard falls out of scope it will release the lock.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>RwLockWriteGuard&lt;<span class="lifetime">&#39;a</span>, T: <span class="lifetime">&#39;a </span>+ <span class="question-mark">?</span>Sized&gt; {
-    lock: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>AtomicUsize,
+</span><span class="kw">pub struct </span>RwLockWriteGuard&lt;<span class="lifetime">'a</span>, T: <span class="lifetime">'a </span>+ <span class="question-mark">?</span>Sized&gt; {
+    lock: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>AtomicUsize,
     data: NonNull&lt;T&gt;,
     <span class="attr">#[doc(hidden)]
-    </span>_invariant: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T&gt;,
+    </span>_invariant: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>T&gt;,
 }
 
 <span class="doccomment">/// A guard from which the protected data can be read, and can be upgraded
@@ -872,11 +873,11 @@
 ///
 /// When the guard falls out of scope it will release the lock.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>RwLockUpgradeableGuard&lt;<span class="lifetime">&#39;a</span>, T: <span class="lifetime">&#39;a </span>+ <span class="question-mark">?</span>Sized&gt; {
-    lock: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>AtomicUsize,
+</span><span class="kw">pub struct </span>RwLockUpgradeableGuard&lt;<span class="lifetime">'a</span>, T: <span class="lifetime">'a </span>+ <span class="question-mark">?</span>Sized&gt; {
+    lock: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>AtomicUsize,
     data: NonNull&lt;T&gt;,
     <span class="attr">#[doc(hidden)]
-    </span>_invariant: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T&gt;,
+    </span>_invariant: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>T&gt;,
 }
 
 <span class="comment">// Same unsafe impls as `std::sync::RwLock`
@@ -911,7 +912,7 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>into_inner(<span class="self">self</span>) -&gt; T {
         <span class="comment">// We know statically that there are no outstanding references to
-        // `self` so there&#39;s no need to lock.
+        // `self` so there's no need to lock.
         </span><span class="kw">let </span>RwLock { data, .. } = <span class="self">self</span>;
         data.into_inner()
     }
@@ -927,7 +928,7 @@
     /// respect to the ordering of whether contentious readers or writers will
     /// acquire the lock first.
     ///
-    /// Returns an RAII guard which will release this thread&#39;s shared access
+    /// Returns an RAII guard which will release this thread's shared access
     /// once it is dropped.
     ///
     /// ```
@@ -935,7 +936,7 @@
     /// {
     ///     let mut data = mylock.read();
     ///     // The lock is now locked and the data can be read
-    ///     println!(&quot;{}&quot;, *data);
+    ///     println!("{}", *data);
     ///     // The lock is dropped
     /// }
     /// ```
@@ -964,7 +965,7 @@
     ///     match mylock.try_read() {
     ///         Some(data) =&gt; {
     ///             // The lock is now locked and the data can be read
-    ///             println!(&quot;{}&quot;, *data);
+    ///             println!("{}", *data);
     ///             // The lock is dropped
     ///         },
     ///         None =&gt; (), // no cigar
@@ -993,7 +994,7 @@
     ///
     /// This is *extremely* unsafe if there are outstanding `RwLockReadGuard`s
     /// live, or if called more times than `read` has been called, but can be
-    /// useful in FFI contexts where the caller doesn&#39;t know how to deal with
+    /// useful in FFI contexts where the caller doesn't know how to deal with
     /// RAII. The underlying atomic operation uses `Ordering::Release`.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub unsafe fn </span>force_read_decrement(<span class="kw-2">&amp;</span><span class="self">self</span>) {
@@ -1005,7 +1006,7 @@
     ///
     /// This is *extremely* unsafe if there are outstanding `RwLockWriteGuard`s
     /// live, or if called when there are current readers, but can be useful in
-    /// FFI contexts where the caller doesn&#39;t know how to deal with RAII. The
+    /// FFI contexts where the caller doesn't know how to deal with RAII. The
     /// underlying atomic operation uses `Ordering::Release`.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub unsafe fn </span>force_write_unlock(<span class="kw-2">&amp;</span><span class="self">self</span>) {
@@ -1109,7 +1110,7 @@
                 _invariant: PhantomData,
             })
         } <span class="kw">else </span>{
-            <span class="comment">// We can&#39;t unflip the UPGRADED bit back just yet as there is another upgradeable or write lock.
+            <span class="comment">// We can't unflip the UPGRADED bit back just yet as there is another upgradeable or write lock.
             // When they unlock, they will clear the bit.
             </span><span class="prelude-val">None
         </span>}
@@ -1119,10 +1120,10 @@
 <span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized + fmt::Debug&gt; fmt::Debug <span class="kw">for </span>RwLock&lt;T&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
         <span class="kw">match </span><span class="self">self</span>.try_read() {
-            <span class="prelude-val">Some</span>(guard) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;RwLock {{ data: &quot;</span>)
+            <span class="prelude-val">Some</span>(guard) =&gt; <span class="macro">write!</span>(f, <span class="string">"RwLock {{ data: "</span>)
                 .and_then(|()| (<span class="kw-2">&amp;*</span>guard).fmt(f))
-                .and_then(|()| <span class="macro">write!</span>(f, <span class="string">&quot;}}&quot;</span>)),
-            <span class="prelude-val">None </span>=&gt; <span class="macro">write!</span>(f, <span class="string">&quot;RwLock {{ &lt;locked&gt; }}&quot;</span>),
+                .and_then(|()| <span class="macro">write!</span>(f, <span class="string">"}}"</span>)),
+            <span class="prelude-val">None </span>=&gt; <span class="macro">write!</span>(f, <span class="string">"RwLock {{ &lt;locked&gt; }}"</span>),
         }
     }
 }
@@ -1133,9 +1134,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; RwLockUpgradeableGuard&lt;<span class="lifetime">&#39;rwlock</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; RwLockUpgradeableGuard&lt;<span class="lifetime">'rwlock</span>, T&gt; {
     <span class="attr">#[inline(always)]
-    </span><span class="kw">fn </span>try_upgrade_internal(<span class="self">self</span>, strong: bool) -&gt; <span class="prelude-ty">Result</span>&lt;RwLockWriteGuard&lt;<span class="lifetime">&#39;rwlock</span>, T&gt;, <span class="self">Self</span>&gt; {
+    </span><span class="kw">fn </span>try_upgrade_internal(<span class="self">self</span>, strong: bool) -&gt; <span class="prelude-ty">Result</span>&lt;RwLockWriteGuard&lt;<span class="lifetime">'rwlock</span>, T&gt;, <span class="self">Self</span>&gt; {
         <span class="kw">if </span>compare_exchange(
             <span class="kw-2">&amp;</span><span class="self">self</span>.lock,
             UPGRADED,
@@ -1153,7 +1154,7 @@
                 _invariant: PhantomData,
             });
 
-            <span class="comment">// Forget the old guard so its destructor doesn&#39;t run
+            <span class="comment">// Forget the old guard so its destructor doesn't run
             </span>mem::forget(<span class="self">self</span>);
 
             out
@@ -1171,7 +1172,7 @@
     /// let writable = upgradeable.upgrade();
     /// ```
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>upgrade(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; RwLockWriteGuard&lt;<span class="lifetime">&#39;rwlock</span>, T&gt; {
+    </span><span class="kw">pub fn </span>upgrade(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; RwLockWriteGuard&lt;<span class="lifetime">'rwlock</span>, T&gt; {
         <span class="kw">loop </span>{
             <span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.try_upgrade_internal(<span class="bool-val">false</span>) {
                 <span class="prelude-val">Ok</span>(guard) =&gt; <span class="kw">return </span>guard,
@@ -1194,7 +1195,7 @@
     /// };
     /// ```
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>try_upgrade(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;RwLockWriteGuard&lt;<span class="lifetime">&#39;rwlock</span>, T&gt;, <span class="self">Self</span>&gt; {
+    </span><span class="kw">pub fn </span>try_upgrade(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;RwLockWriteGuard&lt;<span class="lifetime">'rwlock</span>, T&gt;, <span class="self">Self</span>&gt; {
         <span class="self">self</span>.try_upgrade_internal(<span class="bool-val">true</span>)
     }
 
@@ -1212,7 +1213,7 @@
     /// assert!(mylock.try_read().is_some());
     /// assert_eq!(*readable, 1);
     /// ```
-    </span><span class="kw">pub fn </span>downgrade(<span class="self">self</span>) -&gt; RwLockReadGuard&lt;<span class="lifetime">&#39;rwlock</span>, T&gt; {
+    </span><span class="kw">pub fn </span>downgrade(<span class="self">self</span>) -&gt; RwLockReadGuard&lt;<span class="lifetime">'rwlock</span>, T&gt; {
         <span class="comment">// Reserve the read guard for ourselves
         </span><span class="self">self</span>.lock.fetch_add(READER, Ordering::Acquire);
 
@@ -1225,7 +1226,7 @@
     </span>}
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; RwLockWriteGuard&lt;<span class="lifetime">&#39;rwlock</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; RwLockWriteGuard&lt;<span class="lifetime">'rwlock</span>, T&gt; {
     <span class="doccomment">/// Downgrades the writable lock guard to a readable, shared lock guard. Cannot fail and is guaranteed not to spin.
     ///
     /// ```
@@ -1239,7 +1240,7 @@
     /// assert_eq!(*readable, 1);
     /// ```
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>downgrade(<span class="self">self</span>) -&gt; RwLockReadGuard&lt;<span class="lifetime">&#39;rwlock</span>, T&gt; {
+    </span><span class="kw">pub fn </span>downgrade(<span class="self">self</span>) -&gt; RwLockReadGuard&lt;<span class="lifetime">'rwlock</span>, T&gt; {
         <span class="comment">// Reserve the read guard for ourselves
         </span><span class="self">self</span>.lock.fetch_add(READER, Ordering::Acquire);
 
@@ -1252,7 +1253,7 @@
     </span>}
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; Deref <span class="kw">for </span>RwLockReadGuard&lt;<span class="lifetime">&#39;rwlock</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; Deref <span class="kw">for </span>RwLockReadGuard&lt;<span class="lifetime">'rwlock</span>, T&gt; {
     <span class="kw">type </span>Target = T;
 
     <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>T {
@@ -1260,7 +1261,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; Deref <span class="kw">for </span>RwLockUpgradeableGuard&lt;<span class="lifetime">&#39;rwlock</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; Deref <span class="kw">for </span>RwLockUpgradeableGuard&lt;<span class="lifetime">'rwlock</span>, T&gt; {
     <span class="kw">type </span>Target = T;
 
     <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>T {
@@ -1268,7 +1269,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; Deref <span class="kw">for </span>RwLockWriteGuard&lt;<span class="lifetime">&#39;rwlock</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; Deref <span class="kw">for </span>RwLockWriteGuard&lt;<span class="lifetime">'rwlock</span>, T&gt; {
     <span class="kw">type </span>Target = T;
 
     <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>T {
@@ -1276,20 +1277,20 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; DerefMut <span class="kw">for </span>RwLockWriteGuard&lt;<span class="lifetime">&#39;rwlock</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; DerefMut <span class="kw">for </span>RwLockWriteGuard&lt;<span class="lifetime">'rwlock</span>, T&gt; {
     <span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>T {
         <span class="kw">unsafe </span>{ <span class="self">self</span>.data.as_mut() }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; Drop <span class="kw">for </span>RwLockReadGuard&lt;<span class="lifetime">&#39;rwlock</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; Drop <span class="kw">for </span>RwLockReadGuard&lt;<span class="lifetime">'rwlock</span>, T&gt; {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.lock.load(Ordering::Relaxed) &amp; !(WRITER | UPGRADED) &gt; <span class="number">0</span>);
         <span class="self">self</span>.lock.fetch_sub(READER, Ordering::Release);
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; Drop <span class="kw">for </span>RwLockUpgradeableGuard&lt;<span class="lifetime">&#39;rwlock</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; Drop <span class="kw">for </span>RwLockUpgradeableGuard&lt;<span class="lifetime">'rwlock</span>, T&gt; {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="macro">debug_assert_eq!</span>(
             <span class="self">self</span>.lock.load(Ordering::Relaxed) &amp; (WRITER | UPGRADED),
@@ -1299,7 +1300,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; Drop <span class="kw">for </span>RwLockWriteGuard&lt;<span class="lifetime">&#39;rwlock</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'rwlock</span>, T: <span class="question-mark">?</span>Sized&gt; Drop <span class="kw">for </span>RwLockWriteGuard&lt;<span class="lifetime">'rwlock</span>, T&gt; {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.lock.load(Ordering::Relaxed) &amp; WRITER, WRITER);
 
@@ -1459,7 +1460,7 @@
             <span class="prelude-val">None </span>=&gt; (),
             <span class="prelude-val">Some</span>(<span class="kw">_</span>) =&gt; <span class="macro">assert!</span>(
                 <span class="bool-val">false</span>,
-                <span class="string">&quot;try_write should not succeed while read_guard is in scope&quot;
+                <span class="string">"try_write should not succeed while read_guard is in scope"
             </span>),
         }
 

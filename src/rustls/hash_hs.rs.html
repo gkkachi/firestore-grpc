@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-0.19.1/src/hash_hs.rs`."><title>hash_hs.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustls" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-0.19.1/src/hash_hs.rs`."><title>hash_hs.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustls" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -214,7 +215,7 @@
 <a href="#214" id="214">214</a>
 <a href="#215" id="215">215</a>
 <a href="#216" id="216">216</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">"logging"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::log::warn;
 <span class="kw">use </span><span class="kw">crate</span>::msgs::codec::Codec;
 <span class="kw">use </span><span class="kw">crate</span>::msgs::handshake::HandshakeMessagePayload;
@@ -230,10 +231,10 @@
 /// For client auth, we also need to buffer all the messages.
 /// This is disabled in cases where client auth is not possible.
 </span><span class="kw">pub struct </span>HandshakeHash {
-    <span class="doccomment">/// None before we know what hash function we&#39;re using
-    </span>alg: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>digest::Algorithm&gt;,
+    <span class="doccomment">/// None before we know what hash function we're using
+    </span>alg: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>digest::Algorithm&gt;,
 
-    <span class="doccomment">/// None before we know what hash function we&#39;re using
+    <span class="doccomment">/// None before we know what hash function we're using
     </span>ctx: <span class="prelude-ty">Option</span>&lt;digest::Context&gt;,
 
     <span class="doccomment">/// true if we need to keep all messages
@@ -268,13 +269,13 @@
     }
 
     <span class="doccomment">/// We now know what hash function the verify_data will use.
-    </span><span class="kw">pub fn </span>start_hash(<span class="kw-2">&amp;mut </span><span class="self">self</span>, alg: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>digest::Algorithm) -&gt; bool {
+    </span><span class="kw">pub fn </span>start_hash(<span class="kw-2">&amp;mut </span><span class="self">self</span>, alg: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>digest::Algorithm) -&gt; bool {
         <span class="kw">match </span><span class="self">self</span>.alg {
             <span class="prelude-val">None </span>=&gt; {}
             <span class="prelude-val">Some</span>(started) =&gt; {
                 <span class="kw">if </span>started != alg {
                     <span class="comment">// hash type is changing
-                    </span><span class="macro">warn!</span>(<span class="string">&quot;altered hash to HandshakeHash::start_hash&quot;</span>);
+                    </span><span class="macro">warn!</span>(<span class="string">"altered hash to HandshakeHash::start_hash"</span>);
                     <span class="kw">return </span><span class="bool-val">false</span>;
                 }
 
@@ -288,7 +289,7 @@
         ctx.update(<span class="kw-2">&amp;</span><span class="self">self</span>.buffer);
         <span class="self">self</span>.ctx = <span class="prelude-val">Some</span>(ctx);
 
-        <span class="comment">// Discard buffer if we don&#39;t need it now.
+        <span class="comment">// Discard buffer if we don't need it now.
         </span><span class="kw">if </span>!<span class="self">self</span>.client_auth_enabled {
             <span class="self">self</span>.buffer.drain(..);
         }
@@ -322,7 +323,7 @@
 
     <span class="doccomment">/// Get the hash value if we were to hash `extra` too,
     /// using hash function `hash`.
-    </span><span class="kw">pub fn </span>get_hash_given(<span class="kw-2">&amp;</span><span class="self">self</span>, hash: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>digest::Algorithm, extra: <span class="kw-2">&amp;</span>[u8]) -&gt; Vec&lt;u8&gt; {
+    </span><span class="kw">pub fn </span>get_hash_given(<span class="kw-2">&amp;</span><span class="self">self</span>, hash: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>digest::Algorithm, extra: <span class="kw-2">&amp;</span>[u8]) -&gt; Vec&lt;u8&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>ctx = <span class="kw">if </span><span class="self">self</span>.ctx.is_none() {
             <span class="kw">let </span><span class="kw-2">mut </span>ctx = digest::Context::new(hash);
             ctx.update(<span class="kw-2">&amp;</span><span class="self">self</span>.buffer);
@@ -339,7 +340,7 @@
     }
 
     <span class="doccomment">/// Take the current hash value, and encapsulate it in a
-    /// &#39;handshake_hash&#39; handshake message.  Start this hash
+    /// 'handshake_hash' handshake message.  Start this hash
     /// again, with that message at the front.
     </span><span class="kw">pub fn </span>rollup_for_hrr(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">let </span>old_hash = <span class="self">self</span>.ctx.take().unwrap().finish();
@@ -363,7 +364,7 @@
         ret
     }
 
-    <span class="doccomment">/// Takes this object&#39;s buffer containing all handshake messages
+    <span class="doccomment">/// Takes this object's buffer containing all handshake messages
     /// so far.  This method only works once; it resets the buffer
     /// to empty.
     </span><span class="kw">pub fn </span>take_handshake_buf(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Vec&lt;u8&gt; {
@@ -380,11 +381,11 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>hashes_correctly() {
         <span class="kw">let </span><span class="kw-2">mut </span>hh = HandshakeHash::new();
-        hh.update_raw(<span class="string">b&quot;hello&quot;</span>);
+        hh.update_raw(<span class="string">b"hello"</span>);
         <span class="macro">assert_eq!</span>(hh.buffer.len(), <span class="number">5</span>);
         hh.start_hash(<span class="kw-2">&amp;</span>digest::SHA256);
         <span class="macro">assert_eq!</span>(hh.buffer.len(), <span class="number">0</span>);
-        hh.update_raw(<span class="string">b&quot;world&quot;</span>);
+        hh.update_raw(<span class="string">b"world"</span>);
         <span class="kw">let </span>h = hh.get_current_hash();
         <span class="macro">assert_eq!</span>(h[<span class="number">0</span>], <span class="number">0x93</span>);
         <span class="macro">assert_eq!</span>(h[<span class="number">1</span>], <span class="number">0x6a</span>);
@@ -396,11 +397,11 @@
     </span><span class="kw">fn </span>buffers_correctly() {
         <span class="kw">let </span><span class="kw-2">mut </span>hh = HandshakeHash::new();
         hh.set_client_auth_enabled();
-        hh.update_raw(<span class="string">b&quot;hello&quot;</span>);
+        hh.update_raw(<span class="string">b"hello"</span>);
         <span class="macro">assert_eq!</span>(hh.buffer.len(), <span class="number">5</span>);
         hh.start_hash(<span class="kw-2">&amp;</span>digest::SHA256);
         <span class="macro">assert_eq!</span>(hh.buffer.len(), <span class="number">5</span>);
-        hh.update_raw(<span class="string">b&quot;world&quot;</span>);
+        hh.update_raw(<span class="string">b"world"</span>);
         <span class="macro">assert_eq!</span>(hh.buffer.len(), <span class="number">10</span>);
         <span class="kw">let </span>h = hh.get_current_hash();
         <span class="macro">assert_eq!</span>(h[<span class="number">0</span>], <span class="number">0x93</span>);
@@ -408,20 +409,20 @@
         <span class="macro">assert_eq!</span>(h[<span class="number">2</span>], <span class="number">0x18</span>);
         <span class="macro">assert_eq!</span>(h[<span class="number">3</span>], <span class="number">0x5c</span>);
         <span class="kw">let </span>buf = hh.take_handshake_buf();
-        <span class="macro">assert_eq!</span>(<span class="string">b&quot;helloworld&quot;</span>.to_vec(), buf);
+        <span class="macro">assert_eq!</span>(<span class="string">b"helloworld"</span>.to_vec(), buf);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>abandon() {
         <span class="kw">let </span><span class="kw-2">mut </span>hh = HandshakeHash::new();
         hh.set_client_auth_enabled();
-        hh.update_raw(<span class="string">b&quot;hello&quot;</span>);
+        hh.update_raw(<span class="string">b"hello"</span>);
         <span class="macro">assert_eq!</span>(hh.buffer.len(), <span class="number">5</span>);
         hh.start_hash(<span class="kw-2">&amp;</span>digest::SHA256);
         <span class="macro">assert_eq!</span>(hh.buffer.len(), <span class="number">5</span>);
         hh.abandon_client_auth();
         <span class="macro">assert_eq!</span>(hh.buffer.len(), <span class="number">0</span>);
-        hh.update_raw(<span class="string">b&quot;world&quot;</span>);
+        hh.update_raw(<span class="string">b"world"</span>);
         <span class="macro">assert_eq!</span>(hh.buffer.len(), <span class="number">0</span>);
         <span class="kw">let </span>h = hh.get_current_hash();
         <span class="macro">assert_eq!</span>(h[<span class="number">0</span>], <span class="number">0x93</span>);

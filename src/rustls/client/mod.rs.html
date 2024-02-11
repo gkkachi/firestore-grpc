@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-0.19.1/src/client/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="rustls" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-0.19.1/src/client/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="rustls" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -816,7 +817,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::error::TLSError;
 <span class="kw">use </span><span class="kw">crate</span>::key;
 <span class="kw">use </span><span class="kw">crate</span>::keylog::{KeyLog, NoKeyLog};
-<span class="attr">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"logging"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::log::trace;
 <span class="kw">use </span><span class="kw">crate</span>::msgs::enums::CipherSuite;
 <span class="kw">use </span><span class="kw">crate</span>::msgs::enums::SignatureScheme;
@@ -852,7 +853,7 @@
 /// **highly sensitive data**, containing enough key material
 /// to break all security of the corresponding session.
 ///
-/// `put` is a mutating operation; this isn&#39;t expressed
+/// `put` is a mutating operation; this isn't expressed
 /// in the type system to allow implementations freedom in
 /// how to achieve interior mutability.  `Mutex` is a common
 /// choice.
@@ -862,7 +863,7 @@
     </span><span class="kw">fn </span>put(<span class="kw-2">&amp;</span><span class="self">self</span>, key: Vec&lt;u8&gt;, value: Vec&lt;u8&gt;) -&gt; bool;
 
     <span class="doccomment">/// Returns the latest value for `key`.  Returns `None`
-    /// if there&#39;s no such value.
+    /// if there's no such value.
     </span><span class="kw">fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;;
 }
 
@@ -870,7 +871,7 @@
 /// private key for the purposes of client authentication.
 </span><span class="kw">pub trait </span>ResolvesClientCert: Send + Sync {
     <span class="doccomment">/// With the server-supplied acceptable issuers in `acceptable_issuers`,
-    /// the server&#39;s supported signature schemes in `sigschemes`,
+    /// the server's supported signature schemes in `sigschemes`,
     /// return a certificate chain and signing key to authenticate.
     ///
     /// `acceptable_issuers` is undecoded and unverified by the rustls
@@ -898,7 +899,7 @@
 </span><span class="attr">#[derive(Clone)]
 </span><span class="kw">pub struct </span>ClientConfig {
     <span class="doccomment">/// List of ciphersuites, in preference order.
-    </span><span class="kw">pub </span>ciphersuites: Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt;,
+    </span><span class="kw">pub </span>ciphersuites: Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite&gt;,
 
     <span class="doccomment">/// Collection of root certificates.
     </span><span class="kw">pub </span>root_store: anchors::RootCertStore,
@@ -910,7 +911,7 @@
     <span class="doccomment">/// How we store session data or tickets.
     </span><span class="kw">pub </span>session_persistence: Arc&lt;<span class="kw">dyn </span>StoresClientSessions&gt;,
 
-    <span class="doccomment">/// Our MTU.  If None, we don&#39;t limit TLS message sizes.
+    <span class="doccomment">/// Our MTU.  If None, we don't limit TLS message sizes.
     </span><span class="kw">pub </span>mtu: <span class="prelude-ty">Option</span>&lt;usize&gt;,
 
     <span class="doccomment">/// How to decide what client auth certificate/keys to use.
@@ -930,7 +931,7 @@
     <span class="doccomment">/// Collection of certificate transparency logs.
     /// If this collection is empty, then certificate transparency
     /// checking is disabled.
-    </span><span class="kw">pub </span>ct_logs: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>sct::Log&lt;<span class="lifetime">&#39;static</span>&gt;]&gt;,
+    </span><span class="kw">pub </span>ct_logs: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>sct::Log&lt;<span class="lifetime">'static</span>&gt;]&gt;,
 
     <span class="doccomment">/// Whether to send the Server Name Indication (SNI) extension
     /// during the client handshake.
@@ -945,7 +946,7 @@
     /// does nothing.
     </span><span class="kw">pub </span>key_log: Arc&lt;<span class="kw">dyn </span>KeyLog&gt;,
 
-    <span class="doccomment">/// Whether to send data on the first flight (&quot;early data&quot;) in
+    <span class="doccomment">/// Whether to send data on the first flight ("early data") in
     /// TLS 1.3 handshakes.
     ///
     /// The default is false.
@@ -973,7 +974,7 @@
     ///
     /// The default session persistence provider stores up to 32
     /// items in memory.
-    </span><span class="kw">pub fn </span>with_ciphersuites(ciphersuites: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite]) -&gt; ClientConfig {
+    </span><span class="kw">pub fn </span>with_ciphersuites(ciphersuites: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite]) -&gt; ClientConfig {
         ClientConfig {
             ciphersuites: ciphersuites.to_vec(),
             root_store: anchors::RootCertStore::empty(),
@@ -992,7 +993,7 @@
     }
 
     <span class="attr">#[doc(hidden)]
-    </span><span class="doccomment">/// We support a given TLS version if it&#39;s quoted in the configured
+    </span><span class="doccomment">/// We support a given TLS version if it's quoted in the configured
     /// versions *and* at least one ciphersuite for this version is
     /// also configured.
     </span><span class="kw">pub fn </span>supports_version(<span class="kw-2">&amp;</span><span class="self">self</span>, v: ProtocolVersion) -&gt; bool {
@@ -1057,14 +1058,14 @@
 
     <span class="doccomment">/// Access configuration options whose use is dangerous and requires
     /// extra care.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;dangerous_configuration&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"dangerous_configuration"</span>)]
     </span><span class="kw">pub fn </span>dangerous(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; danger::DangerousClientConfig {
         danger::DangerousClientConfig { cfg: <span class="self">self </span>}
     }
 }
 
 <span class="doccomment">/// Container for unsafe APIs
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;dangerous_configuration&quot;</span>)]
+</span><span class="attr">#[cfg(feature = <span class="string">"dangerous_configuration"</span>)]
 </span><span class="kw">pub mod </span>danger {
     <span class="kw">use </span>std::sync::Arc;
 
@@ -1072,12 +1073,12 @@
     <span class="kw">use </span><span class="kw">super</span>::ClientConfig;
 
     <span class="doccomment">/// Accessor for dangerous configuration options.
-    </span><span class="kw">pub struct </span>DangerousClientConfig&lt;<span class="lifetime">&#39;a</span>&gt; {
+    </span><span class="kw">pub struct </span>DangerousClientConfig&lt;<span class="lifetime">'a</span>&gt; {
         <span class="doccomment">/// The underlying ClientConfig
-        </span><span class="kw">pub </span>cfg: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>ClientConfig,
+        </span><span class="kw">pub </span>cfg: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>ClientConfig,
     }
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; DangerousClientConfig&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; DangerousClientConfig&lt;<span class="lifetime">'a</span>&gt; {
         <span class="doccomment">/// Overrides the default `ServerCertVerifier` with something else.
         </span><span class="kw">pub fn </span>set_certificate_verifier(<span class="kw-2">&amp;mut </span><span class="self">self</span>, verifier: Arc&lt;<span class="kw">dyn </span>ServerCertVerifier&gt;) {
             <span class="self">self</span>.cfg.verifier = verifier;
@@ -1128,21 +1129,21 @@
     }
 
     <span class="kw">fn </span>rejected(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="macro">trace!</span>(<span class="string">&quot;EarlyData rejected&quot;</span>);
+        <span class="macro">trace!</span>(<span class="string">"EarlyData rejected"</span>);
         <span class="self">self</span>.state = EarlyDataState::Rejected;
     }
 
     <span class="kw">fn </span>accepted(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="macro">trace!</span>(<span class="string">&quot;EarlyData accepted&quot;</span>);
+        <span class="macro">trace!</span>(<span class="string">"EarlyData accepted"</span>);
         <span class="macro">assert_eq!</span>(<span class="self">self</span>.state, EarlyDataState::Ready);
         <span class="self">self</span>.state = EarlyDataState::Accepted;
     }
 
     <span class="kw">fn </span>finished(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="macro">trace!</span>(<span class="string">&quot;EarlyData finished&quot;</span>);
+        <span class="macro">trace!</span>(<span class="string">"EarlyData finished"</span>);
         <span class="self">self</span>.state = <span class="kw">match </span><span class="self">self</span>.state {
             EarlyDataState::Accepted =&gt; EarlyDataState::AcceptedFinished,
-            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;bad EarlyData state&quot;</span>),
+            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"bad EarlyData state"</span>),
         }
     }
 
@@ -1171,12 +1172,12 @@
 }
 
 <span class="doccomment">/// Stub that implements io::Write and dispatches to `write_early_data`.
-</span><span class="kw">pub struct </span>WriteEarlyData&lt;<span class="lifetime">&#39;a</span>&gt; {
-    sess: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>ClientSessionImpl,
+</span><span class="kw">pub struct </span>WriteEarlyData&lt;<span class="lifetime">'a</span>&gt; {
+    sess: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>ClientSessionImpl,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; WriteEarlyData&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>new(sess: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>ClientSessionImpl) -&gt; WriteEarlyData&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; WriteEarlyData&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">fn </span>new(sess: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>ClientSessionImpl) -&gt; WriteEarlyData&lt;<span class="lifetime">'a</span>&gt; {
         WriteEarlyData { sess }
     }
 
@@ -1187,7 +1188,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; io::Write <span class="kw">for </span>WriteEarlyData&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; io::Write <span class="kw">for </span>WriteEarlyData&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; io::Result&lt;usize&gt; {
         <span class="self">self</span>.sess.write_early_data(buf)
     }
@@ -1205,12 +1206,12 @@
     <span class="kw">pub </span>state: <span class="prelude-ty">Option</span>&lt;hs::NextState&gt;,
     <span class="kw">pub </span>server_cert_chain: CertificatePayload,
     <span class="kw">pub </span>early_data: EarlyData,
-    <span class="kw">pub </span>resumption_ciphersuite: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt;,
+    <span class="kw">pub </span>resumption_ciphersuite: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite&gt;,
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>ClientSessionImpl {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;ClientSessionImpl&quot;</span>)
+        f.debug_struct(<span class="string">"ClientSessionImpl"</span>)
             .finish()
     }
 }
@@ -1240,13 +1241,13 @@
             ret.push(cs.suite);
         }
 
-        <span class="comment">// We don&#39;t do renegotation at all, in fact.
+        <span class="comment">// We don't do renegotation at all, in fact.
         </span>ret.push(CipherSuite::TLS_EMPTY_RENEGOTIATION_INFO_SCSV);
 
         ret
     }
 
-    <span class="kw">pub fn </span>find_cipher_suite(<span class="kw-2">&amp;</span><span class="self">self</span>, suite: CipherSuite) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt; {
+    <span class="kw">pub fn </span>find_cipher_suite(<span class="kw-2">&amp;</span><span class="self">self</span>, suite: CipherSuite) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite&gt; {
         <span class="kw">for </span>scs <span class="kw">in </span><span class="kw-2">&amp;</span><span class="self">self</span>.config.ciphersuites {
             <span class="kw">if </span>scs.suite == suite {
                 <span class="kw">return </span><span class="prelude-val">Some</span>(scs);
@@ -1261,7 +1262,7 @@
         // have unprocessed plaintext.  This provides back-pressure
         // to the TCP buffers.
         //
-        // This also covers the handshake case, because we don&#39;t have
+        // This also covers the handshake case, because we don't have
         // readable plaintext before handshake has completed.
         </span>!<span class="self">self</span>.common.has_readable_plaintext()
     }
@@ -1281,7 +1282,7 @@
     <span class="kw">pub fn </span>process_msg(<span class="kw-2">&amp;mut </span><span class="self">self</span>, <span class="kw-2">mut </span>msg: Message) -&gt; <span class="prelude-ty">Result</span>&lt;(), TLSError&gt; {
         <span class="comment">// TLS1.3: drop CCS at any time during handshaking
         </span><span class="kw">if let </span>MiddleboxCCS::Drop = <span class="self">self</span>.common.filter_tls13_ccs(<span class="kw-2">&amp;</span>msg)<span class="question-mark">? </span>{
-            <span class="macro">trace!</span>(<span class="string">&quot;Dropping CCS&quot;</span>);
+            <span class="macro">trace!</span>(<span class="string">"Dropping CCS"</span>);
             <span class="kw">return </span><span class="prelude-val">Ok</span>(());
         }
 
@@ -1428,7 +1429,7 @@
         <span class="self">self</span>.common.negotiated_version
     }
 
-    <span class="kw">pub fn </span>get_negotiated_ciphersuite(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt; {
+    <span class="kw">pub fn </span>get_negotiated_ciphersuite(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite&gt; {
         <span class="self">self</span>.common.get_suite()
     }
 
@@ -1482,12 +1483,12 @@
     }
 
     <span class="doccomment">/// Returns an `io::Write` implementor you can write bytes to
-    /// to send TLS1.3 early data (a.k.a. &quot;0-RTT data&quot;) to the server.
+    /// to send TLS1.3 early data (a.k.a. "0-RTT data") to the server.
     ///
     /// This returns None in many circumstances when the capability to
     /// send early data is not available, including but not limited to:
     ///
-    /// - The server hasn&#39;t been talked to previously.
+    /// - The server hasn't been talked to previously.
     /// - The server does not support resumption.
     /// - The server does not support early data.
     /// - The resumption data for the server has expired.
@@ -1573,7 +1574,7 @@
             .export_keying_material(output, label, context)
     }
 
-    <span class="kw">fn </span>get_negotiated_ciphersuite(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt; {
+    <span class="kw">fn </span>get_negotiated_ciphersuite(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite&gt; {
         <span class="self">self</span>.imp
             .get_negotiated_ciphersuite()
             .or(<span class="self">self</span>.imp.resumption_ciphersuite)
@@ -1613,7 +1614,7 @@
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.imp.send_some_plaintext(buf))
     }
 
-    <span class="kw">fn </span>write_vectored(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bufs: <span class="kw-2">&amp;</span>[IoSlice&lt;<span class="lifetime">&#39;_</span>&gt;]) -&gt; io::Result&lt;usize&gt; {
+    <span class="kw">fn </span>write_vectored(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bufs: <span class="kw-2">&amp;</span>[IoSlice&lt;<span class="lifetime">'_</span>&gt;]) -&gt; io::Result&lt;usize&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>sz = <span class="number">0</span>;
         <span class="kw">for </span>buf <span class="kw">in </span>bufs {
             sz += <span class="self">self</span>.imp.send_some_plaintext(buf);

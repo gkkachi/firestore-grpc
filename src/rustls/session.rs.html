@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-0.19.1/src/session.rs`."><title>session.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustls" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-0.19.1/src/session.rs`."><title>session.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustls" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -852,7 +853,7 @@
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::cipher;
 <span class="kw">use </span><span class="kw">crate</span>::error::TLSError;
 <span class="kw">use </span><span class="kw">crate</span>::key;
-<span class="attr">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"logging"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::log::{debug, error, warn};
 <span class="kw">use </span><span class="kw">crate</span>::msgs::base::Payload;
 <span class="kw">use </span><span class="kw">crate</span>::msgs::codec::Codec;
@@ -974,7 +975,7 @@
     /// See RFC5705 for more details on what this does and is for.
     ///
     /// For TLS1.3 connections, this function does not use the
-    /// &quot;early&quot; exporter at any point.
+    /// "early" exporter at any point.
     ///
     /// This function fails if called prior to the handshake completing;
     /// check with `is_handshaking()` first.
@@ -988,7 +989,7 @@
     <span class="doccomment">/// Retrieves the ciphersuite agreed with the peer.
     ///
     /// This returns None until the ciphersuite is agreed.
-    </span><span class="kw">fn </span>get_negotiated_ciphersuite(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt;;
+    </span><span class="kw">fn </span>get_negotiated_ciphersuite(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite&gt;;
 
     <span class="doccomment">/// This function uses `io` to complete any outstanding IO for
     /// this session.
@@ -1042,7 +1043,7 @@
                 <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {}
                 <span class="prelude-val">Err</span>(e) =&gt; {
                     <span class="comment">// In case we have an alert to send describing this error,
-                    // try a last-gasp write -- but don&#39;t predate the primary
+                    // try a last-gasp write -- but don't predate the primary
                     // error.
                     </span><span class="kw">let </span>_ignored = <span class="self">self</span>.write_tls(io);
 
@@ -1063,7 +1064,7 @@
 <span class="attr">#[derive(Copy, Clone, Eq, PartialEq)]
 </span><span class="kw">pub enum </span>Protocol {
     Tls13,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
     </span>Quic,
 }
 
@@ -1110,7 +1111,7 @@
     <span class="kw">pub fn </span>has_tls12_downgrade_marker(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; bool {
         <span class="macro">assert!</span>(<span class="self">self</span>.we_are_client);
         <span class="comment">// both the server random and TLS12_DOWNGRADE_SENTINEL are
-        // public values and don&#39;t require constant time comparison
+        // public values and don't require constant time comparison
         </span><span class="kw-2">&amp;</span><span class="self">self</span>.server[<span class="number">24</span>..] == TLS12_DOWNGRADE_SENTINEL
     }
 }
@@ -1131,14 +1132,14 @@
 <span class="doccomment">/// TLS1.2 per-session keying material
 </span><span class="kw">pub struct </span>SessionSecrets {
     <span class="kw">pub </span>randoms: SessionRandoms,
-    hash: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ring::digest::Algorithm,
+    hash: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>ring::digest::Algorithm,
     <span class="kw">pub </span>master_secret: [u8; <span class="number">48</span>],
 }
 
 <span class="kw">impl </span>SessionSecrets {
     <span class="kw">pub fn </span>new(
         randoms: <span class="kw-2">&amp;</span>SessionRandoms,
-        hashalg: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ring::digest::Algorithm,
+        hashalg: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>ring::digest::Algorithm,
         pms: <span class="kw-2">&amp;</span>[u8],
     ) -&gt; SessionSecrets {
         <span class="kw">let </span><span class="kw-2">mut </span>ret = SessionSecrets {
@@ -1152,7 +1153,7 @@
             <span class="kw-2">&amp;mut </span>ret.master_secret,
             ret.hash,
             pms,
-            <span class="string">b&quot;master secret&quot;</span>,
+            <span class="string">b"master secret"</span>,
             <span class="kw-2">&amp;</span>randoms,
         );
         ret
@@ -1161,7 +1162,7 @@
     <span class="kw">pub fn </span>new_ems(
         randoms: <span class="kw-2">&amp;</span>SessionRandoms,
         hs_hash: <span class="kw-2">&amp;</span>[u8],
-        hashalg: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ring::digest::Algorithm,
+        hashalg: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>ring::digest::Algorithm,
         pms: <span class="kw-2">&amp;</span>[u8],
     ) -&gt; SessionSecrets {
         <span class="kw">let </span><span class="kw-2">mut </span>ret = SessionSecrets {
@@ -1174,7 +1175,7 @@
             <span class="kw-2">&amp;mut </span>ret.master_secret,
             ret.hash,
             pms,
-            <span class="string">b&quot;extended master secret&quot;</span>,
+            <span class="string">b"extended master secret"</span>,
             hs_hash,
         );
         ret
@@ -1182,7 +1183,7 @@
 
     <span class="kw">pub fn </span>new_resume(
         randoms: <span class="kw-2">&amp;</span>SessionRandoms,
-        hashalg: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ring::digest::Algorithm,
+        hashalg: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>ring::digest::Algorithm,
         master_secret: <span class="kw-2">&amp;</span>[u8],
     ) -&gt; SessionSecrets {
         <span class="kw">let </span><span class="kw-2">mut </span>ret = SessionSecrets {
@@ -1202,13 +1203,13 @@
         out.resize(len, <span class="number">0u8</span>);
 
         <span class="comment">// NOTE: opposite order to above for no good reason.
-        // Don&#39;t design security protocols on drugs, kids.
+        // Don't design security protocols on drugs, kids.
         </span><span class="kw">let </span>randoms = join_randoms(<span class="kw-2">&amp;</span><span class="self">self</span>.randoms.server, <span class="kw-2">&amp;</span><span class="self">self</span>.randoms.client);
         prf::prf(
             <span class="kw-2">&amp;mut </span>out,
             <span class="self">self</span>.hash,
             <span class="kw-2">&amp;</span><span class="self">self</span>.master_secret,
-            <span class="string">b&quot;key expansion&quot;</span>,
+            <span class="string">b"key expansion"</span>,
             <span class="kw-2">&amp;</span>randoms,
         );
 
@@ -1236,11 +1237,11 @@
     }
 
     <span class="kw">pub fn </span>client_verify_data(<span class="kw-2">&amp;</span><span class="self">self</span>, handshake_hash: <span class="kw-2">&amp;</span>[u8]) -&gt; Vec&lt;u8&gt; {
-        <span class="self">self</span>.make_verify_data(handshake_hash, <span class="string">b&quot;client finished&quot;</span>)
+        <span class="self">self</span>.make_verify_data(handshake_hash, <span class="string">b"client finished"</span>)
     }
 
     <span class="kw">pub fn </span>server_verify_data(<span class="kw-2">&amp;</span><span class="self">self</span>, handshake_hash: <span class="kw-2">&amp;</span>[u8]) -&gt; Vec&lt;u8&gt; {
-        <span class="self">self</span>.make_verify_data(handshake_hash, <span class="string">b&quot;server finished&quot;</span>)
+        <span class="self">self</span>.make_verify_data(handshake_hash, <span class="string">b"server finished"</span>)
     }
 
     <span class="kw">pub fn </span>export_keying_material(<span class="kw-2">&amp;</span><span class="self">self</span>, output: <span class="kw-2">&amp;mut </span>[u8], label: <span class="kw-2">&amp;</span>[u8], context: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt;) {
@@ -1278,7 +1279,7 @@
     <span class="kw">pub </span>negotiated_version: <span class="prelude-ty">Option</span>&lt;ProtocolVersion&gt;,
     <span class="kw">pub </span>is_client: bool,
     <span class="kw">pub </span>record_layer: record_layer::RecordLayer,
-    suite: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt;,
+    suite: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite&gt;,
     peer_eof: bool,
     <span class="kw">pub </span>traffic: bool,
     <span class="kw">pub </span>early_traffic: bool,
@@ -1292,7 +1293,7 @@
     <span class="kw">pub </span>sendable_tls: ChunkVecBuffer,
     <span class="doccomment">/// Protocol whose key schedule should be used. Unused for TLS &lt; 1.3.
     </span><span class="kw">pub </span>protocol: Protocol,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) quic: Quic,
 }
 
@@ -1315,7 +1316,7 @@
             sendable_plaintext: ChunkVecBuffer::new(),
             sendable_tls: ChunkVecBuffer::new(),
             protocol: Protocol::Tls13,
-            <span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
             </span>quic: Quic::new(),
         }
     }
@@ -1327,15 +1328,15 @@
         }
     }
 
-    <span class="kw">pub fn </span>get_suite(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt; {
+    <span class="kw">pub fn </span>get_suite(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite&gt; {
         <span class="self">self</span>.suite
     }
 
-    <span class="kw">pub fn </span>get_suite_assert(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite {
+    <span class="kw">pub fn </span>get_suite_assert(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite {
         <span class="self">self</span>.suite.as_ref().unwrap()
     }
 
-    <span class="kw">pub fn </span>set_suite(<span class="kw-2">&amp;mut </span><span class="self">self</span>, suite: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite) -&gt; bool {
+    <span class="kw">pub fn </span>set_suite(<span class="kw-2">&amp;mut </span><span class="self">self</span>, suite: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite) -&gt; bool {
         <span class="kw">match </span><span class="self">self</span>.suite {
             <span class="prelude-val">None </span>=&gt; {
                 <span class="self">self</span>.suite = <span class="prelude-val">Some</span>(suite);
@@ -1351,17 +1352,17 @@
 
     <span class="kw">pub fn </span>filter_tls13_ccs(<span class="kw-2">&amp;mut </span><span class="self">self</span>, msg: <span class="kw-2">&amp;</span>Message) -&gt; <span class="prelude-ty">Result</span>&lt;MiddleboxCCS, TLSError&gt; {
         <span class="comment">// pass message to handshake state machine if any of these are true:
-        // - TLS1.2 (where it&#39;s part of the state machine),
-        // - prior to determining the version (it&#39;s illegal as a first message)
-        // - if it&#39;s not a CCS at all
-        // - if we&#39;ve finished the handshake
+        // - TLS1.2 (where it's part of the state machine),
+        // - prior to determining the version (it's illegal as a first message)
+        // - if it's not a CCS at all
+        // - if we've finished the handshake
         </span><span class="kw">if </span>!<span class="self">self</span>.is_tls13() || !msg.is_content_type(ContentType::ChangeCipherSpec) || <span class="self">self</span>.traffic {
             <span class="kw">return </span><span class="prelude-val">Ok</span>(MiddleboxCCS::Process);
         }
 
         <span class="kw">if </span><span class="self">self</span>.received_middlebox_ccs {
             <span class="prelude-val">Err</span>(TLSError::PeerMisbehavedError(
-                <span class="string">&quot;illegal middlebox CCS received&quot;</span>.into(),
+                <span class="string">"illegal middlebox CCS received"</span>.into(),
             ))
         } <span class="kw">else </span>{
             <span class="self">self</span>.received_middlebox_ccs = <span class="bool-val">true</span>;
@@ -1413,12 +1414,12 @@
                 <span class="kw">if </span><span class="self">self</span>.is_tls13() &amp;&amp; alert.description != AlertDescription::UserCanceled {
                     <span class="self">self</span>.send_fatal_alert(AlertDescription::DecodeError);
                 } <span class="kw">else </span>{
-                    <span class="macro">warn!</span>(<span class="string">&quot;TLS alert warning received: {:#?}&quot;</span>, msg);
+                    <span class="macro">warn!</span>(<span class="string">"TLS alert warning received: {:#?}"</span>, msg);
                     <span class="kw">return </span><span class="prelude-val">Ok</span>(());
                 }
             }
 
-            <span class="macro">error!</span>(<span class="string">&quot;TLS alert received: {:#?}&quot;</span>, msg);
+            <span class="macro">error!</span>(<span class="string">"TLS alert received: {:#?}"</span>, msg);
             <span class="prelude-val">Err</span>(TLSError::AlertReceived(alert.description))
         } <span class="kw">else </span>{
             <span class="prelude-val">Err</span>(TLSError::CorruptMessagePayload(ContentType::Alert))
@@ -1440,9 +1441,9 @@
     <span class="doccomment">/// Like send_msg_encrypt, but operate on an appdata directly.
     </span><span class="kw">fn </span>send_appdata_encrypt(<span class="kw-2">&amp;mut </span><span class="self">self</span>, payload: <span class="kw-2">&amp;</span>[u8], limit: Limit) -&gt; usize {
         <span class="comment">// Here, the limit on sendable_tls applies to encrypted data,
-        // but we&#39;re respecting it for plaintext data -- so we&#39;ll
-        // be out by whatever the cipher+record overhead is.  That&#39;s a
-        // constant and predictable amount, so it&#39;s not a terrible issue.
+        // but we're respecting it for plaintext data -- so we'll
+        // be out by whatever the cipher+record overhead is.  That's a
+        // constant and predictable amount, so it's not a terrible issue.
         </span><span class="kw">let </span>len = <span class="kw">match </span>limit {
             Limit::Yes =&gt; <span class="self">self
                 </span>.sendable_tls
@@ -1517,7 +1518,7 @@
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.record_layer.is_encrypting());
 
         <span class="kw">if </span>data.is_empty() {
-            <span class="comment">// Don&#39;t send empty fragments.
+            <span class="comment">// Don't send empty fragments.
             </span><span class="kw">return </span><span class="number">0</span>;
         }
 
@@ -1531,7 +1532,7 @@
     /// be less than `data.len()` if buffer limits were exceeded.
     </span><span class="kw">fn </span>send_plain(<span class="kw-2">&amp;mut </span><span class="self">self</span>, data: <span class="kw-2">&amp;</span>[u8], limit: Limit) -&gt; usize {
         <span class="kw">if </span>!<span class="self">self</span>.traffic {
-            <span class="comment">// If we haven&#39;t completed handshaking, buffer
+            <span class="comment">// If we haven't completed handshaking, buffer
             // plaintext to send once we do.
             </span><span class="kw">let </span>len = <span class="kw">match </span>limit {
                 Limit::Yes =&gt; <span class="self">self
@@ -1547,7 +1548,7 @@
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.record_layer.is_encrypting());
 
         <span class="kw">if </span>data.is_empty() {
-            <span class="comment">// Don&#39;t send empty fragments.
+            <span class="comment">// Don't send empty fragments.
             </span><span class="kw">return </span><span class="number">0</span>;
         }
 
@@ -1580,7 +1581,7 @@
 
     <span class="doccomment">/// Send a raw TLS message, fragmenting it if needed.
     </span><span class="kw">pub fn </span>send_msg(<span class="kw-2">&amp;mut </span><span class="self">self</span>, m: Message, must_encrypt: bool) {
-        <span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
         </span>{
             <span class="kw">if let </span>Protocol::Quic = <span class="self">self</span>.protocol {
                 <span class="kw">if let </span>MessagePayload::Alert(alert) = m.payload {
@@ -1592,7 +1593,7 @@
                         </span>} <span class="kw">else </span>{
                             <span class="bool-val">false
                         </span>},
-                        <span class="string">&quot;QUIC uses TLS for the cryptographic handshake only&quot;
+                        <span class="string">"QUIC uses TLS for the cryptographic handshake only"
                     </span>);
                     <span class="kw">let </span><span class="kw-2">mut </span>bytes = Vec::new();
                     m.payload.encode(<span class="kw-2">&amp;mut </span>bytes);
@@ -1625,7 +1626,7 @@
         <span class="kw">if </span>len == <span class="number">0 </span>&amp;&amp; <span class="self">self</span>.connection_at_eof() &amp;&amp; <span class="self">self</span>.received_plaintext.is_empty() {
             <span class="kw">return </span><span class="prelude-val">Err</span>(io::Error::new(
                 io::ErrorKind::ConnectionAborted,
-                <span class="string">&quot;CloseNotify alert received&quot;</span>,
+                <span class="string">"CloseNotify alert received"</span>,
             ));
         }
 
@@ -1641,12 +1642,12 @@
     }
 
     <span class="kw">pub fn </span>send_warning_alert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, desc: AlertDescription) {
-        <span class="macro">warn!</span>(<span class="string">&quot;Sending warning alert {:?}&quot;</span>, desc);
+        <span class="macro">warn!</span>(<span class="string">"Sending warning alert {:?}"</span>, desc);
         <span class="self">self</span>.send_warning_alert_no_log(desc);
     }
 
     <span class="kw">pub fn </span>send_fatal_alert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, desc: AlertDescription) {
-        <span class="macro">warn!</span>(<span class="string">&quot;Sending fatal alert {:?}&quot;</span>, desc);
+        <span class="macro">warn!</span>(<span class="string">"Sending fatal alert {:?}"</span>, desc);
         <span class="macro">debug_assert!</span>(!<span class="self">self</span>.sent_fatal_alert);
         <span class="kw">let </span>m = Message::build_alert(AlertLevel::Fatal, desc);
         <span class="self">self</span>.send_msg(m, <span class="self">self</span>.record_layer.is_encrypting());
@@ -1654,7 +1655,7 @@
     }
 
     <span class="kw">pub fn </span>send_close_notify(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="macro">debug!</span>(<span class="string">&quot;Sending warning alert {:?}&quot;</span>, AlertDescription::CloseNotify);
+        <span class="macro">debug!</span>(<span class="string">"Sending warning alert {:?}"</span>, AlertDescription::CloseNotify);
         <span class="self">self</span>.send_warning_alert_no_log(AlertDescription::CloseNotify);
     }
 
@@ -1664,16 +1665,16 @@
     }
 
     <span class="kw">pub fn </span>is_quic(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
         </span>{
             <span class="self">self</span>.protocol == Protocol::Quic
         }
-        <span class="attr">#[cfg(not(feature = <span class="string">&quot;quic&quot;</span>))]
+        <span class="attr">#[cfg(not(feature = <span class="string">"quic"</span>))]
         </span><span class="bool-val">false
     </span>}
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>Quic {
     <span class="doccomment">/// QUIC transport parameters received from the peer during the handshake
     </span><span class="kw">pub </span>params: <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;,
@@ -1686,7 +1687,7 @@
     </span><span class="kw">pub </span>returned_traffic_keys: bool,
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;quic&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"quic"</span>)]
 </span><span class="kw">impl </span>Quic {
     <span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{

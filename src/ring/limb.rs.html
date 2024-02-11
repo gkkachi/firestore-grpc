@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ring-0.16.20/src/limb.rs`."><title>limb.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="ring" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ring-0.16.20/src/limb.rs`."><title>limb.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="ring" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -609,7 +610,7 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
@@ -624,23 +625,23 @@
 
 </span><span class="kw">use crate</span>::{c, error};
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::bits;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
 </span><span class="kw">use </span>core::num::Wrapping;
 
 <span class="comment">// XXX: Not correct for x32 ABIs.
-</span><span class="attr">#[cfg(target_pointer_width = <span class="string">&quot;64&quot;</span>)]
+</span><span class="attr">#[cfg(target_pointer_width = <span class="string">"64"</span>)]
 </span><span class="kw">pub type </span>Limb = u64;
-<span class="attr">#[cfg(target_pointer_width = <span class="string">&quot;32&quot;</span>)]
+<span class="attr">#[cfg(target_pointer_width = <span class="string">"32"</span>)]
 </span><span class="kw">pub type </span>Limb = u32;
-<span class="attr">#[cfg(target_pointer_width = <span class="string">&quot;64&quot;</span>)]
+<span class="attr">#[cfg(target_pointer_width = <span class="string">"64"</span>)]
 </span><span class="kw">pub const </span>LIMB_BITS: usize = <span class="number">64</span>;
-<span class="attr">#[cfg(target_pointer_width = <span class="string">&quot;32&quot;</span>)]
+<span class="attr">#[cfg(target_pointer_width = <span class="string">"32"</span>)]
 </span><span class="kw">pub const </span>LIMB_BITS: usize = <span class="number">32</span>;
 
-<span class="attr">#[cfg(target_pointer_width = <span class="string">&quot;64&quot;</span>)]
+<span class="attr">#[cfg(target_pointer_width = <span class="string">"64"</span>)]
 #[derive(Debug, PartialEq)]
 #[repr(u64)]
 </span><span class="kw">pub enum </span>LimbMask {
@@ -648,7 +649,7 @@
     False = <span class="number">0</span>,
 }
 
-<span class="attr">#[cfg(target_pointer_width = <span class="string">&quot;32&quot;</span>)]
+<span class="attr">#[cfg(target_pointer_width = <span class="string">"32"</span>)]
 #[derive(Debug, PartialEq)]
 #[repr(u32)]
 </span><span class="kw">pub enum </span>LimbMask {
@@ -660,7 +661,7 @@
 
 <span class="attr">#[inline]
 </span><span class="kw">pub fn </span>limbs_equal_limbs_consttime(a: <span class="kw-2">&amp;</span>[Limb], b: <span class="kw-2">&amp;</span>[Limb]) -&gt; LimbMask {
-    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+    <span class="kw">extern </span><span class="string">"C" </span>{
         <span class="kw">fn </span>LIMBS_equal(a: <span class="kw-2">*const </span>Limb, b: <span class="kw-2">*const </span>Limb, num_limbs: c::size_t) -&gt; LimbMask;
     }
 
@@ -680,7 +681,7 @@
 }
 
 <span class="attr">#[inline]
-#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+#[cfg(feature = <span class="string">"alloc"</span>)]
 </span><span class="kw">pub fn </span>limbs_less_than_limb_constant_time(a: <span class="kw-2">&amp;</span>[Limb], b: Limb) -&gt; LimbMask {
     <span class="kw">unsafe </span>{ LIMBS_less_than_limb(a.as_ptr(), b, a.len()) }
 }
@@ -690,13 +691,13 @@
     <span class="kw">unsafe </span>{ LIMBS_are_zero(limbs.as_ptr(), limbs.len()) }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
 #[inline]
 </span><span class="kw">pub fn </span>limbs_are_even_constant_time(limbs: <span class="kw-2">&amp;</span>[Limb]) -&gt; LimbMask {
     <span class="kw">unsafe </span>{ LIMBS_are_even(limbs.as_ptr(), limbs.len()) }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
 #[inline]
 </span><span class="kw">pub fn </span>limbs_equal_limb_constant_time(a: <span class="kw-2">&amp;</span>[Limb], b: Limb) -&gt; LimbMask {
     <span class="kw">unsafe </span>{ LIMBS_equal_limb(a.as_ptr(), b, a.len()) }
@@ -707,9 +708,9 @@
 // This strives to be constant-time with respect to the values of all bits
 // except the most significant bit. This does not attempt to be constant-time
 // with respect to `a.len()` or the value of the result or the value of the
-// most significant bit (It&#39;s 1, unless the input is zero, in which case it&#39;s
+// most significant bit (It's 1, unless the input is zero, in which case it's
 // zero.)
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+</span><span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
 </span><span class="kw">pub fn </span>limbs_minimal_bits(a: <span class="kw-2">&amp;</span>[Limb]) -&gt; bits::BitLength {
     <span class="kw">for </span>num_limbs <span class="kw">in </span>(<span class="number">1</span>..=a.len()).rev() {
         <span class="kw">let </span>high_limb = a[num_limbs - <span class="number">1</span>];
@@ -772,7 +773,7 @@
 /// is not `AllowZero::Yes`, zero values are rejected.
 ///
 /// This attempts to be constant-time with respect to the actual value *only if*
-/// the value is actually in range. In other words, this won&#39;t leak anything
+/// the value is actually in range. In other words, this won't leak anything
 /// about a valid value, but it might leak small amounts of information about an
 /// invalid value (which constraint it failed).
 </span><span class="kw">pub fn </span>parse_big_endian_in_range_and_pad_consttime(
@@ -855,22 +856,22 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
 </span><span class="kw">pub type </span>Window = Limb;
 
 <span class="doccomment">/// Processes `limbs` as a sequence of 5-bit windows, folding the windows from
 /// most significant to least significant and returning the accumulated result.
 /// The first window will be mapped by `init` to produce the initial value for
 /// the accumulator. Then `f` will be called to fold the accumulator and the
-/// next window until all windows are processed. When the input&#39;s bit length
-/// isn&#39;t divisible by 5, the window passed to `init` will be partial; all
+/// next window until all windows are processed. When the input's bit length
+/// isn't divisible by 5, the window passed to `init` will be partial; all
 /// windows passed to `fold` will be full.
 ///
 /// This is designed to avoid leaking the contents of `limbs` through side
 /// channels as long as `init` and `fold` are side-channel free.
 ///
 /// Panics if `limbs` is empty.
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+</span><span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
 </span><span class="kw">pub fn </span>fold_5_bit_windows&lt;R, I: FnOnce(Window) -&gt; R, F: Fn(R, Window) -&gt; R&gt;(
     limbs: <span class="kw-2">&amp;</span>[Limb],
     init: I,
@@ -882,7 +883,7 @@
 
     <span class="kw">const </span>WINDOW_BITS: Wrapping&lt;c::size_t&gt; = Wrapping(<span class="number">5</span>);
 
-    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+    <span class="kw">extern </span><span class="string">"C" </span>{
         <span class="kw">fn </span>LIMBS_window5_split_window(
             lower_limb: Limb,
             higher_limb: Limb,
@@ -929,23 +930,23 @@
                 </span>window_low_bit.<span class="number">0 </span>-= WINDOW_BITS;
                 acc = fold(acc, window);
             }
-            window_low_bit.<span class="number">0 </span>+= Wrapping(LIMB_BITS); <span class="comment">// &quot;Fix&quot; the underflow.
+            window_low_bit.<span class="number">0 </span>+= Wrapping(LIMB_BITS); <span class="comment">// "Fix" the underflow.
 
             </span>acc
         })
 }
 
-<span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
-    <span class="attr">#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+<span class="kw">extern </span><span class="string">"C" </span>{
+    <span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
     </span><span class="kw">fn </span>LIMB_shr(a: Limb, shift: c::size_t) -&gt; Limb;
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
     </span><span class="kw">fn </span>LIMBS_are_even(a: <span class="kw-2">*const </span>Limb, num_limbs: c::size_t) -&gt; LimbMask;
     <span class="kw">fn </span>LIMBS_are_zero(a: <span class="kw-2">*const </span>Limb, num_limbs: c::size_t) -&gt; LimbMask;
-    <span class="attr">#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
     </span><span class="kw">fn </span>LIMBS_equal_limb(a: <span class="kw-2">*const </span>Limb, b: Limb, num_limbs: c::size_t) -&gt; LimbMask;
     <span class="kw">fn </span>LIMBS_less_than(a: <span class="kw-2">*const </span>Limb, b: <span class="kw-2">*const </span>Limb, num_limbs: c::size_t) -&gt; LimbMask;
-    <span class="attr">#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
     </span><span class="kw">fn </span>LIMBS_less_than_limb(a: <span class="kw-2">*const </span>Limb, b: Limb, num_limbs: c::size_t) -&gt; LimbMask;
     <span class="kw">fn </span>LIMBS_reduce_once(r: <span class="kw-2">*mut </span>Limb, m: <span class="kw-2">*const </span>Limb, num_limbs: c::size_t);
 }
@@ -1055,7 +1056,7 @@
     }
 
     <span class="attr">#[test]
-    #[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+    #[cfg(feature = <span class="string">"alloc"</span>)]
     </span><span class="kw">fn </span>test_limbs_less_than_limb_constant_time() {
         <span class="kw">static </span>LESSER: <span class="kw-2">&amp;</span>[(<span class="kw-2">&amp;</span>[Limb], Limb)] = <span class="kw-2">&amp;</span>[
             (<span class="kw-2">&amp;</span>[<span class="number">0</span>], <span class="number">1</span>),
@@ -1135,13 +1136,13 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_big_endian_from_limbs_same_length() {
-        <span class="attr">#[cfg(target_pointer_width = <span class="string">&quot;32&quot;</span>)]
+        <span class="attr">#[cfg(target_pointer_width = <span class="string">"32"</span>)]
         </span><span class="kw">let </span>limbs = [
             <span class="number">0xbccddeef</span>, <span class="number">0x89900aab</span>, <span class="number">0x45566778</span>, <span class="number">0x01122334</span>, <span class="number">0xddeeff00</span>, <span class="number">0x99aabbcc</span>, <span class="number">0x55667788</span>,
             <span class="number">0x11223344</span>,
         ];
 
-        <span class="attr">#[cfg(target_pointer_width = <span class="string">&quot;64&quot;</span>)]
+        <span class="attr">#[cfg(target_pointer_width = <span class="string">"64"</span>)]
         </span><span class="kw">let </span>limbs = [
             <span class="number">0x8990_0aab_bccd_deef</span>,
             <span class="number">0x0112_2334_4556_6778</span>,
@@ -1163,14 +1164,14 @@
     <span class="attr">#[should_panic]
     #[test]
     </span><span class="kw">fn </span>test_big_endian_from_limbs_fewer_limbs() {
-        <span class="attr">#[cfg(target_pointer_width = <span class="string">&quot;32&quot;</span>)]
+        <span class="attr">#[cfg(target_pointer_width = <span class="string">"32"</span>)]
         </span><span class="comment">// Two fewer limbs.
         </span><span class="kw">let </span>limbs = [
             <span class="number">0xbccddeef</span>, <span class="number">0x89900aab</span>, <span class="number">0x45566778</span>, <span class="number">0x01122334</span>, <span class="number">0xddeeff00</span>, <span class="number">0x99aabbcc</span>,
         ];
 
         <span class="comment">// One fewer limb.
-        </span><span class="attr">#[cfg(target_pointer_width = <span class="string">&quot;64&quot;</span>)]
+        </span><span class="attr">#[cfg(target_pointer_width = <span class="string">"64"</span>)]
         </span><span class="kw">let </span>limbs = [
             <span class="number">0x8990_0aab_bccd_deef</span>,
             <span class="number">0x0112_2334_4556_6778</span>,

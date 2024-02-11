@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/hyper-0.14.28/src/server/server.rs`."><title>server.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="hyper" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/hyper-0.14.28/src/server/server.rs`."><title>server.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="hyper" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -827,11 +828,11 @@
 <span class="kw">use </span>std::fmt;
 <span class="kw">use </span>std::future::Future;
 <span class="kw">use </span>std::marker::Unpin;
-<span class="attr">#[cfg(feature = <span class="string">&quot;tcp&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"tcp"</span>)]
 </span><span class="kw">use </span>std::net::{SocketAddr, TcpListener <span class="kw">as </span>StdTcpListener};
 <span class="kw">use </span>std::pin::Pin;
 <span class="kw">use </span>std::task::{Context, Poll};
-<span class="attr">#[cfg(feature = <span class="string">&quot;tcp&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"tcp"</span>)]
 </span><span class="kw">use </span>std::time::Duration;
 
 <span class="kw">use </span>pin_project_lite::pin_project;
@@ -840,12 +841,12 @@
 <span class="kw">use </span>tracing::trace;
 
 <span class="kw">use </span><span class="kw">super</span>::accept::Accept;
-<span class="attr">#[cfg(all(feature = <span class="string">&quot;tcp&quot;</span>))]
+<span class="attr">#[cfg(all(feature = <span class="string">"tcp"</span>))]
 </span><span class="kw">use </span><span class="kw">super</span>::tcp::AddrIncoming;
 <span class="kw">use </span><span class="kw">crate</span>::body::{Body, HttpBody};
 <span class="kw">use </span><span class="kw">crate</span>::common::exec::Exec;
 <span class="kw">use </span><span class="kw">crate</span>::common::exec::{ConnStreamExec, NewSvcExec};
-<span class="comment">// Renamed `Http` as `Http_` for now so that people upgrading don&#39;t see an
+<span class="comment">// Renamed `Http` as `Http_` for now so that people upgrading don't see an
 // error that `hyper::server::Http` is private...
 </span><span class="kw">use </span><span class="kw">super</span>::conn::{Connection, Http <span class="kw">as </span>Http_, UpgradeableConnection};
 <span class="kw">use </span><span class="kw">super</span>::shutdown::{Graceful, GracefulWatcher};
@@ -870,7 +871,7 @@
 
 <span class="doccomment">/// A builder for a [`Server`](Server).
 </span><span class="attr">#[derive(Debug)]
-#[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">&quot;http1&quot;</span>, feature = <span class="string">&quot;http2&quot;</span>))))]
+#[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">"http1"</span>, feature = <span class="string">"http2"</span>))))]
 </span><span class="kw">pub struct </span>Builder&lt;I, E = Exec&gt; {
     incoming: I,
     protocol: Http_&lt;E&gt;,
@@ -878,7 +879,7 @@
 
 <span class="comment">// ===== impl Server =====
 
-</span><span class="attr">#[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">&quot;http1&quot;</span>, feature = <span class="string">&quot;http2&quot;</span>))))]
+</span><span class="attr">#[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">"http1"</span>, feature = <span class="string">"http2"</span>))))]
 </span><span class="kw">impl</span>&lt;I&gt; Server&lt;I, ()&gt; {
     <span class="doccomment">/// Starts a [`Builder`](Builder) with the provided incoming stream.
     </span><span class="kw">pub fn </span>builder(incoming: I) -&gt; Builder&lt;I&gt; {
@@ -889,10 +890,10 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;tcp&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"tcp"</span>)]
 #[cfg_attr(
     docsrs,
-    doc(cfg(all(feature = <span class="string">&quot;tcp&quot;</span>, any(feature = <span class="string">&quot;http1&quot;</span>, feature = <span class="string">&quot;http2&quot;</span>))))
+    doc(cfg(all(feature = <span class="string">"tcp"</span>, any(feature = <span class="string">"http1"</span>, feature = <span class="string">"http2"</span>))))
 )]
 </span><span class="kw">impl </span>Server&lt;AddrIncoming, ()&gt; {
     <span class="doccomment">/// Binds to the provided address, and returns a [`Builder`](Builder).
@@ -903,7 +904,7 @@
     /// to bind to an address and return a `Result`, see `Server::try_bind`.
     </span><span class="kw">pub fn </span>bind(addr: <span class="kw-2">&amp;</span>SocketAddr) -&gt; Builder&lt;AddrIncoming&gt; {
         <span class="kw">let </span>incoming = AddrIncoming::new(addr).unwrap_or_else(|e| {
-            <span class="macro">panic!</span>(<span class="string">&quot;error binding to {}: {}&quot;</span>, addr, e);
+            <span class="macro">panic!</span>(<span class="string">"error binding to {}: {}"</span>, addr, e);
         });
         Server::builder(incoming)
     }
@@ -919,10 +920,10 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;tcp&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"tcp"</span>)]
 #[cfg_attr(
     docsrs,
-    doc(cfg(all(feature = <span class="string">&quot;tcp&quot;</span>, any(feature = <span class="string">&quot;http1&quot;</span>, feature = <span class="string">&quot;http2&quot;</span>))))
+    doc(cfg(all(feature = <span class="string">"tcp"</span>, any(feature = <span class="string">"http1"</span>, feature = <span class="string">"http2"</span>))))
 )]
 </span><span class="kw">impl</span>&lt;S, E&gt; Server&lt;AddrIncoming, S, E&gt; {
     <span class="doccomment">/// Returns the local address that this server is bound to.
@@ -931,15 +932,15 @@
     }
 }
 
-<span class="attr">#[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">&quot;http1&quot;</span>, feature = <span class="string">&quot;http2&quot;</span>))))]
+<span class="attr">#[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">"http1"</span>, feature = <span class="string">"http2"</span>))))]
 </span><span class="kw">impl</span>&lt;I, IO, IE, S, E, B&gt; Server&lt;I, S, E&gt;
 <span class="kw">where
     </span>I: Accept&lt;Conn = IO, Error = IE&gt;,
     IE: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
-    IO: AsyncRead + AsyncWrite + Unpin + Send + <span class="lifetime">&#39;static</span>,
+    IO: AsyncRead + AsyncWrite + Unpin + Send + <span class="lifetime">'static</span>,
     S: MakeServiceRef&lt;IO, Body, ResBody = B&gt;,
     S::Error: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
-    B: HttpBody + <span class="lifetime">&#39;static</span>,
+    B: HttpBody + <span class="lifetime">'static</span>,
     B::Error: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
     E: ConnStreamExec&lt;&lt;S::Service <span class="kw">as </span>HttpService&lt;Body&gt;&gt;::Future, B&gt;,
 {
@@ -950,13 +951,13 @@
     ///
     /// ```
     /// # fn main() {}
-    /// # #[cfg(feature = &quot;tcp&quot;)]
+    /// # #[cfg(feature = "tcp")]
     /// # async fn run() {
     /// # use hyper::{Body, Response, Server, Error};
     /// # use hyper::service::{make_service_fn, service_fn};
     /// # let make_service = make_service_fn(|_| async {
     /// #     Ok::&lt;_, Error&gt;(service_fn(|_req| async {
-    /// #         Ok::&lt;_, Error&gt;(Response::new(Body::from(&quot;Hello World&quot;)))
+    /// #         Ok::&lt;_, Error&gt;(Response::new(Body::from("Hello World")))
     /// #     }))
     /// # });
     /// // Make a server from the previous examples...
@@ -972,7 +973,7 @@
     ///
     /// // Await the `server` receiving the signal...
     /// if let Err(e) = graceful.await {
-    ///     eprintln!(&quot;server error: {}&quot;, e);
+    ///     eprintln!("server error: {}", e);
     /// }
     ///
     /// // And later, trigger the signal by calling `tx.send(())`.
@@ -989,13 +990,13 @@
 
     <span class="kw">fn </span>poll_next_(
         <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::Result&lt;Connecting&lt;IO, S::Future, E&gt;&gt;&gt;&gt; {
         <span class="kw">let </span>me = <span class="self">self</span>.project();
         <span class="kw">match </span><span class="macro">ready!</span>(me.make_service.poll_ready_ref(cx)) {
             <span class="prelude-val">Ok</span>(()) =&gt; (),
             <span class="prelude-val">Err</span>(e) =&gt; {
-                <span class="macro">trace!</span>(<span class="string">&quot;make_service closed&quot;</span>);
+                <span class="macro">trace!</span>(<span class="string">"make_service closed"</span>);
                 <span class="kw">return </span>Poll::Ready(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="kw">crate</span>::Error::new_user_make_service(e))));
             }
         }
@@ -1015,7 +1016,7 @@
 
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>poll_watch&lt;W&gt;(
         <span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
         watcher: <span class="kw-2">&amp;</span>W,
     ) -&gt; Poll&lt;<span class="kw">crate</span>::Result&lt;()&gt;&gt;
     <span class="kw">where
@@ -1033,37 +1034,37 @@
     }
 }
 
-<span class="attr">#[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">&quot;http1&quot;</span>, feature = <span class="string">&quot;http2&quot;</span>))))]
+<span class="attr">#[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">"http1"</span>, feature = <span class="string">"http2"</span>))))]
 </span><span class="kw">impl</span>&lt;I, IO, IE, S, B, E&gt; Future <span class="kw">for </span>Server&lt;I, S, E&gt;
 <span class="kw">where
     </span>I: Accept&lt;Conn = IO, Error = IE&gt;,
     IE: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
-    IO: AsyncRead + AsyncWrite + Unpin + Send + <span class="lifetime">&#39;static</span>,
+    IO: AsyncRead + AsyncWrite + Unpin + Send + <span class="lifetime">'static</span>,
     S: MakeServiceRef&lt;IO, Body, ResBody = B&gt;,
     S::Error: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
-    B: HttpBody + <span class="lifetime">&#39;static</span>,
+    B: HttpBody + <span class="lifetime">'static</span>,
     B::Error: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
     E: ConnStreamExec&lt;&lt;S::Service <span class="kw">as </span>HttpService&lt;Body&gt;&gt;::Future, B&gt;,
     E: NewSvcExec&lt;IO, S::Future, S::Service, E, NoopWatcher&gt;,
 {
     <span class="kw">type </span>Output = <span class="kw">crate</span>::Result&lt;()&gt;;
 
-    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
         <span class="self">self</span>.poll_watch(cx, <span class="kw-2">&amp;</span>NoopWatcher)
     }
 }
 
 <span class="kw">impl</span>&lt;I: fmt::Debug, S: fmt::Debug&gt; fmt::Debug <span class="kw">for </span>Server&lt;I, S&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="kw">let </span><span class="kw-2">mut </span>st = f.debug_struct(<span class="string">&quot;Server&quot;</span>);
-        st.field(<span class="string">&quot;listener&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.incoming);
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        <span class="kw">let </span><span class="kw-2">mut </span>st = f.debug_struct(<span class="string">"Server"</span>);
+        st.field(<span class="string">"listener"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.incoming);
         st.finish()
     }
 }
 
 <span class="comment">// ===== impl Builder =====
 
-</span><span class="attr">#[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">&quot;http1&quot;</span>, feature = <span class="string">&quot;http2&quot;</span>))))]
+</span><span class="attr">#[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">"http1"</span>, feature = <span class="string">"http2"</span>))))]
 </span><span class="kw">impl</span>&lt;I, E&gt; Builder&lt;I, E&gt; {
     <span class="doccomment">/// Start a new builder, wrapping an incoming stream and low-level options.
     ///
@@ -1075,8 +1076,8 @@
     <span class="doccomment">/// Sets whether to use keep-alive for HTTP/1 connections.
     ///
     /// Default is `true`.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http1&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http1&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http1"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http1"</span>)))]
     </span><span class="kw">pub fn </span>http1_keepalive(<span class="kw-2">mut </span><span class="self">self</span>, val: bool) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http1_keep_alive(val);
         <span class="self">self
@@ -1090,8 +1091,8 @@
     /// detects an EOF in the middle of a request.
     ///
     /// Default is `false`.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http1&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http1&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http1"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http1"</span>)))]
     </span><span class="kw">pub fn </span>http1_half_close(<span class="kw-2">mut </span><span class="self">self</span>, val: bool) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http1_half_close(val);
         <span class="self">self
@@ -1100,8 +1101,8 @@
     <span class="doccomment">/// Set the maximum buffer size.
     ///
     /// Default is ~ 400kb.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http1&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http1&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http1"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http1"</span>)))]
     </span><span class="kw">pub fn </span>http1_max_buf_size(<span class="kw-2">mut </span><span class="self">self</span>, val: usize) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.max_buf_size(val);
         <span class="self">self
@@ -1109,10 +1110,10 @@
 
     <span class="comment">// Sets whether to bunch up HTTP/1 writes until the read buffer is empty.
     //
-    // This isn&#39;t really desirable in most cases, only really being useful in
+    // This isn't really desirable in most cases, only really being useful in
     // silly pipeline benchmarks.
     </span><span class="attr">#[doc(hidden)]
-    #[cfg(feature = <span class="string">&quot;http1&quot;</span>)]
+    #[cfg(feature = <span class="string">"http1"</span>)]
     </span><span class="kw">pub fn </span>http1_pipeline_flush(<span class="kw-2">mut </span><span class="self">self</span>, val: bool) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.pipeline_flush(val);
         <span class="self">self
@@ -1122,7 +1123,7 @@
     /// or always flatten into a single buffer.
     ///
     /// Note that setting this to false may mean more copies of body data,
-    /// but may also improve performance when an IO transport doesn&#39;t
+    /// but may also improve performance when an IO transport doesn't
     /// support vectored writes well, such as most TLS implementations.
     ///
     /// Setting this to true will force hyper to use queued strategy
@@ -1130,7 +1131,7 @@
     ///
     /// Default is `auto`. In this mode hyper will try to guess which
     /// mode to use
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http1&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http1"</span>)]
     </span><span class="kw">pub fn </span>http1_writev(<span class="kw-2">mut </span><span class="self">self</span>, enabled: bool) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http1_writev(enabled);
         <span class="self">self
@@ -1142,8 +1143,8 @@
     /// Note that this setting does not affect HTTP/2.
     ///
     /// Default is false.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http1&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http1&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http1"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http1"</span>)))]
     </span><span class="kw">pub fn </span>http1_title_case_headers(<span class="kw-2">mut </span><span class="self">self</span>, val: bool) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http1_title_case_headers(val);
         <span class="self">self
@@ -1162,8 +1163,8 @@
     /// Note that this setting does not affect HTTP/2.
     ///
     /// Default is false.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http1&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http1&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http1"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http1"</span>)))]
     </span><span class="kw">pub fn </span>http1_preserve_header_case(<span class="kw-2">mut </span><span class="self">self</span>, val: bool) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http1_preserve_header_case(val);
         <span class="self">self
@@ -1173,8 +1174,8 @@
     /// transmit the entire header within this time, the connection is closed.
     ///
     /// Default is None.
-    </span><span class="attr">#[cfg(all(feature = <span class="string">&quot;http1&quot;</span>, feature = <span class="string">&quot;runtime&quot;</span>))]
-    #[cfg_attr(docsrs, doc(cfg(all(feature = <span class="string">&quot;http1&quot;</span>, feature = <span class="string">&quot;runtime&quot;</span>))))]
+    </span><span class="attr">#[cfg(all(feature = <span class="string">"http1"</span>, feature = <span class="string">"runtime"</span>))]
+    #[cfg_attr(docsrs, doc(cfg(all(feature = <span class="string">"http1"</span>, feature = <span class="string">"runtime"</span>))))]
     </span><span class="kw">pub fn </span>http1_header_read_timeout(<span class="kw-2">mut </span><span class="self">self</span>, read_timeout: Duration) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http1_header_read_timeout(read_timeout);
         <span class="self">self
@@ -1183,8 +1184,8 @@
     <span class="doccomment">/// Sets whether HTTP/1 is required.
     ///
     /// Default is `false`.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http1&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http1&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http1"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http1"</span>)))]
     </span><span class="kw">pub fn </span>http1_only(<span class="kw-2">mut </span><span class="self">self</span>, val: bool) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http1_only(val);
         <span class="self">self
@@ -1193,8 +1194,8 @@
     <span class="doccomment">/// Sets whether HTTP/2 is required.
     ///
     /// Default is `false`.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http2&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http2&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http2"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http2"</span>)))]
     </span><span class="kw">pub fn </span>http2_only(<span class="kw-2">mut </span><span class="self">self</span>, val: bool) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http2_only(val);
         <span class="self">self
@@ -1205,8 +1206,8 @@
     /// This will default to whatever the default in h2 is. As of v0.3.17, it is 20.
     ///
     /// See &lt;https://github.com/hyperium/hyper/issues/2877&gt; for more information.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http2&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http2&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http2"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http2"</span>)))]
     </span><span class="kw">pub fn </span>http2_max_pending_accept_reset_streams(<span class="kw-2">mut </span><span class="self">self</span>, max: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;usize&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http2_max_pending_accept_reset_streams(max);
         <span class="self">self
@@ -1220,8 +1221,8 @@
     /// If not set, hyper will use a default.
     ///
     /// [spec]: https://http2.github.io/http2-spec/#SETTINGS_INITIAL_WINDOW_SIZE
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http2&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http2&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http2"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http2"</span>)))]
     </span><span class="kw">pub fn </span>http2_initial_stream_window_size(<span class="kw-2">mut </span><span class="self">self</span>, sz: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;u32&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http2_initial_stream_window_size(sz.into());
         <span class="self">self
@@ -1232,8 +1233,8 @@
     /// Passing `None` will do nothing.
     ///
     /// If not set, hyper will use a default.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http2&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http2&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http2"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http2"</span>)))]
     </span><span class="kw">pub fn </span>http2_initial_connection_window_size(<span class="kw-2">mut </span><span class="self">self</span>, sz: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;u32&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol
             .http2_initial_connection_window_size(sz.into());
@@ -1245,8 +1246,8 @@
     /// Enabling this will override the limits set in
     /// `http2_initial_stream_window_size` and
     /// `http2_initial_connection_window_size`.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http2&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http2&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http2"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http2"</span>)))]
     </span><span class="kw">pub fn </span>http2_adaptive_window(<span class="kw-2">mut </span><span class="self">self</span>, enabled: bool) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http2_adaptive_window(enabled);
         <span class="self">self
@@ -1257,8 +1258,8 @@
     /// Passing `None` will do nothing.
     ///
     /// If not set, hyper will use a default.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http2&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http2&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http2"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http2"</span>)))]
     </span><span class="kw">pub fn </span>http2_max_frame_size(<span class="kw-2">mut </span><span class="self">self</span>, sz: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;u32&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http2_max_frame_size(sz);
         <span class="self">self
@@ -1267,8 +1268,8 @@
     <span class="doccomment">/// Sets the max size of received header frames.
     ///
     /// Default is currently ~16MB, but may change.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http2&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http2&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http2"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http2"</span>)))]
     </span><span class="kw">pub fn </span>http2_max_header_list_size(<span class="kw-2">mut </span><span class="self">self</span>, max: u32) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http2_max_header_list_size(max);
         <span class="self">self
@@ -1280,8 +1281,8 @@
     /// Default is no limit (`std::u32::MAX`). Passing `None` will do nothing.
     ///
     /// [spec]: https://http2.github.io/http2-spec/#SETTINGS_MAX_CONCURRENT_STREAMS
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http2&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http2&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http2"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http2"</span>)))]
     </span><span class="kw">pub fn </span>http2_max_concurrent_streams(<span class="kw-2">mut </span><span class="self">self</span>, max: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;u32&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http2_max_concurrent_streams(max.into());
         <span class="self">self
@@ -1297,8 +1298,8 @@
     /// # Cargo Feature
     ///
     /// Requires the `runtime` cargo feature to be enabled.
-    </span><span class="attr">#[cfg(all(feature = <span class="string">&quot;runtime&quot;</span>, feature = <span class="string">&quot;http2&quot;</span>))]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http2&quot;</span>)))]
+    </span><span class="attr">#[cfg(all(feature = <span class="string">"runtime"</span>, feature = <span class="string">"http2"</span>))]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http2"</span>)))]
     </span><span class="kw">pub fn </span>http2_keep_alive_interval(<span class="kw-2">mut </span><span class="self">self</span>, interval: <span class="kw">impl </span>Into&lt;<span class="prelude-ty">Option</span>&lt;Duration&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http2_keep_alive_interval(interval);
         <span class="self">self
@@ -1314,8 +1315,8 @@
     /// # Cargo Feature
     ///
     /// Requires the `runtime` cargo feature to be enabled.
-    </span><span class="attr">#[cfg(all(feature = <span class="string">&quot;runtime&quot;</span>, feature = <span class="string">&quot;http2&quot;</span>))]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http2&quot;</span>)))]
+    </span><span class="attr">#[cfg(all(feature = <span class="string">"runtime"</span>, feature = <span class="string">"http2"</span>))]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http2"</span>)))]
     </span><span class="kw">pub fn </span>http2_keep_alive_timeout(<span class="kw-2">mut </span><span class="self">self</span>, timeout: Duration) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http2_keep_alive_timeout(timeout);
         <span class="self">self
@@ -1328,8 +1329,8 @@
     /// # Panics
     ///
     /// The value must be no larger than `u32::MAX`.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http2&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;http2&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http2"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"http2"</span>)))]
     </span><span class="kw">pub fn </span>http2_max_send_buf_size(<span class="kw-2">mut </span><span class="self">self</span>, max: usize) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http2_max_send_buf_size(max);
         <span class="self">self
@@ -1338,7 +1339,7 @@
     <span class="doccomment">/// Enables the [extended CONNECT protocol].
     ///
     /// [extended CONNECT protocol]: https://datatracker.ietf.org/doc/html/rfc8441#section-4
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;http2&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"http2"</span>)]
     </span><span class="kw">pub fn </span>http2_enable_connect_protocol(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.protocol.http2_enable_connect_protocol();
         <span class="self">self
@@ -1359,7 +1360,7 @@
     /// # Example
     ///
     /// ```
-    /// # #[cfg(feature = &quot;tcp&quot;)]
+    /// # #[cfg(feature = "tcp")]
     /// # async fn run() {
     /// use hyper::{Body, Error, Response, Server};
     /// use hyper::service::{make_service_fn, service_fn};
@@ -1370,7 +1371,7 @@
     /// // And a MakeService to handle each connection...
     /// let make_svc = make_service_fn(|_| async {
     ///     Ok::&lt;_, Error&gt;(service_fn(|_req| async {
-    ///         Ok::&lt;_, Error&gt;(Response::new(Body::from(&quot;Hello World&quot;)))
+    ///         Ok::&lt;_, Error&gt;(Response::new(Body::from("Hello World")))
     ///     }))
     /// });
     ///
@@ -1380,7 +1381,7 @@
     ///
     /// // Run forever-ish...
     /// if let Err(err) = server.await {
-    ///     eprintln!(&quot;server error: {}&quot;, err);
+    ///     eprintln!("server error: {}", err);
     /// }
     /// # }
     /// ```
@@ -1388,10 +1389,10 @@
     <span class="kw">where
         </span>I: Accept,
         I::Error: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
-        I::Conn: AsyncRead + AsyncWrite + Unpin + Send + <span class="lifetime">&#39;static</span>,
+        I::Conn: AsyncRead + AsyncWrite + Unpin + Send + <span class="lifetime">'static</span>,
         S: MakeServiceRef&lt;I::Conn, Body, ResBody = B&gt;,
         S::Error: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
-        B: HttpBody + <span class="lifetime">&#39;static</span>,
+        B: HttpBody + <span class="lifetime">'static</span>,
         B::Error: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
         E: NewSvcExec&lt;I::Conn, S::Future, S::Service, E, NoopWatcher&gt;,
         E: ConnStreamExec&lt;&lt;S::Service <span class="kw">as </span>HttpService&lt;Body&gt;&gt;::Future, B&gt;,
@@ -1404,10 +1405,10 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;tcp&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"tcp"</span>)]
 #[cfg_attr(
     docsrs,
-    doc(cfg(all(feature = <span class="string">&quot;tcp&quot;</span>, any(feature = <span class="string">&quot;http1&quot;</span>, feature = <span class="string">&quot;http2&quot;</span>))))
+    doc(cfg(all(feature = <span class="string">"tcp"</span>, any(feature = <span class="string">"http1"</span>, feature = <span class="string">"http2"</span>))))
 )]
 </span><span class="kw">impl</span>&lt;E&gt; Builder&lt;AddrIncoming, E&gt; {
     <span class="doccomment">/// Set the duration to remain idle before sending TCP keepalive probes.
@@ -1441,7 +1442,7 @@
     ///
     /// A possible scenario is that the process has hit the max open files
     /// allowed, and so trying to accept a new connection will fail with
-    /// EMFILE. In some cases, it&#39;s preferable to just wait for some time, if
+    /// EMFILE. In some cases, it's preferable to just wait for some time, if
     /// the application will likely close some files (or connections), and try
     /// to accept the connection again. If this option is true, the error will
     /// be logged at the error level, since it is still a big deal, and then
@@ -1486,10 +1487,10 @@
 
 <span class="kw">impl</span>&lt;I, S, E&gt; Watcher&lt;I, S, E&gt; <span class="kw">for </span>NoopWatcher
 <span class="kw">where
-    </span>I: AsyncRead + AsyncWrite + Unpin + Send + <span class="lifetime">&#39;static</span>,
+    </span>I: AsyncRead + AsyncWrite + Unpin + Send + <span class="lifetime">'static</span>,
     S: HttpService&lt;Body&gt;,
     E: ConnStreamExec&lt;S::Future, S::ResBody&gt;,
-    S::ResBody: <span class="lifetime">&#39;static</span>,
+    S::ResBody: <span class="lifetime">'static</span>,
     &lt;S::ResBody <span class="kw">as </span>HttpBody&gt;::Error: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
 {
     <span class="kw">type </span>Future = UpgradeableConnection&lt;I, S, E&gt;;
@@ -1518,7 +1519,7 @@
 
     <span class="comment">// This is a `Future&lt;Item=(), Error=()&gt;` spawned to an `Executor` inside
     // the `Server`. By being a nameable type, we can be generic over the
-    // user&#39;s `Service::Future`, and thus an `Executor` can execute it.
+    // user's `Service::Future`, and thus an `Executor` can execute it.
     //
     // Doing this allows for the server to conditionally require `Send` futures,
     // depending on the `Executor` configured.
@@ -1562,19 +1563,19 @@
 
     <span class="kw">impl</span>&lt;I, N, S, NE, B, E, W&gt; Future <span class="kw">for </span>NewSvcTask&lt;I, N, S, E, W&gt;
     <span class="kw">where
-        </span>I: AsyncRead + AsyncWrite + Unpin + Send + <span class="lifetime">&#39;static</span>,
+        </span>I: AsyncRead + AsyncWrite + Unpin + Send + <span class="lifetime">'static</span>,
         N: Future&lt;Output = <span class="prelude-ty">Result</span>&lt;S, NE&gt;&gt;,
         NE: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
         S: HttpService&lt;Body, ResBody = B&gt;,
-        B: HttpBody + <span class="lifetime">&#39;static</span>,
+        B: HttpBody + <span class="lifetime">'static</span>,
         B::Error: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
         E: ConnStreamExec&lt;S::Future, B&gt;,
         W: Watcher&lt;I, S, E&gt;,
     {
         <span class="kw">type </span>Output = ();
 
-        <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
-            <span class="comment">// If it weren&#39;t for needing to name this type so the `Send` bounds
+        <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+            <span class="comment">// If it weren't for needing to name this type so the `Send` bounds
             // could be projected to the `Serve` executor, this could just be
             // an `async fn`, and much safer. Woe is me.
 
@@ -1591,7 +1592,7 @@
                                 <span class="prelude-val">Ok</span>(conn) =&gt; conn,
                                 <span class="prelude-val">Err</span>(err) =&gt; {
                                     <span class="kw">let </span>err = <span class="kw">crate</span>::Error::new_user_make_service(err);
-                                    <span class="macro">debug!</span>(<span class="string">&quot;connecting error: {}&quot;</span>, err);
+                                    <span class="macro">debug!</span>(<span class="string">"connecting error: {}"</span>, err);
                                     <span class="kw">return </span>Poll::Ready(());
                                 }
                             };
@@ -1601,7 +1602,7 @@
                         StateProj::Connected { future } =&gt; {
                             <span class="kw">return </span>future.poll(cx).map(|res| {
                                 <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = res {
-                                    <span class="macro">debug!</span>(<span class="string">&quot;connection error: {}&quot;</span>, err);
+                                    <span class="macro">debug!</span>(<span class="string">"connection error: {}"</span>, err);
                                 }
                             });
                         }
@@ -1619,9 +1620,9 @@
     ///
     /// Wraps the future returned from `MakeService` into one that returns
     /// a `Connection`.
-    </span><span class="attr">#[must_use = <span class="string">&quot;futures do nothing unless polled&quot;</span>]
+    </span><span class="attr">#[must_use = <span class="string">"futures do nothing unless polled"</span>]
     #[derive(Debug)]
-    #[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">&quot;http1&quot;</span>, feature = <span class="string">&quot;http2&quot;</span>))))]
+    #[cfg_attr(docsrs, doc(cfg(any(feature = <span class="string">"http1"</span>, feature = <span class="string">"http2"</span>))))]
     </span><span class="kw">pub struct </span>Connecting&lt;I, F, E = Exec&gt; {
         <span class="attr">#[pin]
         </span>future: F,
@@ -1635,16 +1636,16 @@
     </span>I: AsyncRead + AsyncWrite + Unpin,
     F: Future&lt;Output = <span class="prelude-ty">Result</span>&lt;S, FE&gt;&gt;,
     S: HttpService&lt;Body, ResBody = B&gt;,
-    B: HttpBody + <span class="lifetime">&#39;static</span>,
+    B: HttpBody + <span class="lifetime">'static</span>,
     B::Error: Into&lt;Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;&gt;,
     E: ConnStreamExec&lt;S::Future, B&gt;,
 {
     <span class="kw">type </span>Output = <span class="prelude-ty">Result</span>&lt;Connection&lt;I, S, E&gt;, FE&gt;;
 
-    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>me = <span class="self">self</span>.project();
         <span class="kw">let </span>service = <span class="macro">ready!</span>(me.future.poll(cx))<span class="question-mark">?</span>;
-        <span class="kw">let </span>io = Option::take(<span class="kw-2">&amp;mut </span>me.io).expect(<span class="string">&quot;polled after complete&quot;</span>);
+        <span class="kw">let </span>io = Option::take(<span class="kw-2">&amp;mut </span>me.io).expect(<span class="string">"polled after complete"</span>);
         Poll::Ready(<span class="prelude-val">Ok</span>(me.protocol.serve_connection(io, service)))
     }
 }

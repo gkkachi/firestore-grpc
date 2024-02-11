@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tower-0.4.13/src/builder/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="tower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tower-0.4.13/src/builder/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="tower" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -856,12 +857,12 @@
 /// `service` will be last to see the request.
 ///
 /// ```
-/// # // this (and other) doctest is ignored because we don&#39;t have a way
-/// # // to say that it should only be run with cfg(feature = &quot;...&quot;)
+/// # // this (and other) doctest is ignored because we don't have a way
+/// # // to say that it should only be run with cfg(feature = "...")
 /// # use tower::Service;
 /// # use tower::builder::ServiceBuilder;
-/// # #[cfg(all(feature = &quot;buffer&quot;, feature = &quot;limit&quot;))]
-/// # async fn wrap&lt;S&gt;(svc: S) where S: Service&lt;(), Error = &amp;&#39;static str&gt; + &#39;static + Send, S::Future: Send {
+/// # #[cfg(all(feature = "buffer", feature = "limit"))]
+/// # async fn wrap&lt;S&gt;(svc: S) where S: Service&lt;(), Error = &amp;'static str&gt; + 'static + Send, S::Future: Send {
 /// ServiceBuilder::new()
 ///     .buffer(100)
 ///     .concurrency_limit(10)
@@ -879,8 +880,8 @@
 /// ```
 /// # use tower::Service;
 /// # use tower::builder::ServiceBuilder;
-/// # #[cfg(all(feature = &quot;buffer&quot;, feature = &quot;limit&quot;))]
-/// # async fn wrap&lt;S&gt;(svc: S) where S: Service&lt;(), Error = &amp;&#39;static str&gt; + &#39;static + Send, S::Future: Send {
+/// # #[cfg(all(feature = "buffer", feature = "limit"))]
+/// # async fn wrap&lt;S&gt;(svc: S) where S: Service&lt;(), Error = &amp;'static str&gt; + 'static + Send, S::Future: Send {
 /// ServiceBuilder::new()
 ///     .concurrency_limit(10)
 ///     .buffer(100)
@@ -900,10 +901,10 @@
 /// ```
 /// # use tower::Service;
 /// # use tower::builder::ServiceBuilder;
-/// # #[cfg(feature = &quot;limit&quot;)]
+/// # #[cfg(feature = "limit")]
 /// # use tower::limit::concurrency::ConcurrencyLimitLayer;
-/// # #[cfg(feature = &quot;limit&quot;)]
-/// # async fn wrap&lt;S&gt;(svc: S) where S: Service&lt;(), Error = &amp;&#39;static str&gt; + &#39;static + Send, S::Future: Send {
+/// # #[cfg(feature = "limit")]
+/// # async fn wrap&lt;S&gt;(svc: S) where S: Service&lt;(), Error = &amp;'static str&gt; + 'static + Send, S::Future: Send {
 /// ServiceBuilder::new()
 ///     .concurrency_limit(5)
 ///     .service(svc);
@@ -918,8 +919,8 @@
 /// # use tower::Service;
 /// # use tower::builder::ServiceBuilder;
 /// # use std::time::Duration;
-/// # #[cfg(all(feature = &quot;buffer&quot;, feature = &quot;limit&quot;))]
-/// # async fn wrap&lt;S&gt;(svc: S) where S: Service&lt;(), Error = &amp;&#39;static str&gt; + &#39;static + Send, S::Future: Send {
+/// # #[cfg(all(feature = "buffer", feature = "limit"))]
+/// # async fn wrap&lt;S&gt;(svc: S) where S: Service&lt;(), Error = &amp;'static str&gt; + 'static + Send, S::Future: Send {
 /// ServiceBuilder::new()
 ///     .buffer(5)
 ///     .concurrency_limit(5)
@@ -970,7 +971,7 @@
     /// # use tower::Service;
     /// # use tower::builder::ServiceBuilder;
     /// # use tower::timeout::TimeoutLayer;
-    /// # async fn wrap&lt;S&gt;(svc: S) where S: Service&lt;(), Error = &amp;&#39;static str&gt; + &#39;static + Send, S::Future: Send {
+    /// # async fn wrap&lt;S&gt;(svc: S) where S: Service&lt;(), Error = &amp;'static str&gt; + 'static + Send, S::Future: Send {
     /// # let timeout = Some(Duration::new(10, 0));
     /// // Apply a timeout if configured
     /// ServiceBuilder::new()
@@ -979,8 +980,8 @@
     /// # ;
     /// # }
     /// ```
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;util&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;util&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"util"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"util"</span>)))]
     </span><span class="kw">pub fn </span>option_layer&lt;T&gt;(
         <span class="self">self</span>,
         layer: <span class="prelude-ty">Option</span>&lt;T&gt;,
@@ -1003,8 +1004,8 @@
     /// middleware.
     ///
     /// [`Buffer`]: crate::buffer
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;buffer&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;buffer&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"buffer"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"buffer"</span>)))]
     </span><span class="kw">pub fn </span>buffer&lt;Request&gt;(
         <span class="self">self</span>,
         bound: usize,
@@ -1022,8 +1023,8 @@
     /// [`ConcurrencyLimit`] middleware.
     ///
     /// [`ConcurrencyLimit`]: crate::limit::concurrency
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;limit&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;limit&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"limit"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"limit"</span>)))]
     </span><span class="kw">pub fn </span>concurrency_limit(
         <span class="self">self</span>,
         max: usize,
@@ -1046,8 +1047,8 @@
     /// [`LoadShed`]: crate::load_shed
     /// [`poll_ready`]: crate::Service::poll_ready
     /// [`Pending`]: std::task::Poll::Pending
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;load-shed&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;load-shed&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"load-shed"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"load-shed"</span>)))]
     </span><span class="kw">pub fn </span>load_shed(<span class="self">self</span>) -&gt; ServiceBuilder&lt;Stack&lt;<span class="kw">crate</span>::load_shed::LoadShedLayer, L&gt;&gt; {
         <span class="self">self</span>.layer(<span class="kw">crate</span>::load_shed::LoadShedLayer::new())
     }
@@ -1058,8 +1059,8 @@
     /// middleware.
     ///
     /// [`RateLimit`]: crate::limit::rate
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;limit&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;limit&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"limit"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"limit"</span>)))]
     </span><span class="kw">pub fn </span>rate_limit(
         <span class="self">self</span>,
         num: u64,
@@ -1078,8 +1079,8 @@
     ///
     /// [`Retry`]: crate::retry
     /// [policy]: crate::retry::Policy
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;retry&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;retry&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"retry"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"retry"</span>)))]
     </span><span class="kw">pub fn </span>retry&lt;P&gt;(<span class="self">self</span>, policy: P) -&gt; ServiceBuilder&lt;Stack&lt;<span class="kw">crate</span>::retry::RetryLayer&lt;P&gt;, L&gt;&gt; {
         <span class="self">self</span>.layer(<span class="kw">crate</span>::retry::RetryLayer::new(policy))
     }
@@ -1093,8 +1094,8 @@
     /// middleware.
     ///
     /// [`timeout`]: crate::timeout
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;timeout&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;timeout&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"timeout"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"timeout"</span>)))]
     </span><span class="kw">pub fn </span>timeout(
         <span class="self">self</span>,
         timeout: std::time::Duration,
@@ -1111,8 +1112,8 @@
     ///
     /// [`Filter`]: crate::filter
     /// [`Predicate`]: crate::filter::Predicate
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;filter&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;filter&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"filter"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"filter"</span>)))]
     </span><span class="kw">pub fn </span>filter&lt;P&gt;(
         <span class="self">self</span>,
         predicate: P,
@@ -1129,8 +1130,8 @@
     ///
     /// [`AsyncFilter`]: crate::filter::AsyncFilter
     /// [`AsyncPredicate`]: crate::filter::AsyncPredicate
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;filter&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;filter&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"filter"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"filter"</span>)))]
     </span><span class="kw">pub fn </span>filter_async&lt;P&gt;(
         <span class="self">self</span>,
         predicate: P,
@@ -1155,7 +1156,7 @@
     /// # async fn main() -&gt; Result&lt;(), ()&gt; {
     /// // Suppose we have some `Service` whose request type is `String`:
     /// let string_svc = tower::service_fn(|request: String| async move {
-    ///     println!(&quot;request: {}&quot;, request);
+    ///     println!("request: {}", request);
     ///     Ok(())
     /// });
     ///
@@ -1163,7 +1164,7 @@
     ///
     /// let usize_svc = ServiceBuilder::new()
     ///      // Add a middlware that converts the request type to a `String`:
-    ///     .map_request(|request: usize| format!(&quot;{}&quot;, request))
+    ///     .map_request(|request: usize| format!("{}", request))
     ///     // ...and wrap the string service with that middleware:
     ///     .service(string_svc);
     ///
@@ -1198,8 +1199,8 @@
     /// ```
     ///
     /// [`MapRequest`]: crate::util::MapRequest
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;util&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;util&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"util"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"util"</span>)))]
     </span><span class="kw">pub fn </span>map_request&lt;F, R1, R2&gt;(
         <span class="self">self</span>,
         f: F,
@@ -1219,8 +1220,8 @@
     ///
     /// [`MapResponse`]: crate::util::MapResponse
     /// [`map_response` combinator]: crate::util::ServiceExt::map_response
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;util&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;util&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"util"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"util"</span>)))]
     </span><span class="kw">pub fn </span>map_response&lt;F&gt;(
         <span class="self">self</span>,
         f: F,
@@ -1237,8 +1238,8 @@
     ///
     /// [`MapErr`]: crate::util::MapErr
     /// [`map_err` combinator]: crate::util::ServiceExt::map_err
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;util&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;util&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"util"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"util"</span>)))]
     </span><span class="kw">pub fn </span>map_err&lt;F&gt;(<span class="self">self</span>, f: F) -&gt; ServiceBuilder&lt;Stack&lt;<span class="kw">crate</span>::util::MapErrLayer&lt;F&gt;, L&gt;&gt; {
         <span class="self">self</span>.layer(<span class="kw">crate</span>::util::MapErrLayer::new(f))
     }
@@ -1251,8 +1252,8 @@
     ///
     /// [`MapFutureLayer`]: crate::util::MapFutureLayer
     /// [`map_future`]: crate::util::ServiceExt::map_future
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;util&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;util&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"util"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"util"</span>)))]
     </span><span class="kw">pub fn </span>map_future&lt;F&gt;(<span class="self">self</span>, f: F) -&gt; ServiceBuilder&lt;Stack&lt;<span class="kw">crate</span>::util::MapFutureLayer&lt;F&gt;, L&gt;&gt; {
         <span class="self">self</span>.layer(<span class="kw">crate</span>::util::MapFutureLayer::new(f))
     }
@@ -1264,9 +1265,9 @@
     /// middleware.
     ///
     /// This is similar to the [`map_response`] and [`map_err`] functions,
-    /// except that the *same* function is invoked when the service&#39;s future
+    /// except that the *same* function is invoked when the service's future
     /// completes, whether it completes successfully or fails. This function
-    /// takes the [`Result`] returned by the service&#39;s future, and returns a
+    /// takes the [`Result`] returned by the service's future, and returns a
     /// [`Result`].
     ///
     /// See the documentation for the [`then` combinator] for details.
@@ -1275,18 +1276,18 @@
     /// [`then` combinator]: crate::util::ServiceExt::then
     /// [`map_response`]: ServiceBuilder::map_response
     /// [`map_err`]: ServiceBuilder::map_err
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;util&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;util&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"util"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"util"</span>)))]
     </span><span class="kw">pub fn </span>then&lt;F&gt;(<span class="self">self</span>, f: F) -&gt; ServiceBuilder&lt;Stack&lt;<span class="kw">crate</span>::util::ThenLayer&lt;F&gt;, L&gt;&gt; {
         <span class="self">self</span>.layer(<span class="kw">crate</span>::util::ThenLayer::new(f))
     }
 
-    <span class="doccomment">/// Executes a new future after this service&#39;s future resolves. This does
+    <span class="doccomment">/// Executes a new future after this service's future resolves. This does
     /// not alter the behaviour of the [`poll_ready`] method.
     ///
     /// This method can be used to change the [`Response`] type of the service
     /// into a different type. You can use this method to chain along a computation once the
-    /// service&#39;s response has been resolved.
+    /// service's response has been resolved.
     ///
     /// This wraps the inner service with an instance of the [`AndThen`]
     /// middleware.
@@ -1297,13 +1298,13 @@
     /// [`poll_ready`]: crate::Service::poll_ready
     /// [`and_then` combinator]: crate::util::ServiceExt::and_then
     /// [`AndThen`]: crate::util::AndThen
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;util&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;util&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"util"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"util"</span>)))]
     </span><span class="kw">pub fn </span>and_then&lt;F&gt;(<span class="self">self</span>, f: F) -&gt; ServiceBuilder&lt;Stack&lt;<span class="kw">crate</span>::util::AndThenLayer&lt;F&gt;, L&gt;&gt; {
         <span class="self">self</span>.layer(<span class="kw">crate</span>::util::AndThenLayer::new(f))
     }
 
-    <span class="doccomment">/// Maps this service&#39;s result type (`Result&lt;Self::Response, Self::Error&gt;`)
+    <span class="doccomment">/// Maps this service's result type (`Result&lt;Self::Response, Self::Error&gt;`)
     /// to a different value, regardless of whether the future succeeds or
     /// fails.
     ///
@@ -1314,8 +1315,8 @@
     ///
     /// [`map_result` combinator]: crate::util::ServiceExt::map_result
     /// [`MapResult`]: crate::util::MapResult
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;util&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;util&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"util"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"util"</span>)))]
     </span><span class="kw">pub fn </span>map_result&lt;F&gt;(<span class="self">self</span>, f: F) -&gt; ServiceBuilder&lt;Stack&lt;<span class="kw">crate</span>::util::MapResultLayer&lt;F&gt;, L&gt;&gt; {
         <span class="self">self</span>.layer(<span class="kw">crate</span>::util::MapResultLayer::new(f))
     }
@@ -1326,7 +1327,7 @@
     }
 
     <span class="doccomment">/// Wrap the service `S` with the middleware provided by this
-    /// [`ServiceBuilder`]&#39;s [`Layer`]&#39;s, returning a new [`Service`].
+    /// [`ServiceBuilder`]'s [`Layer`]'s, returning a new [`Service`].
     ///
     /// [`Layer`]: crate::Layer
     /// [`Service`]: crate::Service
@@ -1337,7 +1338,7 @@
         <span class="self">self</span>.layer.layer(service)
     }
 
-    <span class="doccomment">/// Wrap the async function `F` with the middleware provided by this [`ServiceBuilder`]&#39;s
+    <span class="doccomment">/// Wrap the async function `F` with the middleware provided by this [`ServiceBuilder`]'s
     /// [`Layer`]s, returning a new [`Service`].
     ///
     /// This is a convenience method which is equivalent to calling
@@ -1361,7 +1362,7 @@
     ///
     /// # #[tokio::main]
     /// # async fn main() -&gt; Result&lt;(), BoxError&gt; {
-    /// async fn handle(request: &amp;&#39;static str) -&gt; Result&lt;&amp;&#39;static str, BoxError&gt; {
+    /// async fn handle(request: &amp;'static str) -&gt; Result&lt;&amp;'static str, BoxError&gt; {
     ///    Ok(request)
     /// }
     ///
@@ -1370,9 +1371,9 @@
     ///     .timeout(Duration::from_secs(10))
     ///     .service_fn(handle);
     ///
-    /// let response = svc.oneshot(&quot;foo&quot;).await?;
+    /// let response = svc.oneshot("foo").await?;
     ///
-    /// assert_eq!(response, &quot;foo&quot;);
+    /// assert_eq!(response, "foo");
     /// # Ok(())
     /// # }
     /// ```
@@ -1380,8 +1381,8 @@
     /// [`Layer`]: crate::Layer
     /// [`Service`]: crate::Service
     /// [`service_fn`]: crate::service_fn
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;util&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;util&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"util"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"util"</span>)))]
     </span><span class="kw">pub fn </span>service_fn&lt;F&gt;(<span class="self">self</span>, f: F) -&gt; L::Service
     <span class="kw">where
         </span>L: Layer&lt;<span class="kw">crate</span>::util::ServiceFn&lt;F&gt;&gt;,
@@ -1393,7 +1394,7 @@
     ///
     /// This can be useful when debugging type errors in `ServiceBuilder`s with lots of layers.
     ///
-    /// Doesn&#39;t actually change the builder but serves as a type check.
+    /// Doesn't actually change the builder but serves as a type check.
     ///
     /// # Example
     ///
@@ -1403,14 +1404,14 @@
     /// let builder = ServiceBuilder::new()
     ///     // Do something before processing the request
     ///     .map_request(|request: String| {
-    ///         println!(&quot;got request!&quot;);
+    ///         println!("got request!");
     ///         request
     ///     })
     ///     // Ensure our `ServiceBuilder` can be cloned
     ///     .check_clone()
     ///     // Do something after processing the request
     ///     .map_response(|response: String| {
-    ///         println!(&quot;got response!&quot;);
+    ///         println!("got response!");
     ///         response
     ///     });
     /// ```
@@ -1427,7 +1428,7 @@
     ///
     /// This can be useful when debugging type errors in `ServiceBuilder`s with lots of layers.
     ///
-    /// Doesn&#39;t actually change the builder but serves as a type check.
+    /// Doesn't actually change the builder but serves as a type check.
     ///
     /// # Example
     ///
@@ -1440,14 +1441,14 @@
     /// let builder = ServiceBuilder::new()
     ///     // Do something before processing the request
     ///     .map_request(|request: String| {
-    ///         println!(&quot;got request!&quot;);
+    ///         println!("got request!");
     ///         request
     ///     })
     ///     // Ensure that the service produced when given a `MyService` implements
     ///     .check_service_clone::&lt;MyService&gt;()
     ///     // Do something after processing the request
     ///     .map_response(|response: String| {
-    ///         println!(&quot;got response!&quot;);
+    ///         println!("got response!");
     ///         response
     ///     });
     /// ```
@@ -1465,7 +1466,7 @@
     ///
     /// This can be useful when debugging type errors in `ServiceBuilder`s with lots of layers.
     ///
-    /// Doesn&#39;t actually change the builder but serves as a type check.
+    /// Doesn't actually change the builder but serves as a type check.
     ///
     /// # Example
     ///
@@ -1482,7 +1483,7 @@
     ///   type Error = Error;
     ///   type Future = futures_util::future::Ready&lt;Result&lt;Response, Error&gt;&gt;;
     ///
-    ///   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
+    ///   fn poll_ready(&amp;mut self, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;Result&lt;(), Self::Error&gt;&gt; {
     ///       // ...
     ///       # todo!()
     ///   }
@@ -1547,8 +1548,8 @@
     /// ```
     ///
     /// [`BoxService::layer()`]: crate::util::BoxService::layer()
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;util&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;util&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"util"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"util"</span>)))]
     </span><span class="kw">pub fn </span>boxed&lt;S, R&gt;(
         <span class="self">self</span>,
     ) -&gt; ServiceBuilder&lt;
@@ -1567,8 +1568,8 @@
     &gt;
     <span class="kw">where
         </span>L: Layer&lt;S&gt;,
-        L::Service: Service&lt;R&gt; + Send + <span class="lifetime">&#39;static</span>,
-        &lt;L::Service <span class="kw">as </span>Service&lt;R&gt;&gt;::Future: Send + <span class="lifetime">&#39;static</span>,
+        L::Service: Service&lt;R&gt; + Send + <span class="lifetime">'static</span>,
+        &lt;L::Service <span class="kw">as </span>Service&lt;R&gt;&gt;::Future: Send + <span class="lifetime">'static</span>,
     {
         <span class="self">self</span>.layer(<span class="kw">crate</span>::util::BoxService::layer())
     }
@@ -1611,8 +1612,8 @@
     /// [`BoxCloneService::layer()`]: crate::util::BoxCloneService::layer()
     /// [`BoxCloneService`]: crate::util::BoxCloneService
     /// [`boxed`]: Self::boxed
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;util&quot;</span>)]
-    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;util&quot;</span>)))]
+    </span><span class="attr">#[cfg(feature = <span class="string">"util"</span>)]
+    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"util"</span>)))]
     </span><span class="kw">pub fn </span>boxed_clone&lt;S, R&gt;(
         <span class="self">self</span>,
     ) -&gt; ServiceBuilder&lt;
@@ -1631,16 +1632,16 @@
     &gt;
     <span class="kw">where
         </span>L: Layer&lt;S&gt;,
-        L::Service: Service&lt;R&gt; + Clone + Send + <span class="lifetime">&#39;static</span>,
-        &lt;L::Service <span class="kw">as </span>Service&lt;R&gt;&gt;::Future: Send + <span class="lifetime">&#39;static</span>,
+        L::Service: Service&lt;R&gt; + Clone + Send + <span class="lifetime">'static</span>,
+        &lt;L::Service <span class="kw">as </span>Service&lt;R&gt;&gt;::Future: Send + <span class="lifetime">'static</span>,
     {
         <span class="self">self</span>.layer(<span class="kw">crate</span>::util::BoxCloneService::layer())
     }
 }
 
 <span class="kw">impl</span>&lt;L: fmt::Debug&gt; fmt::Debug <span class="kw">for </span>ServiceBuilder&lt;L&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_tuple(<span class="string">&quot;ServiceBuilder&quot;</span>).field(<span class="kw-2">&amp;</span><span class="self">self</span>.layer).finish()
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_tuple(<span class="string">"ServiceBuilder"</span>).field(<span class="kw-2">&amp;</span><span class="self">self</span>.layer).finish()
     }
 }
 

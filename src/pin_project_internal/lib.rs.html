@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pin-project-internal-1.1.4/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pin_project_internal" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pin-project-internal-1.1.4/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pin_project_internal" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -613,11 +614,11 @@
 ///
 /// ```
 /// # use std::pin::Pin;
-/// # type Projection&lt;&#39;a&gt; = &amp;&#39;a ();
-/// # type ProjectionRef&lt;&#39;a&gt; = &amp;&#39;a ();
+/// # type Projection&lt;'a&gt; = &amp;'a ();
+/// # type ProjectionRef&lt;'a&gt; = &amp;'a ();
 /// # trait Dox {
-/// fn project(self: Pin&lt;&amp;mut Self&gt;) -&gt; Projection&lt;&#39;_&gt;;
-/// fn project_ref(self: Pin&lt;&amp;Self&gt;) -&gt; ProjectionRef&lt;&#39;_&gt;;
+/// fn project(self: Pin&lt;&amp;mut Self&gt;) -&gt; Projection&lt;'_&gt;;
+/// fn project_ref(self: Pin&lt;&amp;Self&gt;) -&gt; ProjectionRef&lt;'_&gt;;
 /// # }
 /// ```
 ///
@@ -635,7 +636,7 @@
 ///
 /// impl&lt;T&gt; Enum&lt;T&gt; {
 ///     fn method(self: Pin&lt;&amp;mut Self&gt;) {
-///         let this: EnumProj&lt;&#39;_, T&gt; = self.project();
+///         let this: EnumProj&lt;'_, T&gt; = self.project();
 ///         match this {
 ///             EnumProj::Variant(x) =&gt; {
 ///                 let _: Pin&lt;&amp;mut T&gt; = x;
@@ -649,7 +650,7 @@
 /// an additional lifetime at the beginning of generics.
 ///
 /// ```text
-/// let this: EnumProj&lt;&#39;_, T&gt; = self.project();
+/// let this: EnumProj&lt;'_, T&gt; = self.project();
 ///                    ^^
 /// ```
 ///
@@ -711,12 +712,12 @@
 /// 3. You must make sure that you uphold the [`Drop`
 ///    guarantee][drop-guarantee]: once your struct is pinned, the memory that
 ///    contains the content is not overwritten or deallocated without calling
-///    the content&#39;s destructors.
+///    the content's destructors.
 ///
-///    Safe code doesn&#39;t need to worry about this - the only way to violate
+///    Safe code doesn't need to worry about this - the only way to violate
 ///    this requirement is to manually deallocate memory (which is `unsafe`),
 ///    or to overwrite a field with something else.
-///    Because your custom destructor takes [`Pin`]`&lt;&amp;mut MyStruct&gt;`, it&#39;s
+///    Because your custom destructor takes [`Pin`]`&lt;&amp;mut MyStruct&gt;`, it's
 ///    impossible to obtain a mutable reference to a pin-projected field in safe
 ///    code.
 ///
@@ -915,7 +916,7 @@
 ///
 /// # `#[pinned_drop]`
 ///
-/// In order to correctly implement pin projections, a type&#39;s [`Drop`] impl must
+/// In order to correctly implement pin projections, a type's [`Drop`] impl must
 /// not move out of any structurally pinned fields. Unfortunately,
 /// [`Drop::drop`] takes `&amp;mut Self`, not [`Pin`]`&lt;&amp;mut Self&gt;`.
 ///
@@ -961,8 +962,8 @@
 /// #[pinned_drop]
 /// impl&lt;T: Debug, U: Debug&gt; PinnedDrop for PrintOnDrop&lt;T, U&gt; {
 ///     fn drop(self: Pin&lt;&amp;mut Self&gt;) {
-///         println!(&quot;Dropping pinned field: {:?}&quot;, self.pinned_field);
-///         println!(&quot;Dropping unpin field: {:?}&quot;, self.unpin_field);
+///         println!("Dropping pinned field: {:?}", self.pinned_field);
+///         println!("Dropping unpin field: {:?}", self.unpin_field);
 ///     }
 /// }
 ///
@@ -1038,10 +1039,10 @@
 ///     B,
 /// }
 ///
-/// let mut x = Box::pin(Enum::A { pinned_field: 42, unpinned_field: &quot;hello&quot; });
+/// let mut x = Box::pin(Enum::A { pinned_field: 42, unpinned_field: "hello" });
 ///
 /// match x.as_mut().project_replace(Enum::B) {
-///     EnumProjOwn::A { unpinned_field, .. } =&gt; assert_eq!(unpinned_field, &quot;hello&quot;),
+///     EnumProjOwn::A { unpinned_field, .. } =&gt; assert_eq!(unpinned_field, "hello"),
 ///     EnumProjOwn::B =&gt; unreachable!(),
 /// }
 /// ```
@@ -1104,7 +1105,7 @@
 /// #[pinned_drop]
 /// impl PinnedDrop for PrintOnDrop {
 ///     fn drop(self: Pin&lt;&amp;mut Self&gt;) {
-///         println!(&quot;Dropping: {}&quot;, self.field);
+///         println!("Dropping: {}", self.field);
 ///     }
 /// }
 ///
@@ -1113,7 +1114,7 @@
 /// }
 /// ```
 ///
-/// See also [&quot;pinned-drop&quot; section of `#[pin_project]` attribute][pinned-drop].
+/// See also ["pinned-drop" section of `#[pin_project]` attribute][pinned-drop].
 ///
 /// # Why `#[pinned_drop]` attribute is needed?
 ///

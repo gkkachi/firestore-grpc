@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tonic-0.6.2/src/status.rs`."><title>status.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="tonic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../tonic/index.html"><img src="https://raw.githubusercontent.com/tokio-rs/website/master/public/img/icons/tonic.svg" alt="tonic"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tonic-0.6.2/src/status.rs`."><title>status.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="tonic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><a class="sub-logo-container" href="../../tonic/index.html"><img src="https://raw.githubusercontent.com/tokio-rs/website/master/public/img/icons/tonic.svg" alt="tonic"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -981,19 +982,19 @@
 <span class="kw">use </span>tracing::{debug, trace, warn};
 
 <span class="kw">const </span>ENCODING_SET: <span class="kw-2">&amp;</span>AsciiSet = <span class="kw-2">&amp;</span>CONTROLS
-    .add(<span class="string">b&#39; &#39;</span>)
-    .add(<span class="string">b&#39;&quot;&#39;</span>)
-    .add(<span class="string">b&#39;#&#39;</span>)
-    .add(<span class="string">b&#39;&lt;&#39;</span>)
-    .add(<span class="string">b&#39;&gt;&#39;</span>)
-    .add(<span class="string">b&#39;`&#39;</span>)
-    .add(<span class="string">b&#39;?&#39;</span>)
-    .add(<span class="string">b&#39;{&#39;</span>)
-    .add(<span class="string">b&#39;}&#39;</span>);
+    .add(<span class="string">b' '</span>)
+    .add(<span class="string">b'"'</span>)
+    .add(<span class="string">b'#'</span>)
+    .add(<span class="string">b'&lt;'</span>)
+    .add(<span class="string">b'&gt;'</span>)
+    .add(<span class="string">b'`'</span>)
+    .add(<span class="string">b'?'</span>)
+    .add(<span class="string">b'{'</span>)
+    .add(<span class="string">b'}'</span>);
 
-<span class="kw">const </span>GRPC_STATUS_HEADER_CODE: <span class="kw-2">&amp;</span>str = <span class="string">&quot;grpc-status&quot;</span>;
-<span class="kw">const </span>GRPC_STATUS_MESSAGE_HEADER: <span class="kw-2">&amp;</span>str = <span class="string">&quot;grpc-message&quot;</span>;
-<span class="kw">const </span>GRPC_STATUS_DETAILS_HEADER: <span class="kw-2">&amp;</span>str = <span class="string">&quot;grpc-status-details-bin&quot;</span>;
+<span class="kw">const </span>GRPC_STATUS_HEADER_CODE: <span class="kw-2">&amp;</span>str = <span class="string">"grpc-status"</span>;
+<span class="kw">const </span>GRPC_STATUS_MESSAGE_HEADER: <span class="kw-2">&amp;</span>str = <span class="string">"grpc-message"</span>;
+<span class="kw">const </span>GRPC_STATUS_DETAILS_HEADER: <span class="kw-2">&amp;</span>str = <span class="string">"grpc-status-details-bin"</span>;
 
 <span class="doccomment">/// A gRPC status describing the result of an RPC call.
 ///
@@ -1001,8 +1002,8 @@
 /// associated functions.
 /// ```rust
 /// # use tonic::{Status, Code};
-/// let status1 = Status::new(Code::InvalidArgument, &quot;name is invalid&quot;);
-/// let status2 = Status::invalid_argument(&quot;name is invalid&quot;);
+/// let status1 = Status::new(Code::InvalidArgument, "name is invalid");
+/// let status2 = Status::invalid_argument("name is invalid");
 ///
 /// assert_eq!(status1.code(), Code::InvalidArgument);
 /// assert_eq!(status1.code(), status2.code());
@@ -1019,7 +1020,7 @@
     /// or by `Status` fields above, they will be ignored.
     </span>metadata: MetadataMap,
     <span class="doccomment">/// Optional underlying error.
-    </span>source: <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt;&gt;,
+    </span>source: <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>Error + Send + Sync + <span class="lifetime">'static</span>&gt;&gt;,
 }
 
 <span class="doccomment">/// gRPC status codes used by [`Status`].
@@ -1056,7 +1057,7 @@
     <span class="doccomment">/// Some resource has been exhausted.
     </span>ResourceExhausted = <span class="number">8</span>,
 
-    <span class="doccomment">/// The system is not in a state required for the operation&#39;s execution.
+    <span class="doccomment">/// The system is not in a state required for the operation's execution.
     </span>FailedPrecondition = <span class="number">9</span>,
 
     <span class="doccomment">/// The operation was aborted.
@@ -1089,40 +1090,40 @@
     ///     tonic::Code::Ok
     /// }
     /// let code = make_grpc_request();
-    /// println!(&quot;Operation completed. Human readable description: {}&quot;, code.description());
+    /// println!("Operation completed. Human readable description: {}", code.description());
     /// ```
     /// If you only need description in `println`, `format`, `log` and other
     /// formatting contexts, you may want to use `Display` impl for `Code`
     /// instead.
-    </span><span class="kw">pub fn </span>description(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+    </span><span class="kw">pub fn </span>description(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
         <span class="kw">match </span><span class="self">self </span>{
-            Code::Ok =&gt; <span class="string">&quot;The operation completed successfully&quot;</span>,
-            Code::Cancelled =&gt; <span class="string">&quot;The operation was cancelled&quot;</span>,
-            Code::Unknown =&gt; <span class="string">&quot;Unknown error&quot;</span>,
-            Code::InvalidArgument =&gt; <span class="string">&quot;Client specified an invalid argument&quot;</span>,
-            Code::DeadlineExceeded =&gt; <span class="string">&quot;Deadline expired before operation could complete&quot;</span>,
-            Code::NotFound =&gt; <span class="string">&quot;Some requested entity was not found&quot;</span>,
-            Code::AlreadyExists =&gt; <span class="string">&quot;Some entity that we attempted to create already exists&quot;</span>,
+            Code::Ok =&gt; <span class="string">"The operation completed successfully"</span>,
+            Code::Cancelled =&gt; <span class="string">"The operation was cancelled"</span>,
+            Code::Unknown =&gt; <span class="string">"Unknown error"</span>,
+            Code::InvalidArgument =&gt; <span class="string">"Client specified an invalid argument"</span>,
+            Code::DeadlineExceeded =&gt; <span class="string">"Deadline expired before operation could complete"</span>,
+            Code::NotFound =&gt; <span class="string">"Some requested entity was not found"</span>,
+            Code::AlreadyExists =&gt; <span class="string">"Some entity that we attempted to create already exists"</span>,
             Code::PermissionDenied =&gt; {
-                <span class="string">&quot;The caller does not have permission to execute the specified operation&quot;
+                <span class="string">"The caller does not have permission to execute the specified operation"
             </span>}
-            Code::ResourceExhausted =&gt; <span class="string">&quot;Some resource has been exhausted&quot;</span>,
+            Code::ResourceExhausted =&gt; <span class="string">"Some resource has been exhausted"</span>,
             Code::FailedPrecondition =&gt; {
-                <span class="string">&quot;The system is not in a state required for the operation&#39;s execution&quot;
+                <span class="string">"The system is not in a state required for the operation's execution"
             </span>}
-            Code::Aborted =&gt; <span class="string">&quot;The operation was aborted&quot;</span>,
-            Code::OutOfRange =&gt; <span class="string">&quot;Operation was attempted past the valid range&quot;</span>,
-            Code::Unimplemented =&gt; <span class="string">&quot;Operation is not implemented or not supported&quot;</span>,
-            Code::Internal =&gt; <span class="string">&quot;Internal error&quot;</span>,
-            Code::Unavailable =&gt; <span class="string">&quot;The service is currently unavailable&quot;</span>,
-            Code::DataLoss =&gt; <span class="string">&quot;Unrecoverable data loss or corruption&quot;</span>,
-            Code::Unauthenticated =&gt; <span class="string">&quot;The request does not have valid authentication credentials&quot;</span>,
+            Code::Aborted =&gt; <span class="string">"The operation was aborted"</span>,
+            Code::OutOfRange =&gt; <span class="string">"Operation was attempted past the valid range"</span>,
+            Code::Unimplemented =&gt; <span class="string">"Operation is not implemented or not supported"</span>,
+            Code::Internal =&gt; <span class="string">"Internal error"</span>,
+            Code::Unavailable =&gt; <span class="string">"The service is currently unavailable"</span>,
+            Code::DataLoss =&gt; <span class="string">"Unrecoverable data loss or corruption"</span>,
+            Code::Unauthenticated =&gt; <span class="string">"The request does not have valid authentication credentials"</span>,
         }
     }
 }
 
 <span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>Code {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
         std::fmt::Display::fmt(<span class="self">self</span>.description(), f)
     }
 }
@@ -1203,7 +1204,7 @@
     }
 
     <span class="doccomment">/// Operation was rejected because the system is not in a state required for
-    /// the operation&#39;s execution. For example, directory to be deleted may be
+    /// the operation's execution. For example, directory to be deleted may be
     /// non-empty, an rmdir operation is applied to a non-directory, etc.
     ///
     /// A litmus test that may help a service implementor in deciding between
@@ -1212,7 +1213,7 @@
     /// (b) Use `Aborted` if the client should retry at a higher-level (e.g.,
     ///     restarting a read-modify-write sequence).
     /// (c) Use `FailedPrecondition` if the client should not retry until the
-    ///     system state has been explicitly fixed.  E.g., if an &quot;rmdir&quot; fails
+    ///     system state has been explicitly fixed.  E.g., if an "rmdir" fails
     ///     because the directory is non-empty, `FailedPrecondition` should be
     ///     returned since the client should not retry unless they have first
     ///     fixed up the directory by deleting files from it.
@@ -1277,8 +1278,8 @@
         Status::new(Code::Unauthenticated, message)
     }
 
-    <span class="attr">#[cfg_attr(not(feature = <span class="string">&quot;transport&quot;</span>), allow(dead_code))]
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>from_error(err: Box&lt;<span class="kw">dyn </span>Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt;) -&gt; Status {
+    <span class="attr">#[cfg_attr(not(feature = <span class="string">"transport"</span>), allow(dead_code))]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>from_error(err: Box&lt;<span class="kw">dyn </span>Error + Send + Sync + <span class="lifetime">'static</span>&gt;) -&gt; Status {
         Status::try_from_error(err).unwrap_or_else(|err| {
             <span class="kw">let </span><span class="kw-2">mut </span>status = Status::new(Code::Unknown, err.to_string());
             status.source = <span class="prelude-val">Some</span>(err);
@@ -1287,8 +1288,8 @@
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>try_from_error(
-        err: Box&lt;<span class="kw">dyn </span>Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Status, Box&lt;<span class="kw">dyn </span>Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt;&gt; {
+        err: Box&lt;<span class="kw">dyn </span>Error + Send + Sync + <span class="lifetime">'static</span>&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Status, Box&lt;<span class="kw">dyn </span>Error + Send + Sync + <span class="lifetime">'static</span>&gt;&gt; {
         <span class="kw">let </span>err = <span class="kw">match </span>err.downcast::&lt;Status&gt;() {
             <span class="prelude-val">Ok</span>(status) =&gt; {
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="kw-2">*</span>status);
@@ -1296,7 +1297,7 @@
             <span class="prelude-val">Err</span>(err) =&gt; err,
         };
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;transport&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"transport"</span>)]
         </span><span class="kw">let </span>err = <span class="kw">match </span>err.downcast::&lt;h2::Error&gt;() {
             <span class="prelude-val">Ok</span>(h2) =&gt; {
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(Status::from_h2_error(<span class="kw-2">&amp;*</span>h2));
@@ -1313,7 +1314,7 @@
     }
 
     <span class="comment">// FIXME: bubble this into `transport` and expose generic http2 reasons.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;transport&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"transport"</span>)]
     </span><span class="kw">fn </span>from_h2_error(err: <span class="kw-2">&amp;</span>h2::Error) -&gt; Status {
         <span class="comment">// See https://github.com/grpc/grpc/blob/3977c30/doc/PROTOCOL-HTTP2.md#errors
         </span><span class="kw">let </span>code = <span class="kw">match </span>err.reason() {
@@ -1332,16 +1333,16 @@
             <span class="kw">_ </span>=&gt; Code::Unknown,
         };
 
-        <span class="kw">let </span><span class="kw-2">mut </span>status = <span class="self">Self</span>::new(code, <span class="macro">format!</span>(<span class="string">&quot;h2 protocol error: {}&quot;</span>, err));
+        <span class="kw">let </span><span class="kw-2">mut </span>status = <span class="self">Self</span>::new(code, <span class="macro">format!</span>(<span class="string">"h2 protocol error: {}"</span>, err));
         <span class="kw">let </span>error = err
             .reason()
             .map(h2::Error::from)
-            .map(|err| Box::new(err) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span>Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt;);
+            .map(|err| Box::new(err) <span class="kw">as </span>Box&lt;<span class="kw">dyn </span>Error + Send + Sync + <span class="lifetime">'static</span>&gt;);
         status.source = error;
         status
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;transport&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"transport"</span>)]
     </span><span class="kw">fn </span>to_h2_error(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; h2::Error {
         <span class="comment">// conservatively transform to h2 error codes...
         </span><span class="kw">let </span>reason = <span class="kw">match </span><span class="self">self</span>.code {
@@ -1353,18 +1354,18 @@
     }
 
     <span class="doccomment">/// Handles hyper errors specifically, which expose a number of different parameters about the
-    /// http stream&#39;s error: https://docs.rs/hyper/0.14.11/hyper/struct.Error.html.
+    /// http stream's error: https://docs.rs/hyper/0.14.11/hyper/struct.Error.html.
     ///
-    /// Returns Some if there&#39;s a way to handle the error, or None if the information from this
+    /// Returns Some if there's a way to handle the error, or None if the information from this
     /// hyper error, but perhaps not its source, should be ignored.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;transport&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"transport"</span>)]
     </span><span class="kw">fn </span>from_hyper_error(err: <span class="kw-2">&amp;</span>hyper::Error) -&gt; <span class="prelude-ty">Option</span>&lt;Status&gt; {
-        <span class="comment">// is_timeout results from hyper&#39;s keep-alive logic
+        <span class="comment">// is_timeout results from hyper's keep-alive logic
         // (https://docs.rs/hyper/0.14.11/src/hyper/error.rs.html#192-194).  Per the grpc spec
         // &gt; An expired client initiated PING will cause all calls to be closed with an UNAVAILABLE
         // &gt; status. Note that the frequency of PINGs is highly dependent on the network
         // &gt; environment, implementations are free to adjust PING frequency based on network and
-        // &gt; application requirements, which is why it&#39;s mapped to unavailable here.
+        // &gt; application requirements, which is why it's mapped to unavailable here.
         //
         // Likewise, if we are unable to connect to the server, map this to UNAVAILABLE.  This is
         // consistent with the behavior of a C++ gRPC client when the server is not running, and
@@ -1402,7 +1403,7 @@
                 .get(GRPC_STATUS_DETAILS_HEADER)
                 .map(|h| {
                     base64::decode(h.as_bytes())
-                        .expect(<span class="string">&quot;Invalid status header, expected base64 encoded value&quot;</span>)
+                        .expect(<span class="string">"Invalid status header, expected base64 encoded value"</span>)
                 })
                 .map(Bytes::from)
                 .unwrap_or_else(Bytes::new);
@@ -1421,10 +1422,10 @@
                     source: <span class="prelude-val">None</span>,
                 },
                 <span class="prelude-val">Err</span>(err) =&gt; {
-                    <span class="macro">warn!</span>(<span class="string">&quot;Error deserializing status message header: {}&quot;</span>, err);
+                    <span class="macro">warn!</span>(<span class="string">"Error deserializing status message header: {}"</span>, err);
                     Status {
                         code: Code::Unknown,
-                        message: <span class="macro">format!</span>(<span class="string">&quot;Error deserializing status message header: {}&quot;</span>, err),
+                        message: <span class="macro">format!</span>(<span class="string">"Error deserializing status message header: {}"</span>, err),
                         details,
                         metadata: MetadataMap::from_headers(other_headers),
                         source: <span class="prelude-val">None</span>,
@@ -1526,7 +1527,7 @@
 
         parts.headers.insert(
             http::header::CONTENT_TYPE,
-            http::header::HeaderValue::from_static(<span class="string">&quot;application/grpc&quot;</span>),
+            http::header::HeaderValue::from_static(<span class="string">"application/grpc"</span>),
         );
 
         <span class="self">self</span>.add_header(<span class="kw-2">&amp;mut </span>parts.headers).unwrap();
@@ -1535,7 +1536,7 @@
     }
 }
 
-<span class="kw">fn </span>find_status_in_source_chain(err: <span class="kw-2">&amp;</span>(<span class="kw">dyn </span>Error + <span class="lifetime">&#39;static</span>)) -&gt; <span class="prelude-ty">Option</span>&lt;Status&gt; {
+<span class="kw">fn </span>find_status_in_source_chain(err: <span class="kw-2">&amp;</span>(<span class="kw">dyn </span>Error + <span class="lifetime">'static</span>)) -&gt; <span class="prelude-ty">Option</span>&lt;Status&gt; {
     <span class="kw">let </span><span class="kw-2">mut </span>source = <span class="prelude-val">Some</span>(err);
 
     <span class="kw">while let </span><span class="prelude-val">Some</span>(err) = source {
@@ -1551,12 +1552,12 @@
             });
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;transport&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"transport"</span>)]
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(timeout) = err.downcast_ref::&lt;<span class="kw">crate</span>::transport::TimeoutExpired&gt;() {
             <span class="kw">return </span><span class="prelude-val">Some</span>(Status::cancelled(timeout.to_string()));
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;transport&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"transport"</span>)]
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(hyper) = err
             .downcast_ref::&lt;hyper::Error&gt;()
             .and_then(Status::from_hyper_error)
@@ -1571,46 +1572,46 @@
 </span>}
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Status {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="comment">// A manual impl to reduce the noise of frequently empty fields.
-        </span><span class="kw">let </span><span class="kw-2">mut </span>builder = f.debug_struct(<span class="string">&quot;Status&quot;</span>);
+        </span><span class="kw">let </span><span class="kw-2">mut </span>builder = f.debug_struct(<span class="string">"Status"</span>);
 
-        builder.field(<span class="string">&quot;code&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.code);
+        builder.field(<span class="string">"code"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.code);
 
         <span class="kw">if </span>!<span class="self">self</span>.message.is_empty() {
-            builder.field(<span class="string">&quot;message&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.message);
+            builder.field(<span class="string">"message"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.message);
         }
 
         <span class="kw">if </span>!<span class="self">self</span>.details.is_empty() {
-            builder.field(<span class="string">&quot;details&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.details);
+            builder.field(<span class="string">"details"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.details);
         }
 
         <span class="kw">if </span>!<span class="self">self</span>.metadata.is_empty() {
-            builder.field(<span class="string">&quot;metadata&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.metadata);
+            builder.field(<span class="string">"metadata"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.metadata);
         }
 
-        builder.field(<span class="string">&quot;source&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.source);
+        builder.field(<span class="string">"source"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.source);
 
         builder.finish()
     }
 }
 
 <span class="kw">fn </span>invalid_header_value_byte&lt;Error: fmt::Display&gt;(err: Error) -&gt; Status {
-    <span class="macro">debug!</span>(<span class="string">&quot;Invalid header: {}&quot;</span>, err);
+    <span class="macro">debug!</span>(<span class="string">"Invalid header: {}"</span>, err);
     Status::new(
         Code::Internal,
-        <span class="string">&quot;Couldn&#39;t serialize non-text grpc status header&quot;</span>.to_string(),
+        <span class="string">"Couldn't serialize non-text grpc status header"</span>.to_string(),
     )
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;transport&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"transport"</span>)]
 </span><span class="kw">impl </span>From&lt;h2::Error&gt; <span class="kw">for </span>Status {
     <span class="kw">fn </span>from(err: h2::Error) -&gt; <span class="self">Self </span>{
         Status::from_h2_error(<span class="kw-2">&amp;</span>err)
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;transport&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"transport"</span>)]
 </span><span class="kw">impl </span>From&lt;Status&gt; <span class="kw">for </span>h2::Error {
     <span class="kw">fn </span>from(status: Status) -&gt; <span class="self">Self </span>{
         status.to_h2_error()
@@ -1645,10 +1646,10 @@
 }
 
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>Status {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="macro">write!</span>(
             f,
-            <span class="string">&quot;status: {:?}, message: {:?}, details: {:?}, metadata: {:?}&quot;</span>,
+            <span class="string">"status: {:?}, message: {:?}, details: {:?}, metadata: {:?}"</span>,
             <span class="self">self</span>.code(),
             <span class="self">self</span>.message(),
             <span class="self">self</span>.details(),
@@ -1658,7 +1659,7 @@
 }
 
 <span class="kw">impl </span>Error <span class="kw">for </span>Status {
-    <span class="kw">fn </span>source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">dyn </span>Error + <span class="lifetime">&#39;static</span>)&gt; {
+    <span class="kw">fn </span>source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">dyn </span>Error + <span class="lifetime">'static</span>)&gt; {
         <span class="self">self</span>.source.as_ref().map(|err| (<span class="kw-2">&amp;**</span>err) <span class="kw">as _</span>)
     }
 }
@@ -1679,7 +1680,7 @@
             }
         }
     }
-    <span class="macro">trace!</span>(<span class="string">&quot;trailers missing grpc-status&quot;</span>);
+    <span class="macro">trace!</span>(<span class="string">"trailers missing grpc-status"</span>);
     <span class="kw">let </span>code = <span class="kw">match </span>status_code {
         <span class="comment">// Borrowed from https://github.com/grpc/grpc/blob/master/doc/http-grpc-status-mapping.md
         </span>http::StatusCode::BAD_REQUEST =&gt; Code::Internal,
@@ -1701,7 +1702,7 @@
     };
 
     <span class="kw">let </span>msg = <span class="macro">format!</span>(
-        <span class="string">&quot;grpc-status header missing, mapped from HTTP status code {}&quot;</span>,
+        <span class="string">"grpc-status header missing, mapped from HTTP status code {}"</span>,
         status_code.as_u16(),
     );
     <span class="kw">let </span>status = Status::new(code, msg);
@@ -1724,26 +1725,26 @@
     </span><span class="kw">pub fn </span>from_bytes(bytes: <span class="kw-2">&amp;</span>[u8]) -&gt; Code {
         <span class="kw">match </span>bytes.len() {
             <span class="number">1 </span>=&gt; <span class="kw">match </span>bytes[<span class="number">0</span>] {
-                <span class="string">b&#39;0&#39; </span>=&gt; Code::Ok,
-                <span class="string">b&#39;1&#39; </span>=&gt; Code::Cancelled,
-                <span class="string">b&#39;2&#39; </span>=&gt; Code::Unknown,
-                <span class="string">b&#39;3&#39; </span>=&gt; Code::InvalidArgument,
-                <span class="string">b&#39;4&#39; </span>=&gt; Code::DeadlineExceeded,
-                <span class="string">b&#39;5&#39; </span>=&gt; Code::NotFound,
-                <span class="string">b&#39;6&#39; </span>=&gt; Code::AlreadyExists,
-                <span class="string">b&#39;7&#39; </span>=&gt; Code::PermissionDenied,
-                <span class="string">b&#39;8&#39; </span>=&gt; Code::ResourceExhausted,
-                <span class="string">b&#39;9&#39; </span>=&gt; Code::FailedPrecondition,
+                <span class="string">b'0' </span>=&gt; Code::Ok,
+                <span class="string">b'1' </span>=&gt; Code::Cancelled,
+                <span class="string">b'2' </span>=&gt; Code::Unknown,
+                <span class="string">b'3' </span>=&gt; Code::InvalidArgument,
+                <span class="string">b'4' </span>=&gt; Code::DeadlineExceeded,
+                <span class="string">b'5' </span>=&gt; Code::NotFound,
+                <span class="string">b'6' </span>=&gt; Code::AlreadyExists,
+                <span class="string">b'7' </span>=&gt; Code::PermissionDenied,
+                <span class="string">b'8' </span>=&gt; Code::ResourceExhausted,
+                <span class="string">b'9' </span>=&gt; Code::FailedPrecondition,
                 <span class="kw">_ </span>=&gt; Code::parse_err(),
             },
             <span class="number">2 </span>=&gt; <span class="kw">match </span>(bytes[<span class="number">0</span>], bytes[<span class="number">1</span>]) {
-                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;0&#39;</span>) =&gt; Code::Aborted,
-                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;1&#39;</span>) =&gt; Code::OutOfRange,
-                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;2&#39;</span>) =&gt; Code::Unimplemented,
-                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;3&#39;</span>) =&gt; Code::Internal,
-                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;4&#39;</span>) =&gt; Code::Unavailable,
-                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;5&#39;</span>) =&gt; Code::DataLoss,
-                (<span class="string">b&#39;1&#39;</span>, <span class="string">b&#39;6&#39;</span>) =&gt; Code::Unauthenticated,
+                (<span class="string">b'1'</span>, <span class="string">b'0'</span>) =&gt; Code::Aborted,
+                (<span class="string">b'1'</span>, <span class="string">b'1'</span>) =&gt; Code::OutOfRange,
+                (<span class="string">b'1'</span>, <span class="string">b'2'</span>) =&gt; Code::Unimplemented,
+                (<span class="string">b'1'</span>, <span class="string">b'3'</span>) =&gt; Code::Internal,
+                (<span class="string">b'1'</span>, <span class="string">b'4'</span>) =&gt; Code::Unavailable,
+                (<span class="string">b'1'</span>, <span class="string">b'5'</span>) =&gt; Code::DataLoss,
+                (<span class="string">b'1'</span>, <span class="string">b'6'</span>) =&gt; Code::Unauthenticated,
                 <span class="kw">_ </span>=&gt; Code::parse_err(),
             },
             <span class="kw">_ </span>=&gt; Code::parse_err(),
@@ -1752,28 +1753,28 @@
 
     <span class="kw">fn </span>to_header_value(<span class="self">self</span>) -&gt; HeaderValue {
         <span class="kw">match </span><span class="self">self </span>{
-            Code::Ok =&gt; HeaderValue::from_static(<span class="string">&quot;0&quot;</span>),
-            Code::Cancelled =&gt; HeaderValue::from_static(<span class="string">&quot;1&quot;</span>),
-            Code::Unknown =&gt; HeaderValue::from_static(<span class="string">&quot;2&quot;</span>),
-            Code::InvalidArgument =&gt; HeaderValue::from_static(<span class="string">&quot;3&quot;</span>),
-            Code::DeadlineExceeded =&gt; HeaderValue::from_static(<span class="string">&quot;4&quot;</span>),
-            Code::NotFound =&gt; HeaderValue::from_static(<span class="string">&quot;5&quot;</span>),
-            Code::AlreadyExists =&gt; HeaderValue::from_static(<span class="string">&quot;6&quot;</span>),
-            Code::PermissionDenied =&gt; HeaderValue::from_static(<span class="string">&quot;7&quot;</span>),
-            Code::ResourceExhausted =&gt; HeaderValue::from_static(<span class="string">&quot;8&quot;</span>),
-            Code::FailedPrecondition =&gt; HeaderValue::from_static(<span class="string">&quot;9&quot;</span>),
-            Code::Aborted =&gt; HeaderValue::from_static(<span class="string">&quot;10&quot;</span>),
-            Code::OutOfRange =&gt; HeaderValue::from_static(<span class="string">&quot;11&quot;</span>),
-            Code::Unimplemented =&gt; HeaderValue::from_static(<span class="string">&quot;12&quot;</span>),
-            Code::Internal =&gt; HeaderValue::from_static(<span class="string">&quot;13&quot;</span>),
-            Code::Unavailable =&gt; HeaderValue::from_static(<span class="string">&quot;14&quot;</span>),
-            Code::DataLoss =&gt; HeaderValue::from_static(<span class="string">&quot;15&quot;</span>),
-            Code::Unauthenticated =&gt; HeaderValue::from_static(<span class="string">&quot;16&quot;</span>),
+            Code::Ok =&gt; HeaderValue::from_static(<span class="string">"0"</span>),
+            Code::Cancelled =&gt; HeaderValue::from_static(<span class="string">"1"</span>),
+            Code::Unknown =&gt; HeaderValue::from_static(<span class="string">"2"</span>),
+            Code::InvalidArgument =&gt; HeaderValue::from_static(<span class="string">"3"</span>),
+            Code::DeadlineExceeded =&gt; HeaderValue::from_static(<span class="string">"4"</span>),
+            Code::NotFound =&gt; HeaderValue::from_static(<span class="string">"5"</span>),
+            Code::AlreadyExists =&gt; HeaderValue::from_static(<span class="string">"6"</span>),
+            Code::PermissionDenied =&gt; HeaderValue::from_static(<span class="string">"7"</span>),
+            Code::ResourceExhausted =&gt; HeaderValue::from_static(<span class="string">"8"</span>),
+            Code::FailedPrecondition =&gt; HeaderValue::from_static(<span class="string">"9"</span>),
+            Code::Aborted =&gt; HeaderValue::from_static(<span class="string">"10"</span>),
+            Code::OutOfRange =&gt; HeaderValue::from_static(<span class="string">"11"</span>),
+            Code::Unimplemented =&gt; HeaderValue::from_static(<span class="string">"12"</span>),
+            Code::Internal =&gt; HeaderValue::from_static(<span class="string">"13"</span>),
+            Code::Unavailable =&gt; HeaderValue::from_static(<span class="string">"14"</span>),
+            Code::DataLoss =&gt; HeaderValue::from_static(<span class="string">"15"</span>),
+            Code::Unauthenticated =&gt; HeaderValue::from_static(<span class="string">"16"</span>),
         }
     }
 
     <span class="kw">fn </span>parse_err() -&gt; Code {
-        <span class="macro">trace!</span>(<span class="string">&quot;error parsing grpc-status&quot;</span>);
+        <span class="macro">trace!</span>(<span class="string">"error parsing grpc-status"</span>);
         Code::Unknown
     }
 }
@@ -1820,46 +1821,46 @@
     </span><span class="kw">struct </span>Nested(Error);
 
     <span class="kw">impl </span>fmt::Display <span class="kw">for </span>Nested {
-        <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-            <span class="macro">write!</span>(f, <span class="string">&quot;nested error: {}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
+        <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+            <span class="macro">write!</span>(f, <span class="string">"nested error: {}"</span>, <span class="self">self</span>.<span class="number">0</span>)
         }
     }
 
     <span class="kw">impl </span>std::error::Error <span class="kw">for </span>Nested {
-        <span class="kw">fn </span>source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">dyn </span>std::error::Error + <span class="lifetime">&#39;static</span>)&gt; {
+        <span class="kw">fn </span>source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">dyn </span>std::error::Error + <span class="lifetime">'static</span>)&gt; {
             <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span><span class="self">self</span>.<span class="number">0</span>)
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>from_error_status() {
-        <span class="kw">let </span>orig = Status::new(Code::OutOfRange, <span class="string">&quot;weeaboo&quot;</span>);
+        <span class="kw">let </span>orig = Status::new(Code::OutOfRange, <span class="string">"weeaboo"</span>);
         <span class="kw">let </span>found = Status::from_error(Box::new(orig));
 
         <span class="macro">assert_eq!</span>(found.code(), Code::OutOfRange);
-        <span class="macro">assert_eq!</span>(found.message(), <span class="string">&quot;weeaboo&quot;</span>);
+        <span class="macro">assert_eq!</span>(found.message(), <span class="string">"weeaboo"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>from_error_unknown() {
-        <span class="kw">let </span>orig: Error = <span class="string">&quot;peek-a-boo&quot;</span>.into();
+        <span class="kw">let </span>orig: Error = <span class="string">"peek-a-boo"</span>.into();
         <span class="kw">let </span>found = Status::from_error(orig);
 
         <span class="macro">assert_eq!</span>(found.code(), Code::Unknown);
-        <span class="macro">assert_eq!</span>(found.message(), <span class="string">&quot;peek-a-boo&quot;</span>.to_string());
+        <span class="macro">assert_eq!</span>(found.message(), <span class="string">"peek-a-boo"</span>.to_string());
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>from_error_nested() {
-        <span class="kw">let </span>orig = Nested(Box::new(Status::new(Code::OutOfRange, <span class="string">&quot;weeaboo&quot;</span>)));
+        <span class="kw">let </span>orig = Nested(Box::new(Status::new(Code::OutOfRange, <span class="string">"weeaboo"</span>)));
         <span class="kw">let </span>found = Status::from_error(Box::new(orig));
 
         <span class="macro">assert_eq!</span>(found.code(), Code::OutOfRange);
-        <span class="macro">assert_eq!</span>(found.message(), <span class="string">&quot;weeaboo&quot;</span>);
+        <span class="macro">assert_eq!</span>(found.message(), <span class="string">"weeaboo"</span>);
     }
 
     <span class="attr">#[test]
-    #[cfg(feature = <span class="string">&quot;transport&quot;</span>)]
+    #[cfg(feature = <span class="string">"transport"</span>)]
     </span><span class="kw">fn </span>from_error_h2() {
         <span class="kw">use </span>std::error::Error <span class="kw">as _</span>;
 
@@ -1876,9 +1877,9 @@
     }
 
     <span class="attr">#[test]
-    #[cfg(feature = <span class="string">&quot;transport&quot;</span>)]
+    #[cfg(feature = <span class="string">"transport"</span>)]
     </span><span class="kw">fn </span>to_h2_error() {
-        <span class="kw">let </span>orig = Status::new(Code::Cancelled, <span class="string">&quot;stop eet!&quot;</span>);
+        <span class="kw">let </span>orig = Status::new(Code::Cancelled, <span class="string">"stop eet!"</span>);
         <span class="kw">let </span>err = orig.to_h2_error();
 
         <span class="macro">assert_eq!</span>(err.reason(), <span class="prelude-val">Some</span>(h2::Reason::CANCEL));
@@ -1886,13 +1887,13 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>code_from_i32() {
-        <span class="comment">// This for loop should catch if we ever add a new variant and don&#39;t
+        <span class="comment">// This for loop should catch if we ever add a new variant and don't
         // update From&lt;i32&gt;.
         </span><span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..(Code::Unauthenticated <span class="kw">as </span>i32) {
             <span class="kw">let </span>code = Code::from(i);
             <span class="macro">assert_eq!</span>(
                 i, code <span class="kw">as </span>i32,
-                <span class="string">&quot;Code::from({}) returned {:?} which is {}&quot;</span>,
+                <span class="string">"Code::from({}) returned {:?} which is {}"</span>,
                 i, code, code <span class="kw">as </span>i32,
             );
         }
@@ -1902,36 +1903,36 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>constructors() {
-        <span class="macro">assert_eq!</span>(Status::ok(<span class="string">&quot;&quot;</span>).code(), Code::Ok);
-        <span class="macro">assert_eq!</span>(Status::cancelled(<span class="string">&quot;&quot;</span>).code(), Code::Cancelled);
-        <span class="macro">assert_eq!</span>(Status::unknown(<span class="string">&quot;&quot;</span>).code(), Code::Unknown);
-        <span class="macro">assert_eq!</span>(Status::invalid_argument(<span class="string">&quot;&quot;</span>).code(), Code::InvalidArgument);
-        <span class="macro">assert_eq!</span>(Status::deadline_exceeded(<span class="string">&quot;&quot;</span>).code(), Code::DeadlineExceeded);
-        <span class="macro">assert_eq!</span>(Status::not_found(<span class="string">&quot;&quot;</span>).code(), Code::NotFound);
-        <span class="macro">assert_eq!</span>(Status::already_exists(<span class="string">&quot;&quot;</span>).code(), Code::AlreadyExists);
-        <span class="macro">assert_eq!</span>(Status::permission_denied(<span class="string">&quot;&quot;</span>).code(), Code::PermissionDenied);
+        <span class="macro">assert_eq!</span>(Status::ok(<span class="string">""</span>).code(), Code::Ok);
+        <span class="macro">assert_eq!</span>(Status::cancelled(<span class="string">""</span>).code(), Code::Cancelled);
+        <span class="macro">assert_eq!</span>(Status::unknown(<span class="string">""</span>).code(), Code::Unknown);
+        <span class="macro">assert_eq!</span>(Status::invalid_argument(<span class="string">""</span>).code(), Code::InvalidArgument);
+        <span class="macro">assert_eq!</span>(Status::deadline_exceeded(<span class="string">""</span>).code(), Code::DeadlineExceeded);
+        <span class="macro">assert_eq!</span>(Status::not_found(<span class="string">""</span>).code(), Code::NotFound);
+        <span class="macro">assert_eq!</span>(Status::already_exists(<span class="string">""</span>).code(), Code::AlreadyExists);
+        <span class="macro">assert_eq!</span>(Status::permission_denied(<span class="string">""</span>).code(), Code::PermissionDenied);
         <span class="macro">assert_eq!</span>(
-            Status::resource_exhausted(<span class="string">&quot;&quot;</span>).code(),
+            Status::resource_exhausted(<span class="string">""</span>).code(),
             Code::ResourceExhausted
         );
         <span class="macro">assert_eq!</span>(
-            Status::failed_precondition(<span class="string">&quot;&quot;</span>).code(),
+            Status::failed_precondition(<span class="string">""</span>).code(),
             Code::FailedPrecondition
         );
-        <span class="macro">assert_eq!</span>(Status::aborted(<span class="string">&quot;&quot;</span>).code(), Code::Aborted);
-        <span class="macro">assert_eq!</span>(Status::out_of_range(<span class="string">&quot;&quot;</span>).code(), Code::OutOfRange);
-        <span class="macro">assert_eq!</span>(Status::unimplemented(<span class="string">&quot;&quot;</span>).code(), Code::Unimplemented);
-        <span class="macro">assert_eq!</span>(Status::internal(<span class="string">&quot;&quot;</span>).code(), Code::Internal);
-        <span class="macro">assert_eq!</span>(Status::unavailable(<span class="string">&quot;&quot;</span>).code(), Code::Unavailable);
-        <span class="macro">assert_eq!</span>(Status::data_loss(<span class="string">&quot;&quot;</span>).code(), Code::DataLoss);
-        <span class="macro">assert_eq!</span>(Status::unauthenticated(<span class="string">&quot;&quot;</span>).code(), Code::Unauthenticated);
+        <span class="macro">assert_eq!</span>(Status::aborted(<span class="string">""</span>).code(), Code::Aborted);
+        <span class="macro">assert_eq!</span>(Status::out_of_range(<span class="string">""</span>).code(), Code::OutOfRange);
+        <span class="macro">assert_eq!</span>(Status::unimplemented(<span class="string">""</span>).code(), Code::Unimplemented);
+        <span class="macro">assert_eq!</span>(Status::internal(<span class="string">""</span>).code(), Code::Internal);
+        <span class="macro">assert_eq!</span>(Status::unavailable(<span class="string">""</span>).code(), Code::Unavailable);
+        <span class="macro">assert_eq!</span>(Status::data_loss(<span class="string">""</span>).code(), Code::DataLoss);
+        <span class="macro">assert_eq!</span>(Status::unauthenticated(<span class="string">""</span>).code(), Code::Unauthenticated);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>details() {
         <span class="kw">const </span>DETAILS: <span class="kw-2">&amp;</span>[u8] = <span class="kw-2">&amp;</span>[<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>];
 
-        <span class="kw">let </span>status = Status::with_details(Code::Unavailable, <span class="string">&quot;some message&quot;</span>, DETAILS.into());
+        <span class="kw">let </span>status = Status::with_details(Code::Unavailable, <span class="string">"some message"</span>, DETAILS.into());
 
         <span class="macro">assert_eq!</span>(status.details(), DETAILS);
 

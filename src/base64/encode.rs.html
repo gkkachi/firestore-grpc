@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64-0.13.1/src/encode.rs`."><title>encode.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="base64" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64-0.13.1/src/encode.rs`."><title>encode.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="base64" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -674,9 +675,9 @@
 <a href="#674" id="674">674</a>
 <a href="#675" id="675">675</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{Config, PAD_BYTE};
-<span class="attr">#[cfg(any(feature = <span class="string">&quot;alloc&quot;</span>, feature = <span class="string">&quot;std&quot;</span>, test))]
+<span class="attr">#[cfg(any(feature = <span class="string">"alloc"</span>, feature = <span class="string">"std"</span>, test))]
 </span><span class="kw">use crate</span>::{chunked_encoder, STANDARD};
-<span class="attr">#[cfg(any(feature = <span class="string">&quot;alloc&quot;</span>, feature = <span class="string">&quot;std&quot;</span>, test))]
+<span class="attr">#[cfg(any(feature = <span class="string">"alloc"</span>, feature = <span class="string">"std"</span>, test))]
 </span><span class="kw">use </span>alloc::{string::String, vec};
 <span class="kw">use </span>core::convert::TryInto;
 
@@ -690,11 +691,11 @@
 ///extern crate base64;
 ///
 ///fn main() {
-///    let b64 = base64::encode(b&quot;hello world&quot;);
-///    println!(&quot;{}&quot;, b64);
+///    let b64 = base64::encode(b"hello world");
+///    println!("{}", b64);
 ///}
 ///```
-</span><span class="attr">#[cfg(any(feature = <span class="string">&quot;alloc&quot;</span>, feature = <span class="string">&quot;std&quot;</span>, test))]
+</span><span class="attr">#[cfg(any(feature = <span class="string">"alloc"</span>, feature = <span class="string">"std"</span>, test))]
 </span><span class="kw">pub fn </span>encode&lt;T: AsRef&lt;[u8]&gt;&gt;(input: T) -&gt; String {
     encode_config(input, STANDARD)
 }
@@ -708,23 +709,23 @@
 ///extern crate base64;
 ///
 ///fn main() {
-///    let b64 = base64::encode_config(b&quot;hello world~&quot;, base64::STANDARD);
-///    println!(&quot;{}&quot;, b64);
+///    let b64 = base64::encode_config(b"hello world~", base64::STANDARD);
+///    println!("{}", b64);
 ///
-///    let b64_url = base64::encode_config(b&quot;hello internet~&quot;, base64::URL_SAFE);
-///    println!(&quot;{}&quot;, b64_url);
+///    let b64_url = base64::encode_config(b"hello internet~", base64::URL_SAFE);
+///    println!("{}", b64_url);
 ///}
 ///```
-</span><span class="attr">#[cfg(any(feature = <span class="string">&quot;alloc&quot;</span>, feature = <span class="string">&quot;std&quot;</span>, test))]
+</span><span class="attr">#[cfg(any(feature = <span class="string">"alloc"</span>, feature = <span class="string">"std"</span>, test))]
 </span><span class="kw">pub fn </span>encode_config&lt;T: AsRef&lt;[u8]&gt;&gt;(input: T, config: Config) -&gt; String {
     <span class="kw">let </span><span class="kw-2">mut </span>buf = <span class="kw">match </span>encoded_size(input.as_ref().len(), config) {
         <span class="prelude-val">Some</span>(n) =&gt; <span class="macro">vec!</span>[<span class="number">0</span>; n],
-        <span class="prelude-val">None </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;integer overflow when calculating buffer size&quot;</span>),
+        <span class="prelude-val">None </span>=&gt; <span class="macro">panic!</span>(<span class="string">"integer overflow when calculating buffer size"</span>),
     };
 
     encode_with_padding(input.as_ref(), config, buf.len(), <span class="kw-2">&amp;mut </span>buf[..]);
 
-    String::from_utf8(buf).expect(<span class="string">&quot;Invalid UTF8&quot;</span>)
+    String::from_utf8(buf).expect(<span class="string">"Invalid UTF8"</span>)
 }
 
 <span class="doccomment">///Encode arbitrary octets as base64.
@@ -737,15 +738,15 @@
 ///
 ///fn main() {
 ///    let mut buf = String::new();
-///    base64::encode_config_buf(b&quot;hello world~&quot;, base64::STANDARD, &amp;mut buf);
-///    println!(&quot;{}&quot;, buf);
+///    base64::encode_config_buf(b"hello world~", base64::STANDARD, &amp;mut buf);
+///    println!("{}", buf);
 ///
 ///    buf.clear();
-///    base64::encode_config_buf(b&quot;hello internet~&quot;, base64::URL_SAFE, &amp;mut buf);
-///    println!(&quot;{}&quot;, buf);
+///    base64::encode_config_buf(b"hello internet~", base64::URL_SAFE, &amp;mut buf);
+///    println!("{}", buf);
 ///}
 ///```
-</span><span class="attr">#[cfg(any(feature = <span class="string">&quot;alloc&quot;</span>, feature = <span class="string">&quot;std&quot;</span>, test))]
+</span><span class="attr">#[cfg(any(feature = <span class="string">"alloc"</span>, feature = <span class="string">"std"</span>, test))]
 </span><span class="kw">pub fn </span>encode_config_buf&lt;T: AsRef&lt;[u8]&gt;&gt;(input: T, config: Config, buf: <span class="kw-2">&amp;mut </span>String) {
     <span class="kw">let </span>input_bytes = input.as_ref();
 
@@ -755,7 +756,7 @@
 
         encoder
             .encode(input_bytes, <span class="kw-2">&amp;mut </span>sink)
-            .expect(<span class="string">&quot;Writing to a String shouldn&#39;t fail&quot;</span>)
+            .expect(<span class="string">"Writing to a String shouldn't fail"</span>)
     }
 }
 
@@ -775,9 +776,9 @@
 /// extern crate base64;
 ///
 /// fn main() {
-///     let s = b&quot;hello internet!&quot;;
+///     let s = b"hello internet!";
 ///     let mut buf = Vec::new();
-///     // make sure we&#39;ll have a slice big enough for base64 + padding
+///     // make sure we'll have a slice big enough for base64 + padding
 ///     buf.resize(s.len() * 4 / 3 + 4, 0);
 ///
 ///     let bytes_written = base64::encode_config_slice(s,
@@ -793,7 +794,7 @@
     <span class="kw">let </span>input_bytes = input.as_ref();
 
     <span class="kw">let </span>encoded_size = encoded_size(input_bytes.len(), config)
-        .expect(<span class="string">&quot;usize overflow when calculating buffer size&quot;</span>);
+        .expect(<span class="string">"usize overflow when calculating buffer size"</span>);
 
     <span class="kw">let </span><span class="kw-2">mut </span>b64_output = <span class="kw-2">&amp;mut </span>output[<span class="number">0</span>..encoded_size];
 
@@ -825,7 +826,7 @@
 
     <span class="kw">let </span>encoded_bytes = b64_bytes_written
         .checked_add(padding_bytes)
-        .expect(<span class="string">&quot;usize overflow when calculating b64 length&quot;</span>);
+        .expect(<span class="string">"usize overflow when calculating b64 length"</span>);
 
     <span class="macro">debug_assert_eq!</span>(encoded_size, encoded_bytes);
 }
@@ -860,7 +861,7 @@
             <span class="comment">// Hand-unrolling for 32 vs 16 or 8 bytes produces yields performance about equivalent
             // to unsafe pointer code on a Xeon E5-1650v3. 64 byte unrolling was slightly better for
             // large inputs but significantly worse for 50-byte input, unsurprisingly. I suspect
-            // that it&#39;s a not uncommon use case to encode smallish chunks of data (e.g. a 64-byte
+            // that it's a not uncommon use case to encode smallish chunks of data (e.g. a 64-byte
             // SHA-512 digest), so it would be nice if that fit in the unrolled loop at least once.
             // Plus, single-digit percentage performance differences might well be quite different
             // on different hardware.
@@ -914,7 +915,7 @@
         }
     }
 
-    <span class="comment">// Encode what&#39;s left after the fast loop.
+    <span class="comment">// Encode what's left after the fast loop.
 
     </span><span class="kw">const </span>LOW_SIX_BITS_U8: u8 = <span class="number">0x3F</span>;
 
@@ -970,7 +971,7 @@
             <span class="kw">let </span>encoded_rem = <span class="kw">match </span>rem {
                 <span class="number">1 </span>=&gt; <span class="number">2</span>,
                 <span class="number">2 </span>=&gt; <span class="number">3</span>,
-                <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;Impossible remainder&quot;</span>),
+                <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(<span class="string">"Impossible remainder"</span>),
             };
             complete_chunk_output.and_then(|c| c.checked_add(encoded_rem))
         }
@@ -1093,9 +1094,9 @@
 
             <span class="kw">let </span>prefix_len = prefix_len_range.sample(<span class="kw-2">&amp;mut </span>rng);
             <span class="kw">for _ in </span><span class="number">0</span>..prefix_len {
-                <span class="comment">// getting convenient random single-byte printable chars that aren&#39;t base64 is
+                <span class="comment">// getting convenient random single-byte printable chars that aren't base64 is
                 // annoying
-                </span>prefix.push(<span class="string">&#39;#&#39;</span>);
+                </span>prefix.push(<span class="string">'#'</span>);
             }
             encoded_data_with_prefix.push_str(<span class="kw-2">&amp;</span>prefix);
 
@@ -1343,8 +1344,8 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>encode_imap() {
         <span class="macro">assert_eq!</span>(
-            encode_config(<span class="string">b&quot;\xFB\xFF&quot;</span>, <span class="kw">crate</span>::IMAP_MUTF7),
-            encode_config(<span class="string">b&quot;\xFB\xFF&quot;</span>, <span class="kw">crate</span>::STANDARD_NO_PAD).replace(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;,&quot;</span>)
+            encode_config(<span class="string">b"\xFB\xFF"</span>, <span class="kw">crate</span>::IMAP_MUTF7),
+            encode_config(<span class="string">b"\xFB\xFF"</span>, <span class="kw">crate</span>::STANDARD_NO_PAD).replace(<span class="string">"/"</span>, <span class="string">","</span>)
         );
     }
 }

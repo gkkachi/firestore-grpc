@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-0.19.1/src/server/tls12.rs`."><title>tls12.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="rustls" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-0.19.1/src/server/tls12.rs`."><title>tls12.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="rustls" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -474,7 +475,7 @@
 <a href="#474" id="474">474</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::check::check_message;
 <span class="kw">use </span><span class="kw">crate</span>::error::TLSError;
-<span class="attr">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"logging"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::log::{debug, trace};
 <span class="kw">use </span><span class="kw">crate</span>::msgs::base::Payload;
 <span class="kw">use </span><span class="kw">crate</span>::msgs::ccs::ChangeCipherSpecPayload;
@@ -495,7 +496,7 @@
 
 <span class="kw">use </span>ring::constant_time;
 
-<span class="comment">// --- Process client&#39;s Certificate for client auth ---
+<span class="comment">// --- Process client's Certificate for client auth ---
 </span><span class="kw">pub struct </span>ExpectCertificate {
     <span class="kw">pub </span>handshake: HandshakeDetails,
     <span class="kw">pub </span>server_kx: ServerKXDetails,
@@ -525,21 +526,21 @@
             .transcript
             .add_message(<span class="kw-2">&amp;</span>m);
 
-        <span class="comment">// If we can&#39;t determine if the auth is mandatory, abort
+        <span class="comment">// If we can't determine if the auth is mandatory, abort
         </span><span class="kw">let </span>mandatory = sess
             .config
             .verifier
             .client_auth_mandatory(sess.get_sni())
             .ok_or_else(|| {
-                <span class="macro">debug!</span>(<span class="string">&quot;could not determine if client auth is mandatory based on SNI&quot;</span>);
+                <span class="macro">debug!</span>(<span class="string">"could not determine if client auth is mandatory based on SNI"</span>);
                 sess.common
                     .send_fatal_alert(AlertDescription::AccessDenied);
-                TLSError::General(<span class="string">&quot;client rejected by client_auth_mandatory&quot;</span>.into())
+                TLSError::General(<span class="string">"client rejected by client_auth_mandatory"</span>.into())
             })<span class="question-mark">?</span>;
 
         <span class="kw">if </span>cert_chain.is_empty() {
             <span class="kw">if </span>!mandatory {
-                <span class="macro">debug!</span>(<span class="string">&quot;client auth requested but no certificate supplied&quot;</span>);
+                <span class="macro">debug!</span>(<span class="string">"client auth requested but no certificate supplied"</span>);
                 <span class="self">self</span>.handshake
                     .transcript
                     .abandon_client_auth();
@@ -550,13 +551,13 @@
             <span class="kw">return </span><span class="prelude-val">Err</span>(TLSError::NoCertificatesPresented);
         }
 
-        <span class="macro">trace!</span>(<span class="string">&quot;certs {:?}&quot;</span>, cert_chain);
+        <span class="macro">trace!</span>(<span class="string">"certs {:?}"</span>, cert_chain);
 
         sess.config
             .verifier
             .verify_client_cert(cert_chain, sess.get_sni())
             .or_else(|err| {
-                hs::incompatible(sess, <span class="string">&quot;certificate invalid&quot;</span>);
+                hs::incompatible(sess, <span class="string">"certificate invalid"</span>);
                 <span class="prelude-val">Err</span>(err)
             })<span class="question-mark">?</span>;
 
@@ -565,7 +566,7 @@
     }
 }
 
-<span class="comment">// --- Process client&#39;s KeyExchange ---
+<span class="comment">// --- Process client's KeyExchange ---
 </span><span class="kw">pub struct </span>ExpectClientKX {
     <span class="kw">pub </span>handshake: HandshakeDetails,
     <span class="kw">pub </span>server_kx: ServerKXDetails,
@@ -620,7 +621,7 @@
         <span class="kw">let </span>kxd = kx
             .server_complete(<span class="kw-2">&amp;</span>client_kx.<span class="number">0</span>)
             .ok_or_else(|| {
-                TLSError::PeerMisbehavedError(<span class="string">&quot;key exchange completion failed&quot;</span>.to_string())
+                TLSError::PeerMisbehavedError(<span class="string">"key exchange completion failed"</span>.to_string())
             })<span class="question-mark">?</span>;
 
         <span class="kw">let </span>hashalg = sess
@@ -642,7 +643,7 @@
             SessionSecrets::new(<span class="kw-2">&amp;</span><span class="self">self</span>.handshake.randoms, hashalg, <span class="kw-2">&amp;</span>kxd.shared_secret)
         };
         sess.config.key_log.log(
-            <span class="string">&quot;CLIENT_RANDOM&quot;</span>,
+            <span class="string">"CLIENT_RANDOM"</span>,
             <span class="kw-2">&amp;</span>secrets.randoms.client,
             <span class="kw-2">&amp;</span>secrets.master_secret,
         );
@@ -657,7 +658,7 @@
     }
 }
 
-<span class="comment">// --- Process client&#39;s certificate proof ---
+<span class="comment">// --- Process client's certificate proof ---
 </span><span class="kw">pub struct </span>ExpectCertificateVerify {
     secrets: SessionSecrets,
     handshake: HandshakeDetails,
@@ -705,7 +706,7 @@
             <span class="kw">return </span><span class="prelude-val">Err</span>(e);
         }
 
-        <span class="macro">trace!</span>(<span class="string">&quot;client CertificateVerify OK&quot;</span>);
+        <span class="macro">trace!</span>(<span class="string">"client CertificateVerify OK"</span>);
         sess.client_cert_chain = <span class="prelude-val">Some</span>(<span class="self">self</span>.client_cert.take_chain());
 
         <span class="self">self</span>.handshake
@@ -715,7 +716,7 @@
     }
 }
 
-<span class="comment">// --- Process client&#39;s ChangeCipherSpec ---
+<span class="comment">// --- Process client's ChangeCipherSpec ---
 </span><span class="kw">pub struct </span>ExpectCCS {
     <span class="kw">pub </span>secrets: SessionSecrets,
     <span class="kw">pub </span>handshake: HandshakeDetails,
@@ -749,7 +750,7 @@
     }
 }
 
-<span class="comment">// --- Process client&#39;s Finished ---
+<span class="comment">// --- Process client's Finished ---
 </span><span class="kw">fn </span>get_server_session_value_tls12(
     secrets: <span class="kw-2">&amp;</span>SessionSecrets,
     handshake: <span class="kw-2">&amp;</span>HandshakeDetails,
@@ -781,7 +782,7 @@
     handshake: <span class="kw-2">&amp;mut </span>HandshakeDetails,
     sess: <span class="kw-2">&amp;mut </span>ServerSessionImpl,
 ) {
-    <span class="comment">// If we can&#39;t produce a ticket for some reason, we can&#39;t
+    <span class="comment">// If we can't produce a ticket for some reason, we can't
     // report an error. Send an empty one.
     </span><span class="kw">let </span>plain = get_server_session_value_tls12(secrets, handshake, sess).get_encoding();
     <span class="kw">let </span>ticket = sess
@@ -889,9 +890,9 @@
                 value.get_encoding(),
             );
             <span class="kw">if </span>worked {
-                <span class="macro">debug!</span>(<span class="string">&quot;Session saved&quot;</span>);
+                <span class="macro">debug!</span>(<span class="string">"Session saved"</span>);
             } <span class="kw">else </span>{
-                <span class="macro">debug!</span>(<span class="string">&quot;Session not saved&quot;</span>);
+                <span class="macro">debug!</span>(<span class="string">"Session not saved"</span>);
             }
         }
 

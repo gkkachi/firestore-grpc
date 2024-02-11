@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-0.19.1/src/suites.rs`."><title>suites.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustls" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-0.19.1/src/suites.rs`."><title>suites.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rustls" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -647,8 +648,8 @@
 }
 
 <span class="doccomment">/// The result of a key exchange.  This has our public key,
-/// and the agreed shared secret (also known as the &quot;premaster secret&quot;
-/// in TLS1.0-era protocols, and &quot;Z&quot; in TLS1.3).
+/// and the agreed shared secret (also known as the "premaster secret"
+/// in TLS1.0-era protocols, and "Z" in TLS1.3).
 </span><span class="kw">pub struct </span>KeyExchangeResult {
     <span class="kw">pub </span>pubkey: ring::agreement::PublicKey,
     <span class="kw">pub </span>shared_secret: Vec&lt;u8&gt;,
@@ -658,7 +659,7 @@
 /// our private key, and our public key.
 </span><span class="kw">pub struct </span>KeyExchange {
     <span class="kw">pub </span>group: NamedGroup,
-    alg: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ring::agreement::Algorithm,
+    alg: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>ring::agreement::Algorithm,
     privkey: ring::agreement::EphemeralPrivateKey,
     <span class="kw">pub </span>pubkey: ring::agreement::PublicKey,
 }
@@ -666,7 +667,7 @@
 <span class="kw">impl </span>KeyExchange {
     <span class="kw">pub fn </span>named_group_to_ecdh_alg(
         group: NamedGroup,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ring::agreement::Algorithm&gt; {
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>ring::agreement::Algorithm&gt; {
         <span class="kw">match </span>group {
             NamedGroup::X25519 =&gt; <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>ring::agreement::X25519),
             NamedGroup::secp256r1 =&gt; <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>ring::agreement::ECDH_P256),
@@ -675,7 +676,7 @@
         }
     }
 
-    <span class="kw">pub fn </span>supported_groups() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[NamedGroup] {
+    <span class="kw">pub fn </span>supported_groups() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[NamedGroup] {
         <span class="comment">// in preference order
         </span><span class="kw-2">&amp;</span>[
             NamedGroup::X25519,
@@ -767,14 +768,14 @@
     ///
     /// This is not present for TLS1.3, because authentication is orthogonal
     /// to the ciphersuite concept there.
-    </span><span class="kw">pub </span>sign: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[SignatureScheme]&gt;,
+    </span><span class="kw">pub </span>sign: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>[SignatureScheme]&gt;,
 
     <span class="doccomment">/// Encryption key length, for the bulk algorithm.
     </span><span class="kw">pub </span>enc_key_len: usize,
 
-    <span class="doccomment">/// How long the fixed part of the &#39;IV&#39; is.
+    <span class="doccomment">/// How long the fixed part of the 'IV' is.
     ///
-    /// This isn&#39;t usually an IV, but we continue the
+    /// This isn't usually an IV, but we continue the
     /// terminology misuse to match the standard.
     </span><span class="kw">pub </span>fixed_iv_len: usize,
 
@@ -785,7 +786,7 @@
     </span><span class="kw">pub </span>explicit_nonce_len: usize,
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) hkdf_algorithm: ring::hkdf::Algorithm,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) aead_algorithm: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ring::aead::Algorithm,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) aead_algorithm: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>ring::aead::Algorithm,
     <span class="kw">pub</span>(<span class="kw">crate</span>) build_tls12_encrypter: <span class="prelude-ty">Option</span>&lt;cipher::BuildTLS12Encrypter&gt;,
     <span class="kw">pub</span>(<span class="kw">crate</span>) build_tls12_decrypter: <span class="prelude-ty">Option</span>&lt;cipher::BuildTLS12Decrypter&gt;,
 }
@@ -797,23 +798,23 @@
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>SupportedCipherSuite {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;SupportedCipherSuite&quot;</span>)
-            .field(<span class="string">&quot;suite&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.suite)
-            .field(<span class="string">&quot;kx&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.kx)
-            .field(<span class="string">&quot;bulk&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.bulk)
-            .field(<span class="string">&quot;hash&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.hash)
-            .field(<span class="string">&quot;sign&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.sign)
-            .field(<span class="string">&quot;enc_key_len&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.enc_key_len)
-            .field(<span class="string">&quot;fixed_iv_len&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.fixed_iv_len)
-            .field(<span class="string">&quot;explicit_nonce_len&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.explicit_nonce_len)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"SupportedCipherSuite"</span>)
+            .field(<span class="string">"suite"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.suite)
+            .field(<span class="string">"kx"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.kx)
+            .field(<span class="string">"bulk"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.bulk)
+            .field(<span class="string">"hash"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.hash)
+            .field(<span class="string">"sign"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.sign)
+            .field(<span class="string">"enc_key_len"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.enc_key_len)
+            .field(<span class="string">"fixed_iv_len"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.fixed_iv_len)
+            .field(<span class="string">"explicit_nonce_len"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.explicit_nonce_len)
             .finish()
     }
 }
 
 <span class="kw">impl </span>SupportedCipherSuite {
     <span class="doccomment">/// Which hash function to use with this suite.
-    </span><span class="kw">pub fn </span>get_hash(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ring::digest::Algorithm {
+    </span><span class="kw">pub fn </span>get_hash(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>ring::digest::Algorithm {
         <span class="self">self</span>.hkdf_algorithm
             .hmac_algorithm()
             .digest_algorithm()
@@ -830,7 +831,7 @@
     }
 
     <span class="doccomment">/// Start the KX process with the given group.  This generates
-    /// the server&#39;s share, but we don&#39;t yet have the client&#39;s share.
+    /// the server's share, but we don't yet have the client's share.
     </span><span class="kw">pub fn </span>start_server_kx(<span class="kw-2">&amp;</span><span class="self">self</span>, named_group: NamedGroup) -&gt; <span class="prelude-ty">Option</span>&lt;KeyExchange&gt; {
         <span class="kw">match </span><span class="self">self</span>.kx {
             KeyExchangeAlgorithm::ECDHE =&gt; KeyExchange::start_ecdhe(named_group),
@@ -890,11 +891,11 @@
         } <span class="kw">else if </span><span class="self">self</span>.usable_for_version(ProtocolVersion::TLSv1_2)
             &amp;&amp; new_suite.usable_for_version(ProtocolVersion::TLSv1_2)
         {
-            <span class="comment">// Previous versions don&#39;t specify any constraint, so we don&#39;t
+            <span class="comment">// Previous versions don't specify any constraint, so we don't
             // resume between suites to avoid bad interactions.
             </span><span class="self">self</span>.suite == new_suite.suite
         } <span class="kw">else </span>{
-            <span class="comment">// Suites for different versions definitely can&#39;t resume!
+            <span class="comment">// Suites for different versions definitely can't resume!
             </span><span class="bool-val">false
         </span>}
     }
@@ -1080,8 +1081,8 @@
 <span class="comment">// These both O(N^2)!
 </span><span class="kw">pub fn </span>choose_ciphersuite_preferring_client(
     client_suites: <span class="kw-2">&amp;</span>[CipherSuite],
-    server_suites: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite],
-) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt; {
+    server_suites: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite],
+) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite&gt; {
     <span class="kw">for </span>client_suite <span class="kw">in </span>client_suites {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(selected) = server_suites
             .iter()
@@ -1096,8 +1097,8 @@
 
 <span class="kw">pub fn </span>choose_ciphersuite_preferring_server(
     client_suites: <span class="kw-2">&amp;</span>[CipherSuite],
-    server_suites: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite],
-) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt; {
+    server_suites: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite],
+) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite&gt; {
     <span class="kw">if let </span><span class="prelude-val">Some</span>(selected) = server_suites
         .iter()
         .find(|x| client_suites.contains(<span class="kw-2">&amp;</span>x.suite))
@@ -1111,9 +1112,9 @@
 <span class="doccomment">/// Return a list of the ciphersuites in `all` with the suites
 /// incompatible with `SignatureAlgorithm` `sigalg` removed.
 </span><span class="kw">pub fn </span>reduce_given_sigalg(
-    all: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite],
+    all: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite],
     sigalg: SignatureAlgorithm,
-) -&gt; Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt; {
+) -&gt; Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite&gt; {
     all.iter()
         .filter(|&amp;&amp;suite| suite.usable_for_sigalg(sigalg))
         .cloned()
@@ -1123,9 +1124,9 @@
 <span class="doccomment">/// Return a list of the ciphersuites in `all` with the suites
 /// incompatible with the chosen `version` removed.
 </span><span class="kw">pub fn </span>reduce_given_version(
-    all: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite],
+    all: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite],
     version: ProtocolVersion,
-) -&gt; Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite&gt; {
+) -&gt; Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite&gt; {
     all.iter()
         .filter(|&amp;&amp;suite| suite.usable_for_version(version))
         .cloned()
@@ -1135,7 +1136,7 @@
 <span class="doccomment">/// Return true if `sigscheme` is usable by any of the given suites.
 </span><span class="kw">pub fn </span>compatible_sigscheme_for_suites(
     sigscheme: SignatureScheme,
-    common_suites: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SupportedCipherSuite],
+    common_suites: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>SupportedCipherSuite],
 ) -&gt; bool {
     <span class="kw">let </span>sigalg = sigscheme.sign();
     common_suites
@@ -1198,7 +1199,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_scs_is_debug() {
-        <span class="macro">println!</span>(<span class="string">&quot;{:?}&quot;</span>, ALL_CIPHERSUITES);
+        <span class="macro">println!</span>(<span class="string">"{:?}"</span>, ALL_CIPHERSUITES);
     }
 
     <span class="attr">#[test]

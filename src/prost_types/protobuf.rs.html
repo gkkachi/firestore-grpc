@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-types-0.9.0/src/protobuf.rs`."><title>protobuf.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="prost_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-types-0.9.0/src/protobuf.rs`."><title>protobuf.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="prost_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1846,74 +1847,74 @@
 /// files it parses.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>FileDescriptorSet {
-    <span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;1&quot;</span>)]
+    <span class="attr">#[prost(message, repeated, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>file: ::prost::alloc::vec::Vec&lt;FileDescriptorProto&gt;,
 }
 <span class="doccomment">/// Describes a complete .proto file.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>FileDescriptorProto {
     <span class="doccomment">/// file name, relative to root of source tree
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;1&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
-    <span class="doccomment">/// e.g. &quot;foo&quot;, &quot;foo.bar&quot;, etc.
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;2&quot;</span>)]
+    <span class="doccomment">/// e.g. "foo", "foo.bar", etc.
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>package: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
     <span class="doccomment">/// Names of files imported by this file.
-    </span><span class="attr">#[prost(string, repeated, tag=<span class="string">&quot;3&quot;</span>)]
+    </span><span class="attr">#[prost(string, repeated, tag=<span class="string">"3"</span>)]
     </span><span class="kw">pub </span>dependency: ::prost::alloc::vec::Vec&lt;::prost::alloc::string::String&gt;,
     <span class="doccomment">/// Indexes of the public imported files in the dependency list above.
-    </span><span class="attr">#[prost(int32, repeated, packed=<span class="string">&quot;false&quot;</span>, tag=<span class="string">&quot;10&quot;</span>)]
+    </span><span class="attr">#[prost(int32, repeated, packed=<span class="string">"false"</span>, tag=<span class="string">"10"</span>)]
     </span><span class="kw">pub </span>public_dependency: ::prost::alloc::vec::Vec&lt;i32&gt;,
     <span class="doccomment">/// Indexes of the weak imported files in the dependency list.
     /// For Google-internal migration only. Do not use.
-    </span><span class="attr">#[prost(int32, repeated, packed=<span class="string">&quot;false&quot;</span>, tag=<span class="string">&quot;11&quot;</span>)]
+    </span><span class="attr">#[prost(int32, repeated, packed=<span class="string">"false"</span>, tag=<span class="string">"11"</span>)]
     </span><span class="kw">pub </span>weak_dependency: ::prost::alloc::vec::Vec&lt;i32&gt;,
     <span class="doccomment">/// All top-level definitions in this file.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;4&quot;</span>)]
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"4"</span>)]
     </span><span class="kw">pub </span>message_type: ::prost::alloc::vec::Vec&lt;DescriptorProto&gt;,
-    <span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;5&quot;</span>)]
+    <span class="attr">#[prost(message, repeated, tag=<span class="string">"5"</span>)]
     </span><span class="kw">pub </span>enum_type: ::prost::alloc::vec::Vec&lt;EnumDescriptorProto&gt;,
-    <span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;6&quot;</span>)]
+    <span class="attr">#[prost(message, repeated, tag=<span class="string">"6"</span>)]
     </span><span class="kw">pub </span>service: ::prost::alloc::vec::Vec&lt;ServiceDescriptorProto&gt;,
-    <span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;7&quot;</span>)]
+    <span class="attr">#[prost(message, repeated, tag=<span class="string">"7"</span>)]
     </span><span class="kw">pub </span>extension: ::prost::alloc::vec::Vec&lt;FieldDescriptorProto&gt;,
-    <span class="attr">#[prost(message, optional, tag=<span class="string">&quot;8&quot;</span>)]
+    <span class="attr">#[prost(message, optional, tag=<span class="string">"8"</span>)]
     </span><span class="kw">pub </span>options: ::core::option::Option&lt;FileOptions&gt;,
     <span class="doccomment">/// This field contains optional information about the original source code.
     /// You may safely remove this entire field without harming runtime
     /// functionality of the descriptors -- the information is needed only by
     /// development tools.
-    </span><span class="attr">#[prost(message, optional, tag=<span class="string">&quot;9&quot;</span>)]
+    </span><span class="attr">#[prost(message, optional, tag=<span class="string">"9"</span>)]
     </span><span class="kw">pub </span>source_code_info: ::core::option::Option&lt;SourceCodeInfo&gt;,
     <span class="doccomment">/// The syntax of the proto file.
-    /// The supported values are &quot;proto2&quot; and &quot;proto3&quot;.
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;12&quot;</span>)]
+    /// The supported values are "proto2" and "proto3".
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"12"</span>)]
     </span><span class="kw">pub </span>syntax: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
 }
 <span class="doccomment">/// Describes a message type.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>DescriptorProto {
-    <span class="attr">#[prost(string, optional, tag=<span class="string">&quot;1&quot;</span>)]
+    <span class="attr">#[prost(string, optional, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
-    <span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;2&quot;</span>)]
+    <span class="attr">#[prost(message, repeated, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>field: ::prost::alloc::vec::Vec&lt;FieldDescriptorProto&gt;,
-    <span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;6&quot;</span>)]
+    <span class="attr">#[prost(message, repeated, tag=<span class="string">"6"</span>)]
     </span><span class="kw">pub </span>extension: ::prost::alloc::vec::Vec&lt;FieldDescriptorProto&gt;,
-    <span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;3&quot;</span>)]
+    <span class="attr">#[prost(message, repeated, tag=<span class="string">"3"</span>)]
     </span><span class="kw">pub </span>nested_type: ::prost::alloc::vec::Vec&lt;DescriptorProto&gt;,
-    <span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;4&quot;</span>)]
+    <span class="attr">#[prost(message, repeated, tag=<span class="string">"4"</span>)]
     </span><span class="kw">pub </span>enum_type: ::prost::alloc::vec::Vec&lt;EnumDescriptorProto&gt;,
-    <span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;5&quot;</span>)]
+    <span class="attr">#[prost(message, repeated, tag=<span class="string">"5"</span>)]
     </span><span class="kw">pub </span>extension_range: ::prost::alloc::vec::Vec&lt;descriptor_proto::ExtensionRange&gt;,
-    <span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;8&quot;</span>)]
+    <span class="attr">#[prost(message, repeated, tag=<span class="string">"8"</span>)]
     </span><span class="kw">pub </span>oneof_decl: ::prost::alloc::vec::Vec&lt;OneofDescriptorProto&gt;,
-    <span class="attr">#[prost(message, optional, tag=<span class="string">&quot;7&quot;</span>)]
+    <span class="attr">#[prost(message, optional, tag=<span class="string">"7"</span>)]
     </span><span class="kw">pub </span>options: ::core::option::Option&lt;MessageOptions&gt;,
-    <span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;9&quot;</span>)]
+    <span class="attr">#[prost(message, repeated, tag=<span class="string">"9"</span>)]
     </span><span class="kw">pub </span>reserved_range: ::prost::alloc::vec::Vec&lt;descriptor_proto::ReservedRange&gt;,
     <span class="doccomment">/// Reserved field names, which may not be used by fields in the same message.
     /// A given name may only be reserved once.
-    </span><span class="attr">#[prost(string, repeated, tag=<span class="string">&quot;10&quot;</span>)]
+    </span><span class="attr">#[prost(string, repeated, tag=<span class="string">"10"</span>)]
     </span><span class="kw">pub </span>reserved_name: ::prost::alloc::vec::Vec&lt;::prost::alloc::string::String&gt;,
 }
 <span class="doccomment">/// Nested message and enum types in `DescriptorProto`.
@@ -1921,12 +1922,12 @@
     <span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
     </span><span class="kw">pub struct </span>ExtensionRange {
         <span class="doccomment">/// Inclusive.
-        </span><span class="attr">#[prost(int32, optional, tag=<span class="string">&quot;1&quot;</span>)]
+        </span><span class="attr">#[prost(int32, optional, tag=<span class="string">"1"</span>)]
         </span><span class="kw">pub </span>start: ::core::option::Option&lt;i32&gt;,
         <span class="doccomment">/// Exclusive.
-        </span><span class="attr">#[prost(int32, optional, tag=<span class="string">&quot;2&quot;</span>)]
+        </span><span class="attr">#[prost(int32, optional, tag=<span class="string">"2"</span>)]
         </span><span class="kw">pub </span>end: ::core::option::Option&lt;i32&gt;,
-        <span class="attr">#[prost(message, optional, tag=<span class="string">&quot;3&quot;</span>)]
+        <span class="attr">#[prost(message, optional, tag=<span class="string">"3"</span>)]
         </span><span class="kw">pub </span>options: ::core::option::Option&lt;<span class="kw">super</span>::ExtensionRangeOptions&gt;,
     }
     <span class="doccomment">/// Range of reserved tag numbers. Reserved tag numbers may not be used by
@@ -1935,84 +1936,84 @@
     </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
     </span><span class="kw">pub struct </span>ReservedRange {
         <span class="doccomment">/// Inclusive.
-        </span><span class="attr">#[prost(int32, optional, tag=<span class="string">&quot;1&quot;</span>)]
+        </span><span class="attr">#[prost(int32, optional, tag=<span class="string">"1"</span>)]
         </span><span class="kw">pub </span>start: ::core::option::Option&lt;i32&gt;,
         <span class="doccomment">/// Exclusive.
-        </span><span class="attr">#[prost(int32, optional, tag=<span class="string">&quot;2&quot;</span>)]
+        </span><span class="attr">#[prost(int32, optional, tag=<span class="string">"2"</span>)]
         </span><span class="kw">pub </span>end: ::core::option::Option&lt;i32&gt;,
     }
 }
 <span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>ExtensionRangeOptions {
-    <span class="doccomment">/// The parser stores options it doesn&#39;t recognize here. See above.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;999&quot;</span>)]
+    <span class="doccomment">/// The parser stores options it doesn't recognize here. See above.
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"999"</span>)]
     </span><span class="kw">pub </span>uninterpreted_option: ::prost::alloc::vec::Vec&lt;UninterpretedOption&gt;,
 }
 <span class="doccomment">/// Describes a field within a message.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>FieldDescriptorProto {
-    <span class="attr">#[prost(string, optional, tag=<span class="string">&quot;1&quot;</span>)]
+    <span class="attr">#[prost(string, optional, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
-    <span class="attr">#[prost(int32, optional, tag=<span class="string">&quot;3&quot;</span>)]
+    <span class="attr">#[prost(int32, optional, tag=<span class="string">"3"</span>)]
     </span><span class="kw">pub </span>number: ::core::option::Option&lt;i32&gt;,
-    <span class="attr">#[prost(enumeration=<span class="string">&quot;field_descriptor_proto::Label&quot;</span>, optional, tag=<span class="string">&quot;4&quot;</span>)]
+    <span class="attr">#[prost(enumeration=<span class="string">"field_descriptor_proto::Label"</span>, optional, tag=<span class="string">"4"</span>)]
     </span><span class="kw">pub </span>label: ::core::option::Option&lt;i32&gt;,
     <span class="doccomment">/// If type_name is set, this need not be set.  If both this and type_name
     /// are set, this must be one of TYPE_ENUM, TYPE_MESSAGE or TYPE_GROUP.
-    </span><span class="attr">#[prost(enumeration=<span class="string">&quot;field_descriptor_proto::Type&quot;</span>, optional, tag=<span class="string">&quot;5&quot;</span>)]
+    </span><span class="attr">#[prost(enumeration=<span class="string">"field_descriptor_proto::Type"</span>, optional, tag=<span class="string">"5"</span>)]
     </span><span class="kw">pub </span>r#type: ::core::option::Option&lt;i32&gt;,
     <span class="doccomment">/// For message and enum types, this is the name of the type.  If the name
-    /// starts with a &#39;.&#39;, it is fully-qualified.  Otherwise, C++-like scoping
+    /// starts with a '.', it is fully-qualified.  Otherwise, C++-like scoping
     /// rules are used to find the type (i.e. first the nested types within this
     /// message are searched, then within the parent, on up to the root
     /// namespace).
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;6&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"6"</span>)]
     </span><span class="kw">pub </span>type_name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
     <span class="doccomment">/// For extensions, this is the name of the type being extended.  It is
     /// resolved in the same manner as type_name.
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;2&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>extendee: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
     <span class="doccomment">/// For numeric types, contains the original text representation of the value.
-    /// For booleans, &quot;true&quot; or &quot;false&quot;.
+    /// For booleans, "true" or "false".
     /// For strings, contains the default text contents (not escaped in any way).
     /// For bytes, contains the C escaped value.  All bytes &gt;= 128 are escaped.
     /// TODO(kenton):  Base-64 encode?
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;7&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"7"</span>)]
     </span><span class="kw">pub </span>default_value: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
-    <span class="doccomment">/// If set, gives the index of a oneof in the containing type&#39;s oneof_decl
+    <span class="doccomment">/// If set, gives the index of a oneof in the containing type's oneof_decl
     /// list.  This field is a member of that oneof.
-    </span><span class="attr">#[prost(int32, optional, tag=<span class="string">&quot;9&quot;</span>)]
+    </span><span class="attr">#[prost(int32, optional, tag=<span class="string">"9"</span>)]
     </span><span class="kw">pub </span>oneof_index: ::core::option::Option&lt;i32&gt;,
     <span class="doccomment">/// JSON name of this field. The value is set by protocol compiler. If the
-    /// user has set a &quot;json_name&quot; option on this field, that option&#39;s value
-    /// will be used. Otherwise, it&#39;s deduced from the field&#39;s name by converting
+    /// user has set a "json_name" option on this field, that option's value
+    /// will be used. Otherwise, it's deduced from the field's name by converting
     /// it to camelCase.
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;10&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"10"</span>)]
     </span><span class="kw">pub </span>json_name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
-    <span class="attr">#[prost(message, optional, tag=<span class="string">&quot;8&quot;</span>)]
+    <span class="attr">#[prost(message, optional, tag=<span class="string">"8"</span>)]
     </span><span class="kw">pub </span>options: ::core::option::Option&lt;FieldOptions&gt;,
-    <span class="doccomment">/// If true, this is a proto3 &quot;optional&quot;. When a proto3 field is optional, it
+    <span class="doccomment">/// If true, this is a proto3 "optional". When a proto3 field is optional, it
     /// tracks presence regardless of field type.
     ///
     /// When proto3_optional is true, this field must be belong to a oneof to
     /// signal to old proto3 clients that presence is tracked for this field. This
-    /// oneof is known as a &quot;synthetic&quot; oneof, and this field must be its sole
+    /// oneof is known as a "synthetic" oneof, and this field must be its sole
     /// member (each proto3 optional field gets its own synthetic oneof). Synthetic
     /// oneofs exist in the descriptor only, and do not generate any API. Synthetic
-    /// oneofs must be ordered after all &quot;real&quot; oneofs.
+    /// oneofs must be ordered after all "real" oneofs.
     ///
-    /// For message fields, proto3_optional doesn&#39;t create any semantic change,
+    /// For message fields, proto3_optional doesn't create any semantic change,
     /// since non-repeated message fields always track presence. However it still
-    /// indicates the semantic detail of whether the user wrote &quot;optional&quot; or not.
+    /// indicates the semantic detail of whether the user wrote "optional" or not.
     /// This can be useful for round-tripping the .proto file. For consistency we
     /// give message fields a synthetic oneof also, even though it is not required
-    /// to track presence. This is especially important because the parser can&#39;t
+    /// to track presence. This is especially important because the parser can't
     /// tell if a field is a message or an enum, so it must always create a
     /// synthetic oneof.
     ///
     /// Proto2 optional fields do not set this flag, because they already indicate
     /// optional with `LABEL_OPTIONAL`.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;17&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"17"</span>)]
     </span><span class="kw">pub </span>proto3_optional: ::core::option::Option&lt;bool&gt;,
 }
 <span class="doccomment">/// Nested message and enum types in `FieldDescriptorProto`.
@@ -2065,28 +2066,28 @@
 <span class="doccomment">/// Describes a oneof.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>OneofDescriptorProto {
-    <span class="attr">#[prost(string, optional, tag=<span class="string">&quot;1&quot;</span>)]
+    <span class="attr">#[prost(string, optional, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
-    <span class="attr">#[prost(message, optional, tag=<span class="string">&quot;2&quot;</span>)]
+    <span class="attr">#[prost(message, optional, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>options: ::core::option::Option&lt;OneofOptions&gt;,
 }
 <span class="doccomment">/// Describes an enum type.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>EnumDescriptorProto {
-    <span class="attr">#[prost(string, optional, tag=<span class="string">&quot;1&quot;</span>)]
+    <span class="attr">#[prost(string, optional, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
-    <span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;2&quot;</span>)]
+    <span class="attr">#[prost(message, repeated, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>value: ::prost::alloc::vec::Vec&lt;EnumValueDescriptorProto&gt;,
-    <span class="attr">#[prost(message, optional, tag=<span class="string">&quot;3&quot;</span>)]
+    <span class="attr">#[prost(message, optional, tag=<span class="string">"3"</span>)]
     </span><span class="kw">pub </span>options: ::core::option::Option&lt;EnumOptions&gt;,
     <span class="doccomment">/// Range of reserved numeric values. Reserved numeric values may not be used
     /// by enum values in the same enum declaration. Reserved ranges may not
     /// overlap.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;4&quot;</span>)]
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"4"</span>)]
     </span><span class="kw">pub </span>reserved_range: ::prost::alloc::vec::Vec&lt;enum_descriptor_proto::EnumReservedRange&gt;,
     <span class="doccomment">/// Reserved enum value names, which may not be reused. A given name may only
     /// be reserved once.
-    </span><span class="attr">#[prost(string, repeated, tag=<span class="string">&quot;5&quot;</span>)]
+    </span><span class="attr">#[prost(string, repeated, tag=<span class="string">"5"</span>)]
     </span><span class="kw">pub </span>reserved_name: ::prost::alloc::vec::Vec&lt;::prost::alloc::string::String&gt;,
 }
 <span class="doccomment">/// Nested message and enum types in `EnumDescriptorProto`.
@@ -2100,57 +2101,57 @@
     </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
     </span><span class="kw">pub struct </span>EnumReservedRange {
         <span class="doccomment">/// Inclusive.
-        </span><span class="attr">#[prost(int32, optional, tag=<span class="string">&quot;1&quot;</span>)]
+        </span><span class="attr">#[prost(int32, optional, tag=<span class="string">"1"</span>)]
         </span><span class="kw">pub </span>start: ::core::option::Option&lt;i32&gt;,
         <span class="doccomment">/// Inclusive.
-        </span><span class="attr">#[prost(int32, optional, tag=<span class="string">&quot;2&quot;</span>)]
+        </span><span class="attr">#[prost(int32, optional, tag=<span class="string">"2"</span>)]
         </span><span class="kw">pub </span>end: ::core::option::Option&lt;i32&gt;,
     }
 }
 <span class="doccomment">/// Describes a value within an enum.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>EnumValueDescriptorProto {
-    <span class="attr">#[prost(string, optional, tag=<span class="string">&quot;1&quot;</span>)]
+    <span class="attr">#[prost(string, optional, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
-    <span class="attr">#[prost(int32, optional, tag=<span class="string">&quot;2&quot;</span>)]
+    <span class="attr">#[prost(int32, optional, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>number: ::core::option::Option&lt;i32&gt;,
-    <span class="attr">#[prost(message, optional, tag=<span class="string">&quot;3&quot;</span>)]
+    <span class="attr">#[prost(message, optional, tag=<span class="string">"3"</span>)]
     </span><span class="kw">pub </span>options: ::core::option::Option&lt;EnumValueOptions&gt;,
 }
 <span class="doccomment">/// Describes a service.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>ServiceDescriptorProto {
-    <span class="attr">#[prost(string, optional, tag=<span class="string">&quot;1&quot;</span>)]
+    <span class="attr">#[prost(string, optional, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
-    <span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;2&quot;</span>)]
+    <span class="attr">#[prost(message, repeated, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>method: ::prost::alloc::vec::Vec&lt;MethodDescriptorProto&gt;,
-    <span class="attr">#[prost(message, optional, tag=<span class="string">&quot;3&quot;</span>)]
+    <span class="attr">#[prost(message, optional, tag=<span class="string">"3"</span>)]
     </span><span class="kw">pub </span>options: ::core::option::Option&lt;ServiceOptions&gt;,
 }
 <span class="doccomment">/// Describes a method of a service.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>MethodDescriptorProto {
-    <span class="attr">#[prost(string, optional, tag=<span class="string">&quot;1&quot;</span>)]
+    <span class="attr">#[prost(string, optional, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
     <span class="doccomment">/// Input and output type names.  These are resolved in the same way as
     /// FieldDescriptorProto.type_name, but must refer to a message type.
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;2&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>input_type: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
-    <span class="attr">#[prost(string, optional, tag=<span class="string">&quot;3&quot;</span>)]
+    <span class="attr">#[prost(string, optional, tag=<span class="string">"3"</span>)]
     </span><span class="kw">pub </span>output_type: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
-    <span class="attr">#[prost(message, optional, tag=<span class="string">&quot;4&quot;</span>)]
+    <span class="attr">#[prost(message, optional, tag=<span class="string">"4"</span>)]
     </span><span class="kw">pub </span>options: ::core::option::Option&lt;MethodOptions&gt;,
     <span class="doccomment">/// Identifies if client streams multiple client messages
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;5&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"5"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>client_streaming: ::core::option::Option&lt;bool&gt;,
     <span class="doccomment">/// Identifies if server streams multiple server messages
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;6&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"6"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>server_streaming: ::core::option::Option&lt;bool&gt;,
 }
 <span class="comment">// ===================================================================
 // Options
 
-// Each of the definitions above may have &quot;options&quot; attached.  These are
+// Each of the definitions above may have "options" attached.  These are
 // just annotations which may cause code to be generated slightly differently
 // or may contain hints for code that manipulates protocol messages.
 //
@@ -2170,7 +2171,7 @@
 // * For options which will be published and used publicly by multiple
 //   independent entities, e-mail protobuf-global-extension-registry@google.com
 //   to reserve extension numbers. Simply provide your project name (e.g.
-//   Objective-C plugin) and your project website (if available) -- there&#39;s no
+//   Objective-C plugin) and your project website (if available) -- there's no
 //   need to explain how you intend to use them. Usually you only need one
 //   extension number. You can declare multiple options with only one extension
 //   number by putting them in a sub-message. See the Custom Options section of
@@ -2185,26 +2186,26 @@
     /// placed.  By default, the proto package is used, but this is often
     /// inappropriate because proto packages do not normally start with backwards
     /// domain names.
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;1&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>java_package: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
     <span class="doccomment">/// If set, all the classes from the .proto file are wrapped in a single
     /// outer class with the given name.  This applies to both Proto1
-    /// (equivalent to the old &quot;--one_java_file&quot; option) and Proto2 (where
+    /// (equivalent to the old "--one_java_file" option) and Proto2 (where
     /// a .proto always translates to a single class, but you may want to
     /// explicitly choose the class name).
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;8&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"8"</span>)]
     </span><span class="kw">pub </span>java_outer_classname: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
     <span class="doccomment">/// If set true, then the Java code generator will generate a separate .java
     /// file for each top-level message, enum, and service defined in the .proto
     /// file.  Thus, these types will *not* be nested inside the outer class
     /// named by java_outer_classname.  However, the outer class will still be
-    /// generated to contain the file&#39;s getDescriptor() method as well as any
+    /// generated to contain the file's getDescriptor() method as well as any
     /// top-level extensions defined in the file.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;10&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"10"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>java_multiple_files: ::core::option::Option&lt;bool&gt;,
     <span class="doccomment">/// This option does nothing.
     </span><span class="attr">#[deprecated]
-    #[prost(bool, optional, tag=<span class="string">&quot;20&quot;</span>)]
+    #[prost(bool, optional, tag=<span class="string">"20"</span>)]
     </span><span class="kw">pub </span>java_generate_equals_and_hash: ::core::option::Option&lt;bool&gt;,
     <span class="doccomment">/// If set true, then the Java2 code generator will generate code that
     /// throws an exception whenever an attempt is made to assign a non-UTF-8
@@ -2212,18 +2213,18 @@
     /// Message reflection will do the same.
     /// However, an extension field still accepts non-UTF-8 byte sequences.
     /// This option has no effect on when used with the lite runtime.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;27&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"27"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>java_string_check_utf8: ::core::option::Option&lt;bool&gt;,
-    <span class="attr">#[prost(enumeration=<span class="string">&quot;file_options::OptimizeMode&quot;</span>, optional, tag=<span class="string">&quot;9&quot;</span>, default=<span class="string">&quot;Speed&quot;</span>)]
+    <span class="attr">#[prost(enumeration=<span class="string">"file_options::OptimizeMode"</span>, optional, tag=<span class="string">"9"</span>, default=<span class="string">"Speed"</span>)]
     </span><span class="kw">pub </span>optimize_for: ::core::option::Option&lt;i32&gt;,
     <span class="doccomment">/// Sets the Go package where structs generated from this .proto will be
     /// placed. If omitted, the Go package will be derived from the following:
     ///   - The basename of the package import path, if provided.
     ///   - Otherwise, the package statement in the .proto file, if present.
     ///   - Otherwise, the basename of the .proto file, without extension.
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;11&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"11"</span>)]
     </span><span class="kw">pub </span>go_package: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
-    <span class="doccomment">/// Should generic services be generated in each language?  &quot;Generic&quot; services
+    <span class="doccomment">/// Should generic services be generated in each language?  "Generic" services
     /// are not specific to any particular RPC system.  They are generated by the
     /// main code generators in each language (without additional plugins).
     /// Generic services were the only kind of service generation supported by
@@ -2233,59 +2234,59 @@
     /// that generate code specific to your particular RPC system.  Therefore,
     /// these default to false.  Old code which depends on generic services should
     /// explicitly set them to true.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;16&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"16"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>cc_generic_services: ::core::option::Option&lt;bool&gt;,
-    <span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;17&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    <span class="attr">#[prost(bool, optional, tag=<span class="string">"17"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>java_generic_services: ::core::option::Option&lt;bool&gt;,
-    <span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;18&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    <span class="attr">#[prost(bool, optional, tag=<span class="string">"18"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>py_generic_services: ::core::option::Option&lt;bool&gt;,
-    <span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;42&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    <span class="attr">#[prost(bool, optional, tag=<span class="string">"42"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>php_generic_services: ::core::option::Option&lt;bool&gt;,
     <span class="doccomment">/// Is this file deprecated?
     /// Depending on the target platform, this can emit Deprecated annotations
     /// for everything in the file, or it will be completely ignored; in the very
     /// least, this is a formalization for deprecating files.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;23&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"23"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>deprecated: ::core::option::Option&lt;bool&gt;,
     <span class="doccomment">/// Enables the use of arenas for the proto messages in this file. This applies
     /// only to generated classes for C++.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;31&quot;</span>, default=<span class="string">&quot;true&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"31"</span>, default=<span class="string">"true"</span>)]
     </span><span class="kw">pub </span>cc_enable_arenas: ::core::option::Option&lt;bool&gt;,
     <span class="doccomment">/// Sets the objective c class prefix which is prepended to all objective c
     /// generated classes from this .proto. There is no default.
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;36&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"36"</span>)]
     </span><span class="kw">pub </span>objc_class_prefix: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
     <span class="doccomment">/// Namespace for generated classes; defaults to the package.
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;37&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"37"</span>)]
     </span><span class="kw">pub </span>csharp_namespace: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
     <span class="doccomment">/// By default Swift generators will take the proto package and CamelCase it
-    /// replacing &#39;.&#39; with underscore and use that to prefix the types/symbols
+    /// replacing '.' with underscore and use that to prefix the types/symbols
     /// defined. When this options is provided, they will use this value instead
     /// to prefix the types/symbols defined.
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;39&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"39"</span>)]
     </span><span class="kw">pub </span>swift_prefix: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
     <span class="doccomment">/// Sets the php class prefix which is prepended to all php generated classes
     /// from this .proto. Default is empty.
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;40&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"40"</span>)]
     </span><span class="kw">pub </span>php_class_prefix: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
     <span class="doccomment">/// Use this option to change the namespace of php generated classes. Default
     /// is empty. When this option is empty, the package name will be used for
     /// determining the namespace.
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;41&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"41"</span>)]
     </span><span class="kw">pub </span>php_namespace: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
     <span class="doccomment">/// Use this option to change the namespace of php generated metadata classes.
     /// Default is empty. When this option is empty, the proto file name will be
     /// used for determining the namespace.
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;44&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"44"</span>)]
     </span><span class="kw">pub </span>php_metadata_namespace: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
     <span class="doccomment">/// Use this option to change the package of ruby generated classes. Default
     /// is empty. When this option is not set, the package name will be used for
     /// determining the ruby package.
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;45&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"45"</span>)]
     </span><span class="kw">pub </span>ruby_package: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
-    <span class="doccomment">/// The parser stores options it doesn&#39;t recognize here.
-    /// See the documentation for the &quot;Options&quot; section above.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;999&quot;</span>)]
+    <span class="doccomment">/// The parser stores options it doesn't recognize here.
+    /// See the documentation for the "Options" section above.
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"999"</span>)]
     </span><span class="kw">pub </span>uninterpreted_option: ::prost::alloc::vec::Vec&lt;UninterpretedOption&gt;,
 }
 <span class="doccomment">/// Nested message and enum types in `FileOptions`.
@@ -2308,7 +2309,7 @@
 </span><span class="kw">pub struct </span>MessageOptions {
     <span class="doccomment">/// Set true to use the old proto1 MessageSet wire format for extensions.
     /// This is provided for backwards-compatibility with the MessageSet wire
-    /// format.  You should not use this for any other reason:  It&#39;s less
+    /// format.  You should not use this for any other reason:  It's less
     /// efficient, has fewer features, and is more complicated.
     ///
     /// The message must be defined exactly as follows:
@@ -2324,18 +2325,18 @@
     ///
     /// Because this is an option, the above two restrictions are not enforced by
     /// the protocol compiler.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;1&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"1"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>message_set_wire_format: ::core::option::Option&lt;bool&gt;,
-    <span class="doccomment">/// Disables the generation of the standard &quot;descriptor()&quot; accessor, which can
+    <span class="doccomment">/// Disables the generation of the standard "descriptor()" accessor, which can
     /// conflict with a field of the same name.  This is meant to make migration
-    /// from proto1 easier; new code should avoid fields named &quot;descriptor&quot;.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;2&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    /// from proto1 easier; new code should avoid fields named "descriptor".
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"2"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>no_standard_descriptor_accessor: ::core::option::Option&lt;bool&gt;,
     <span class="doccomment">/// Is this message deprecated?
     /// Depending on the target platform, this can emit Deprecated annotations
     /// for the message, or it will be completely ignored; in the very least,
     /// this is a formalization for deprecating messages.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;3&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"3"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>deprecated: ::core::option::Option&lt;bool&gt;,
     <span class="doccomment">/// Whether the message is an automatically generated map entry type for the
     /// maps field.
@@ -2358,10 +2359,10 @@
     /// NOTE: Do not set the option in .proto files. Always use the maps syntax
     /// instead. The option should only be implicitly set by the proto compiler
     /// parser.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;7&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"7"</span>)]
     </span><span class="kw">pub </span>map_entry: ::core::option::Option&lt;bool&gt;,
-    <span class="doccomment">/// The parser stores options it doesn&#39;t recognize here. See above.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;999&quot;</span>)]
+    <span class="doccomment">/// The parser stores options it doesn't recognize here. See above.
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"999"</span>)]
     </span><span class="kw">pub </span>uninterpreted_option: ::prost::alloc::vec::Vec&lt;UninterpretedOption&gt;,
 }
 <span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
@@ -2369,15 +2370,15 @@
     <span class="doccomment">/// The ctype option instructs the C++ code generator to use a different
     /// representation of the field than it normally would.  See the specific
     /// options below.  This option is not yet implemented in the open source
-    /// release -- sorry, we&#39;ll try to include it in a future version!
-    </span><span class="attr">#[prost(enumeration=<span class="string">&quot;field_options::CType&quot;</span>, optional, tag=<span class="string">&quot;1&quot;</span>, default=<span class="string">&quot;String&quot;</span>)]
+    /// release -- sorry, we'll try to include it in a future version!
+    </span><span class="attr">#[prost(enumeration=<span class="string">"field_options::CType"</span>, optional, tag=<span class="string">"1"</span>, default=<span class="string">"String"</span>)]
     </span><span class="kw">pub </span>ctype: ::core::option::Option&lt;i32&gt;,
     <span class="doccomment">/// The packed option can be enabled for repeated primitive fields to enable
     /// a more efficient representation on the wire. Rather than repeatedly
     /// writing the tag and type for each element, the entire array is encoded as
     /// a single length-delimited blob. In proto3, only explicit setting it to
     /// false will avoid using packed encoding.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;2&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>packed: ::core::option::Option&lt;bool&gt;,
     <span class="doccomment">/// The jstype option determines the JavaScript type used for values of the
     /// field.  The option is permitted only for 64 bit integral and fixed types
@@ -2385,16 +2386,16 @@
     /// is represented as JavaScript string, which avoids loss of precision that
     /// can happen when a large value is converted to a floating point JavaScript.
     /// Specifying JS_NUMBER for the jstype causes the generated JavaScript code to
-    /// use the JavaScript &quot;number&quot; type.  The behavior of the default option
+    /// use the JavaScript "number" type.  The behavior of the default option
     /// JS_NORMAL is implementation dependent.
     ///
     /// This option is an enum to permit additional types to be added, e.g.
     /// goog.math.Integer.
-    </span><span class="attr">#[prost(enumeration=<span class="string">&quot;field_options::JsType&quot;</span>, optional, tag=<span class="string">&quot;6&quot;</span>, default=<span class="string">&quot;JsNormal&quot;</span>)]
+    </span><span class="attr">#[prost(enumeration=<span class="string">"field_options::JsType"</span>, optional, tag=<span class="string">"6"</span>, default=<span class="string">"JsNormal"</span>)]
     </span><span class="kw">pub </span>jstype: ::core::option::Option&lt;i32&gt;,
     <span class="doccomment">/// Should this field be parsed lazily?  Lazy applies only to message-type
     /// fields.  It means that when the outer message is initially parsed, the
-    /// inner message&#39;s contents will not be parsed but instead stored in encoded
+    /// inner message's contents will not be parsed but instead stored in encoded
     /// form.  The inner message will actually be parsed when it is first accessed.
     ///
     /// This is only a hint.  Implementations are free to choose whether to use
@@ -2420,19 +2421,19 @@
     /// implementation must either *always* check its required fields, or *never*
     /// check its required fields, regardless of whether or not the message has
     /// been parsed.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;5&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"5"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>lazy: ::core::option::Option&lt;bool&gt;,
     <span class="doccomment">/// Is this field deprecated?
     /// Depending on the target platform, this can emit Deprecated annotations
     /// for accessors, or it will be completely ignored; in the very least, this
     /// is a formalization for deprecating fields.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;3&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"3"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>deprecated: ::core::option::Option&lt;bool&gt;,
     <span class="doccomment">/// For Google-internal migration only. Do not use.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;10&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"10"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>weak: ::core::option::Option&lt;bool&gt;,
-    <span class="doccomment">/// The parser stores options it doesn&#39;t recognize here. See above.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;999&quot;</span>)]
+    <span class="doccomment">/// The parser stores options it doesn't recognize here. See above.
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"999"</span>)]
     </span><span class="kw">pub </span>uninterpreted_option: ::prost::alloc::vec::Vec&lt;UninterpretedOption&gt;,
 }
 <span class="doccomment">/// Nested message and enum types in `FieldOptions`.
@@ -2458,24 +2459,24 @@
 }
 <span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>OneofOptions {
-    <span class="doccomment">/// The parser stores options it doesn&#39;t recognize here. See above.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;999&quot;</span>)]
+    <span class="doccomment">/// The parser stores options it doesn't recognize here. See above.
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"999"</span>)]
     </span><span class="kw">pub </span>uninterpreted_option: ::prost::alloc::vec::Vec&lt;UninterpretedOption&gt;,
 }
 <span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>EnumOptions {
     <span class="doccomment">/// Set this option to true to allow mapping different tag names to the same
     /// value.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;2&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>allow_alias: ::core::option::Option&lt;bool&gt;,
     <span class="doccomment">/// Is this enum deprecated?
     /// Depending on the target platform, this can emit Deprecated annotations
     /// for the enum, or it will be completely ignored; in the very least, this
     /// is a formalization for deprecating enums.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;3&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"3"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>deprecated: ::core::option::Option&lt;bool&gt;,
-    <span class="doccomment">/// The parser stores options it doesn&#39;t recognize here. See above.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;999&quot;</span>)]
+    <span class="doccomment">/// The parser stores options it doesn't recognize here. See above.
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"999"</span>)]
     </span><span class="kw">pub </span>uninterpreted_option: ::prost::alloc::vec::Vec&lt;UninterpretedOption&gt;,
 }
 <span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
@@ -2484,15 +2485,15 @@
     /// Depending on the target platform, this can emit Deprecated annotations
     /// for the enum value, or it will be completely ignored; in the very least,
     /// this is a formalization for deprecating enum values.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;1&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"1"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>deprecated: ::core::option::Option&lt;bool&gt;,
-    <span class="doccomment">/// The parser stores options it doesn&#39;t recognize here. See above.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;999&quot;</span>)]
+    <span class="doccomment">/// The parser stores options it doesn't recognize here. See above.
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"999"</span>)]
     </span><span class="kw">pub </span>uninterpreted_option: ::prost::alloc::vec::Vec&lt;UninterpretedOption&gt;,
 }
 <span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>ServiceOptions {
-    <span class="comment">// Note:  Field numbers 1 through 32 are reserved for Google&#39;s internal RPC
+    <span class="comment">// Note:  Field numbers 1 through 32 are reserved for Google's internal RPC
     //   framework.  We apologize for hoarding these numbers to ourselves, but
     //   we were already using them long before we decided to release Protocol
     //   Buffers.
@@ -2501,15 +2502,15 @@
     /// Depending on the target platform, this can emit Deprecated annotations
     /// for the service, or it will be completely ignored; in the very least,
     /// this is a formalization for deprecating services.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;33&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"33"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>deprecated: ::core::option::Option&lt;bool&gt;,
-    <span class="doccomment">/// The parser stores options it doesn&#39;t recognize here. See above.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;999&quot;</span>)]
+    <span class="doccomment">/// The parser stores options it doesn't recognize here. See above.
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"999"</span>)]
     </span><span class="kw">pub </span>uninterpreted_option: ::prost::alloc::vec::Vec&lt;UninterpretedOption&gt;,
 }
 <span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>MethodOptions {
-    <span class="comment">// Note:  Field numbers 1 through 32 are reserved for Google&#39;s internal RPC
+    <span class="comment">// Note:  Field numbers 1 through 32 are reserved for Google's internal RPC
     //   framework.  We apologize for hoarding these numbers to ourselves, but
     //   we were already using them long before we decided to release Protocol
     //   Buffers.
@@ -2518,12 +2519,12 @@
     /// Depending on the target platform, this can emit Deprecated annotations
     /// for the method, or it will be completely ignored; in the very least,
     /// this is a formalization for deprecating methods.
-    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">&quot;33&quot;</span>, default=<span class="string">&quot;false&quot;</span>)]
+    </span><span class="attr">#[prost(bool, optional, tag=<span class="string">"33"</span>, default=<span class="string">"false"</span>)]
     </span><span class="kw">pub </span>deprecated: ::core::option::Option&lt;bool&gt;,
-    <span class="attr">#[prost(enumeration=<span class="string">&quot;method_options::IdempotencyLevel&quot;</span>, optional, tag=<span class="string">&quot;34&quot;</span>, default=<span class="string">&quot;IdempotencyUnknown&quot;</span>)]
+    <span class="attr">#[prost(enumeration=<span class="string">"method_options::IdempotencyLevel"</span>, optional, tag=<span class="string">"34"</span>, default=<span class="string">"IdempotencyUnknown"</span>)]
     </span><span class="kw">pub </span>idempotency_level: ::core::option::Option&lt;i32&gt;,
-    <span class="doccomment">/// The parser stores options it doesn&#39;t recognize here. See above.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;999&quot;</span>)]
+    <span class="doccomment">/// The parser stores options it doesn't recognize here. See above.
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"999"</span>)]
     </span><span class="kw">pub </span>uninterpreted_option: ::prost::alloc::vec::Vec&lt;UninterpretedOption&gt;,
 }
 <span class="doccomment">/// Nested message and enum types in `MethodOptions`.
@@ -2549,21 +2550,21 @@
 /// in them.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>UninterpretedOption {
-    <span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;2&quot;</span>)]
+    <span class="attr">#[prost(message, repeated, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>name: ::prost::alloc::vec::Vec&lt;uninterpreted_option::NamePart&gt;,
     <span class="doccomment">/// The value of the uninterpreted option, in whatever type the tokenizer
     /// identified it as during parsing. Exactly one of these should be set.
-    </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;3&quot;</span>)]
+    </span><span class="attr">#[prost(string, optional, tag=<span class="string">"3"</span>)]
     </span><span class="kw">pub </span>identifier_value: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
-    <span class="attr">#[prost(uint64, optional, tag=<span class="string">&quot;4&quot;</span>)]
+    <span class="attr">#[prost(uint64, optional, tag=<span class="string">"4"</span>)]
     </span><span class="kw">pub </span>positive_int_value: ::core::option::Option&lt;u64&gt;,
-    <span class="attr">#[prost(int64, optional, tag=<span class="string">&quot;5&quot;</span>)]
+    <span class="attr">#[prost(int64, optional, tag=<span class="string">"5"</span>)]
     </span><span class="kw">pub </span>negative_int_value: ::core::option::Option&lt;i64&gt;,
-    <span class="attr">#[prost(double, optional, tag=<span class="string">&quot;6&quot;</span>)]
+    <span class="attr">#[prost(double, optional, tag=<span class="string">"6"</span>)]
     </span><span class="kw">pub </span>double_value: ::core::option::Option&lt;f64&gt;,
-    <span class="attr">#[prost(bytes=<span class="string">&quot;vec&quot;</span>, optional, tag=<span class="string">&quot;7&quot;</span>)]
+    <span class="attr">#[prost(bytes=<span class="string">"vec"</span>, optional, tag=<span class="string">"7"</span>)]
     </span><span class="kw">pub </span>string_value: ::core::option::Option&lt;::prost::alloc::vec::Vec&lt;u8&gt;&gt;,
-    <span class="attr">#[prost(string, optional, tag=<span class="string">&quot;8&quot;</span>)]
+    <span class="attr">#[prost(string, optional, tag=<span class="string">"8"</span>)]
     </span><span class="kw">pub </span>aggregate_value: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
 }
 <span class="doccomment">/// Nested message and enum types in `UninterpretedOption`.
@@ -2571,13 +2572,13 @@
     <span class="doccomment">/// The name of the uninterpreted option.  Each string represents a segment in
     /// a dot-separated name.  is_extension is true iff a segment represents an
     /// extension (denoted with parentheses in options specs in .proto files).
-    /// E.g.,{ [&quot;foo&quot;, false], [&quot;bar.baz&quot;, true], [&quot;qux&quot;, false] } represents
-    /// &quot;foo.(bar.baz).qux&quot;.
+    /// E.g.,{ ["foo", false], ["bar.baz", true], ["qux", false] } represents
+    /// "foo.(bar.baz).qux".
     </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
     </span><span class="kw">pub struct </span>NamePart {
-        <span class="attr">#[prost(string, required, tag=<span class="string">&quot;1&quot;</span>)]
+        <span class="attr">#[prost(string, required, tag=<span class="string">"1"</span>)]
         </span><span class="kw">pub </span>name_part: ::prost::alloc::string::String,
-        <span class="attr">#[prost(bool, required, tag=<span class="string">&quot;2&quot;</span>)]
+        <span class="attr">#[prost(bool, required, tag=<span class="string">"2"</span>)]
         </span><span class="kw">pub </span>is_extension: bool,
     }
 }
@@ -2597,7 +2598,7 @@
     ///   message Foo {
     ///     optional string foo = 1;
     ///   }
-    /// Let&#39;s look at just the field definition:
+    /// Let's look at just the field definition:
     ///   optional string foo = 1;
     ///   ^       ^^     ^^  ^  ^^^
     ///   a       bc     de  f  ghi
@@ -2614,24 +2615,24 @@
     ///   particular index within it).  This is used whenever a set of elements are
     ///   logically enclosed in a single code segment.  For example, an entire
     ///   extend block (possibly containing multiple extension definitions) will
-    ///   have an outer location whose path refers to the &quot;extensions&quot; repeated
+    ///   have an outer location whose path refers to the "extensions" repeated
     ///   field without an index.
     /// - Multiple locations may have the same path.  This happens when a single
     ///   logical declaration is spread out across multiple places.  The most
-    ///   obvious example is the &quot;extend&quot; block again -- there may be multiple
+    ///   obvious example is the "extend" block again -- there may be multiple
     ///   extend blocks in the same scope, each of which will have the same path.
-    /// - A location&#39;s span is not always a subset of its parent&#39;s span.  For
-    ///   example, the &quot;extendee&quot; of an extension declaration appears at the
-    ///   beginning of the &quot;extend&quot; block and is shared by all extensions within
+    /// - A location's span is not always a subset of its parent's span.  For
+    ///   example, the "extendee" of an extension declaration appears at the
+    ///   beginning of the "extend" block and is shared by all extensions within
     ///   the block.
-    /// - Just because a location&#39;s span is a subset of some other location&#39;s span
-    ///   does not mean that it is a descendant.  For example, a &quot;group&quot; defines
+    /// - Just because a location's span is a subset of some other location's span
+    ///   does not mean that it is a descendant.  For example, a "group" defines
     ///   both a type and a field in a single declaration.  Thus, the locations
     ///   corresponding to the type and field and their components will overlap.
     /// - Code which tries to interpret locations should probably be designed to
-    ///   ignore those that it doesn&#39;t understand, as more types of locations could
+    ///   ignore those that it doesn't understand, as more types of locations could
     ///   be recorded in the future.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;1&quot;</span>)]
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>location: ::prost::alloc::vec::Vec&lt;source_code_info::Location&gt;,
 }
 <span class="doccomment">/// Nested message and enum types in `SourceCodeInfo`.
@@ -2661,14 +2662,14 @@
         ///   [ 4, 3, 2, 7 ]
         /// this path refers to the whole field declaration (from the beginning
         /// of the label to the terminating semicolon).
-        </span><span class="attr">#[prost(int32, repeated, tag=<span class="string">&quot;1&quot;</span>)]
+        </span><span class="attr">#[prost(int32, repeated, tag=<span class="string">"1"</span>)]
         </span><span class="kw">pub </span>path: ::prost::alloc::vec::Vec&lt;i32&gt;,
         <span class="doccomment">/// Always has exactly three or four elements: start line, start column,
         /// end line (optional, otherwise assumed same as start line), end column.
         /// These are packed into a single field for efficiency.  Note that line
         /// and column numbers are zero-based -- typically you will want to add
         /// 1 to each before displaying to a user.
-        </span><span class="attr">#[prost(int32, repeated, tag=<span class="string">&quot;2&quot;</span>)]
+        </span><span class="attr">#[prost(int32, repeated, tag=<span class="string">"2"</span>)]
         </span><span class="kw">pub </span>span: ::prost::alloc::vec::Vec&lt;i32&gt;,
         <span class="doccomment">/// If this SourceCodeInfo represents a complete declaration, these are any
         /// comments appearing before and after the declaration which appear to be
@@ -2717,11 +2718,11 @@
         ///   optional int32 grault = 6;
         ///
         ///   // ignored detached comments.
-        </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;3&quot;</span>)]
+        </span><span class="attr">#[prost(string, optional, tag=<span class="string">"3"</span>)]
         </span><span class="kw">pub </span>leading_comments: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
-        <span class="attr">#[prost(string, optional, tag=<span class="string">&quot;4&quot;</span>)]
+        <span class="attr">#[prost(string, optional, tag=<span class="string">"4"</span>)]
         </span><span class="kw">pub </span>trailing_comments: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
-        <span class="attr">#[prost(string, repeated, tag=<span class="string">&quot;6&quot;</span>)]
+        <span class="attr">#[prost(string, repeated, tag=<span class="string">"6"</span>)]
         </span><span class="kw">pub </span>leading_detached_comments: ::prost::alloc::vec::Vec&lt;::prost::alloc::string::String&gt;,
     }
 }
@@ -2732,7 +2733,7 @@
 </span><span class="kw">pub struct </span>GeneratedCodeInfo {
     <span class="doccomment">/// An Annotation connects some span of text in generated code to an element
     /// of its generating .proto file.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;1&quot;</span>)]
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>annotation: ::prost::alloc::vec::Vec&lt;generated_code_info::Annotation&gt;,
 }
 <span class="doccomment">/// Nested message and enum types in `GeneratedCodeInfo`.
@@ -2741,19 +2742,19 @@
     </span><span class="kw">pub struct </span>Annotation {
         <span class="doccomment">/// Identifies the element in the original source .proto file. This field
         /// is formatted the same as SourceCodeInfo.Location.path.
-        </span><span class="attr">#[prost(int32, repeated, tag=<span class="string">&quot;1&quot;</span>)]
+        </span><span class="attr">#[prost(int32, repeated, tag=<span class="string">"1"</span>)]
         </span><span class="kw">pub </span>path: ::prost::alloc::vec::Vec&lt;i32&gt;,
         <span class="doccomment">/// Identifies the filesystem path to the original source .proto.
-        </span><span class="attr">#[prost(string, optional, tag=<span class="string">&quot;2&quot;</span>)]
+        </span><span class="attr">#[prost(string, optional, tag=<span class="string">"2"</span>)]
         </span><span class="kw">pub </span>source_file: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
         <span class="doccomment">/// Identifies the starting offset in bytes in the generated code
         /// that relates to the identified object.
-        </span><span class="attr">#[prost(int32, optional, tag=<span class="string">&quot;3&quot;</span>)]
+        </span><span class="attr">#[prost(int32, optional, tag=<span class="string">"3"</span>)]
         </span><span class="kw">pub </span>begin: ::core::option::Option&lt;i32&gt;,
         <span class="doccomment">/// Identifies the ending offset in bytes in the generated code that
         /// relates to the identified offset. The end offset should be one past
         /// the last relevant byte (so the length of the text = end - begin).
-        </span><span class="attr">#[prost(int32, optional, tag=<span class="string">&quot;4&quot;</span>)]
+        </span><span class="attr">#[prost(int32, optional, tag=<span class="string">"4"</span>)]
         </span><span class="kw">pub </span>end: ::core::option::Option&lt;i32&gt;,
     }
 }
@@ -2806,10 +2807,10 @@
 ///      }
 ///
 /// The pack methods provided by protobuf library will by default use
-/// &#39;type.googleapis.com/full.type.name&#39; as the type URL and the unpack
-/// methods only use the fully qualified type name after the last &#39;/&#39;
-/// in the type URL, for example &quot;foo.bar.com/x/y.z&quot; will yield type
-/// name &quot;y.z&quot;.
+/// 'type.googleapis.com/full.type.name' as the type URL and the unpack
+/// methods only use the fully qualified type name after the last '/'
+/// in the type URL, for example "foo.bar.com/x/y.z" will yield type
+/// name "y.z".
 ///
 ///
 /// JSON
@@ -2825,9 +2826,9 @@
 ///     }
 ///
 ///     {
-///       &quot;@type&quot;: &quot;type.googleapis.com/google.profile.Person&quot;,
-///       &quot;firstName&quot;: &lt;string&gt;,
-///       &quot;lastName&quot;: &lt;string&gt;
+///       "@type": "type.googleapis.com/google.profile.Person",
+///       "firstName": &lt;string&gt;,
+///       "lastName": &lt;string&gt;
 ///     }
 ///
 /// If the embedded message type is well-known and has a custom JSON
@@ -2836,18 +2837,18 @@
 /// field. Example (for message \[google.protobuf.Duration][\]):
 ///
 ///     {
-///       &quot;@type&quot;: &quot;type.googleapis.com/google.protobuf.Duration&quot;,
-///       &quot;value&quot;: &quot;1.212s&quot;
+///       "@type": "type.googleapis.com/google.protobuf.Duration",
+///       "value": "1.212s"
 ///     }
 ///
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Any {
     <span class="doccomment">/// A URL/resource name that uniquely identifies the type of the serialized
     /// protocol buffer message. This string must contain at least
-    /// one &quot;/&quot; character. The last segment of the URL&#39;s path must represent
+    /// one "/" character. The last segment of the URL's path must represent
     /// the fully qualified name of the type (as in
     /// `path/google.protobuf.Duration`). The name should be in a canonical form
-    /// (e.g., leading &quot;.&quot; is not accepted).
+    /// (e.g., leading "." is not accepted).
     ///
     /// In practice, teams usually precompile into the binary all types that they
     /// expect it to use in the context of Any. However, for URLs which use the
@@ -2870,10 +2871,10 @@
     /// Schemes other than `http`, `https` (or the empty scheme) might be
     /// used with implementation specific semantics.
     ///
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;1&quot;</span>)]
+    </span><span class="attr">#[prost(string, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>type_url: ::prost::alloc::string::String,
     <span class="doccomment">/// Must be a valid serialized protocol buffer of the above specified type.
-    </span><span class="attr">#[prost(bytes=<span class="string">&quot;vec&quot;</span>, tag=<span class="string">&quot;2&quot;</span>)]
+    </span><span class="attr">#[prost(bytes=<span class="string">"vec"</span>, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>value: ::prost::alloc::vec::Vec&lt;u8&gt;,
 }
 <span class="doccomment">/// `SourceContext` represents information about the source of a
@@ -2881,66 +2882,66 @@
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>SourceContext {
     <span class="doccomment">/// The path-qualified name of the .proto file that contained the associated
-    /// protobuf element.  For example: `&quot;google/protobuf/source_context.proto&quot;`.
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;1&quot;</span>)]
+    /// protobuf element.  For example: `"google/protobuf/source_context.proto"`.
+    </span><span class="attr">#[prost(string, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>file_name: ::prost::alloc::string::String,
 }
 <span class="doccomment">/// A protocol buffer message type.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Type {
     <span class="doccomment">/// The fully qualified message name.
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;1&quot;</span>)]
+    </span><span class="attr">#[prost(string, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::prost::alloc::string::String,
     <span class="doccomment">/// The list of fields.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;2&quot;</span>)]
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>fields: ::prost::alloc::vec::Vec&lt;Field&gt;,
     <span class="doccomment">/// The list of types appearing in `oneof` definitions in this type.
-    </span><span class="attr">#[prost(string, repeated, tag=<span class="string">&quot;3&quot;</span>)]
+    </span><span class="attr">#[prost(string, repeated, tag=<span class="string">"3"</span>)]
     </span><span class="kw">pub </span>oneofs: ::prost::alloc::vec::Vec&lt;::prost::alloc::string::String&gt;,
     <span class="doccomment">/// The protocol buffer options.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;4&quot;</span>)]
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"4"</span>)]
     </span><span class="kw">pub </span>options: ::prost::alloc::vec::Vec&lt;<span class="prelude-ty">Option</span>&gt;,
     <span class="doccomment">/// The source context.
-    </span><span class="attr">#[prost(message, optional, tag=<span class="string">&quot;5&quot;</span>)]
+    </span><span class="attr">#[prost(message, optional, tag=<span class="string">"5"</span>)]
     </span><span class="kw">pub </span>source_context: ::core::option::Option&lt;SourceContext&gt;,
     <span class="doccomment">/// The source syntax.
-    </span><span class="attr">#[prost(enumeration=<span class="string">&quot;Syntax&quot;</span>, tag=<span class="string">&quot;6&quot;</span>)]
+    </span><span class="attr">#[prost(enumeration=<span class="string">"Syntax"</span>, tag=<span class="string">"6"</span>)]
     </span><span class="kw">pub </span>syntax: i32,
 }
 <span class="doccomment">/// A single field of a message type.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Field {
     <span class="doccomment">/// The field type.
-    </span><span class="attr">#[prost(enumeration=<span class="string">&quot;field::Kind&quot;</span>, tag=<span class="string">&quot;1&quot;</span>)]
+    </span><span class="attr">#[prost(enumeration=<span class="string">"field::Kind"</span>, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>kind: i32,
     <span class="doccomment">/// The field cardinality.
-    </span><span class="attr">#[prost(enumeration=<span class="string">&quot;field::Cardinality&quot;</span>, tag=<span class="string">&quot;2&quot;</span>)]
+    </span><span class="attr">#[prost(enumeration=<span class="string">"field::Cardinality"</span>, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>cardinality: i32,
     <span class="doccomment">/// The field number.
-    </span><span class="attr">#[prost(int32, tag=<span class="string">&quot;3&quot;</span>)]
+    </span><span class="attr">#[prost(int32, tag=<span class="string">"3"</span>)]
     </span><span class="kw">pub </span>number: i32,
     <span class="doccomment">/// The field name.
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;4&quot;</span>)]
+    </span><span class="attr">#[prost(string, tag=<span class="string">"4"</span>)]
     </span><span class="kw">pub </span>name: ::prost::alloc::string::String,
     <span class="doccomment">/// The field type URL, without the scheme, for message or enumeration
-    /// types. Example: `&quot;type.googleapis.com/google.protobuf.Timestamp&quot;`.
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;6&quot;</span>)]
+    /// types. Example: `"type.googleapis.com/google.protobuf.Timestamp"`.
+    </span><span class="attr">#[prost(string, tag=<span class="string">"6"</span>)]
     </span><span class="kw">pub </span>type_url: ::prost::alloc::string::String,
     <span class="doccomment">/// The index of the field type in `Type.oneofs`, for message or enumeration
     /// types. The first type has index 1; zero means the type is not in the list.
-    </span><span class="attr">#[prost(int32, tag=<span class="string">&quot;7&quot;</span>)]
+    </span><span class="attr">#[prost(int32, tag=<span class="string">"7"</span>)]
     </span><span class="kw">pub </span>oneof_index: i32,
     <span class="doccomment">/// Whether to use alternative packed wire representation.
-    </span><span class="attr">#[prost(bool, tag=<span class="string">&quot;8&quot;</span>)]
+    </span><span class="attr">#[prost(bool, tag=<span class="string">"8"</span>)]
     </span><span class="kw">pub </span>packed: bool,
     <span class="doccomment">/// The protocol buffer options.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;9&quot;</span>)]
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"9"</span>)]
     </span><span class="kw">pub </span>options: ::prost::alloc::vec::Vec&lt;<span class="prelude-ty">Option</span>&gt;,
     <span class="doccomment">/// The field JSON name.
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;10&quot;</span>)]
+    </span><span class="attr">#[prost(string, tag=<span class="string">"10"</span>)]
     </span><span class="kw">pub </span>json_name: ::prost::alloc::string::String,
     <span class="doccomment">/// The string value of the default value of this field. Proto2 syntax only.
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;11&quot;</span>)]
+    </span><span class="attr">#[prost(string, tag=<span class="string">"11"</span>)]
     </span><span class="kw">pub </span>default_value: ::prost::alloc::string::String,
 }
 <span class="doccomment">/// Nested message and enum types in `Field`.
@@ -3006,49 +3007,49 @@
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Enum {
     <span class="doccomment">/// Enum type name.
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;1&quot;</span>)]
+    </span><span class="attr">#[prost(string, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::prost::alloc::string::String,
     <span class="doccomment">/// Enum value definitions.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;2&quot;</span>)]
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>enumvalue: ::prost::alloc::vec::Vec&lt;EnumValue&gt;,
     <span class="doccomment">/// Protocol buffer options.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;3&quot;</span>)]
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"3"</span>)]
     </span><span class="kw">pub </span>options: ::prost::alloc::vec::Vec&lt;<span class="prelude-ty">Option</span>&gt;,
     <span class="doccomment">/// The source context.
-    </span><span class="attr">#[prost(message, optional, tag=<span class="string">&quot;4&quot;</span>)]
+    </span><span class="attr">#[prost(message, optional, tag=<span class="string">"4"</span>)]
     </span><span class="kw">pub </span>source_context: ::core::option::Option&lt;SourceContext&gt;,
     <span class="doccomment">/// The source syntax.
-    </span><span class="attr">#[prost(enumeration=<span class="string">&quot;Syntax&quot;</span>, tag=<span class="string">&quot;5&quot;</span>)]
+    </span><span class="attr">#[prost(enumeration=<span class="string">"Syntax"</span>, tag=<span class="string">"5"</span>)]
     </span><span class="kw">pub </span>syntax: i32,
 }
 <span class="doccomment">/// Enum value definition.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>EnumValue {
     <span class="doccomment">/// Enum value name.
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;1&quot;</span>)]
+    </span><span class="attr">#[prost(string, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::prost::alloc::string::String,
     <span class="doccomment">/// Enum value number.
-    </span><span class="attr">#[prost(int32, tag=<span class="string">&quot;2&quot;</span>)]
+    </span><span class="attr">#[prost(int32, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>number: i32,
     <span class="doccomment">/// Protocol buffer options.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;3&quot;</span>)]
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"3"</span>)]
     </span><span class="kw">pub </span>options: ::prost::alloc::vec::Vec&lt;<span class="prelude-ty">Option</span>&gt;,
 }
 <span class="doccomment">/// A protocol buffer option, which can be attached to a message, field,
 /// enumeration, etc.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span><span class="prelude-ty">Option </span>{
-    <span class="doccomment">/// The option&#39;s name. For protobuf built-in options (options defined in
-    /// descriptor.proto), this is the short name. For example, `&quot;map_entry&quot;`.
+    <span class="doccomment">/// The option's name. For protobuf built-in options (options defined in
+    /// descriptor.proto), this is the short name. For example, `"map_entry"`.
     /// For custom options, it should be the fully-qualified name. For example,
-    /// `&quot;google.api.http&quot;`.
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;1&quot;</span>)]
+    /// `"google.api.http"`.
+    </span><span class="attr">#[prost(string, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::prost::alloc::string::String,
-    <span class="doccomment">/// The option&#39;s value packed in an Any message. If the value is a primitive,
+    <span class="doccomment">/// The option's value packed in an Any message. If the value is a primitive,
     /// the corresponding wrapper type defined in google/protobuf/wrappers.proto
     /// should be used. If the value is an enum, it should be stored as an int32
     /// value using the google.protobuf.Int32Value type.
-    </span><span class="attr">#[prost(message, optional, tag=<span class="string">&quot;2&quot;</span>)]
+    </span><span class="attr">#[prost(message, optional, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>value: ::core::option::Option&lt;Any&gt;,
 }
 <span class="doccomment">/// The syntax in which a protocol buffer element is defined.
@@ -3062,24 +3063,24 @@
 }
 <span class="doccomment">/// Api is a light-weight descriptor for an API Interface.
 ///
-/// Interfaces are also described as &quot;protocol buffer services&quot; in some contexts,
-/// such as by the &quot;service&quot; keyword in a .proto file, but they are different
+/// Interfaces are also described as "protocol buffer services" in some contexts,
+/// such as by the "service" keyword in a .proto file, but they are different
 /// from API Services, which represent a concrete implementation of an interface
 /// as opposed to simply a description of methods and bindings. They are also
-/// sometimes simply referred to as &quot;APIs&quot; in other contexts, such as the name of
+/// sometimes simply referred to as "APIs" in other contexts, such as the name of
 /// this message itself. See &lt;https://cloud.google.com/apis/design/glossary&gt; for
 /// detailed terminology.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Api {
     <span class="doccomment">/// The fully qualified name of this interface, including package name
-    /// followed by the interface&#39;s simple name.
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;1&quot;</span>)]
+    /// followed by the interface's simple name.
+    </span><span class="attr">#[prost(string, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::prost::alloc::string::String,
     <span class="doccomment">/// The methods of this interface, in unspecified order.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;2&quot;</span>)]
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>methods: ::prost::alloc::vec::Vec&lt;Method&gt;,
     <span class="doccomment">/// Any metadata attached to the interface.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;3&quot;</span>)]
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"3"</span>)]
     </span><span class="kw">pub </span>options: ::prost::alloc::vec::Vec&lt;<span class="prelude-ty">Option</span>&gt;,
     <span class="doccomment">/// A version string for this interface. If specified, must have the form
     /// `major-version.minor-version`, as in `1.10`. If the minor version is
@@ -3102,42 +3103,42 @@
     /// experimental, non-GA interfaces.
     ///
     ///
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;4&quot;</span>)]
+    </span><span class="attr">#[prost(string, tag=<span class="string">"4"</span>)]
     </span><span class="kw">pub </span>version: ::prost::alloc::string::String,
     <span class="doccomment">/// Source context for the protocol buffer service represented by this
     /// message.
-    </span><span class="attr">#[prost(message, optional, tag=<span class="string">&quot;5&quot;</span>)]
+    </span><span class="attr">#[prost(message, optional, tag=<span class="string">"5"</span>)]
     </span><span class="kw">pub </span>source_context: ::core::option::Option&lt;SourceContext&gt;,
     <span class="doccomment">/// Included interfaces. See \[Mixin][\].
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;6&quot;</span>)]
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"6"</span>)]
     </span><span class="kw">pub </span>mixins: ::prost::alloc::vec::Vec&lt;Mixin&gt;,
     <span class="doccomment">/// The source syntax of the service.
-    </span><span class="attr">#[prost(enumeration=<span class="string">&quot;Syntax&quot;</span>, tag=<span class="string">&quot;7&quot;</span>)]
+    </span><span class="attr">#[prost(enumeration=<span class="string">"Syntax"</span>, tag=<span class="string">"7"</span>)]
     </span><span class="kw">pub </span>syntax: i32,
 }
 <span class="doccomment">/// Method represents a method of an API interface.
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Method {
     <span class="doccomment">/// The simple name of this method.
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;1&quot;</span>)]
+    </span><span class="attr">#[prost(string, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::prost::alloc::string::String,
     <span class="doccomment">/// A URL of the input message type.
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;2&quot;</span>)]
+    </span><span class="attr">#[prost(string, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>request_type_url: ::prost::alloc::string::String,
     <span class="doccomment">/// If true, the request is streamed.
-    </span><span class="attr">#[prost(bool, tag=<span class="string">&quot;3&quot;</span>)]
+    </span><span class="attr">#[prost(bool, tag=<span class="string">"3"</span>)]
     </span><span class="kw">pub </span>request_streaming: bool,
     <span class="doccomment">/// The URL of the output message type.
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;4&quot;</span>)]
+    </span><span class="attr">#[prost(string, tag=<span class="string">"4"</span>)]
     </span><span class="kw">pub </span>response_type_url: ::prost::alloc::string::String,
     <span class="doccomment">/// If true, the response is streamed.
-    </span><span class="attr">#[prost(bool, tag=<span class="string">&quot;5&quot;</span>)]
+    </span><span class="attr">#[prost(bool, tag=<span class="string">"5"</span>)]
     </span><span class="kw">pub </span>response_streaming: bool,
     <span class="doccomment">/// Any metadata attached to the method.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;6&quot;</span>)]
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"6"</span>)]
     </span><span class="kw">pub </span>options: ::prost::alloc::vec::Vec&lt;<span class="prelude-ty">Option</span>&gt;,
     <span class="doccomment">/// The source syntax of this method.
-    </span><span class="attr">#[prost(enumeration=<span class="string">&quot;Syntax&quot;</span>, tag=<span class="string">&quot;7&quot;</span>)]
+    </span><span class="attr">#[prost(enumeration=<span class="string">"Syntax"</span>, tag=<span class="string">"7"</span>)]
     </span><span class="kw">pub </span>syntax: i32,
 }
 <span class="doccomment">/// Declares an API Interface to be included in this interface. The including
@@ -3163,7 +3164,7 @@
 ///     service AccessControl {
 ///       // Get the underlying ACL object.
 ///       rpc GetAcl(GetAclRequest) returns (Acl) {
-///         option (google.api.http).get = &quot;/v1/{resource=**}:getAcl&quot;;
+///         option (google.api.http).get = "/v1/{resource=**}:getAcl";
 ///       }
 ///     }
 ///
@@ -3173,7 +3174,7 @@
 ///
 ///       // Get a data record.
 ///       rpc GetData(GetDataRequest) returns (Data) {
-///         option (google.api.http).get = &quot;/v2/{resource=**}&quot;;
+///         option (google.api.http).get = "/v2/{resource=**}";
 ///       }
 ///     }
 ///
@@ -3193,7 +3194,7 @@
 ///     service Storage {
 ///       // Get the underlying ACL object.
 ///       rpc GetAcl(GetAclRequest) returns (Acl) {
-///         option (google.api.http).get = &quot;/v2/{resource=**}:getAcl&quot;;
+///         option (google.api.http).get = "/v2/{resource=**}:getAcl";
 ///       }
 ///       ...
 ///     }
@@ -3214,24 +3215,24 @@
 ///     service Storage {
 ///       // Get the underlying ACL object.
 ///       rpc GetAcl(GetAclRequest) returns (Acl) {
-///         option (google.api.http).get = &quot;/v2/acls/{resource=**}:getAcl&quot;;
+///         option (google.api.http).get = "/v2/acls/{resource=**}:getAcl";
 ///       }
 ///       ...
 ///     }
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Mixin {
     <span class="doccomment">/// The fully qualified name of the interface which is included.
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;1&quot;</span>)]
+    </span><span class="attr">#[prost(string, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::prost::alloc::string::String,
     <span class="doccomment">/// If non-empty specifies a path under which inherited HTTP paths
     /// are rooted.
-    </span><span class="attr">#[prost(string, tag=<span class="string">&quot;2&quot;</span>)]
+    </span><span class="attr">#[prost(string, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>root: ::prost::alloc::string::String,
 }
 <span class="doccomment">/// A Duration represents a signed, fixed-length span of time represented
 /// as a count of seconds and fractions of seconds at nanosecond
-/// resolution. It is independent of any calendar and concepts like &quot;day&quot;
-/// or &quot;month&quot;. It is related to Timestamp in that the difference between
+/// resolution. It is independent of any calendar and concepts like "day"
+/// or "month". It is related to Timestamp in that the difference between
 /// two Timestamp values is a Duration and it can be added or subtracted
 /// from a Timestamp. Range is approximately +-10,000 years.
 ///
@@ -3280,12 +3281,12 @@
 /// # JSON Mapping
 ///
 /// In JSON format, the Duration type is encoded as a string rather than an
-/// object, where the string ends in the suffix &quot;s&quot; (indicating seconds) and
+/// object, where the string ends in the suffix "s" (indicating seconds) and
 /// is preceded by the number of seconds, with nanoseconds expressed as
 /// fractional seconds. For example, 3 seconds with 0 nanoseconds should be
-/// encoded in JSON format as &quot;3s&quot;, while 3 seconds and 1 nanosecond should
-/// be expressed in JSON format as &quot;3.000000001s&quot;, and 3 seconds and 1
-/// microsecond should be expressed in JSON format as &quot;3.000001s&quot;.
+/// encoded in JSON format as "3s", while 3 seconds and 1 nanosecond should
+/// be expressed in JSON format as "3.000000001s", and 3 seconds and 1
+/// microsecond should be expressed in JSON format as "3.000001s".
 ///
 ///
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
@@ -3293,7 +3294,7 @@
     <span class="doccomment">/// Signed seconds of the span of time. Must be from -315,576,000,000
     /// to +315,576,000,000 inclusive. Note: these bounds are computed from:
     /// 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
-    </span><span class="attr">#[prost(int64, tag=<span class="string">&quot;1&quot;</span>)]
+    </span><span class="attr">#[prost(int64, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>seconds: i64,
     <span class="doccomment">/// Signed fractions of a second at nanosecond resolution of the span
     /// of time. Durations less than one second are represented with a 0
@@ -3301,13 +3302,13 @@
     /// of one second or more, a non-zero value for the `nanos` field must be
     /// of the same sign as the `seconds` field. Must be from -999,999,999
     /// to +999,999,999 inclusive.
-    </span><span class="attr">#[prost(int32, tag=<span class="string">&quot;2&quot;</span>)]
+    </span><span class="attr">#[prost(int32, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>nanos: i32,
 }
 <span class="doccomment">/// `FieldMask` represents a set of symbolic field paths, for example:
 ///
-///     paths: &quot;f.a&quot;
-///     paths: &quot;f.b.d&quot;
+///     paths: "f.a"
+///     paths: "f.b.d"
 ///
 /// Here `f` represents a field in some root message, `a` and `b`
 /// fields in the message found in `f`, and `d` a field found in the
@@ -3401,7 +3402,7 @@
 ///
 /// then if the field mask is:
 ///
-///  paths: [&quot;f.b&quot;, &quot;f.c&quot;]
+///  paths: ["f.b", "f.c"]
 ///
 /// then the result will be:
 ///
@@ -3416,7 +3417,7 @@
 /// An implementation may provide options to override this default behavior for
 /// repeated and message fields.
 ///
-/// In order to reset a field&#39;s value to the default, the field must
+/// In order to reset a field's value to the default, the field must
 /// be in the mask and set to the default value in the provided resource.
 /// Hence, in order to reset all fields of a resource, provide a default
 /// instance of the resource and set all fields in the mask, or do
@@ -3461,14 +3462,14 @@
 /// In proto a field mask for `Profile` may look as such:
 ///
 ///     mask {
-///       paths: &quot;user.display_name&quot;
-///       paths: &quot;photo&quot;
+///       paths: "user.display_name"
+///       paths: "photo"
 ///     }
 ///
 /// In JSON, the same mask is represented as below:
 ///
 ///     {
-///       mask: &quot;user.displayName,photo&quot;
+///       mask: "user.displayName,photo"
 ///     }
 ///
 /// # Field Masks and Oneof Fields
@@ -3486,16 +3487,16 @@
 /// The field mask can be:
 ///
 ///     mask {
-///       paths: &quot;name&quot;
+///       paths: "name"
 ///     }
 ///
 /// Or:
 ///
 ///     mask {
-///       paths: &quot;sub_message&quot;
+///       paths: "sub_message"
 ///     }
 ///
-/// Note that oneof type names (&quot;test_oneof&quot; in this case) cannot be used in
+/// Note that oneof type names ("test_oneof" in this case) cannot be used in
 /// paths.
 ///
 /// ## Field Mask Verification
@@ -3506,7 +3507,7 @@
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>FieldMask {
     <span class="doccomment">/// The set of field mask paths.
-    </span><span class="attr">#[prost(string, repeated, tag=<span class="string">&quot;1&quot;</span>)]
+    </span><span class="attr">#[prost(string, repeated, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>paths: ::prost::alloc::vec::Vec&lt;::prost::alloc::string::String&gt;,
 }
 <span class="doccomment">/// `Struct` represents a structured data value, consisting of fields
@@ -3520,7 +3521,7 @@
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Struct {
     <span class="doccomment">/// Unordered map of dynamically typed values.
-    </span><span class="attr">#[prost(btree_map=<span class="string">&quot;string, message&quot;</span>, tag=<span class="string">&quot;1&quot;</span>)]
+    </span><span class="attr">#[prost(btree_map=<span class="string">"string, message"</span>, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>fields: ::prost::alloc::collections::BTreeMap&lt;::prost::alloc::string::String, Value&gt;,
 }
 <span class="doccomment">/// `Value` represents a dynamically typed value which can be either
@@ -3532,7 +3533,7 @@
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Value {
     <span class="doccomment">/// The kind of value.
-    </span><span class="attr">#[prost(oneof=<span class="string">&quot;value::Kind&quot;</span>, tags=<span class="string">&quot;1, 2, 3, 4, 5, 6&quot;</span>)]
+    </span><span class="attr">#[prost(oneof=<span class="string">"value::Kind"</span>, tags=<span class="string">"1, 2, 3, 4, 5, 6"</span>)]
     </span><span class="kw">pub </span>kind: ::core::option::Option&lt;value::Kind&gt;,
 }
 <span class="doccomment">/// Nested message and enum types in `Value`.
@@ -3541,22 +3542,22 @@
     </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Oneof)]
     </span><span class="kw">pub enum </span>Kind {
         <span class="doccomment">/// Represents a null value.
-        </span><span class="attr">#[prost(enumeration=<span class="string">&quot;super::NullValue&quot;</span>, tag=<span class="string">&quot;1&quot;</span>)]
+        </span><span class="attr">#[prost(enumeration=<span class="string">"super::NullValue"</span>, tag=<span class="string">"1"</span>)]
         </span>NullValue(i32),
         <span class="doccomment">/// Represents a double value.
-        </span><span class="attr">#[prost(double, tag=<span class="string">&quot;2&quot;</span>)]
+        </span><span class="attr">#[prost(double, tag=<span class="string">"2"</span>)]
         </span>NumberValue(f64),
         <span class="doccomment">/// Represents a string value.
-        </span><span class="attr">#[prost(string, tag=<span class="string">&quot;3&quot;</span>)]
+        </span><span class="attr">#[prost(string, tag=<span class="string">"3"</span>)]
         </span>StringValue(::prost::alloc::string::String),
         <span class="doccomment">/// Represents a boolean value.
-        </span><span class="attr">#[prost(bool, tag=<span class="string">&quot;4&quot;</span>)]
+        </span><span class="attr">#[prost(bool, tag=<span class="string">"4"</span>)]
         </span>BoolValue(bool),
         <span class="doccomment">/// Represents a structured value.
-        </span><span class="attr">#[prost(message, tag=<span class="string">&quot;5&quot;</span>)]
+        </span><span class="attr">#[prost(message, tag=<span class="string">"5"</span>)]
         </span>StructValue(<span class="kw">super</span>::Struct),
         <span class="doccomment">/// Represents a repeated `Value`.
-        </span><span class="attr">#[prost(message, tag=<span class="string">&quot;6&quot;</span>)]
+        </span><span class="attr">#[prost(message, tag=<span class="string">"6"</span>)]
         </span>ListValue(<span class="kw">super</span>::ListValue),
     }
 }
@@ -3566,7 +3567,7 @@
 </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>ListValue {
     <span class="doccomment">/// Repeated field of dynamically typed values.
-    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">&quot;1&quot;</span>)]
+    </span><span class="attr">#[prost(message, repeated, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>values: ::prost::alloc::vec::Vec&lt;Value&gt;,
 }
 <span class="doccomment">/// `NullValue` is a singleton enumeration to represent the null value for the
@@ -3585,7 +3586,7 @@
 /// January 1, 1970, in the proleptic Gregorian calendar which extends the
 /// Gregorian calendar backwards to year one.
 ///
-/// All minutes are 60 seconds long. Leap seconds are &quot;smeared&quot; so that no leap
+/// All minutes are 60 seconds long. Leap seconds are "smeared" so that no leap
 /// second table is needed for interpretation, using a [24-hour linear
 /// smear](&lt;https://developers.google.com/time/smear&gt;).
 ///
@@ -3648,16 +3649,16 @@
 ///
 /// In JSON format, the Timestamp type is encoded as a string in the
 /// [RFC 3339](&lt;https://www.ietf.org/rfc/rfc3339.txt&gt;) format. That is, the
-/// format is &quot;{year}-{month}-{day}T{hour}:{min}:{sec}\[.{frac_sec}\]Z&quot;
+/// format is "{year}-{month}-{day}T{hour}:{min}:{sec}\[.{frac_sec}\]Z"
 /// where {year} is always expressed using four digits while {month}, {day},
 /// {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional
 /// seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),
-/// are optional. The &quot;Z&quot; suffix indicates the timezone (&quot;UTC&quot;); the timezone
+/// are optional. The "Z" suffix indicates the timezone ("UTC"); the timezone
 /// is required. A proto3 JSON serializer should always use UTC (as indicated by
-/// &quot;Z&quot;) when printing the Timestamp type and a proto3 JSON parser should be
+/// "Z") when printing the Timestamp type and a proto3 JSON parser should be
 /// able to accept both UTC and other timezones (as indicated by an offset).
 ///
-/// For example, &quot;2017-01-15T01:30:15.01Z&quot; encodes 15.01 seconds past
+/// For example, "2017-01-15T01:30:15.01Z" encodes 15.01 seconds past
 /// 01:30 UTC on January 15, 2017.
 ///
 /// In JavaScript, one can convert a Date object to this format using the
@@ -3666,8 +3667,8 @@
 /// method. In Python, a standard `datetime.datetime` object can be converted
 /// to this format using
 /// \[`strftime`\](&lt;https://docs.python.org/2/library/time.html#time.strftime&gt;) with
-/// the time format spec &#39;%Y-%m-%dT%H:%M:%S.%fZ&#39;. Likewise, in Java, one can use
-/// the Joda Time&#39;s \[`ISODateTimeFormat.dateTime()`\](
+/// the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use
+/// the Joda Time's \[`ISODateTimeFormat.dateTime()`\](
 /// &lt;http://www.joda.org/joda-time/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime%2D%2D&gt;
 /// ) to obtain a formatter capable of generating timestamps in this format.
 ///
@@ -3677,13 +3678,13 @@
     <span class="doccomment">/// Represents seconds of UTC time since Unix epoch
     /// 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
     /// 9999-12-31T23:59:59Z inclusive.
-    </span><span class="attr">#[prost(int64, tag=<span class="string">&quot;1&quot;</span>)]
+    </span><span class="attr">#[prost(int64, tag=<span class="string">"1"</span>)]
     </span><span class="kw">pub </span>seconds: i64,
     <span class="doccomment">/// Non-negative fractions of a second at nanosecond resolution. Negative
     /// second values with fractions must still have non-negative nanos values
     /// that count forward in time. Must be from 0 to 999,999,999
     /// inclusive.
-    </span><span class="attr">#[prost(int32, tag=<span class="string">&quot;2&quot;</span>)]
+    </span><span class="attr">#[prost(int32, tag=<span class="string">"2"</span>)]
     </span><span class="kw">pub </span>nanos: i32,
 }
 </code></pre></div></section></main></body></html>
