@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.9.0/src/field/scalar.rs`."><title>scalar.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="prost_derive" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.2 (25ef9e3d8 2024-04-09)" data-channel="1.77.2" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-derive-0.9.0/src/field/scalar.rs`."><title>scalar.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="prost_derive" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0 (9b00956e5 2024-04-29)" data-channel="1.78.0" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
             <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
     <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../prost_derive/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
@@ -932,18 +932,18 @@
         <span class="kw">match </span><span class="self">self</span>.kind {
             Kind::Plain(<span class="kw-2">ref </span>default) =&gt; {
                 <span class="kw">let </span>default = default.typed();
-                <span class="macro">quote! </span>{
+                <span class="macro">quote!</span> {
                     <span class="kw">if </span>#ident != #default {
                         #encode_fn(#tag, <span class="kw-2">&amp;</span>#ident, buf);
                     }
                 }
             }
-            Kind::Optional(..) =&gt; <span class="macro">quote! </span>{
+            Kind::Optional(..) =&gt; <span class="macro">quote!</span> {
                 <span class="kw">if let </span>::core::option::Option::Some(<span class="kw-2">ref </span>value) = #ident {
                     #encode_fn(#tag, value, buf);
                 }
             },
-            Kind::Required(..) | Kind::Repeated | Kind::Packed =&gt; <span class="macro">quote! </span>{
+            Kind::Required(..) | Kind::Repeated | Kind::Packed =&gt; <span class="macro">quote!</span> {
                 #encode_fn(#tag, <span class="kw-2">&amp;</span>#ident, buf);
             },
         }
@@ -960,10 +960,10 @@
         <span class="kw">let </span>merge_fn = <span class="macro">quote!</span>(::prost::encoding::#module::#merge_fn);
 
         <span class="kw">match </span><span class="self">self</span>.kind {
-            Kind::Plain(..) | Kind::Required(..) | Kind::Repeated | Kind::Packed =&gt; <span class="macro">quote! </span>{
+            Kind::Plain(..) | Kind::Required(..) | Kind::Repeated | Kind::Packed =&gt; <span class="macro">quote!</span> {
                 #merge_fn(wire_type, #ident, buf, ctx)
             },
-            Kind::Optional(..) =&gt; <span class="macro">quote! </span>{
+            Kind::Optional(..) =&gt; <span class="macro">quote!</span> {
                 #merge_fn(wire_type,
                           #ident.get_or_insert_with(::core::default::Default::default),
                           buf,
@@ -986,7 +986,7 @@
         <span class="kw">match </span><span class="self">self</span>.kind {
             Kind::Plain(<span class="kw-2">ref </span>default) =&gt; {
                 <span class="kw">let </span>default = default.typed();
-                <span class="macro">quote! </span>{
+                <span class="macro">quote!</span> {
                     <span class="kw">if </span>#ident != #default {
                         #encoded_len_fn(#tag, <span class="kw-2">&amp;</span>#ident)
                     } <span class="kw">else </span>{
@@ -994,10 +994,10 @@
                     </span>}
                 }
             }
-            Kind::Optional(..) =&gt; <span class="macro">quote! </span>{
+            Kind::Optional(..) =&gt; <span class="macro">quote!</span> {
                 #ident.as_ref().map_or(<span class="number">0</span>, |value| #encoded_len_fn(#tag, value))
             },
-            Kind::Required(..) | Kind::Repeated | Kind::Packed =&gt; <span class="macro">quote! </span>{
+            Kind::Required(..) | Kind::Repeated | Kind::Packed =&gt; <span class="macro">quote!</span> {
                 #encoded_len_fn(#tag, <span class="kw-2">&amp;</span>#ident)
             },
         }
@@ -1029,7 +1029,7 @@
     <span class="doccomment">/// An inner debug wrapper, around the base type.
     </span><span class="kw">fn </span>debug_inner(<span class="kw-2">&amp;</span><span class="self">self</span>, wrap_name: TokenStream) -&gt; TokenStream {
         <span class="kw">if let </span>Ty::Enumeration(<span class="kw-2">ref </span>ty) = <span class="self">self</span>.ty {
-            <span class="macro">quote! </span>{
+            <span class="macro">quote!</span> {
                 <span class="kw">struct </span>#wrap_name&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>i32);
                 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ::core::fmt::Debug <span class="kw">for </span>#wrap_name&lt;<span class="lifetime">'a</span>&gt; {
                     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>::core::fmt::Formatter) -&gt; ::core::fmt::Result {
@@ -1041,7 +1041,7 @@
                 }
             }
         } <span class="kw">else </span>{
-            <span class="macro">quote! </span>{
+            <span class="macro">quote!</span> {
                 <span class="kw">fn </span>#wrap_name&lt;T&gt;(v: T) -&gt; T { v }
             }
         }
@@ -1053,7 +1053,7 @@
         <span class="kw">let </span>inner_ty = <span class="self">self</span>.ty.rust_type();
         <span class="kw">match </span><span class="self">self</span>.kind {
             Kind::Plain(<span class="kw">_</span>) | Kind::Required(<span class="kw">_</span>) =&gt; <span class="self">self</span>.debug_inner(wrapper_name),
-            Kind::Optional(<span class="kw">_</span>) =&gt; <span class="macro">quote! </span>{
+            Kind::Optional(<span class="kw">_</span>) =&gt; <span class="macro">quote!</span> {
                 <span class="kw">struct </span>#wrapper_name&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>::core::option::Option&lt;#inner_ty&gt;);
                 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ::core::fmt::Debug <span class="kw">for </span>#wrapper_name&lt;<span class="lifetime">'a</span>&gt; {
                     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>::core::fmt::Formatter) -&gt; ::core::fmt::Result {
@@ -1063,7 +1063,7 @@
                 }
             },
             Kind::Repeated | Kind::Packed =&gt; {
-                <span class="macro">quote! </span>{
+                <span class="macro">quote!</span> {
                     <span class="kw">struct </span>#wrapper_name&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>::prost::alloc::vec::Vec&lt;#inner_ty&gt;);
                     <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ::core::fmt::Debug <span class="kw">for </span>#wrapper_name&lt;<span class="lifetime">'a</span>&gt; {
                         <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>::core::fmt::Formatter) -&gt; ::core::fmt::Result {
@@ -1097,7 +1097,7 @@
                          or the default if the field is set to an invalid enum value."</span>,
                         ident_str,
                     );
-                    <span class="macro">quote! </span>{
+                    <span class="macro">quote!</span> {
                         <span class="attr">#[doc=#get_doc]
                         </span><span class="kw">pub fn </span>#ident(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; #ty {
                             #ty::from_i32(<span class="self">self</span>.#ident).unwrap_or(#default)
@@ -1115,7 +1115,7 @@
                          or the default if the field is unset or set to an invalid enum value."</span>,
                         ident_str,
                     );
-                    <span class="macro">quote! </span>{
+                    <span class="macro">quote!</span> {
                         <span class="attr">#[doc=#get_doc]
                         </span><span class="kw">pub fn </span>#ident(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; #ty {
                             <span class="self">self</span>.#ident.and_then(#ty::from_i32).unwrap_or(#default)
@@ -1134,7 +1134,7 @@
                     );
                     <span class="kw">let </span>push = Ident::new(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">"push_{}"</span>, ident_str), Span::call_site());
                     <span class="kw">let </span>push_doc = <span class="macro">format!</span>(<span class="string">"Appends the provided enum value to `{}`."</span>, ident_str);
-                    <span class="macro">quote! </span>{
+                    <span class="macro">quote!</span> {
                         <span class="attr">#[doc=#iter_doc]
                         </span><span class="kw">pub fn </span>#ident(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ::core::iter::FilterMap&lt;
                             ::core::iter::Cloned&lt;::core::slice::Iter&lt;i32&gt;&gt;,
@@ -1163,7 +1163,7 @@
                 ident_str,
             );
 
-            <span class="prelude-val">Some</span>(<span class="macro">quote! </span>{
+            <span class="prelude-val">Some</span>(<span class="macro">quote!</span> {
                 <span class="attr">#[doc=#get_doc]
                 </span><span class="kw">pub fn </span>#ident(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; #ty {
                     <span class="kw">match </span><span class="self">self</span>.#ident {
@@ -1216,8 +1216,8 @@
 
     <span class="kw">fn </span>rust_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TokenStream {
         <span class="kw">match </span><span class="self">self </span>{
-            BytesTy::Vec =&gt; <span class="macro">quote! </span>{ ::prost::alloc::vec::Vec&lt;u8&gt; },
-            BytesTy::Bytes =&gt; <span class="macro">quote! </span>{ ::prost::bytes::Bytes },
+            BytesTy::Vec =&gt; <span class="macro">quote!</span> { ::prost::alloc::vec::Vec&lt;u8&gt; },
+            BytesTy::Bytes =&gt; <span class="macro">quote!</span> { ::prost::bytes::Bytes },
         }
     }
 }
