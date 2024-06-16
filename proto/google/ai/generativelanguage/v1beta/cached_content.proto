@@ -14,68 +14,82 @@
 
 syntax = "proto3";
 
-package google.cloud.aiplatform.v1beta1;
+package google.ai.generativelanguage.v1beta;
 
+import "google/ai/generativelanguage/v1beta/content.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "google/cloud/aiplatform/v1beta1/content.proto";
-import "google/cloud/aiplatform/v1beta1/tool.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 
-option csharp_namespace = "Google.Cloud.AIPlatform.V1Beta1";
-option go_package = "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb;aiplatformpb";
+option go_package = "cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb;generativelanguagepb";
 option java_multiple_files = true;
 option java_outer_classname = "CachedContentProto";
-option java_package = "com.google.cloud.aiplatform.v1beta1";
-option php_namespace = "Google\\Cloud\\AIPlatform\\V1beta1";
-option ruby_package = "Google::Cloud::AIPlatform::V1beta1";
+option java_package = "com.google.ai.generativelanguage.v1beta";
 
-// A resource used in LLM queries for users to explicitly specify what to cache
-// and how to cache.
+// Content that has been preprocessed and can be used in subsequent request
+// to GenerativeService.
+//
+// Cached content can be only used with model it was created for.
 message CachedContent {
   option (google.api.resource) = {
-    type: "aiplatform.googleapis.com/CachedContent"
-    pattern: "projects/{project}/locations/{location}/cachedContents/{cached_content}"
+    type: "generativelanguage.googleapis.com/CachedContent"
+    pattern: "cachedContents/{id}"
     plural: "cachedContents"
     singular: "cachedContent"
   };
 
-  // Expiration time of the cached content.
+  // Metadata on the usage of the cached content.
+  message UsageMetadata {
+    // Total number of tokens that the cached content consumes.
+    int32 total_token_count = 1;
+  }
+
+  // Specifies when this resource will expire.
   oneof expiration {
-    // Timestamp of when this resource is considered expired.
+    // Timestamp in UTC of when this resource is considered expired.
     // This is *always* provided on output, regardless of what was sent
     // on input.
     google.protobuf.Timestamp expire_time = 9;
 
-    // Input only. The TTL for this resource. The expiration time is computed:
-    // now + TTL.
+    // Input only. New TTL for this resource, input only.
     google.protobuf.Duration ttl = 10
         [(google.api.field_behavior) = INPUT_ONLY];
   }
 
-  // Immutable. Identifier. The server-generated resource name of the cached
-  // content Format:
-  // projects/{project}/locations/{location}/cachedContents/{cached_content}
-  string name = 1 [
+  // Optional. Identifier. The resource name referring to the cached content.
+  // Format: `cachedContents/{id}`
+  optional string name = 1 [
     (google.api.field_behavior) = IDENTIFIER,
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Optional. Immutable. The user-generated meaningful display name of the
+  // cached content. Maximum 128 Unicode characters.
+  optional string display_name = 11 [
+    (google.api.field_behavior) = OPTIONAL,
     (google.api.field_behavior) = IMMUTABLE
   ];
 
-  // Immutable. The name of the publisher model to use for cached content.
-  // Format:
-  // projects/{project}/locations/{location}/publishers/{publisher}/models/{model}
-  string model = 2 [(google.api.field_behavior) = IMMUTABLE];
+  // Required. Immutable. The name of the `Model` to use for cached content
+  // Format: `models/{model}`
+  optional string model = 2 [
+    (google.api.field_behavior) = IMMUTABLE,
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "generativelanguage.googleapis.com/Model"
+    }
+  ];
 
   // Optional. Input only. Immutable. Developer set system instruction.
-  // Currently, text only
-  Content system_instruction = 3 [
+  // Currently text only.
+  optional Content system_instruction = 3 [
     (google.api.field_behavior) = OPTIONAL,
     (google.api.field_behavior) = IMMUTABLE,
     (google.api.field_behavior) = INPUT_ONLY
   ];
 
-  // Optional. Input only. Immutable. The content to cache
+  // Optional. Input only. Immutable. The content to cache.
   repeated Content contents = 4 [
     (google.api.field_behavior) = OPTIONAL,
     (google.api.field_behavior) = IMMUTABLE,
@@ -91,18 +105,21 @@ message CachedContent {
   ];
 
   // Optional. Input only. Immutable. Tool config. This config is shared for all
-  // tools
-  ToolConfig tool_config = 6 [
+  // tools.
+  optional ToolConfig tool_config = 6 [
     (google.api.field_behavior) = OPTIONAL,
     (google.api.field_behavior) = IMMUTABLE,
     (google.api.field_behavior) = INPUT_ONLY
   ];
 
-  // Output only. Creatation time of the cache entry.
+  // Output only. Creation time of the cache entry.
   google.protobuf.Timestamp create_time = 7
       [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // Output only. When the cache entry was last updated in UTC time.
   google.protobuf.Timestamp update_time = 8
       [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. Metadata on the usage of the cached content.
+  UsageMetadata usage_metadata = 12 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
