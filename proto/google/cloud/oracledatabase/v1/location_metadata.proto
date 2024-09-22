@@ -14,22 +14,21 @@
 
 syntax = "proto3";
 
-package google.cloud.visionai.v1;
+package google.cloud.oracledatabase.v1;
 
-import "google/api/annotations.proto";
-import "google/api/client.proto";
 import "google/api/field_behavior.proto";
-import "google/api/resource.proto";
 
-option csharp_namespace = "Google.Cloud.VisionAi.V1";
-option go_package = "cloud.google.com/go/visionai/apiv1/visionaipb;visionaipb";
+option csharp_namespace = "Google.Cloud.OracleDatabase.V1";
+option go_package = "cloud.google.com/go/oracledatabase/apiv1/oracledatabasepb;oracledatabasepb";
 option java_multiple_files = true;
-option java_outer_classname = "PredictionServiceProto";
-option java_package = "com.google.cloud.visionai.v1";
-option php_namespace = "Google\\Cloud\\VisionAI\\V1";
-option ruby_package = "Google::Cloud::VisionAI::V1";
+option java_outer_classname = "LocationMetadataProto";
+option java_package = "com.google.cloud.oracledatabase.v1";
+option php_namespace = "Google\\Cloud\\OracleDatabase\\V1";
+option ruby_package = "Google::Cloud::OracleDatabase::V1";
 
-// A service for online prediction.
-service PredictionService {
-  option (google.api.default_host) = "visionai.googleapis.com";
+// Metadata for a given [Location][google.cloud.location.Location].
+message LocationMetadata {
+  // Output only. Google Cloud Platform Oracle zones in a location.
+  repeated string gcp_oracle_zones = 2
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 }
