@@ -14,21 +14,21 @@
 
 syntax = "proto3";
 
-package google.cloud.aiplatform.v1beta1;
+package google.cloud.aiplatform.v1;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "google/cloud/aiplatform/v1beta1/api_auth.proto";
-import "google/cloud/aiplatform/v1beta1/io.proto";
+import "google/cloud/aiplatform/v1/api_auth.proto";
+import "google/cloud/aiplatform/v1/io.proto";
 import "google/protobuf/timestamp.proto";
 
-option csharp_namespace = "Google.Cloud.AIPlatform.V1Beta1";
-option go_package = "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb;aiplatformpb";
+option csharp_namespace = "Google.Cloud.AIPlatform.V1";
+option go_package = "cloud.google.com/go/aiplatform/apiv1/aiplatformpb;aiplatformpb";
 option java_multiple_files = true;
 option java_outer_classname = "VertexRagDataProto";
-option java_package = "com.google.cloud.aiplatform.v1beta1";
-option php_namespace = "Google\\Cloud\\AIPlatform\\V1beta1";
-option ruby_package = "Google::Cloud::AIPlatform::V1beta1";
+option java_package = "com.google.cloud.aiplatform.v1";
+option php_namespace = "Google\\Cloud\\AIPlatform\\V1";
+option ruby_package = "Google::Cloud::AIPlatform::V1";
 
 // Config for the embedding model to use for RAG.
 message RagEmbeddingModelConfig {
@@ -62,45 +62,6 @@ message RagEmbeddingModelConfig {
     string model_version_id = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
   }
 
-  // Configuration for sparse emebdding generation.
-  message SparseEmbeddingConfig {
-    // Message for BM25 parameters.
-    message Bm25 {
-      // Optional. Use multilingual tokenizer if set to true.
-      bool multilingual = 1 [(google.api.field_behavior) = OPTIONAL];
-
-      // Optional. The parameter to control term frequency saturation. It
-      // determines the scaling between the matching term frequency and final
-      // score. k1 is in the range of [1.2, 3]. The default value is 1.2.
-      optional float k1 = 2 [(google.api.field_behavior) = OPTIONAL];
-
-      // Optional. The parameter to control document length normalization. It
-      // determines how much the document length affects the final score. b is
-      // in the range of [0, 1]. The default value is 0.75.
-      optional float b = 3 [(google.api.field_behavior) = OPTIONAL];
-    }
-
-    // The model to use for sparse embedding generation.
-    oneof model {
-      // Use BM25 scoring algorithm.
-      Bm25 bm25 = 1;
-    }
-  }
-
-  // Config for hybrid search.
-  message HybridSearchConfig {
-    // Optional. The configuration for sparse embedding generation. This field
-    // is optional the default behavior depends on the vector database choice on
-    // the RagCorpus.
-    SparseEmbeddingConfig sparse_embedding_config = 1
-        [(google.api.field_behavior) = OPTIONAL];
-
-    // Required. The Vertex AI Prediction Endpoint that hosts the embedding
-    // model for dense embedding generations.
-    VertexPredictionEndpoint dense_embedding_model_prediction_endpoint = 2
-        [(google.api.field_behavior) = REQUIRED];
-  }
-
   // The model config to use.
   oneof model_config {
     // The Vertex AI Prediction Endpoint that either refers to a publisher model
@@ -109,9 +70,6 @@ message RagEmbeddingModelConfig {
     // currently not supported.
     // This is used for dense vector search.
     VertexPredictionEndpoint vertex_prediction_endpoint = 1;
-
-    // Configuration for hybrid search.
-    HybridSearchConfig hybrid_search_config = 2;
   }
 }
 
@@ -120,31 +78,11 @@ message RagVectorDbConfig {
   // The config for the default RAG-managed Vector DB.
   message RagManagedDb {}
 
-  // The config for the Weaviate.
-  message Weaviate {
-    // Weaviate DB instance HTTP endpoint. e.g. 34.56.78.90:8080
-    // Vertex RAG only supports HTTP connection to Weaviate.
-    // This value cannot be changed after it's set.
-    string http_endpoint = 1;
-
-    // The corresponding collection this corpus maps to.
-    // This value cannot be changed after it's set.
-    string collection_name = 2;
-  }
-
   // The config for the Pinecone.
   message Pinecone {
     // Pinecone index name.
     // This value cannot be changed after it's set.
     string index_name = 1;
-  }
-
-  // The config for the Vertex Feature Store.
-  message VertexFeatureStore {
-    // The resource name of the FeatureView.
-    // Format:
-    // `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}`
-    string feature_view_resource_name = 1;
   }
 
   // The config for the Vertex Vector Search.
@@ -165,14 +103,8 @@ message RagVectorDbConfig {
     // The config for the RAG-managed Vector DB.
     RagManagedDb rag_managed_db = 1;
 
-    // The config for the Weaviate.
-    Weaviate weaviate = 2;
-
     // The config for the Pinecone.
     Pinecone pinecone = 3;
-
-    // The config for the Vertex Feature Store.
-    VertexFeatureStore vertex_feature_store = 4;
 
     // The config for the Vertex Vector Search.
     VertexVectorSearch vertex_vector_search = 6;
@@ -208,15 +140,6 @@ message FileStatus {
 
   // Output only. Only when the `state` field is ERROR.
   string error_status = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
-}
-
-// Config for the Vertex AI Search.
-message VertexAiSearchConfig {
-  // Vertex AI Search Serving Config resource full name. For example,
-  // `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config}`
-  // or
-  // `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/servingConfigs/{serving_config}`.
-  string serving_config = 1;
 }
 
 // RagCorpus status.
@@ -265,20 +188,6 @@ message RagCorpus {
   // Optional. The description of the RagCorpus.
   string description = 3 [(google.api.field_behavior) = OPTIONAL];
 
-  // Optional. Immutable. The embedding model config of the RagCorpus.
-  RagEmbeddingModelConfig rag_embedding_model_config = 6 [
-    deprecated = true,
-    (google.api.field_behavior) = OPTIONAL,
-    (google.api.field_behavior) = IMMUTABLE
-  ];
-
-  // Optional. Immutable. The Vector DB config of the RagCorpus.
-  RagVectorDbConfig rag_vector_db_config = 7 [
-    deprecated = true,
-    (google.api.field_behavior) = OPTIONAL,
-    (google.api.field_behavior) = IMMUTABLE
-  ];
-
   // Output only. Timestamp when this RagCorpus was created.
   google.protobuf.Timestamp create_time = 4
       [(google.api.field_behavior) = OUTPUT_ONLY];
@@ -298,12 +207,6 @@ message RagCorpus {
       (google.api.field_behavior) = OPTIONAL,
       (google.api.field_behavior) = IMMUTABLE
     ];
-
-    // Optional. Immutable. The config for the Vertex AI Search.
-    VertexAiSearchConfig vertex_ai_search_config = 10 [
-      (google.api.field_behavior) = OPTIONAL,
-      (google.api.field_behavior) = IMMUTABLE
-    ];
   }
 }
 
@@ -315,18 +218,6 @@ message RagFile {
     plural: "ragFiles"
     singular: "ragFile"
   };
-
-  // The type of the RagFile.
-  enum RagFileType {
-    // RagFile type is unspecified.
-    RAG_FILE_TYPE_UNSPECIFIED = 0;
-
-    // RagFile type is TXT.
-    RAG_FILE_TYPE_TXT = 1;
-
-    // RagFile type is PDF.
-    RAG_FILE_TYPE_PDF = 2;
-  }
 
   // The origin location of the RagFile if it is imported from Google Cloud
   // Storage or Google Drive.
@@ -366,12 +257,6 @@ message RagFile {
   // Optional. The description of the RagFile.
   string description = 3 [(google.api.field_behavior) = OPTIONAL];
 
-  // Output only. The size of the RagFile in bytes.
-  int64 size_bytes = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
-
-  // Output only. The type of the RagFile.
-  RagFileType rag_file_type = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
-
   // Output only. Timestamp when this RagFile was created.
   google.protobuf.Timestamp create_time = 6
       [(google.api.field_behavior) = OUTPUT_ONLY];
@@ -400,12 +285,6 @@ message RagFileChunkingConfig {
     // Specifies the fixed length chunking config.
     FixedLengthChunking fixed_length_chunking = 3;
   }
-
-  // The size of the chunks.
-  int32 chunk_size = 1 [deprecated = true];
-
-  // The overlap between chunks.
-  int32 chunk_overlap = 2 [deprecated = true];
 }
 
 // Specifies the transformation config for RagFiles.
@@ -414,50 +293,8 @@ message RagFileTransformationConfig {
   RagFileChunkingConfig rag_file_chunking_config = 1;
 }
 
-// Specifies the parsing config for RagFiles.
-message RagFileParsingConfig {
-  // Specifies the advanced parsing for RagFiles.
-  message AdvancedParser {
-    // Whether to use advanced PDF parsing.
-    bool use_advanced_pdf_parsing = 1;
-  }
-
-  // Document AI Layout Parser config.
-  message LayoutParser {
-    // The full resource name of a Document AI processor or processor version.
-    // The processor must have type `LAYOUT_PARSER_PROCESSOR`. If specified, the
-    // `additional_config.parse_as_scanned_pdf` field must be false.
-    // Format:
-    // * `projects/{project_id}/locations/{location}/processors/{processor_id}`
-    // * `projects/{project_id}/locations/{location}/processors/{processor_id}/processorVersions/{processor_version_id}`
-    string processor_name = 1;
-
-    // The maximum number of requests the job is allowed to make to the Document
-    // AI processor per minute. Consult
-    // https://cloud.google.com/document-ai/quotas and the Quota page for your
-    // project to set an appropriate value here. If unspecified, a default value
-    // of 120 QPM would be used.
-    int32 max_parsing_requests_per_min = 2;
-  }
-
-  // The parser to use for RagFiles.
-  oneof parser {
-    // The Advanced Parser to use for RagFiles.
-    AdvancedParser advanced_parser = 3;
-
-    // The Layout Parser to use for RagFiles.
-    LayoutParser layout_parser = 4;
-  }
-
-  // Whether to use advanced PDF parsing.
-  bool use_advanced_pdf_parsing = 2 [deprecated = true];
-}
-
 // Config for uploading RagFile.
 message UploadRagFileConfig {
-  // Specifies the size and overlap of chunks after uploading RagFile.
-  RagFileChunkingConfig rag_file_chunking_config = 1 [deprecated = true];
-
   // Specifies the transformation config for RagFiles.
   RagFileTransformationConfig rag_file_transformation_config = 3;
 }
@@ -503,16 +340,8 @@ message ImportRagFilesConfig {
     BigQueryDestination partial_failure_bigquery_sink = 12 [deprecated = true];
   }
 
-  // Specifies the size and overlap of chunks after importing RagFiles.
-  RagFileChunkingConfig rag_file_chunking_config = 4 [deprecated = true];
-
   // Specifies the transformation config for RagFiles.
   RagFileTransformationConfig rag_file_transformation_config = 16;
-
-  // Optional. Specifies the parsing config for RagFiles.
-  // RAG will use the default parser if this field is not set.
-  RagFileParsingConfig rag_file_parsing_config = 8
-      [(google.api.field_behavior) = OPTIONAL];
 
   // Optional. The max number of queries per minute that this job is allowed to
   // make to the embedding model specified on the corpus. This value is specific

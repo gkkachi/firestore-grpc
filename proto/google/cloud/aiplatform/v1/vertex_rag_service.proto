@@ -14,22 +14,22 @@
 
 syntax = "proto3";
 
-package google.cloud.aiplatform.v1beta1;
+package google.cloud.aiplatform.v1;
 
 import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "google/cloud/aiplatform/v1beta1/content.proto";
-import "google/cloud/aiplatform/v1beta1/tool.proto";
+import "google/cloud/aiplatform/v1/content.proto";
+import "google/cloud/aiplatform/v1/tool.proto";
 
-option csharp_namespace = "Google.Cloud.AIPlatform.V1Beta1";
-option go_package = "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb;aiplatformpb";
+option csharp_namespace = "Google.Cloud.AIPlatform.V1";
+option go_package = "cloud.google.com/go/aiplatform/apiv1/aiplatformpb;aiplatformpb";
 option java_multiple_files = true;
 option java_outer_classname = "VertexRagServiceProto";
-option java_package = "com.google.cloud.aiplatform.v1beta1";
-option php_namespace = "Google\\Cloud\\AIPlatform\\V1beta1";
-option ruby_package = "Google::Cloud::AIPlatform::V1beta1";
+option java_package = "com.google.cloud.aiplatform.v1";
+option php_namespace = "Google\\Cloud\\AIPlatform\\V1";
+option ruby_package = "Google::Cloud::AIPlatform::V1";
 
 // A service for retrieving relevant contexts.
 service VertexRagService {
@@ -41,7 +41,7 @@ service VertexRagService {
   rpc RetrieveContexts(RetrieveContextsRequest)
       returns (RetrieveContextsResponse) {
     option (google.api.http) = {
-      post: "/v1beta1/{parent=projects/*/locations/*}:retrieveContexts"
+      post: "/v1/{parent=projects/*/locations/*}:retrieveContexts"
       body: "*"
     };
     option (google.api.method_signature) = "parent,query";
@@ -51,7 +51,7 @@ service VertexRagService {
   //  to guide LLM towards generating grounded responses.
   rpc AugmentPrompt(AugmentPromptRequest) returns (AugmentPromptResponse) {
     option (google.api.http) = {
-      post: "/v1beta1/{parent=projects/*/locations/*}:augmentPrompt"
+      post: "/v1/{parent=projects/*/locations/*}:augmentPrompt"
       body: "*"
     };
     option (google.api.method_signature) = "parent,model,vertex_rag_store";
@@ -63,7 +63,7 @@ service VertexRagService {
   rpc CorroborateContent(CorroborateContentRequest)
       returns (CorroborateContentResponse) {
     option (google.api.http) = {
-      post: "/v1beta1/{parent=projects/*/locations/*}:corroborateContent"
+      post: "/v1/{parent=projects/*/locations/*}:corroborateContent"
       body: "*"
     };
     option (google.api.method_signature) = "parent,content,facts";
@@ -72,15 +72,6 @@ service VertexRagService {
 
 // A query to retrieve relevant contexts.
 message RagQuery {
-  // Configurations for hybrid search results ranking.
-  message Ranking {
-    // Optional. Alpha value controls the weight between dense and sparse vector
-    // search results. The range is [0, 1], while 0 means sparse vector search
-    // only and 1 means dense vector search only. The default value is 0.5 which
-    // balances sparse and dense vector search equally.
-    optional float alpha = 1 [(google.api.field_behavior) = OPTIONAL];
-  }
-
   // The query to retrieve contexts.
   // Currently only text query is supported.
   oneof query {
@@ -88,21 +79,13 @@ message RagQuery {
     string text = 1 [(google.api.field_behavior) = OPTIONAL];
   }
 
-  // Optional. The number of contexts to retrieve.
-  int32 similarity_top_k = 2
-      [deprecated = true, (google.api.field_behavior) = OPTIONAL];
-
-  // Optional. Configurations for hybrid search results ranking.
-  Ranking ranking = 4
-      [deprecated = true, (google.api.field_behavior) = OPTIONAL];
-
   // Optional. The retrieval config for the query.
   RagRetrievalConfig rag_retrieval_config = 6
       [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Request message for
-// [VertexRagService.RetrieveContexts][google.cloud.aiplatform.v1beta1.VertexRagService.RetrieveContexts].
+// [VertexRagService.RetrieveContexts][google.cloud.aiplatform.v1.VertexRagService.RetrieveContexts].
 message RetrieveContextsRequest {
   // The data source for Vertex RagStore.
   message VertexRagStore {
@@ -122,11 +105,6 @@ message RetrieveContextsRequest {
       // in rag_corpus field.
       repeated string rag_file_ids = 2 [(google.api.field_behavior) = OPTIONAL];
     }
-
-    // Optional. Deprecated. Please use rag_resources to specify the data
-    // source.
-    repeated string rag_corpora = 1
-        [deprecated = true, (google.api.field_behavior) = OPTIONAL];
 
     // Optional. The representation of the rag source. It can be used to specify
     // corpus only or ragfiles. Currently only support one corpus or multiple
@@ -177,14 +155,6 @@ message RagContexts {
     // The text chunk.
     string text = 2;
 
-    // The distance between the query dense embedding vector and the context
-    // text vector.
-    double distance = 3 [deprecated = true];
-
-    // The distance between the query sparse embedding vector and the context
-    // text vector.
-    double sparse_distance = 4 [deprecated = true];
-
     // According to the underlying Vector DB and the selected metric type, the
     // score can be either the distance or the similarity between the query and
     // the context and its range depends on the metric type.
@@ -201,7 +171,7 @@ message RagContexts {
 }
 
 // Response message for
-// [VertexRagService.RetrieveContexts][google.cloud.aiplatform.v1beta1.VertexRagService.RetrieveContexts].
+// [VertexRagService.RetrieveContexts][google.cloud.aiplatform.v1.VertexRagService.RetrieveContexts].
 message RetrieveContextsResponse {
   // The contexts of the query.
   RagContexts contexts = 1;
