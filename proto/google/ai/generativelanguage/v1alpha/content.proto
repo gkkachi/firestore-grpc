@@ -14,15 +14,15 @@
 
 syntax = "proto3";
 
-package google.ai.generativelanguage.v1beta;
+package google.ai.generativelanguage.v1alpha;
 
 import "google/api/field_behavior.proto";
 import "google/protobuf/struct.proto";
 
-option go_package = "cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb;generativelanguagepb";
+option go_package = "cloud.google.com/go/ai/generativelanguage/apiv1alpha/generativelanguagepb;generativelanguagepb";
 option java_multiple_files = true;
 option java_outer_classname = "ContentProto";
-option java_package = "com.google.ai.generativelanguage.v1beta";
+option java_package = "com.google.ai.generativelanguage.v1alpha";
 
 // Type contains the list of OpenAPI data types as defined by
 // https://spec.openapis.org/oas/v3.0.3#data-types
@@ -197,13 +197,13 @@ message Tool {
   //
   // The model or system does not execute the function. Instead the defined
   // function may be returned as a
-  // [FunctionCall][google.ai.generativelanguage.v1beta.Part.function_call] with
-  // arguments to the client side for execution. The model may decide to call a
-  // subset of these functions by populating
-  // [FunctionCall][google.ai.generativelanguage.v1beta.Part.function_call] in
+  // [FunctionCall][google.ai.generativelanguage.v1alpha.Part.function_call]
+  // with arguments to the client side for execution. The model may decide to
+  // call a subset of these functions by populating
+  // [FunctionCall][google.ai.generativelanguage.v1alpha.Part.function_call] in
   // the response. The next conversation turn may contain a
-  // [FunctionResponse][google.ai.generativelanguage.v1beta.Part.function_response]
-  // with the [Content.role][google.ai.generativelanguage.v1beta.Content.role]
+  // [FunctionResponse][google.ai.generativelanguage.v1alpha.Part.function_response]
+  // with the [Content.role][google.ai.generativelanguage.v1alpha.Content.role]
   // "function" generation context for the next model turn.
   repeated FunctionDeclaration function_declarations = 1
       [(google.api.field_behavior) = OPTIONAL];

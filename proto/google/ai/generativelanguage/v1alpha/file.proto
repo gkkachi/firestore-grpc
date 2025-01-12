@@ -14,7 +14,7 @@
 
 syntax = "proto3";
 
-package google.ai.generativelanguage.v1beta;
+package google.ai.generativelanguage.v1alpha;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
@@ -22,10 +22,10 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 
-option go_package = "cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb;generativelanguagepb";
+option go_package = "cloud.google.com/go/ai/generativelanguage/apiv1alpha/generativelanguagepb;generativelanguagepb";
 option java_multiple_files = true;
 option java_outer_classname = "FileProto";
-option java_package = "com.google.ai.generativelanguage.v1beta";
+option java_package = "com.google.ai.generativelanguage.v1alpha";
 
 // A file uploaded to the API.
 // Next ID: 15

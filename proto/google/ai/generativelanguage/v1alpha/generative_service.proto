@@ -14,21 +14,21 @@
 
 syntax = "proto3";
 
-package google.ai.generativelanguage.v1beta;
+package google.ai.generativelanguage.v1alpha;
 
-import "google/ai/generativelanguage/v1beta/citation.proto";
-import "google/ai/generativelanguage/v1beta/content.proto";
-import "google/ai/generativelanguage/v1beta/retriever.proto";
-import "google/ai/generativelanguage/v1beta/safety.proto";
+import "google/ai/generativelanguage/v1alpha/citation.proto";
+import "google/ai/generativelanguage/v1alpha/content.proto";
+import "google/ai/generativelanguage/v1alpha/retriever.proto";
+import "google/ai/generativelanguage/v1alpha/safety.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 
-option go_package = "cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb;generativelanguagepb";
+option go_package = "cloud.google.com/go/ai/generativelanguage/apiv1alpha/generativelanguagepb;generativelanguagepb";
 option java_multiple_files = true;
 option java_outer_classname = "GenerativeServiceProto";
-option java_package = "com.google.ai.generativelanguage.v1beta";
+option java_package = "com.google.ai.generativelanguage.v1alpha";
 
 // API for using Large Models that generate multimodal content and have
 // additional capabilities beyond text generation.
@@ -45,10 +45,10 @@ service GenerativeService {
   rpc GenerateContent(GenerateContentRequest)
       returns (GenerateContentResponse) {
     option (google.api.http) = {
-      post: "/v1beta/{model=models/*}:generateContent"
+      post: "/v1alpha/{model=models/*}:generateContent"
       body: "*"
       additional_bindings {
-        post: "/v1beta/{model=tunedModels/*}:generateContent"
+        post: "/v1alpha/{model=tunedModels/*}:generateContent"
         body: "*"
       }
     };
@@ -59,7 +59,7 @@ service GenerativeService {
   // `GenerateAnswerRequest`.
   rpc GenerateAnswer(GenerateAnswerRequest) returns (GenerateAnswerResponse) {
     option (google.api.http) = {
-      post: "/v1beta/{model=models/*}:generateAnswer"
+      post: "/v1alpha/{model=models/*}:generateAnswer"
       body: "*"
     };
     option (google.api.method_signature) =
@@ -72,10 +72,10 @@ service GenerativeService {
   rpc StreamGenerateContent(GenerateContentRequest)
       returns (stream GenerateContentResponse) {
     option (google.api.http) = {
-      post: "/v1beta/{model=models/*}:streamGenerateContent"
+      post: "/v1alpha/{model=models/*}:streamGenerateContent"
       body: "*"
       additional_bindings {
-        post: "/v1beta/{model=tunedModels/*}:streamGenerateContent"
+        post: "/v1alpha/{model=tunedModels/*}:streamGenerateContent"
         body: "*"
       }
     };
@@ -87,7 +87,7 @@ service GenerativeService {
   // model](https://ai.google.dev/gemini-api/docs/models/gemini#text-embedding).
   rpc EmbedContent(EmbedContentRequest) returns (EmbedContentResponse) {
     option (google.api.http) = {
-      post: "/v1beta/{model=models/*}:embedContent"
+      post: "/v1alpha/{model=models/*}:embedContent"
       body: "*"
     };
     option (google.api.method_signature) = "model,content";
@@ -99,7 +99,7 @@ service GenerativeService {
   rpc BatchEmbedContents(BatchEmbedContentsRequest)
       returns (BatchEmbedContentsResponse) {
     option (google.api.http) = {
-      post: "/v1beta/{model=models/*}:batchEmbedContents"
+      post: "/v1alpha/{model=models/*}:batchEmbedContents"
       body: "*"
     };
     option (google.api.method_signature) = "model,requests";
@@ -110,11 +110,16 @@ service GenerativeService {
   // to learn more about tokens.
   rpc CountTokens(CountTokensRequest) returns (CountTokensResponse) {
     option (google.api.http) = {
-      post: "/v1beta/{model=models/*}:countTokens"
+      post: "/v1alpha/{model=models/*}:countTokens"
       body: "*"
     };
     option (google.api.method_signature) = "model,contents";
   }
+
+  // Low-Latency bidirectional streaming API that supports audio and video
+  // streaming inputs can produce multimodal output streams (audio and text).
+  rpc BidiGenerateContent(stream BidiGenerateContentClientMessage)
+      returns (stream BidiGenerateContentServerMessage) {}
 }
 
 // Type of task for which the embedding will be used.
@@ -342,7 +347,7 @@ message GenerationConfig {
   //
   // This penalty is binary on/off and not dependant on the number of times the
   // token is used (after the first). Use
-  // [frequency_penalty][google.ai.generativelanguage.v1beta.GenerationConfig.frequency_penalty]
+  // [frequency_penalty][google.ai.generativelanguage.v1alpha.GenerationConfig.frequency_penalty]
   // for a penalty that increases with each use.
   //
   // A positive penalty will discourage the use of tokens that have already
@@ -366,7 +371,7 @@ message GenerationConfig {
   // negative values will reduce the vocabulary of a response. Larger negative
   // values will cause the model to start repeating a common token  until it
   // hits the
-  // [max_output_tokens][google.ai.generativelanguage.v1beta.GenerationConfig.max_output_tokens]
+  // [max_output_tokens][google.ai.generativelanguage.v1alpha.GenerationConfig.max_output_tokens]
   // limit.
   optional float frequency_penalty = 16
       [(google.api.field_behavior) = OPTIONAL];
@@ -375,9 +380,9 @@ message GenerationConfig {
   optional bool response_logprobs = 17 [(google.api.field_behavior) = OPTIONAL];
 
   // Optional. Only valid if
-  // [response_logprobs=True][google.ai.generativelanguage.v1beta.GenerationConfig.response_logprobs].
+  // [response_logprobs=True][google.ai.generativelanguage.v1alpha.GenerationConfig.response_logprobs].
   // This sets the number of top logprobs to return at each decoding step in the
-  // [Candidate.logprobs_result][google.ai.generativelanguage.v1beta.Candidate.logprobs_result].
+  // [Candidate.logprobs_result][google.ai.generativelanguage.v1alpha.Candidate.logprobs_result].
   optional int32 logprobs = 18 [(google.api.field_behavior) = OPTIONAL];
 
   // Optional. Enables enhanced civic answers. It may not be available for all
@@ -1033,4 +1038,202 @@ message CountTokensResponse {
 
   // Number of tokens in the cached part of the prompt (the cached content).
   int32 cached_content_token_count = 5;
+}
+
+// Message to be sent in the first and only first
+// `BidiGenerateContentClientMessage`. Contains configuration that will apply
+// for the duration of the streaming RPC.
+//
+// Clients should wait for a `BidiGenerateContentSetupComplete` message before
+// sending any additional messages.
+message BidiGenerateContentSetup {
+  // Required. The model's resource name. This serves as an ID for the Model to
+  // use.
+  //
+  // Format: `models/{model}`
+  string model = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. Generation config.
+  //
+  // The following fields are not supported:
+  //
+  //  - `response_logprobs`
+  //  - `response_mime_type`
+  //  - `logprobs`
+  //  - `response_schema`
+  //  - `stop_sequence`
+  //  - `routing_config`
+  //  - `audio_timestamp`
+  GenerationConfig generation_config = 2
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The user provided system instructions for the model.
+  //
+  // Note: Only text should be used in parts and content in each part will be
+  // in a separate paragraph.
+  Content system_instruction = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. A list of `Tools` the model may use to generate the next
+  // response.
+  //
+  // A `Tool` is a piece of code that enables the system to interact with
+  // external systems to perform an action, or set of actions, outside of
+  // knowledge and scope of the model.
+  repeated Tool tools = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Incremental update of the current conversation delivered from the client.
+// All of the content here is unconditionally appended to the conversation
+// history and used as part of the prompt to the model to generate content.
+//
+// A message here will interrupt any current model generation.
+message BidiGenerateContentClientContent {
+  // Optional. The content appended to the current conversation with the model.
+  //
+  // For single-turn queries, this is a single instance. For multi-turn
+  // queries, this is a repeated field that contains conversation history and
+  // the latest request.
+  repeated Content turns = 1 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. If true, indicates that the server content generation should
+  // start with the currently accumulated prompt. Otherwise, the server awaits
+  // additional messages before starting generation.
+  bool turn_complete = 2 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// User input that is sent in real time.
+//
+// This is different from
+// [BidiGenerateContentClientContent][google.ai.generativelanguage.v1alpha.BidiGenerateContentClientContent]
+// in a few ways:
+//
+//  - Can be sent continuously without interruption to model generation.
+//  - If there is a need to mix data interleaved across the
+//    [BidiGenerateContentClientContent][google.ai.generativelanguage.v1alpha.BidiGenerateContentClientContent]
+//    and the
+//    [BidiGenerateContentRealtimeInput][google.ai.generativelanguage.v1alpha.BidiGenerateContentRealtimeInput],
+//    the server attempts to optimize for best response, but there are no
+//    guarantees.
+//  - End of turn is not explicitly specified, but is rather derived from user
+//    activity (for example, end of speech).
+//  - Even before the end of turn, the data is processed incrementally
+//    to optimize for a fast start of the response from the model.
+//  - Is always direct user input that is sent in real time. Can be sent
+//    continuously without interruptions. The model automatically detects the
+//    beginning and the end of user speech and starts or terminates streaming
+//    the response accordingly. Data is processed incrementally as it arrives,
+//    minimizing latency.
+message BidiGenerateContentRealtimeInput {
+  // Optional. Inlined bytes data for media input.
+  repeated Blob media_chunks = 1 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Client generated response to a `ToolCall` received from the server.
+// Individual `FunctionResponse` objects are matched to the respective
+// `FunctionCall` objects by the `id` field.
+//
+// Note that in the unary and server-streaming GenerateContent APIs function
+// calling happens by exchanging the `Content` parts, while in the bidi
+// GenerateContent APIs function calling happens over these dedicated set of
+// messages.
+message BidiGenerateContentToolResponse {
+  // Optional. The response to the function calls.
+  repeated FunctionResponse function_responses = 1
+      [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Messages sent by the client in the BidiGenerateContent call.
+message BidiGenerateContentClientMessage {
+  // The type of the message.
+  oneof message_type {
+    // Optional. Session configuration sent in the first and only first client
+    // message.
+    BidiGenerateContentSetup setup = 1 [(google.api.field_behavior) = OPTIONAL];
+
+    // Optional. Incremental update of the current conversation delivered from
+    // the client.
+    BidiGenerateContentClientContent client_content = 2
+        [(google.api.field_behavior) = OPTIONAL];
+
+    // Optional. User input that is sent in real time.
+    BidiGenerateContentRealtimeInput realtime_input = 3
+        [(google.api.field_behavior) = OPTIONAL];
+
+    // Optional. Response to a `ToolCallMessage` received from the server.
+    BidiGenerateContentToolResponse tool_response = 4
+        [(google.api.field_behavior) = OPTIONAL];
+  }
+}
+
+// Sent in response to a `BidiGenerateContentSetup` message from the client.
+message BidiGenerateContentSetupComplete {}
+
+// Incremental server update generated by the model in response to client
+// messages.
+//
+// Content is generated as quickly as possible, and not in real time. Clients
+// may choose to buffer and play it out in real time.
+message BidiGenerateContentServerContent {
+  // Output only. The content that the model has generated as part of the
+  // current conversation with the user.
+  optional Content model_turn = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. If true, indicates that the model is done generating.
+  // Generation will only start in response to additional client messages. Can
+  // be set alongside `content`, indicating that the `content` is the last in
+  // the turn.
+  bool turn_complete = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. If true, indicates that a client message has interrupted
+  // current model generation. If the client is playing out the content in real
+  // time, this is a good signal to stop and empty the current playback queue.
+  bool interrupted = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. Grounding metadata for the generated content.
+  GroundingMetadata grounding_metadata = 4
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+
+// Request for the client to execute the `function_calls` and return the
+// responses with the matching `id`s.
+message BidiGenerateContentToolCall {
+  // Output only. The function call to be executed.
+  repeated FunctionCall function_calls = 2
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+
+// Notification for the client that a previously issued `ToolCallMessage`
+// with the specified `id`s should have been not executed and should be
+// cancelled. If there were side-effects to those tool calls, clients may
+// attempt to undo the tool calls. This message occurs only in cases where the
+// clients interrupt server turns.
+message BidiGenerateContentToolCallCancellation {
+  // Output only. The ids of the tool calls to be cancelled.
+  repeated string ids = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+
+// Response message for the BidiGenerateContent call.
+message BidiGenerateContentServerMessage {
+  // The type of the message.
+  oneof message_type {
+    // Output only. Sent in response to a `BidiGenerateContentSetup` message
+    // from the client when setup is complete.
+    BidiGenerateContentSetupComplete setup_complete = 2
+        [(google.api.field_behavior) = OUTPUT_ONLY];
+
+    // Output only. Content generated by the model in response to client
+    // messages.
+    BidiGenerateContentServerContent server_content = 3
+        [(google.api.field_behavior) = OUTPUT_ONLY];
+
+    // Output only. Request for the client to execute the `function_calls` and
+    // return the responses with the matching `id`s.
+    BidiGenerateContentToolCall tool_call = 4
+        [(google.api.field_behavior) = OUTPUT_ONLY];
+
+    // Output only. Notification for the client that a previously issued
+    // `ToolCallMessage` with the specified `id`s should be cancelled.
+    BidiGenerateContentToolCallCancellation tool_call_cancellation = 5
+        [(google.api.field_behavior) = OUTPUT_ONLY];
+  }
 }
