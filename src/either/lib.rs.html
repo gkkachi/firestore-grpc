@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/either-1.14.0/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="either" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">either/</div>lib.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/either-1.15.0/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="either" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">either/</div>lib.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -1566,7 +1566,7 @@
 //!
 //! **Crate features:**
 //!
-//! * `"use_std"`
+//! * `"std"`
 //!   Enabled by default. Disable to make the library `#![no_std]`.
 //!
 //! * `"serde"`
@@ -1576,7 +1576,7 @@
 </span><span class="attr">#![doc(html_root_url = <span class="string">"https://docs.rs/either/1/"</span>)]
 #![no_std]
 
-#[cfg(any(test, feature = <span class="string">"use_std"</span>))]
+#[cfg(any(test, feature = <span class="string">"std"</span>))]
 </span><span class="kw">extern crate </span>std;
 
 <span class="attr">#[cfg(feature = <span class="string">"serde"</span>)]
@@ -1592,9 +1592,9 @@
 <span class="kw">use </span>core::ops::DerefMut;
 <span class="kw">use </span>core::pin::Pin;
 
-<span class="attr">#[cfg(any(test, feature = <span class="string">"use_std"</span>))]
+<span class="attr">#[cfg(any(test, feature = <span class="string">"std"</span>))]
 </span><span class="kw">use </span>std::error::Error;
-<span class="attr">#[cfg(any(test, feature = <span class="string">"use_std"</span>))]
+<span class="attr">#[cfg(any(test, feature = <span class="string">"std"</span>))]
 </span><span class="kw">use </span>std::io::{<span class="self">self</span>, BufRead, Read, Seek, SeekFrom, Write};
 
 <span class="kw">pub use </span><span class="kw">crate</span>::Either::{Left, Right};
@@ -2715,10 +2715,10 @@
     }
 }
 
-<span class="attr">#[cfg(any(test, feature = <span class="string">"use_std"</span>))]
+<span class="attr">#[cfg(any(test, feature = <span class="string">"std"</span>))]
 </span><span class="doccomment">/// `Either&lt;L, R&gt;` implements `Read` if both `L` and `R` do.
 ///
-/// Requires crate feature `"use_std"`
+/// Requires crate feature `"std"`
 </span><span class="kw">impl</span>&lt;L, R&gt; Read <span class="kw">for </span>Either&lt;L, R&gt;
 <span class="kw">where
     </span>L: Read,
@@ -2741,10 +2741,10 @@
     }
 }
 
-<span class="attr">#[cfg(any(test, feature = <span class="string">"use_std"</span>))]
+<span class="attr">#[cfg(any(test, feature = <span class="string">"std"</span>))]
 </span><span class="doccomment">/// `Either&lt;L, R&gt;` implements `Seek` if both `L` and `R` do.
 ///
-/// Requires crate feature `"use_std"`
+/// Requires crate feature `"std"`
 </span><span class="kw">impl</span>&lt;L, R&gt; Seek <span class="kw">for </span>Either&lt;L, R&gt;
 <span class="kw">where
     </span>L: Seek,
@@ -2755,8 +2755,8 @@
     }
 }
 
-<span class="attr">#[cfg(any(test, feature = <span class="string">"use_std"</span>))]
-</span><span class="doccomment">/// Requires crate feature `"use_std"`
+<span class="attr">#[cfg(any(test, feature = <span class="string">"std"</span>))]
+</span><span class="doccomment">/// Requires crate feature `"std"`
 </span><span class="kw">impl</span>&lt;L, R&gt; BufRead <span class="kw">for </span>Either&lt;L, R&gt;
 <span class="kw">where
     </span>L: BufRead,
@@ -2779,10 +2779,10 @@
     }
 }
 
-<span class="attr">#[cfg(any(test, feature = <span class="string">"use_std"</span>))]
+<span class="attr">#[cfg(any(test, feature = <span class="string">"std"</span>))]
 </span><span class="doccomment">/// `Either&lt;L, R&gt;` implements `Write` if both `L` and `R` do.
 ///
-/// Requires crate feature `"use_std"`
+/// Requires crate feature `"std"`
 </span><span class="kw">impl</span>&lt;L, R&gt; Write <span class="kw">for </span>Either&lt;L, R&gt;
 <span class="kw">where
     </span>L: Write,
@@ -2840,18 +2840,18 @@
 <span class="macro">impl_specific_ref_and_mut!</span>(str,);
 <span class="macro">impl_specific_ref_and_mut!</span>(
     ::std::path::Path,
-    cfg(feature = <span class="string">"use_std"</span>),
-    doc = <span class="string">"Requires crate feature `use_std`."
+    cfg(feature = <span class="string">"std"</span>),
+    doc = <span class="string">"Requires crate feature `std`."
 </span>);
 <span class="macro">impl_specific_ref_and_mut!</span>(
     ::std::ffi::OsStr,
-    cfg(feature = <span class="string">"use_std"</span>),
-    doc = <span class="string">"Requires crate feature `use_std`."
+    cfg(feature = <span class="string">"std"</span>),
+    doc = <span class="string">"Requires crate feature `std`."
 </span>);
 <span class="macro">impl_specific_ref_and_mut!</span>(
     ::std::ffi::CStr,
-    cfg(feature = <span class="string">"use_std"</span>),
-    doc = <span class="string">"Requires crate feature `use_std`."
+    cfg(feature = <span class="string">"std"</span>),
+    doc = <span class="string">"Requires crate feature `std`."
 </span>);
 
 <span class="kw">impl</span>&lt;L, R, Target&gt; AsRef&lt;[Target]&gt; <span class="kw">for </span>Either&lt;L, R&gt;
@@ -2906,10 +2906,10 @@
     }
 }
 
-<span class="attr">#[cfg(any(test, feature = <span class="string">"use_std"</span>))]
+<span class="attr">#[cfg(any(test, feature = <span class="string">"std"</span>))]
 </span><span class="doccomment">/// `Either` implements `Error` if *both* `L` and `R` implement it.
 ///
-/// Requires crate feature `"use_std"`
+/// Requires crate feature `"std"`
 </span><span class="kw">impl</span>&lt;L, R&gt; Error <span class="kw">for </span>Either&lt;L, R&gt;
 <span class="kw">where
     </span>L: Error,
@@ -3114,7 +3114,7 @@
 }
 
 <span class="comment">// This "unused" method is here to ensure that compilation doesn't fail on given types.
-</span><span class="attr">#[cfg(feature = <span class="string">"use_std"</span>)]
+</span><span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
 </span><span class="kw">fn </span>_unsized_std_propagation() {
     <span class="macro">check_t!</span>(::std::path::Path);
     <span class="macro">check_t!</span>(::std::ffi::OsStr);

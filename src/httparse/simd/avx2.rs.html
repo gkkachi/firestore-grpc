@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/httparse-1.10.0/src/simd/avx2.rs`."><title>avx2.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="httparse" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">httparse/simd/</div>avx2.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/httparse-1.10.1/src/simd/avx2.rs`."><title>avx2.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="httparse" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">httparse/simd/</div>avx2.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -147,7 +147,64 @@
 <a href="#146" id="146">146</a>
 <a href="#147" id="147">147</a>
 <a href="#148" id="148">148</a>
-<a href="#149" id="149">149</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::iter::Bytes;
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
+<a href="#161" id="161">161</a>
+<a href="#162" id="162">162</a>
+<a href="#163" id="163">163</a>
+<a href="#164" id="164">164</a>
+<a href="#165" id="165">165</a>
+<a href="#166" id="166">166</a>
+<a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+<a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
+<a href="#191" id="191">191</a>
+<a href="#192" id="192">192</a>
+<a href="#193" id="193">193</a>
+<a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
+<a href="#196" id="196">196</a>
+<a href="#197" id="197">197</a>
+<a href="#198" id="198">198</a>
+<a href="#199" id="199">199</a>
+<a href="#200" id="200">200</a>
+<a href="#201" id="201">201</a>
+<a href="#202" id="202">202</a>
+<a href="#203" id="203">203</a>
+<a href="#204" id="204">204</a>
+<a href="#205" id="205">205</a>
+<a href="#206" id="206">206</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::iter::Bytes;
 
 <span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"avx2"</span>)]
@@ -170,26 +227,62 @@
 #[allow(non_snake_case, overflowing_literals)]
 #[allow(unused)]
 </span><span class="kw">unsafe fn </span>match_url_char_32_avx(buf: <span class="kw-2">&amp;</span>[u8]) -&gt; usize {
-    <span class="macro">debug_assert!</span>(buf.len() &gt;= <span class="number">32</span>);
+    <span class="comment">// NOTE: This check might be not necessary since this function is only used in
+    // `match_uri_vectored` where buffer overflow is taken care of.
+    </span><span class="macro">debug_assert!</span>(buf.len() &gt;= <span class="number">32</span>);
 
     <span class="attr">#[cfg(target_arch = <span class="string">"x86"</span>)]
     </span><span class="kw">use </span>core::arch::x86::<span class="kw-2">*</span>;
     <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="kw">use </span>core::arch::x86_64::<span class="kw-2">*</span>;
 
-    <span class="kw">let </span>ptr = buf.as_ptr();
+    <span class="comment">// pointer to buffer
+    </span><span class="kw">let </span>ptr = buf.as_ptr();
 
     <span class="comment">// %x21-%x7e %x80-%xff
+    //
+    // Character ranges allowed by this function, can also be interpreted as:
+    // 33 =&lt; (x != 127) =&lt; 255
+    //
+    // Create a vector full of DEL (0x7f) characters.
     </span><span class="kw">let </span>DEL: __m256i = _mm256_set1_epi8(<span class="number">0x7f</span>);
-    <span class="kw">let </span>LOW: __m256i = _mm256_set1_epi8(<span class="number">0x21</span>);
+    <span class="comment">// Create a vector full of exclamation mark (!) (0x21) characters.
+    // Used as lower threshold, characters in URLs cannot be smaller than this.
+    </span><span class="kw">let </span>LOW: __m256i = _mm256_set1_epi8(<span class="number">0x21</span>);
 
-    <span class="kw">let </span>dat = _mm256_lddqu_si256(ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>);
+    <span class="comment">// Load a chunk of 32 bytes from `ptr` as a vector.
+    // We can check 32 bytes in parallel at most with AVX2 since
+    // YMM registers can only have 256 bits most.
+    </span><span class="kw">let </span>dat = _mm256_lddqu_si256(ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>);
+
     <span class="comment">// unsigned comparison dat &gt;= LOW
+    //
+    // `_mm256_max_epu8` creates a new vector by comparing vectors `dat` and `LOW`
+    // and picks the max. values from each for all indices.
+    // So if a byte in `dat` is &lt;= 32, it'll be represented as 33
+    // which is the smallest valid character.
+    //
+    // Then, we compare the new vector with `dat` for equality.
+    //
+    // `_mm256_cmpeq_epi8` returns a new vector where;
+    // * matching bytes are set to 0xFF (all bits set),
+    // * nonmatching bytes are set to 0 (no bits set).
     </span><span class="kw">let </span>low = _mm256_cmpeq_epi8(_mm256_max_epu8(dat, LOW), dat);
-    <span class="kw">let </span>del = _mm256_cmpeq_epi8(dat, DEL);
-    <span class="kw">let </span>bit = _mm256_andnot_si256(del, low);
-    <span class="kw">let </span>res = _mm256_movemask_epi8(bit) <span class="kw">as </span>u32;
-    <span class="comment">// TODO: use .trailing_ones() once MSRV &gt;= 1.46
+    <span class="comment">// Similar to what we did before, but now invalid characters are set to 0xFF.
+    </span><span class="kw">let </span>del = _mm256_cmpeq_epi8(dat, DEL);
+
+    <span class="comment">// We glue the both comparisons via `_mm256_andnot_si256`.
+    //
+    // Since the representation of truthiness differ in these comparisons,
+    // we are in need of bitwise NOT to convert valid characters of `del`.
+    </span><span class="kw">let </span>bit = _mm256_andnot_si256(del, low);
+    <span class="comment">// This creates a bitmask from the most significant bit of each byte.
+    // Simply, we're converting a vector value to scalar value here.
+    </span><span class="kw">let </span>res = _mm256_movemask_epi8(bit) <span class="kw">as </span>u32;
+
+    <span class="comment">// Count trailing zeros to find the first encountered invalid character.
+    // Bitwise NOT is required once again to flip truthiness.
+    // TODO: use .trailing_ones() once MSRV &gt;= 1.46
     </span>(!res).trailing_zeros() <span class="kw">as </span>usize
 }
 
@@ -221,18 +314,39 @@
     <span class="kw">let </span>ptr = buf.as_ptr();
 
     <span class="comment">// %x09 %x20-%x7e %x80-%xff
+    // Create a vector full of horizontal tab (\t) (0x09) characters.
     </span><span class="kw">let </span>TAB: __m256i = _mm256_set1_epi8(<span class="number">0x09</span>);
-    <span class="kw">let </span>DEL: __m256i = _mm256_set1_epi8(<span class="number">0x7f</span>);
-    <span class="kw">let </span>LOW: __m256i = _mm256_set1_epi8(<span class="number">0x20</span>);
+    <span class="comment">// Create a vector full of DEL (0x7f) characters.
+    </span><span class="kw">let </span>DEL: __m256i = _mm256_set1_epi8(<span class="number">0x7f</span>);
+    <span class="comment">// Create a vector full of space (0x20) characters.
+    </span><span class="kw">let </span>LOW: __m256i = _mm256_set1_epi8(<span class="number">0x20</span>);
 
-    <span class="kw">let </span>dat = _mm256_lddqu_si256(ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>);
+    <span class="comment">// Load a chunk of 32 bytes from `ptr` as a vector.
+    </span><span class="kw">let </span>dat = _mm256_lddqu_si256(ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>);
+
     <span class="comment">// unsigned comparison dat &gt;= LOW
+    //
+    // Same as what we do in `match_url_char_32_avx`.
+    // This time the lower threshold is set to space character though.
     </span><span class="kw">let </span>low = _mm256_cmpeq_epi8(_mm256_max_epu8(dat, LOW), dat);
-    <span class="kw">let </span>tab = _mm256_cmpeq_epi8(dat, TAB);
-    <span class="kw">let </span>del = _mm256_cmpeq_epi8(dat, DEL);
-    <span class="kw">let </span>bit = _mm256_andnot_si256(del, _mm256_or_si256(low, tab));
-    <span class="kw">let </span>res = _mm256_movemask_epi8(bit) <span class="kw">as </span>u32;
-    <span class="comment">// TODO: use .trailing_ones() once MSRV &gt;= 1.46
+    <span class="comment">// Check if `dat` includes `TAB` characters.
+    </span><span class="kw">let </span>tab = _mm256_cmpeq_epi8(dat, TAB);
+    <span class="comment">// Check if `dat` includes `DEL` characters.
+    </span><span class="kw">let </span>del = _mm256_cmpeq_epi8(dat, DEL);
+
+    <span class="comment">// Combine all comparisons together, notice that we're also using OR
+    // to connect `low` and `tab` but flip bits of `del`.
+    //
+    // In the end, this is simply:
+    // ~del &amp; (low | tab)
+    </span><span class="kw">let </span>bit = _mm256_andnot_si256(del, _mm256_or_si256(low, tab));
+    <span class="comment">// This creates a bitmask from the most significant bit of each byte.
+    // Creates a scalar value from vector value.
+    </span><span class="kw">let </span>res = _mm256_movemask_epi8(bit) <span class="kw">as </span>u32;
+
+    <span class="comment">// Count trailing zeros to find the first encountered invalid character.
+    // Bitwise NOT is required once again to flip truthiness.
+    // TODO: use .trailing_ones() once MSRV &gt;= 1.46
     </span>(!res).trailing_zeros() <span class="kw">as </span>usize
 }
 

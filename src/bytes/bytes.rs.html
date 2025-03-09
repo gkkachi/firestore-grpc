@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bytes-1.10.0/src/bytes.rs`."><title>bytes.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bytes" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">bytes/</div>bytes.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bytes-1.10.1/src/bytes.rs`."><title>bytes.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bytes" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">bytes/</div>bytes.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -1674,7 +1674,11 @@
 <a href="#1673" id="1673">1673</a>
 <a href="#1674" id="1674">1674</a>
 <a href="#1675" id="1675">1675</a>
-<a href="#1676" id="1676">1676</a></pre></div><pre class="rust"><code><span class="kw">use </span>core::iter::FromIterator;
+<a href="#1676" id="1676">1676</a>
+<a href="#1677" id="1677">1677</a>
+<a href="#1678" id="1678">1678</a>
+<a href="#1679" id="1679">1679</a>
+<a href="#1680" id="1680">1680</a></pre></div><pre class="rust"><code><span class="kw">use </span>core::iter::FromIterator;
 <span class="kw">use </span>core::mem::{<span class="self">self</span>, ManuallyDrop};
 <span class="kw">use </span>core::ops::{Deref, RangeBounds};
 <span class="kw">use </span>core::ptr::NonNull;
@@ -2817,15 +2821,15 @@
     }
 }
 
-<span class="kw">unsafe fn </span>owned_to_vec(_data: <span class="kw-2">&amp;</span>AtomicPtr&lt;()&gt;, ptr: <span class="kw-2">*const </span>u8, len: usize) -&gt; Vec&lt;u8&gt; {
+<span class="kw">unsafe fn </span>owned_to_vec(data: <span class="kw-2">&amp;</span>AtomicPtr&lt;()&gt;, ptr: <span class="kw-2">*const </span>u8, len: usize) -&gt; Vec&lt;u8&gt; {
     <span class="kw">let </span>slice = slice::from_raw_parts(ptr, len);
-    slice.to_vec()
+    <span class="kw">let </span>vec = slice.to_vec();
+    owned_drop_impl(data.load(Ordering::Relaxed));
+    vec
 }
 
 <span class="kw">unsafe fn </span>owned_to_mut(data: <span class="kw-2">&amp;</span>AtomicPtr&lt;()&gt;, ptr: <span class="kw-2">*const </span>u8, len: usize) -&gt; BytesMut {
-    <span class="kw">let </span>bytes_mut = BytesMut::from_vec(owned_to_vec(data, ptr, len));
-    owned_drop_impl(data.load(Ordering::Relaxed));
-    bytes_mut
+    BytesMut::from_vec(owned_to_vec(data, ptr, len))
 }
 
 <span class="kw">unsafe fn </span>owned_is_unique(_data: <span class="kw-2">&amp;</span>AtomicPtr&lt;()&gt;) -&gt; bool {
@@ -2837,6 +2841,10 @@
     <span class="kw">let </span>ref_cnt = <span class="kw-2">&amp;</span>(<span class="kw-2">*</span>lifetime).ref_cnt;
 
     <span class="kw">let </span>old_cnt = ref_cnt.fetch_sub(<span class="number">1</span>, Ordering::Release);
+    <span class="macro">debug_assert!</span>(
+        old_cnt &gt; <span class="number">0 </span>&amp;&amp; old_cnt &lt;= usize::MAX &gt;&gt; <span class="number">1</span>,
+        <span class="string">"expected non-zero refcount and no underflow"
+    </span>);
     <span class="kw">if </span>old_cnt != <span class="number">1 </span>{
         <span class="kw">return</span>;
     }

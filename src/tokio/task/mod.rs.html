@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.43.0/src/task/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="tokio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">tokio/task/</div>mod.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.44.0/src/task/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="tokio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">tokio/task/</div>mod.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -325,53 +325,7 @@
 <a href="#324" id="324">324</a>
 <a href="#325" id="325">325</a>
 <a href="#326" id="326">326</a>
-<a href="#327" id="327">327</a>
-<a href="#328" id="328">328</a>
-<a href="#329" id="329">329</a>
-<a href="#330" id="330">330</a>
-<a href="#331" id="331">331</a>
-<a href="#332" id="332">332</a>
-<a href="#333" id="333">333</a>
-<a href="#334" id="334">334</a>
-<a href="#335" id="335">335</a>
-<a href="#336" id="336">336</a>
-<a href="#337" id="337">337</a>
-<a href="#338" id="338">338</a>
-<a href="#339" id="339">339</a>
-<a href="#340" id="340">340</a>
-<a href="#341" id="341">341</a>
-<a href="#342" id="342">342</a>
-<a href="#343" id="343">343</a>
-<a href="#344" id="344">344</a>
-<a href="#345" id="345">345</a>
-<a href="#346" id="346">346</a>
-<a href="#347" id="347">347</a>
-<a href="#348" id="348">348</a>
-<a href="#349" id="349">349</a>
-<a href="#350" id="350">350</a>
-<a href="#351" id="351">351</a>
-<a href="#352" id="352">352</a>
-<a href="#353" id="353">353</a>
-<a href="#354" id="354">354</a>
-<a href="#355" id="355">355</a>
-<a href="#356" id="356">356</a>
-<a href="#357" id="357">357</a>
-<a href="#358" id="358">358</a>
-<a href="#359" id="359">359</a>
-<a href="#360" id="360">360</a>
-<a href="#361" id="361">361</a>
-<a href="#362" id="362">362</a>
-<a href="#363" id="363">363</a>
-<a href="#364" id="364">364</a>
-<a href="#365" id="365">365</a>
-<a href="#366" id="366">366</a>
-<a href="#367" id="367">367</a>
-<a href="#368" id="368">368</a>
-<a href="#369" id="369">369</a>
-<a href="#370" id="370">370</a>
-<a href="#371" id="371">371</a>
-<a href="#372" id="372">372</a>
-<a href="#373" id="373">373</a></pre></div><pre class="rust"><code><span class="doccomment">//! Asynchronous green-threads.
+<a href="#327" id="327">327</a></pre></div><pre class="rust"><code><span class="doccomment">//! Asynchronous green-threads.
 //!
 //! ## What are Tasks?
 //!
@@ -633,66 +587,11 @@
 //! # }
 //! ```
 //!
-//! ### Cooperative scheduling
-//!
-//! A single call to [`poll`] on a top-level task may potentially do a lot of
-//! work before it returns `Poll::Pending`. If a task runs for a long period of
-//! time without yielding back to the executor, it can starve other tasks
-//! waiting on that executor to execute them, or drive underlying resources.
-//! Since Rust does not have a runtime, it is difficult to forcibly preempt a
-//! long-running task. Instead, this module provides an opt-in mechanism for
-//! futures to collaborate with the executor to avoid starvation.
-//!
-//! Consider a future like this one:
-//!
-//! ```
-//! # use tokio_stream::{Stream, StreamExt};
-//! async fn drop_all&lt;I: Stream + Unpin&gt;(mut input: I) {
-//!     while let Some(_) = input.next().await {}
-//! }
-//! ```
-//!
-//! It may look harmless, but consider what happens under heavy load if the
-//! input stream is _always_ ready. If we spawn `drop_all`, the task will never
-//! yield, and will starve other tasks and resources on the same executor.
-//!
-//! To account for this, Tokio has explicit yield points in a number of library
-//! functions, which force tasks to return to the executor periodically.
-//!
-//!
-//! #### unconstrained
-//!
-//! If necessary, [`task::unconstrained`] lets you opt a future out of Tokio's cooperative
-//! scheduling. When a future is wrapped with `unconstrained`, it will never be forced to yield to
-//! Tokio. For example:
-//!
-//! ```
-//! # #[tokio::main]
-//! # async fn main() {
-//! use tokio::{task, sync::mpsc};
-//!
-//! let fut = async {
-//!     let (tx, mut rx) = mpsc::unbounded_channel();
-//!
-//!     for i in 0..1000 {
-//!         let _ = tx.send(());
-//!         // This will always be ready. If coop was in effect, this code would be forced to yield
-//!         // periodically. However, if left unconstrained, then this code will never yield.
-//!         rx.recv().await;
-//!     }
-//! };
-//!
-//! task::unconstrained(fut).await;
-//! # }
-//! ```
-//!
 //! [`task::spawn_blocking`]: crate::task::spawn_blocking
 //! [`task::block_in_place`]: crate::task::block_in_place
 //! [rt-multi-thread]: ../runtime/index.html#threaded-scheduler
 //! [`task::yield_now`]: crate::task::yield_now()
 //! [`thread::yield_now`]: std::thread::yield_now
-//! [`task::unconstrained`]: crate::task::unconstrained()
-//! [`poll`]: method@std::future::Future::poll
 
 </span><span class="macro">cfg_rt!</span> {
     <span class="kw">pub use </span><span class="kw">crate</span>::runtime::task::{JoinError, JoinHandle};
@@ -710,17 +609,22 @@
     <span class="kw">mod </span>yield_now;
     <span class="kw">pub use </span>yield_now::yield_now;
 
-    <span class="kw">mod </span>consume_budget;
-    <span class="kw">pub use </span>consume_budget::consume_budget;
+    <span class="kw">pub mod </span>coop;
+    <span class="attr">#[doc(hidden)]
+    #[deprecated = <span class="string">"Moved to tokio::task::coop::consume_budget"</span>]
+    </span><span class="kw">pub use </span>coop::consume_budget;
+    <span class="attr">#[doc(hidden)]
+    #[deprecated = <span class="string">"Moved to tokio::task::coop::unconstrained"</span>]
+    </span><span class="kw">pub use </span>coop::unconstrained;
+    <span class="attr">#[doc(hidden)]
+    #[deprecated = <span class="string">"Moved to tokio::task::coop::Unconstrained"</span>]
+    </span><span class="kw">pub use </span>coop::Unconstrained;
 
     <span class="kw">mod </span>local;
     <span class="kw">pub use </span>local::{spawn_local, LocalSet, LocalEnterGuard};
 
     <span class="kw">mod </span>task_local;
     <span class="kw">pub use </span>task_local::LocalKey;
-
-    <span class="kw">mod </span>unconstrained;
-    <span class="kw">pub use </span>unconstrained::{unconstrained, Unconstrained};
 
     <span class="attr">#[doc(inline)]
     </span><span class="kw">pub use </span>join_set::JoinSet;
@@ -743,5 +647,9 @@
     </span><span class="kw">pub mod </span>futures {
         <span class="kw">pub use </span><span class="kw">super</span>::task_local::TaskLocalFuture;
     }
+}
+
+<span class="macro">cfg_not_rt!</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>coop;
 }
 </code></pre></div></section></main></body></html>

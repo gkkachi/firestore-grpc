@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.43.0/src/sync/mpsc/chan.rs`."><title>chan.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="tokio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../../static.files/storage-59e33391.js"></script><script defer src="../../../../static.files/src-script-56102188.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">tokio/sync/mpsc/</div>chan.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.44.0/src/sync/mpsc/chan.rs`."><title>chan.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="tokio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../../static.files/storage-59e33391.js"></script><script defer src="../../../../static.files/src-script-56102188.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">tokio/sync/mpsc/</div>chan.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -598,7 +598,31 @@
 <a href="#597" id="597">597</a>
 <a href="#598" id="598">598</a>
 <a href="#599" id="599">599</a>
-<a href="#600" id="600">600</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::loom::cell::UnsafeCell;
+<a href="#600" id="600">600</a>
+<a href="#601" id="601">601</a>
+<a href="#602" id="602">602</a>
+<a href="#603" id="603">603</a>
+<a href="#604" id="604">604</a>
+<a href="#605" id="605">605</a>
+<a href="#606" id="606">606</a>
+<a href="#607" id="607">607</a>
+<a href="#608" id="608">608</a>
+<a href="#609" id="609">609</a>
+<a href="#610" id="610">610</a>
+<a href="#611" id="611">611</a>
+<a href="#612" id="612">612</a>
+<a href="#613" id="613">613</a>
+<a href="#614" id="614">614</a>
+<a href="#615" id="615">615</a>
+<a href="#616" id="616">616</a>
+<a href="#617" id="617">617</a>
+<a href="#618" id="618">618</a>
+<a href="#619" id="619">619</a>
+<a href="#620" id="620">620</a>
+<a href="#621" id="621">621</a>
+<a href="#622" id="622">622</a>
+<a href="#623" id="623">623</a>
+<a href="#624" id="624">624</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::loom::cell::UnsafeCell;
 <span class="kw">use </span><span class="kw">crate</span>::loom::future::AtomicWaker;
 <span class="kw">use </span><span class="kw">crate</span>::loom::sync::atomic::AtomicUsize;
 <span class="kw">use </span><span class="kw">crate</span>::loom::sync::Arc;
@@ -892,7 +916,7 @@
         <span class="macro">ready!</span>(<span class="kw">crate</span>::trace::trace_leaf(cx));
 
         <span class="comment">// Keep track of task budget
-        </span><span class="kw">let </span>coop = <span class="macro">ready!</span>(<span class="kw">crate</span>::runtime::coop::poll_proceed(cx));
+        </span><span class="kw">let </span>coop = <span class="macro">ready!</span>(<span class="kw">crate</span>::task::coop::poll_proceed(cx));
 
         <span class="self">self</span>.inner.rx_fields.with_mut(|rx_fields_ptr| {
             <span class="kw">let </span>rx_fields = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>rx_fields_ptr };
@@ -954,7 +978,7 @@
         <span class="macro">ready!</span>(<span class="kw">crate</span>::trace::trace_leaf(cx));
 
         <span class="comment">// Keep track of task budget
-        </span><span class="kw">let </span>coop = <span class="macro">ready!</span>(<span class="kw">crate</span>::runtime::coop::poll_proceed(cx));
+        </span><span class="kw">let </span>coop = <span class="macro">ready!</span>(<span class="kw">crate</span>::task::coop::poll_proceed(cx));
 
         <span class="kw">if </span>limit == <span class="number">0 </span>{
             coop.made_progress();
@@ -1090,10 +1114,34 @@
 
         <span class="self">self</span>.inner.rx_fields.with_mut(|rx_fields_ptr| {
             <span class="kw">let </span>rx_fields = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>rx_fields_ptr };
-
-            <span class="kw">while let </span><span class="prelude-val">Some</span>(Value(<span class="kw">_</span>)) = rx_fields.list.pop(<span class="kw-2">&amp;</span><span class="self">self</span>.inner.tx) {
-                <span class="self">self</span>.inner.semaphore.add_permit();
+            <span class="kw">struct </span>Guard&lt;<span class="lifetime">'a</span>, T, S: Semaphore&gt; {
+                list: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>list::Rx&lt;T&gt;,
+                tx: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>list::Tx&lt;T&gt;,
+                sem: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>S,
             }
+
+            <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, S: Semaphore&gt; Guard&lt;<span class="lifetime">'a</span>, T, S&gt; {
+                <span class="kw">fn </span>drain(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+                    <span class="comment">// call T's destructor.
+                    </span><span class="kw">while let </span><span class="prelude-val">Some</span>(Value(<span class="kw">_</span>)) = <span class="self">self</span>.list.pop(<span class="self">self</span>.tx) {
+                        <span class="self">self</span>.sem.add_permit();
+                    }
+                }
+            }
+
+            <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, S: Semaphore&gt; Drop <span class="kw">for </span>Guard&lt;<span class="lifetime">'a</span>, T, S&gt; {
+                <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+                    <span class="self">self</span>.drain();
+                }
+            }
+
+            <span class="kw">let </span><span class="kw-2">mut </span>guard = Guard {
+                list: <span class="kw-2">&amp;mut </span>rx_fields.list,
+                tx: <span class="kw-2">&amp;</span><span class="self">self</span>.inner.tx,
+                sem: <span class="kw-2">&amp;</span><span class="self">self</span>.inner.semaphore,
+            };
+
+            guard.drain();
         });
     }
 }
