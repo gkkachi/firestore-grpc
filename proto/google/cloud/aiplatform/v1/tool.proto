@@ -261,13 +261,19 @@ message VertexRagStore {
       [(google.api.field_behavior) = OPTIONAL];
 }
 
-// Retrieve from Vertex AI Search datastore for grounding.
+// Retrieve from Vertex AI Search datastore or engine for grounding.
+// datastore and engine are mutually exclusive.
 // See https://cloud.google.com/products/agent-builder
 message VertexAISearch {
-  // Required. Fully-qualified Vertex AI Search data store resource ID.
+  // Optional. Fully-qualified Vertex AI Search data store resource ID.
   // Format:
   // `projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}`
-  string datastore = 1 [(google.api.field_behavior) = REQUIRED];
+  string datastore = 1 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Fully-qualified Vertex AI Search engine resource ID.
+  // Format:
+  // `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}`
+  string engine = 2 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Tool to retrieve public web data for grounding, powered by Google.
@@ -372,9 +378,38 @@ message RagRetrievalConfig {
     string metadata_filter = 2 [(google.api.field_behavior) = OPTIONAL];
   }
 
+  // Config for ranking and reranking.
+  message Ranking {
+    // Config for Rank Service.
+    message RankService {
+      // Optional. The model name of the rank service.
+      // Format: `semantic-ranker-512@latest`
+      optional string model_name = 1 [(google.api.field_behavior) = OPTIONAL];
+    }
+
+    // Config for LlmRanker.
+    message LlmRanker {
+      // Optional. The model name used for ranking.
+      // Format: `gemini-1.5-pro`
+      optional string model_name = 1 [(google.api.field_behavior) = OPTIONAL];
+    }
+
+    // Config options for ranking. Currently only Rank Service is supported.
+    oneof ranking_config {
+      // Optional. Config for Rank Service.
+      RankService rank_service = 1 [(google.api.field_behavior) = OPTIONAL];
+
+      // Optional. Config for LlmRanker.
+      LlmRanker llm_ranker = 3 [(google.api.field_behavior) = OPTIONAL];
+    }
+  }
+
   // Optional. The number of contexts to retrieve.
   int32 top_k = 1 [(google.api.field_behavior) = OPTIONAL];
 
   // Optional. Config for filters.
   Filter filter = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Config for ranking and reranking.
+  Ranking ranking = 4 [(google.api.field_behavior) = OPTIONAL];
 }
