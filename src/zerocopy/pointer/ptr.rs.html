@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.23/src/pointer/ptr.rs`."><title>ptr.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="zerocopy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">zerocopy/pointer/</div>ptr.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.24/src/pointer/ptr.rs`."><title>ptr.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="zerocopy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.1 (4eb161250 2025-03-15)" data-channel="1.85.1" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">zerocopy/pointer/</div>ptr.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -1432,7 +1432,100 @@
 <a href="#1431" id="1431">1431</a>
 <a href="#1432" id="1432">1432</a>
 <a href="#1433" id="1433">1433</a>
-<a href="#1434" id="1434">1434</a></pre></div><pre class="rust"><code><span class="comment">// Copyright 2023 The Fuchsia Authors
+<a href="#1434" id="1434">1434</a>
+<a href="#1435" id="1435">1435</a>
+<a href="#1436" id="1436">1436</a>
+<a href="#1437" id="1437">1437</a>
+<a href="#1438" id="1438">1438</a>
+<a href="#1439" id="1439">1439</a>
+<a href="#1440" id="1440">1440</a>
+<a href="#1441" id="1441">1441</a>
+<a href="#1442" id="1442">1442</a>
+<a href="#1443" id="1443">1443</a>
+<a href="#1444" id="1444">1444</a>
+<a href="#1445" id="1445">1445</a>
+<a href="#1446" id="1446">1446</a>
+<a href="#1447" id="1447">1447</a>
+<a href="#1448" id="1448">1448</a>
+<a href="#1449" id="1449">1449</a>
+<a href="#1450" id="1450">1450</a>
+<a href="#1451" id="1451">1451</a>
+<a href="#1452" id="1452">1452</a>
+<a href="#1453" id="1453">1453</a>
+<a href="#1454" id="1454">1454</a>
+<a href="#1455" id="1455">1455</a>
+<a href="#1456" id="1456">1456</a>
+<a href="#1457" id="1457">1457</a>
+<a href="#1458" id="1458">1458</a>
+<a href="#1459" id="1459">1459</a>
+<a href="#1460" id="1460">1460</a>
+<a href="#1461" id="1461">1461</a>
+<a href="#1462" id="1462">1462</a>
+<a href="#1463" id="1463">1463</a>
+<a href="#1464" id="1464">1464</a>
+<a href="#1465" id="1465">1465</a>
+<a href="#1466" id="1466">1466</a>
+<a href="#1467" id="1467">1467</a>
+<a href="#1468" id="1468">1468</a>
+<a href="#1469" id="1469">1469</a>
+<a href="#1470" id="1470">1470</a>
+<a href="#1471" id="1471">1471</a>
+<a href="#1472" id="1472">1472</a>
+<a href="#1473" id="1473">1473</a>
+<a href="#1474" id="1474">1474</a>
+<a href="#1475" id="1475">1475</a>
+<a href="#1476" id="1476">1476</a>
+<a href="#1477" id="1477">1477</a>
+<a href="#1478" id="1478">1478</a>
+<a href="#1479" id="1479">1479</a>
+<a href="#1480" id="1480">1480</a>
+<a href="#1481" id="1481">1481</a>
+<a href="#1482" id="1482">1482</a>
+<a href="#1483" id="1483">1483</a>
+<a href="#1484" id="1484">1484</a>
+<a href="#1485" id="1485">1485</a>
+<a href="#1486" id="1486">1486</a>
+<a href="#1487" id="1487">1487</a>
+<a href="#1488" id="1488">1488</a>
+<a href="#1489" id="1489">1489</a>
+<a href="#1490" id="1490">1490</a>
+<a href="#1491" id="1491">1491</a>
+<a href="#1492" id="1492">1492</a>
+<a href="#1493" id="1493">1493</a>
+<a href="#1494" id="1494">1494</a>
+<a href="#1495" id="1495">1495</a>
+<a href="#1496" id="1496">1496</a>
+<a href="#1497" id="1497">1497</a>
+<a href="#1498" id="1498">1498</a>
+<a href="#1499" id="1499">1499</a>
+<a href="#1500" id="1500">1500</a>
+<a href="#1501" id="1501">1501</a>
+<a href="#1502" id="1502">1502</a>
+<a href="#1503" id="1503">1503</a>
+<a href="#1504" id="1504">1504</a>
+<a href="#1505" id="1505">1505</a>
+<a href="#1506" id="1506">1506</a>
+<a href="#1507" id="1507">1507</a>
+<a href="#1508" id="1508">1508</a>
+<a href="#1509" id="1509">1509</a>
+<a href="#1510" id="1510">1510</a>
+<a href="#1511" id="1511">1511</a>
+<a href="#1512" id="1512">1512</a>
+<a href="#1513" id="1513">1513</a>
+<a href="#1514" id="1514">1514</a>
+<a href="#1515" id="1515">1515</a>
+<a href="#1516" id="1516">1516</a>
+<a href="#1517" id="1517">1517</a>
+<a href="#1518" id="1518">1518</a>
+<a href="#1519" id="1519">1519</a>
+<a href="#1520" id="1520">1520</a>
+<a href="#1521" id="1521">1521</a>
+<a href="#1522" id="1522">1522</a>
+<a href="#1523" id="1523">1523</a>
+<a href="#1524" id="1524">1524</a>
+<a href="#1525" id="1525">1525</a>
+<a href="#1526" id="1526">1526</a>
+<a href="#1527" id="1527">1527</a></pre></div><pre class="rust"><code><span class="comment">// Copyright 2023 The Fuchsia Authors
 //
 // Licensed under a BSD-style license &lt;LICENSE-BSD&gt;, Apache License, Version 2.0
 // &lt;LICENSE-APACHE or https://www.apache.org/licenses/LICENSE-2.0&gt;, or the MIT
@@ -1446,9 +1539,12 @@
     ptr::NonNull,
 };
 
-<span class="kw">use super</span>::{inner::PtrInner, invariant::<span class="kw-2">*</span>};
 <span class="kw">use crate</span>::{
-    util::{AlignmentVariance, Covariant, TransparentWrapper, ValidityVariance},
+    pointer::{
+        inner::PtrInner,
+        invariant::<span class="kw-2">*</span>,
+        transmute::{MutationCompatible, SizeEq, TransmuteFromPtr},
+    },
     AlignmentError, CastError, CastType, KnownLayout, SizeError, TryFromBytes, ValidityError,
 };
 
@@ -1511,28 +1607,22 @@
         ///
         /// The caller promises that:
         ///
-        /// 0. If `ptr`'s referent is not zero sized, then `ptr` is derived from
-        ///    some valid Rust allocation, `A`.
-        /// 1. If `ptr`'s referent is not zero sized, then `ptr` has valid
-        ///    provenance for `A`.
-        /// 2. If `ptr`'s referent is not zero sized, then `ptr` addresses a
-        ///    byte range which is entirely contained in `A`.
-        /// 3. `ptr` addresses a byte range whose length fits in an `isize`.
-        /// 4. `ptr` addresses a byte range which does not wrap around the
-        ///    address space.
-        /// 5. If `ptr`'s referent is not zero sized, then `A` is guaranteed to
-        ///    live for at least `'a`.
-        /// 6. `ptr` conforms to the aliasing invariant of
+        /// 0. If `ptr`'s referent is not zero sized, then `ptr` has valid
+        ///    provenance for its referent, which is entirely contained in some
+        ///    Rust allocation, `A`.
+        /// 1. If `ptr`'s referent is not zero sized, `A` is guaranteed to live
+        ///    for at least `'a`.
+        /// 2. `ptr` conforms to the aliasing invariant of
         ///    [`I::Aliasing`](invariant::Aliasing).
-        /// 7. `ptr` conforms to the alignment invariant of
+        /// 3. `ptr` conforms to the alignment invariant of
         ///    [`I::Alignment`](invariant::Alignment).
-        /// 8. `ptr` conforms to the validity invariant of
+        /// 4. `ptr` conforms to the validity invariant of
         ///    [`I::Validity`](invariant::Validity).
         </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe fn </span>new(ptr: NonNull&lt;T&gt;) -&gt; Ptr&lt;<span class="lifetime">'a</span>, T, I&gt; {
-            <span class="comment">// SAFETY: The caller has promised (in 0 - 5) to satisfy all safety
+            <span class="comment">// SAFETY: The caller has promised (in 0 - 1) to satisfy all safety
             // invariants of `PtrInner::new`.
             </span><span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ PtrInner::new(ptr) };
-            <span class="comment">// SAFETY: The caller has promised (in 6 - 8) to satisfy all safety
+            <span class="comment">// SAFETY: The caller has promised (in 2 - 4) to satisfy all safety
             // invariants of `Ptr`.
             </span><span class="self">Self </span>{ ptr, _invariants: PhantomData }
         }
@@ -1575,7 +1665,21 @@
 
     <span class="doccomment">/// SAFETY: Shared pointers are safely `Copy`. `Ptr`'s other invariants
     /// (besides aliasing) are unaffected by the number of references that exist
-    /// to `Ptr`'s referent.
+    /// to `Ptr`'s referent. The notable cases are:
+    /// - Alignment is a property of the referent type (`T`) and the address,
+    ///   both of which are unchanged
+    /// - Let `S(T, V)` be the set of bit values permitted to appear in the
+    ///   referent of a `Ptr&lt;T, I: Invariants&lt;Validity = V&gt;&gt;`. Since this copy
+    ///   does not change `I::Validity` or `T`, `S(T, I::Validity)` is also
+    ///   unchanged.
+    ///   
+    ///   We are required to guarantee that the referents of the original `Ptr`
+    ///   and of the copy (which, of course, are actually the same since they
+    ///   live in the same byte address range) both remain in the set `S(T,
+    ///   I::Validity)`. Since this invariant holds on the original `Ptr`, it
+    ///   cannot be violated by the original `Ptr`, and thus the original `Ptr`
+    ///   cannot be used to violate this invariant on the copy. The inverse
+    ///   holds as well.
     </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, I&gt; Copy <span class="kw">for </span>Ptr&lt;<span class="lifetime">'a</span>, T, I&gt;
     <span class="kw">where
         </span>T: <span class="lifetime">'a </span>+ <span class="question-mark">?</span>Sized,
@@ -1583,9 +1687,7 @@
     {
     }
 
-    <span class="doccomment">/// SAFETY: Shared pointers are safely `Clone`. `Ptr`'s other invariants
-    /// (besides aliasing) are unaffected by the number of references that exist
-    /// to `Ptr`'s referent.
+    <span class="doccomment">/// SAFETY: See the safety comment on `Copy`.
     </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, I&gt; Clone <span class="kw">for </span>Ptr&lt;<span class="lifetime">'a</span>, T, I&gt;
     <span class="kw">where
         </span>T: <span class="lifetime">'a </span>+ <span class="question-mark">?</span>Sized,
@@ -1628,8 +1730,15 @@
             //    invariant of `Shared`.
             // 1. `ptr`, by invariant on `&amp;'a T`, conforms to the alignment
             //    invariant of `Aligned`.
-            // 2. `ptr`, by invariant on `&amp;'a T`, conforms to the validity
-            //    invariant of `Valid`.
+            // 2. `ptr`'s referent, by invariant on `&amp;'a T`, is a bit-valid `T`.
+            //    This satisfies the requirement that a `Ptr&lt;T, (_, _, Valid)&gt;`
+            //    point to a bit-valid `T`. Even if `T` permits interior
+            //    mutation, this invariant guarantees that the returned `Ptr`
+            //    can only ever be used to modify the referent to store
+            //    bit-valid `T`s, which ensures that the returned `Ptr` cannot
+            //    be used to violate the soundness of the original `ptr: &amp;'a T`
+            //    or of any other references that may exist to the same
+            //    referent.
             </span><span class="kw">unsafe </span>{ <span class="self">Self</span>::from_inner(inner) }
         }
     }
@@ -1648,8 +1757,13 @@
             //    invariant of `Exclusive`.
             // 1. `ptr`, by invariant on `&amp;'a mut T`, conforms to the alignment
             //    invariant of `Aligned`.
-            // 2. `ptr`, by invariant on `&amp;'a mut T`, conforms to the validity
-            //    invariant of `Valid`.
+            // 2. `ptr`'s referent, by invariant on `&amp;'a mut T`, is a bit-valid
+            //    `T`. This satisfies the requirement that a `Ptr&lt;T, (_, _,
+            //    Valid)&gt;` point to a bit-valid `T`. This invariant guarantees
+            //    that the returned `Ptr` can only ever be used to modify the
+            //    referent to store bit-valid `T`s, which ensures that the
+            //    returned `Ptr` cannot be used to violate the soundness of the
+            //    original `ptr: &amp;'a mut T`.
             </span><span class="kw">unsafe </span>{ <span class="self">Self</span>::from_inner(inner) }
         }
     }
@@ -1685,9 +1799,9 @@
             //
             //   This is ensured by contract on all `PtrInner`s.
             //
-            // 3. The pointer must point to an initialized instance of `T`. This
-            //    is ensured by-contract on `Ptr`, because the `I::Validity` is
-            //    `Valid`.
+            // 3. The pointer must point to a validly-initialized instance of
+            //    `T`. This is ensured by-contract on `Ptr`, because the
+            //    `I::Validity` is `Valid`.
             //
             // 4. You must enforce Rust’s aliasing rules. This is ensured by
             //    contract on `Ptr`, because `I::Aliasing: Reference`. Either it
@@ -1723,11 +1837,17 @@
             // hold of `ptr = self.as_inner()`:
             // 0. SEE BELOW.
             // 1. `ptr` conforms to the alignment invariant of
-            //   [`I::Alignment`](invariant::Alignment).
+            //    [`I::Alignment`](invariant::Alignment).
             // 2. `ptr` conforms to the validity invariant of
-            //   [`I::Validity`](invariant::Validity).
+            //    [`I::Validity`](invariant::Validity). `self` and the returned
+            //    `Ptr` permit the same bit values in their referents since they
+            //    have the same referent type (`T`) and the same validity
+            //    (`I::Validity`). Thus, regardless of what mutation is
+            //    permitted (`Exclusive` aliasing or `Shared`-aliased interior
+            //    mutation), neither can be used to write a value to the
+            //    referent which violates the other's validity invariant.
             //
-            // For aliasing (6 above), since `I::Aliasing: Reference`,
+            // For aliasing (0 above), since `I::Aliasing: Reference`,
             // there are two cases for `I::Aliasing`:
             // - For `invariant::Shared`: `'a` outlives `'b`, and so the
             //   returned `Ptr` does not permit accessing the referent any
@@ -1773,9 +1893,9 @@
             //
             //   This is ensured by contract on all `PtrInner`s.
             //
-            // 3. The pointer must point to an initialized instance of `T`. This
-            //    is ensured by-contract on `Ptr`, because the validity
-            //    invariant is `Valid`.
+            // 3. The pointer must point to a validly-initialized instance of
+            //    `T`. This is ensured by-contract on `Ptr`, because the
+            //    validity invariant is `Valid`.
             //
             // 4. You must enforce Rust’s aliasing rules. This is ensured by
             //    contract on `Ptr`, because the `ALIASING_INVARIANT` is
@@ -1787,53 +1907,54 @@
         }
     }
 
-    <span class="doccomment">/// `Ptr&lt;'a, T = Wrapper&lt;U&gt;&gt;` → `Ptr&lt;'a, U&gt;`
-    </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, I&gt; Ptr&lt;<span class="lifetime">'a</span>, T, I&gt;
-    <span class="kw">where
-        </span>T: <span class="lifetime">'a </span>+ TransparentWrapper&lt;I, UnsafeCellVariance = Covariant&gt; + <span class="question-mark">?</span>Sized,
-        I: Invariants,
-    {
-        <span class="doccomment">/// Converts `self` to a transparent wrapper type into a `Ptr` to the
-        /// wrapped inner type.
-        </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>transparent_wrapper_into_inner(
-            <span class="self">self</span>,
-        ) -&gt; Ptr&lt;
-            <span class="lifetime">'a</span>,
-            T::Inner,
-            (
-                I::Aliasing,
-                &lt;T::AlignmentVariance <span class="kw">as </span>AlignmentVariance&lt;I::Alignment&gt;&gt;::Applied,
-                &lt;T::ValidityVariance <span class="kw">as </span>ValidityVariance&lt;I::Validity&gt;&gt;::Applied,
-            ),
-        &gt; {
-            <span class="comment">// SAFETY:
-            // - By invariant on `TransparentWrapper::cast_into_inner`:
-            //   - This cast preserves address and referent size, and thus the
-            //     returned pointer addresses the same bytes as `p`
-            //   - This cast preserves provenance
-            // - By invariant on `TransparentWrapper&lt;UnsafeCellVariance =
-            //   Covariant&gt;`, `T` and `T::Inner` have `UnsafeCell`s at the same
-            //   byte ranges. Since `p` and the returned pointer address the
-            //   same byte range, they refer to `UnsafeCell`s at the same byte
-            //   ranges.
-            // - By invariant on `TransparentWrapper`, since `self` satisfies
-            //   the validity invariant `I::Validity`, the returned pointer (of
-            //   type `T::Inner`) satisfies the given "applied" validity
-            //   invariant.
-            </span><span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ <span class="self">self</span>.transmute_unchecked(|p| T::cast_into_inner(p)) };
-            <span class="comment">// SAFETY: By invariant on `TransparentWrapper`, since `self`
-            // satisfies the alignment invariant `I::Alignment`, the returned
-            // pointer (of type `T::Inner`) satisfies the given "applied"
-            // alignment invariant.
-            </span><span class="kw">unsafe </span>{ ptr.assume_alignment() }
-        }
-    }
-
     <span class="doccomment">/// `Ptr&lt;'a, T&gt;` → `Ptr&lt;'a, U&gt;`
     </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <span class="question-mark">?</span>Sized, I&gt; Ptr&lt;<span class="lifetime">'a</span>, T, I&gt;
     <span class="kw">where
         </span>I: Invariants,
     {
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>transmute&lt;U, V, R&gt;(<span class="self">self</span>) -&gt; Ptr&lt;<span class="lifetime">'a</span>, U, (I::Aliasing, Unaligned, V)&gt;
+        <span class="kw">where
+            </span>V: Validity,
+            U: TransmuteFromPtr&lt;T, I::Aliasing, I::Validity, V, R&gt; + SizeEq&lt;T&gt; + <span class="question-mark">?</span>Sized,
+        {
+            <span class="comment">// SAFETY:
+            // - This cast preserves address and provenance
+            // - `U: SizeEq&lt;T&gt;` guarantees that this cast preserves the number
+            //   of bytes in the referent
+            // - If aliasing is `Shared`, then by `U: TransmuteFromPtr&lt;T&gt;`, at
+            //   least one of the following holds:
+            //   - `T: Immutable` and `U: Immutable`, in which case it is
+            //     trivially sound for shared code to operate on a `&amp;T` and `&amp;U`
+            //     at the same time, as neither can perform interior mutation
+            //   - It is directly guaranteed that it is sound for shared code to
+            //     operate on these references simultaneously
+            // - By `U: TransmuteFromPtr&lt;T, I::Aliasing, I::Validity, V&gt;`, it is
+            //   sound to perform this transmute.
+            </span><span class="kw">unsafe </span>{ <span class="self">self</span>.transmute_unchecked(|t: NonNull&lt;T&gt;| U::cast_from_raw(t)) }
+        }
+
+        <span class="attr">#[doc(hidden)]
+        #[inline(always)]
+        #[must_use]
+        </span><span class="kw">pub fn </span>recall_validity&lt;V, R&gt;(<span class="self">self</span>) -&gt; Ptr&lt;<span class="lifetime">'a</span>, T, (I::Aliasing, I::Alignment, V)&gt;
+        <span class="kw">where
+            </span>V: Validity,
+            T: TransmuteFromPtr&lt;T, I::Aliasing, I::Validity, V, R&gt;,
+        {
+            <span class="comment">// SAFETY:
+            // - This cast is a no-op, and so trivially preserves address,
+            //   referent size, and provenance
+            // - It is trivially sound to have multiple `&amp;T` referencing the same
+            //   referent simultaneously
+            // - By `T: TransmuteFromPtr&lt;T, I::Aliasing, I::Validity, V&gt;`, it is
+            //   sound to perform this transmute.
+            </span><span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ <span class="self">self</span>.transmute_unchecked(|t| t) };
+            <span class="comment">// SAFETY: `self` and `ptr` have the same address and referent type.
+            // Therefore, if `self` satisfies `I::Alignment`, then so does
+            // `ptr`.
+            </span><span class="kw">unsafe </span>{ ptr.assume_alignment::&lt;I::Alignment&gt;() }
+        }
+
         <span class="doccomment">/// Casts to a different (unsized) target type without checking interior
         /// mutability.
         ///
@@ -1847,15 +1968,22 @@
         /// following properties:
         /// - `u` addresses a subset of the bytes addressed by `p`
         /// - `u` has the same provenance as `p`
-        /// - If `I::Aliasing` is [`Shared`], `UnsafeCell`s in `*u` must exist
-        ///   at ranges identical to those at which `UnsafeCell`s exist in `*p`
+        /// - If `I::Aliasing` is [`Shared`], it must not be possible for safe
+        ///   code, operating on a `&amp;T` and `&amp;U` with the same referent
+        ///   simultaneously, to cause undefined behavior
         /// - It is sound to transmute a pointer of type `T` with aliasing
         ///   `I::Aliasing` and validity `I::Validity` to a pointer of type `U`
         ///   with aliasing `I::Aliasing` and validity `V`. This is a subtle
         ///   soundness requirement that is a function of `T`, `U`,
         ///   `I::Aliasing`, `I::Validity`, and `V`, and may depend upon the
         ///   presence, absence, or specific location of `UnsafeCell`s in `T`
-        ///   and/or `U`.
+        ///   and/or `U`. See [`Validity`] for more details.
+        ///
+        /// `transmute_unchecked` guarantees that the pointer passed to `cast`
+        /// will reference a byte sequence which is either contained inside a
+        /// single allocated object or is zero sized. In either case, this means
+        /// that its size will fit in an `isize` and it will not wrap around the
+        /// address space.
         </span><span class="attr">#[doc(hidden)]
         #[inline]
         </span><span class="kw">pub unsafe fn </span>transmute_unchecked&lt;U: <span class="question-mark">?</span>Sized, V, F&gt;(
@@ -1864,14 +1992,12 @@
         ) -&gt; Ptr&lt;<span class="lifetime">'a</span>, U, (I::Aliasing, Unaligned, V)&gt;
         <span class="kw">where
             </span>V: Validity,
-            F: FnOnce(<span class="kw-2">*mut </span>T) -&gt; <span class="kw-2">*mut </span>U,
+            F: FnOnce(NonNull&lt;T&gt;) -&gt; NonNull&lt;U&gt;,
         {
-            <span class="kw">let </span>ptr = cast(<span class="self">self</span>.as_inner().as_non_null().as_ptr());
-
-            <span class="comment">// SAFETY: Caller promises that `cast` returns a pointer whose
-            // address is in the range of `self.as_inner().as_non_null()`'s referent. By
-            // invariant, none of these addresses are null.
-            </span><span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ NonNull::new_unchecked(ptr) };
+            <span class="comment">// SAFETY: By invariant on `self`, `self.as_inner().as_non_null()`
+            // either references a zero-sized byte range, or else it references
+            // a byte range contained inside of a single allocated objection.
+            </span><span class="kw">let </span>ptr = cast(<span class="self">self</span>.as_inner().as_non_null());
 
             <span class="comment">// SAFETY:
             //
@@ -1879,24 +2005,12 @@
             // promises that `cast` preserves provenance, and we call it with
             // `self.as_inner().as_non_null()`.
             //
-            // 0. By invariant,  if `self`'s referent is not zero sized, then
-            //    `self` is derived from some valid Rust allocation, `A`. By
-            //    Lemma 1, `ptr` has the same provenance as `self`. Thus, `ptr`
-            //    is derived from `A`.
-            // 1. By invariant, if `self`'s referent is not zero sized, then
-            //    `self` has valid provenance for `A`. By Lemma 1, so does
-            //    `ptr`.
-            // 2. By invariant on `self` and caller precondition, if `ptr`'s
-            //    referent is not zero sized, then `ptr` addresses a byte range
-            //    which is entirely contained in `A`.
-            // 3. By invariant on `self` and caller precondition, `ptr`
-            //    addresses a byte range whose length fits in an `isize`.
-            // 4. By invariant on `self` and caller precondition, `ptr`
-            //    addresses a byte range which does not wrap around the address
-            //    space.
-            // 5. By invariant on `self`, if `self`'s referent is not zero
+            // 0. By invariant, if `self`'s referent is not zero sized, then
+            //    `self` has valid provenance for its entire referent, which is
+            //    entirely contained in `A`. By Lemma 1, so does `ptr`.
+            // 1. By invariant on `self`, if `self`'s referent is not zero
             //    sized, then `A` is guaranteed to live for at least `'a`.
-            // 6. `ptr` conforms to the aliasing invariant of `I::Aliasing`:
+            // 2. `ptr` conforms to the aliasing invariant of `I::Aliasing`:
             //    - `Exclusive`: `self` is the only `Ptr` or reference which is
             //      permitted to read or modify the referent for the lifetime
             //      `'a`. Since we consume `self` by value, the returned pointer
@@ -1904,24 +2018,17 @@
             //      read or modify the referent for the lifetime `'a`.
             //    - `Shared`: Since `self` has aliasing `Shared`, we know that
             //      no other code may mutate the referent during the lifetime
-            //      `'a`, except via `UnsafeCell`s. The caller promises that
-            //      `UnsafeCell`s cover the same byte ranges in `*self` and
-            //      `*ptr`. For each byte in the referent, there are two cases:
-            //      - If the byte is not covered by an `UnsafeCell` in `*ptr`,
-            //        then it is not covered in `*self`. By invariant on `self`,
-            //        it will not be mutated during `'a`, as required by the
-            //        constructed pointer. Similarly, the returned pointer will
-            //        not permit any mutations to these locations, as required
-            //        by the invariant on `self`.
-            //      - If the byte is covered by an `UnsafeCell` in `*ptr`, then
-            //        the returned pointer's invariants do not assume that the
-            //        byte will not be mutated during `'a`. While the returned
-            //        pointer will permit mutation of this byte during `'a`, by
-            //        invariant on `self`, no other code assumes that this will
-            //        not happen.
+            //      `'a`, except via `UnsafeCell`s, and except as permitted by
+            //      `T`'s library safety invariants. The caller promises that
+            //      any safe operations which can be permitted on a `&amp;T` and a
+            //      `&amp;U` simultaneously must be sound. Thus, no operations on a
+            //      `&amp;U` could violate `&amp;T`'s library safety invariants, and
+            //      vice-versa. Since any mutation via shared references outside
+            //      of `UnsafeCell`s is unsound, this must be impossible using
+            //      `&amp;T` and `&amp;U`.
             //    - `Inaccessible`: There are no restrictions we need to uphold.
-            // 7. `ptr` trivially satisfies the alignment invariant `Unaligned`.
-            // 8. The caller promises that `ptr` conforms to the validity
+            // 3. `ptr` trivially satisfies the alignment invariant `Unaligned`.
+            // 4. The caller promises that `ptr` conforms to the validity
             //    invariant `V` with respect to its referent type, `U`.
             </span><span class="kw">unsafe </span>{ Ptr::new(ptr) }
         }
@@ -1944,18 +2051,59 @@
             //   the same byte range as `p`.
             // - By the same argument, the returned pointer refers to
             //   `UnsafeCell`s at the same locations as `p`.
-            // - `Unalign&lt;T&gt;` promises to have the same bit validity as `T`
+            // - `Unalign&lt;T&gt;` promises to have the same bit validity as `T`. By
+            //   invariant on `Validity`, the set of bit patterns allowed in the
+            //   referent of a `Ptr&lt;X, (_, _, V)&gt;` is only a function of the
+            //   validity of `X` and of `V`. Thus, the set of bit patterns
+            //   allowed in the referent of a `Ptr&lt;T, (_, _, I::Validity)&gt;` is
+            //   the same as the set of bit patterns allowed in the referent of
+            //   a `Ptr&lt;Unalign&lt;T&gt;, (_, _, I::Validity)&gt;`. As a result, `self`
+            //   and the returned `Ptr` permit the same set of bit patterns in
+            //   their referents, and so neither can be used to violate the
+            //   validity of the other.
             </span><span class="kw">let </span>ptr = <span class="kw">unsafe </span>{
                 <span class="attr">#[allow(clippy::as_conversions)]
-                </span><span class="self">self</span>.transmute_unchecked(|p: <span class="kw-2">*mut </span>T| p <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">crate</span>::Unalign&lt;T&gt;)
+                </span><span class="self">self</span>.transmute_unchecked(NonNull::cast::&lt;<span class="kw">crate</span>::Unalign&lt;T&gt;&gt;)
             };
             ptr.bikeshed_recall_aligned()
+        }
+    }
+
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, I&gt; Ptr&lt;<span class="lifetime">'a</span>, T, I&gt;
+    <span class="kw">where
+        </span>T: <span class="question-mark">?</span>Sized,
+        I: Invariants&lt;Validity = Valid&gt;,
+        I::Aliasing: Reference,
+    {
+        <span class="doccomment">/// Reads the referent.
+        </span><span class="attr">#[must_use]
+        #[inline]
+        </span><span class="kw">pub fn </span>read_unaligned&lt;R&gt;(<span class="self">self</span>) -&gt; T
+        <span class="kw">where
+            </span>T: Copy,
+            T: Read&lt;I::Aliasing, R&gt;,
+        {
+            (<span class="kw-2">*</span><span class="self">self</span>.into_unalign().as_ref()).into_inner()
+        }
+
+        <span class="doccomment">/// Views the value as an aligned reference.
+        ///
+        /// This is only available if `T` is [`Unaligned`].
+        </span><span class="attr">#[must_use]
+        #[inline]
+        </span><span class="kw">pub fn </span>unaligned_as_ref(<span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>T
+        <span class="kw">where
+            </span>T: <span class="kw">crate</span>::Unaligned,
+        {
+            <span class="self">self</span>.bikeshed_recall_aligned().as_ref()
         }
     }
 }
 
 <span class="doccomment">/// State transitions between invariants.
 </span><span class="kw">mod </span>_transitions {
+    <span class="kw">use </span><span class="kw">crate</span>::pointer::transmute::TryTransmuteFromPtr;
+
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
     <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, I&gt; Ptr&lt;<span class="lifetime">'a</span>, T, I&gt;
@@ -2168,13 +2316,12 @@
             </span>T: <span class="kw">crate</span>::IntoBytes + <span class="kw">crate</span>::FromBytes,
             I: Invariants&lt;Validity = Valid&gt;,
         {
-            <span class="comment">// SAFETY: The `T: IntoBytes` bound ensures that any bit-valid `T`
-            // is entirely initialized. `I: Invariants&lt;Validity = Valid&gt;`
-            // ensures that `self`'s referent is a bit-valid `T`. Producing an
-            // `Initialized` `Ptr` may permit the caller to write arbitrary
-            // initialized bytes to the referent (depending on aliasing mode and
-            // presence of `UnsafeCell`s). `T: FromBytes` ensures that any byte
-            // sequence written will remain a bit-valid `T`.
+            <span class="comment">// SAFETY: The `T: IntoBytes + FromBytes` bound ensures that `T`'s
+            // bit validity is equivalent to `[u8]`. In other words, the set of
+            // allowed referents for a `Ptr&lt;T, (_, _, Valid)&gt;` is the set of
+            // initialized bit patterns. The same is true of the set of allowed
+            // referents for any `Ptr&lt;_, (_, _, Initialized)&gt;`. Thus, this call
+            // does not change the set of allowed values in the referent.
             </span><span class="kw">unsafe </span>{ <span class="self">self</span>.assume_initialized() }
         }
 
@@ -2191,32 +2338,22 @@
             </span>T: <span class="kw">crate</span>::IntoBytes + <span class="kw">crate</span>::Immutable,
             I: Invariants&lt;Aliasing = Shared, Validity = Valid&gt;,
         {
-            <span class="comment">// SAFETY: The `T: IntoBytes` bound ensures that any bit-valid `T`
-            // is entirely initialized. `I: Invariants&lt;Validity = Valid&gt;`
-            // ensures that `self`'s referent is a bit-valid `T`. Since `T:
-            // Immutable` and the aliasing is `Shared`, the resulting `Ptr`
-            // cannot be used to modify the referent, and so it's acceptable
-            // that going from `Valid` to `Initialized` may increase the set of
-            // values allowed in the referent.
+            <span class="comment">// SAFETY: Let `O` (for "old") be the set of allowed bit patterns in
+            // `self`'s referent, and let `N` (for "new") be the set of allowed
+            // bit patterns in the referent of the returned `Ptr`. `T:
+            // IntoBytes` and `I: Invariants&lt;Validity = Valid&gt;` ensures that `O`
+            // cannot contain any uninitialized bit patterns. Since the returned
+            // `Ptr` has validity `Initialized`, `N` is equal to the set of all
+            // initialized bit patterns. Thus, `O` is a subset of `N`, and so
+            // the returned `Ptr`'s validity invariant is upheld.
+            //
+            // Since `T: Immutable` and aliasing is `Shared`, the returned `Ptr`
+            // cannot be used to modify the referent. Before this call, `self`'s
+            // referent is guaranteed by invariant on `Ptr` to satisfy `self`'s
+            // validity invariant. Since the returned `Ptr` cannot be used to
+            // modify the referent, this guarantee cannot be violated by the
+            // returned `Ptr` (even if `O` is a strict subset of `N`).
             </span><span class="kw">unsafe </span>{ <span class="self">self</span>.assume_initialized() }
-        }
-
-        <span class="doccomment">/// Recalls that `self`'s referent is bit-valid for `T`.
-        </span><span class="attr">#[doc(hidden)]
-        #[must_use]
-        #[inline]
-        </span><span class="comment">// TODO(#859): Reconsider the name of this method before making it
-        // public.
-        </span><span class="kw">pub fn </span>bikeshed_recall_valid(<span class="self">self</span>) -&gt; Ptr&lt;<span class="lifetime">'a</span>, T, (I::Aliasing, I::Alignment, Valid)&gt;
-        <span class="kw">where
-            </span>T: <span class="kw">crate</span>::FromBytes,
-            I: Invariants&lt;Validity = Initialized&gt;,
-        {
-            <span class="comment">// SAFETY: The bound `T: FromBytes` ensures that any initialized
-            // sequence of bytes is bit-valid for `T`. `I: Invariants&lt;Validity =
-            // invariant::Initialized&gt;` ensures that all of the referent bytes
-            // are initialized.
-            </span><span class="kw">unsafe </span>{ <span class="self">self</span>.assume_valid() }
         }
 
         <span class="doccomment">/// Checks that `self`'s referent is validly initialized for `T`,
@@ -2232,11 +2369,13 @@
         /// On error, unsafe code may rely on this method's returned
         /// `ValidityError` containing `self`.
         </span><span class="attr">#[inline]
-        </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>try_into_valid&lt;R&gt;(
+        </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>try_into_valid&lt;R, S&gt;(
             <span class="kw-2">mut </span><span class="self">self</span>,
         ) -&gt; <span class="prelude-ty">Result</span>&lt;Ptr&lt;<span class="lifetime">'a</span>, T, (I::Aliasing, I::Alignment, Valid)&gt;, ValidityError&lt;<span class="self">Self</span>, T&gt;&gt;
         <span class="kw">where
-            </span>T: TryFromBytes + Read&lt;I::Aliasing, R&gt;,
+            </span>T: TryFromBytes
+                + Read&lt;I::Aliasing, R&gt;
+                + TryTransmuteFromPtr&lt;T, I::Aliasing, I::Validity, Valid, S&gt;,
             I::Aliasing: Reference,
             I: Invariants&lt;Validity = Initialized&gt;,
         {
@@ -2245,7 +2384,11 @@
             // fix before returning.
             </span><span class="kw">if </span>T::is_bit_valid(<span class="self">self</span>.reborrow().forget_aligned()) {
                 <span class="comment">// SAFETY: If `T::is_bit_valid`, code may assume that `self`
-                // contains a bit-valid instance of `Self`.
+                // contains a bit-valid instance of `T`. By `T:
+                // TryTransmuteFromPtr&lt;T, I::Aliasing, I::Validity, Valid&gt;`, so
+                // long as `self`'s referent conforms to the `Valid` validity
+                // for `T` (which we just confired), then this transmute is
+                // sound.
                 </span><span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <span class="self">self</span>.assume_valid() })
             } <span class="kw">else </span>{
                 <span class="prelude-val">Err</span>(ValidityError::new(<span class="self">self</span>))
@@ -2285,11 +2428,18 @@
         /// following properties:
         /// - `u` addresses a subset of the bytes addressed by `p`
         /// - `u` has the same provenance as `p`
-        /// - If `I::Aliasing` is [`Shared`], `UnsafeCell`s in `*u` must exist
-        ///   at ranges identical to those at which `UnsafeCell`s exist in `*p`
+        /// - If `I::Aliasing` is [`Shared`], it must not be possible for safe
+        ///   code, operating on a `&amp;T` and `&amp;U` with the same referent
+        ///   simultaneously, to cause undefined behavior
+        ///
+        /// `cast_unsized_unchecked` guarantees that the pointer passed to
+        /// `cast` will reference a byte sequence which is either contained
+        /// inside a single allocated object or is zero sized. In either case,
+        /// this means that its size will fit in an `isize` and it will not wrap
+        /// around the address space.
         </span><span class="attr">#[doc(hidden)]
         #[inline]
-        </span><span class="kw">pub unsafe fn </span>cast_unsized_unchecked&lt;U, F: FnOnce(<span class="kw-2">*mut </span>T) -&gt; <span class="kw-2">*mut </span>U&gt;(
+        </span><span class="kw">pub unsafe fn </span>cast_unsized_unchecked&lt;U, F: FnOnce(NonNull&lt;T&gt;) -&gt; NonNull&lt;U&gt;&gt;(
             <span class="self">self</span>,
             cast: F,
         ) -&gt; Ptr&lt;<span class="lifetime">'a</span>, U, (I::Aliasing, Unaligned, I::Validity)&gt;
@@ -2301,15 +2451,22 @@
             //   satisfies:
             //   - `u` addresses a subset of the bytes addressed by `p`
             //   - `u` has the same provenance as `p`
-            //   - If `I::Aliasing` is [`Shared`], `UnsafeCell`s in `*u` must
-            //     exist at ranges identical to those at which `UnsafeCell`s
-            //     exist in `*p`
+            //   - If `I::Aliasing` is [`Shared`], it must not be possible for
+            //     safe code, operating on a `&amp;T` and `&amp;U` with the same
+            //     referent simultaneously, to cause undefined behavior
             // - By `U: CastableFrom&lt;T, I::Validity, I::Validity&gt;`,
             //   `I::Validity` is either `Uninit` or `Initialized`. In both
             //   cases, the bit validity `I::Validity` has the same semantics
             //   regardless of referent type. In other words, the set of allowed
             //   referent values for `Ptr&lt;T, (_, _, I::Validity)&gt;` and `Ptr&lt;U,
-            //   (_, _, I::Validity)&gt;` are identical.
+            //   (_, _, I::Validity)&gt;` are identical. As a consequence, neither
+            //   `self` nor the returned `Ptr` can be used to write values which
+            //   are invalid for the other.
+            //
+            // `transmute_unchecked` guarantees that it will only pass pointers
+            // to `cast` which either reference a zero-sized byte range or
+            // reference a byte range which is entirely contained inside of an
+            // allocated object.
             </span><span class="kw">unsafe </span>{ <span class="self">self</span>.transmute_unchecked(cast) }
         }
 
@@ -2323,20 +2480,23 @@
         /// - `u` has the same provenance as `p`
         </span><span class="attr">#[doc(hidden)]
         #[inline]
-        </span><span class="kw">pub unsafe fn </span>cast_unsized&lt;U, F, R, S&gt;(
+        </span><span class="kw">pub unsafe fn </span>cast_unsized&lt;U, F, R&gt;(
             <span class="self">self</span>,
             cast: F,
         ) -&gt; Ptr&lt;<span class="lifetime">'a</span>, U, (I::Aliasing, Unaligned, I::Validity)&gt;
         <span class="kw">where
-            </span>T: Read&lt;I::Aliasing, R&gt;,
-            U: <span class="lifetime">'a </span>+ <span class="question-mark">?</span>Sized + Read&lt;I::Aliasing, S&gt; + CastableFrom&lt;T, I::Validity, I::Validity&gt;,
-            F: FnOnce(<span class="kw-2">*mut </span>T) -&gt; <span class="kw-2">*mut </span>U,
+            </span>T: MutationCompatible&lt;U, I::Aliasing, I::Validity, I::Validity, R&gt;,
+            U: <span class="lifetime">'a </span>+ <span class="question-mark">?</span>Sized + CastableFrom&lt;T, I::Validity, I::Validity&gt;,
+            F: FnOnce(NonNull&lt;T&gt;) -&gt; NonNull&lt;U&gt;,
         {
-            <span class="comment">// SAFETY: Because `T` and `U` both implement `Read&lt;I::Aliasing, _&gt;`,
-            // either:
-            // - `I::Aliasing` is `Exclusive`
-            // - `T` and `U` are both `Immutable`, in which case they trivially
-            //   contain `UnsafeCell`s at identical locations
+            <span class="comment">// SAFETY: Because `T: MutationCompatible&lt;U, I::Aliasing, R&gt;`, one
+            // of the following holds:
+            // - `T: Read&lt;I::Aliasing&gt;` and `U: Read&lt;I::Aliasing&gt;`, in which
+            //   case one of the following holds:
+            //   - `I::Aliasing` is `Exclusive`
+            //   - `T` and `U` are both `Immutable`
+            // - It is sound for safe code to operate on `&amp;T` and `&amp;U` with the
+            //   same referent simultaneously
             //
             // The caller promises all other safety preconditions.
             </span><span class="kw">unsafe </span>{ <span class="self">self</span>.cast_unsized_unchecked(cast) }
@@ -2371,20 +2531,16 @@
             //   returned pointer addresses the same bytes as `p`
             // - `slice_from_raw_parts_mut` and `.cast` both preserve provenance
             </span><span class="kw">let </span>ptr: Ptr&lt;<span class="lifetime">'a</span>, [u8], <span class="kw">_</span>&gt; = <span class="kw">unsafe </span>{
-                <span class="self">self</span>.cast_unsized(|p: <span class="kw-2">*mut </span>T| {
-                    <span class="attr">#[allow(clippy::as_conversions)]
-                    </span>core::ptr::slice_from_raw_parts_mut(p.cast::&lt;u8&gt;(), bytes)
+                <span class="self">self</span>.cast_unsized(|p: NonNull&lt;T&gt;| {
+                    <span class="kw">let </span>ptr = core::ptr::slice_from_raw_parts_mut(p.cast::&lt;u8&gt;().as_ptr(), bytes);
+                    <span class="comment">// SAFETY: `ptr` has the same address as `p`, which is
+                    // non-null.
+                    </span>core::ptr::NonNull::new_unchecked(ptr)
                 })
             };
 
             <span class="kw">let </span>ptr = ptr.bikeshed_recall_aligned();
-
-            <span class="comment">// SAFETY: `ptr`'s referent begins as `Initialized`, denoting that
-            // all bytes of the referent are initialized bytes. The referent
-            // type is then casted to `[u8]`, whose only validity invariant is
-            // that its bytes are initialized. This validity invariant is
-            // satisfied by the `Initialized` invariant on the starting `ptr`.
-            </span><span class="kw">unsafe </span>{ ptr.assume_validity::&lt;Valid&gt;() }
+            ptr.recall_validity()
         }
     }
 
@@ -2400,12 +2556,31 @@
             <span class="comment">// SAFETY: Note that, by post-condition on `PtrInner::as_slice`,
             // `slice` refers to the same byte range as `self.as_inner()`.
             //
-            // 6. Thus, `slice` conforms to the aliasing invariant of
+            // 0. Thus, `slice` conforms to the aliasing invariant of
             //    `I::Aliasing` because `self` does.
-            // 7. By the above lemma, `slice` conforms to the alignment
+            // 1. By the above lemma, `slice` conforms to the alignment
             //    invariant of `I::Alignment` because `self` does.
-            // 8. By the above lemma, `slice` conforms to the validity invariant
-            //    of `I::Validity` because `self` does.
+            // 2. Since `[T; N]` and `[T]` have the same bit validity [1][2],
+            //    and since `self` and the returned `Ptr` have the same validity
+            //    invariant, neither `self` nor the returned `Ptr` can be used
+            //    to write a value to the referent which violates the other's
+            //    validity invariant.
+            //
+            // [1] Per https://doc.rust-lang.org/1.81.0/reference/type-layout.html#array-layout:
+            //
+            //   An array of `[T; N]` has a size of `size_of::&lt;T&gt;() * N` and the
+            //   same alignment of `T`. Arrays are laid out so that the
+            //   zero-based `nth` element of the array is offset from the start
+            //   of the array by `n * size_of::&lt;T&gt;()` bytes.
+            //
+            //   ...
+            //
+            //   Slices have the same layout as the section of the array they
+            //   slice.
+            //
+            // [2] Per https://doc.rust-lang.org/1.81.0/reference/types/array.html#array-types:
+            //
+            //   All elements of arrays are always initialized
             </span><span class="kw">unsafe </span>{ Ptr::from_inner(slice) }
         }
     }
@@ -2474,9 +2649,10 @@
             //    it is derived from `try_cast_into`, which promises that the
             //    object described by `target` is validly aligned for `U`.
             // 2. By trait bound, `self` - and thus `target` - is a bit-valid
-            //    `[u8]`. All bit-valid `[u8]`s have all of their bytes
-            //    initialized, so `ptr` conforms to the validity invariant of
-            //    `Initialized`.
+            //    `[u8]`. `Ptr&lt;[u8], (_, _, Valid)&gt;` and `Ptr&lt;_, (_, _,
+            //    Initialized)&gt;` have the same bit validity, and so neither
+            //    `self` nor `res` can be used to write a value to the referent
+            //    which violates the other's validity invariant.
             </span><span class="kw">let </span>res = <span class="kw">unsafe </span>{ Ptr::from_inner(inner) };
 
             <span class="comment">// SAFETY:
@@ -2486,7 +2662,9 @@
             // 1. `[u8]` has no alignment requirement.
             // 2. `self` has validity `Valid` and has type `[u8]`. Since
             //    `remainder` references a subset of `self`'s referent, it is
-            //    also bit-valid.
+            //    also a bit-valid `[u8]`. Thus, neither `self` nor `remainder`
+            //    can be used to write a value to the referent which violates
+            //    the other's validity invariant.
             </span><span class="kw">let </span>remainder = <span class="kw">unsafe </span>{ Ptr::from_inner(remainder) };
 
             <span class="prelude-val">Ok</span>((res, remainder))
@@ -2558,15 +2736,22 @@
         #[inline(always)]
         </span><span class="kw">pub fn </span>get_mut(<span class="self">self</span>) -&gt; Ptr&lt;<span class="lifetime">'a</span>, T, I&gt; {
             <span class="comment">// SAFETY:
-            // - The closure uses an `as` cast, which preserves address
-            //   range and provenance.
+            // - The closure uses an `as` cast, which preserves address range
+            //   and provenance.
             // - Aliasing is `Exclusive`, and so we are not required to promise
             //   anything about the locations of `UnsafeCell`s.
-            // - `UnsafeCell&lt;T&gt;` has the same bit validity as `T` [1], and so if
-            //   `self` has a particular validity invariant, then the same holds
-            //   of the returned `Ptr`. Technically the term "representation"
-            //   doesn't guarantee this, but the subsequent sentence in the
-            //   documentation makes it clear that this is the intention.
+            // - `UnsafeCell&lt;T&gt;` has the same bit validity as `T` [1].
+            //   Technically the term "representation" doesn't guarantee this,
+            //   but the subsequent sentence in the documentation makes it clear
+            //   that this is the intention.
+            //
+            //   By invariant on `Validity`, since `T` and `UnsafeCell&lt;T&gt;` have
+            //   the same bit validity, then the set of values which may appear
+            //   in the referent of a `Ptr&lt;T, (_, _, V)&gt;` is the same as the set
+            //   which may appear in the referent of a `Ptr&lt;UnsafeCell&lt;T&gt;, (_,
+            //   _, V)&gt;`. Thus, neither `self` nor `ptr` may be used to write a
+            //   value to the referent which would violate the other's validity
+            //   invariant.
             //
             // [1] Per https://doc.rust-lang.org/1.81.0/core/cell/struct.UnsafeCell.html#memory-layout:
             //
@@ -2574,7 +2759,7 @@
             //   inner type `T`. A consequence of this guarantee is that it is
             //   possible to convert between `T` and `UnsafeCell&lt;T&gt;`.
             </span><span class="attr">#[allow(clippy::as_conversions)]
-            </span><span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ <span class="self">self</span>.transmute_unchecked(|p| p <span class="kw">as </span><span class="kw-2">*mut </span>T) };
+            </span><span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ <span class="self">self</span>.transmute_unchecked(<span class="macro">cast!</span>()) };
 
             <span class="comment">// SAFETY: `UnsafeCell&lt;T&gt;` has the same alignment as `T` [1],
             // and so if `self` is guaranteed to be aligned, then so is the
@@ -2624,9 +2809,8 @@
             // 1. `elem`, conditionally, conforms to the validity invariant of
             //    `I::Alignment`. If `elem` is projected from data well-aligned
             //    for `[T]`, `elem` will be valid for `T`.
-            // 2. `elem`, conditionally, conforms to the validity invariant of
-            //    `I::Validity`. If `elem` is projected from data valid for
-            //    `[T]`, `elem` will be valid for `T`.
+            // 2. TODO: Need to cite facts about `[T]`'s layout (same for the
+            //    preceding points)
             </span><span class="self">self</span>.as_inner().iter().map(|elem| <span class="kw">unsafe </span>{ Ptr::from_inner(elem) })
         }
     }
@@ -2682,10 +2866,12 @@
                     };
 
                     <span class="comment">// SAFETY: The bytes in `slf` must be initialized.
-                    </span><span class="kw">unsafe fn </span>validate_and_get_len&lt;T: <span class="question-mark">?</span>Sized + KnownLayout + FromBytes&gt;(
+                    </span><span class="kw">unsafe fn </span>validate_and_get_len&lt;
+                        T: <span class="question-mark">?</span>Sized + KnownLayout + FromBytes + Immutable,
+                    &gt;(
                         slf: Ptr&lt;<span class="lifetime">'_</span>, T, (Shared, Aligned, Initialized)&gt;,
                     ) -&gt; usize {
-                        <span class="kw">let </span>t = slf.bikeshed_recall_valid().as_ref();
+                        <span class="kw">let </span>t = slf.recall_validity().as_ref();
 
                         <span class="kw">let </span>bytes = {
                             <span class="kw">let </span>len = mem::size_of_val(t);

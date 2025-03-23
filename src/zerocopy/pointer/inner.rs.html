@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.23/src/pointer/inner.rs`."><title>inner.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="zerocopy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">zerocopy/pointer/</div>inner.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.24/src/pointer/inner.rs`."><title>inner.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="zerocopy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.1 (4eb161250 2025-03-15)" data-channel="1.85.1" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">zerocopy/pointer/</div>inner.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -497,49 +497,7 @@
 <a href="#496" id="496">496</a>
 <a href="#497" id="497">497</a>
 <a href="#498" id="498">498</a>
-<a href="#499" id="499">499</a>
-<a href="#500" id="500">500</a>
-<a href="#501" id="501">501</a>
-<a href="#502" id="502">502</a>
-<a href="#503" id="503">503</a>
-<a href="#504" id="504">504</a>
-<a href="#505" id="505">505</a>
-<a href="#506" id="506">506</a>
-<a href="#507" id="507">507</a>
-<a href="#508" id="508">508</a>
-<a href="#509" id="509">509</a>
-<a href="#510" id="510">510</a>
-<a href="#511" id="511">511</a>
-<a href="#512" id="512">512</a>
-<a href="#513" id="513">513</a>
-<a href="#514" id="514">514</a>
-<a href="#515" id="515">515</a>
-<a href="#516" id="516">516</a>
-<a href="#517" id="517">517</a>
-<a href="#518" id="518">518</a>
-<a href="#519" id="519">519</a>
-<a href="#520" id="520">520</a>
-<a href="#521" id="521">521</a>
-<a href="#522" id="522">522</a>
-<a href="#523" id="523">523</a>
-<a href="#524" id="524">524</a>
-<a href="#525" id="525">525</a>
-<a href="#526" id="526">526</a>
-<a href="#527" id="527">527</a>
-<a href="#528" id="528">528</a>
-<a href="#529" id="529">529</a>
-<a href="#530" id="530">530</a>
-<a href="#531" id="531">531</a>
-<a href="#532" id="532">532</a>
-<a href="#533" id="533">533</a>
-<a href="#534" id="534">534</a>
-<a href="#535" id="535">535</a>
-<a href="#536" id="536">536</a>
-<a href="#537" id="537">537</a>
-<a href="#538" id="538">538</a>
-<a href="#539" id="539">539</a>
-<a href="#540" id="540">540</a>
-<a href="#541" id="541">541</a></pre></div><pre class="rust"><code><span class="comment">// Copyright 2024 The Fuchsia Authors
+<a href="#499" id="499">499</a></pre></div><pre class="rust"><code><span class="comment">// Copyright 2024 The Fuchsia Authors
 //
 // Licensed under a BSD-style license &lt;LICENSE-BSD&gt;, Apache License, Version 2.0
 // &lt;LICENSE-APACHE or https://www.apache.org/licenses/LICENSE-2.0&gt;, or the MIT
@@ -572,17 +530,32 @@
     {
         <span class="doccomment">/// # Invariants
         ///
-        /// 0. If `ptr`'s referent is not zero sized, then `ptr` is derived from
-        ///    some valid Rust allocation, `A`.
-        /// 1. If `ptr`'s referent is not zero sized, then `ptr` has valid
-        ///    provenance for `A`.
-        /// 2. If `ptr`'s referent is not zero sized, then `ptr` addresses a
-        ///    byte range which is entirely contained in `A`.
-        /// 3. `ptr` addresses a byte range whose length fits in an `isize`.
-        /// 4. `ptr` addresses a byte range which does not wrap around the
-        ///     address space.
-        /// 5. If `ptr`'s referent is not zero sized,`A` is guaranteed to live
+        /// 0. If `ptr`'s referent is not zero sized, then `ptr` has valid
+        ///    provenance for its referent, which is entirely contained in some
+        ///    Rust allocation, `A`.
+        /// 1. If `ptr`'s referent is not zero sized, `A` is guaranteed to live
         ///    for at least `'a`.
+        ///
+        /// # Postconditions
+        ///
+        /// By virtue of these invariants, code may assume the following, which
+        /// are logical implications of the invariants:
+        /// - `ptr`'s referent is not larger than `isize::MAX` bytes \[1\]
+        /// - `ptr`'s referent does not wrap around the address space \[1\]
+        ///
+        /// \[1\] Per &lt;https://doc.rust-lang.org/1.85.0/std/ptr/index.html#allocated-object&gt;:
+        ///
+        ///   For any allocated object with `base` address, `size`, and a set of
+        ///   `addresses`, the following are guaranteed:
+        ///   ...
+        ///   - `size &lt;= isize::MAX`
+        ///
+        ///   As a consequence of these guarantees, given any address `a` within
+        ///   the set of addresses of an allocated object:
+        ///   ...
+        ///   - It is guaranteed that, given `o = a - base` (i.e., the offset of
+        ///     `a` within the allocated object), `base + o` will not wrap around
+        ///     the address space (in other words, will not overflow `usize`)
         </span>ptr: NonNull&lt;T&gt;,
         <span class="comment">// SAFETY: `&amp;'a UnsafeCell&lt;T&gt;` is covariant in `'a` and invariant in `T`
         // [1]. We use this construction rather than the equivalent `&amp;mut T`,
@@ -608,17 +581,11 @@
         ///
         /// The caller promises that:
         ///
-        /// 0. If `ptr`'s referent is not zero sized, then `ptr` is derived from
-        ///    some valid Rust allocation, `A`.
-        /// 1. If `ptr`'s referent is not zero sized, then `ptr` has valid
-        ///    provenance for `A`.
-        /// 2. If `ptr`'s referent is not zero sized, then `ptr` addresses a
-        ///    byte range which is entirely contained in `A`.
-        /// 3. `ptr` addresses a byte range whose length fits in an `isize`.
-        /// 4. `ptr` addresses a byte range which does not wrap around the
-        ///    address space.
-        /// 5. If `ptr`'s referent is not zero sized, then `A` is guaranteed to
-        ///    live for at least `'a`.
+        /// 0. If `ptr`'s referent is not zero sized, then `ptr` has valid
+        ///    provenance for its referent, which is entirely contained in some
+        ///    Rust allocation, `A`.
+        /// 1. If `ptr`'s referent is not zero sized, `A` is guaranteed to live
+        ///    for at least `'a`.
         </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const unsafe fn </span>new(ptr: NonNull&lt;T&gt;) -&gt; PtrInner&lt;<span class="lifetime">'a</span>, T&gt; {
             <span class="comment">// SAFETY: The caller has promised to satisfy all safety invariants
             // of `PtrInner`.
@@ -643,18 +610,23 @@
         <span class="kw">let </span>ptr = NonNull::from(ptr);
         <span class="comment">// SAFETY:
         // 0. If `ptr`'s referent is not zero sized, then `ptr`, by invariant on
-        //    `&amp;'a T`, is derived from some valid Rust allocation, `A`.
-        // 1. If `ptr`'s referent is not zero sized, then `ptr`, by invariant on
-        //    `&amp;'a T`, has valid provenance for `A`.
-        // 2. If `ptr`'s referent is not zero sized, then `ptr`, by invariant on
-        //    `&amp;'a T`, addresses a byte range which is entirely contained in
-        //    `A`.
-        // 3. `ptr`, by invariant on `&amp;'a T`, addresses a byte range whose
-        //    length fits in an `isize`.
-        // 4. `ptr`, by invariant on `&amp;'a T`, addresses a byte range which does
-        //    not wrap around the address space.
-        // 5. If `ptr`'s referent is not zero sized, then `A`, by invariant on
+        //    `&amp;'a T` [1], has valid provenance for its referent, which is
+        //    entirely contained in some Rust allocation, `A`.
+        // 1. If `ptr`'s referent is not zero sized, then `A`, by invariant on
         //    `&amp;'a T`, is guaranteed to live for at least `'a`.
+        //
+        // [1] Per https://doc.rust-lang.org/1.85.0/std/primitive.reference.html#safety:
+        //
+        //   For all types, `T: ?Sized`, and for all `t: &amp;T` or `t: &amp;mut T`,
+        //   when such values cross an API boundary, the following invariants
+        //   must generally be upheld:
+        //   ...
+        //   - if `size_of_val(t) &gt; 0`, then `t` is dereferenceable for
+        //     `size_of_val(t)` many bytes
+        //
+        //   If `t` points at address `a`, being “dereferenceable” for N bytes
+        //   means that the memory range `[a, a + N)` is all contained within a
+        //   single allocated object.
         </span><span class="kw">unsafe </span>{ <span class="self">Self</span>::new(ptr) }
     }
 
@@ -664,18 +636,23 @@
         <span class="kw">let </span>ptr = NonNull::from(ptr);
         <span class="comment">// SAFETY:
         // 0. If `ptr`'s referent is not zero sized, then `ptr`, by invariant on
-        //    `&amp;'a mut T`, is derived from some valid Rust allocation, `A`.
-        // 1. If `ptr`'s referent is not zero sized, then `ptr`, by invariant on
-        //    `&amp;'a mut T`, has valid provenance for `A`.
-        // 2. If `ptr`'s referent is not zero sized, then `ptr`, by invariant on
-        //    `&amp;'a mut T`, addresses a byte range which is entirely contained in
-        //    `A`.
-        // 3. `ptr`, by invariant on `&amp;'a mut T`, addresses a byte range whose
-        //    length fits in an `isize`.
-        // 4. `ptr`, by invariant on `&amp;'a mut T`, addresses a byte range which
-        //    does not wrap around the address space.
-        // 5. If `ptr`'s referent is not zero sized, then `A`, by invariant on
+        //    `&amp;'a mut T` [1], has valid provenance for its referent, which is
+        //    entirely contained in some Rust allocation, `A`.
+        // 1. If `ptr`'s referent is not zero sized, then `A`, by invariant on
         //    `&amp;'a mut T`, is guaranteed to live for at least `'a`.
+        //
+        // [1] Per https://doc.rust-lang.org/1.85.0/std/primitive.reference.html#safety:
+        //
+        //   For all types, `T: ?Sized`, and for all `t: &amp;T` or `t: &amp;mut T`,
+        //   when such values cross an API boundary, the following invariants
+        //   must generally be upheld:
+        //   ...
+        //   - if `size_of_val(t) &gt; 0`, then `t` is dereferenceable for
+        //     `size_of_val(t)` many bytes
+        //
+        //   If `t` points at address `a`, being “dereferenceable” for N bytes
+        //   means that the memory range `[a, a + N)` is all contained within a
+        //   single allocated object.
         </span><span class="kw">unsafe </span>{ <span class="self">Self</span>::new(ptr) }
     }
 }
@@ -709,34 +686,24 @@
 
         <span class="kw">let </span>ptr = core::ptr::slice_from_raw_parts_mut(base, len);
 
-        <span class="comment">// SAFETY: By invariant, `self`'s address is non-null and its range does
-        // not wrap around the address space. Since, by the preceding lemma,
-        // `ptr` addresses a range within that addressed by `self`, `ptr` is
-        // non-null.
+        <span class="comment">// SAFETY: By invariant, `self`'s referent is either a ZST or lives
+        // entirely in an allocation. `ptr` points inside of or one byte past
+        // the end of that referent. Thus, in either case, `ptr` is non-null.
         </span><span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ NonNull::new_unchecked(ptr) };
 
         <span class="comment">// SAFETY:
         //
         // Lemma 0: `ptr` addresses a subset of the bytes addressed by `self`,
         //          and has the same provenance. Proof: The caller guarantees
-        // that `start &lt;= end &lt;= self.len()`. Thus, `base` is in-bounds of
-        //        `self`, and `base + (end - start)` is also in-bounds of self.
-        //        Finally, `ptr` is constructed using provenance-preserving
-        //        operations.
+        //          that `start &lt;= end &lt;= self.len()`. Thus, `base` is in-bounds
+        //          of `self`, and `base + (end - start)` is also in-bounds of
+        //          self. Finally, `ptr` is constructed using
+        //          provenance-preserving operations.
         //
         // 0. Per Lemma 0 and by invariant on `self`, if `ptr`'s referent is not
-        //    zero sized, then `ptr` is derived from some valid Rust allocation,
-        //    `A`.
+        //    zero sized, then `ptr` has valid provenance for its referent,
+        //    which is entirely contained in some Rust allocation, `A`.
         // 1. Per Lemma 0 and by invariant on `self`, if `ptr`'s referent is not
-        //    zero sized, then `ptr` has valid provenance for `A`.
-        // 2. Per Lemma 0 and by invariant on `self`, if `ptr`'s referent is not
-        //    zero sized, then `ptr` addresses a byte range which is entirely
-        //    contained in `A`.
-        // 3. Per Lemma 0 and by invariant on `self`, `ptr` addresses a byte
-        //    range whose length fits in an `isize`.
-        // 4. Per Lemma 0 and by invariant on `self`, `ptr` addresses a byte
-        //    range which does not wrap around the address space.
-        // 5. Per Lemma 0 and by invariant on `self`, if `ptr`'s referent is not
         //    zero sized, then `A` is guaranteed to live for at least `'a`.
         </span><span class="kw">unsafe </span>{ PtrInner::new(ptr) }
     }
@@ -808,10 +775,9 @@
             // provenance, cite those docs.
             </span><span class="kw">let </span>elem = <span class="kw">unsafe </span>{ base.add(i) };
 
-            <span class="comment">// SAFETY:
-            //  - `elem` must not be null. `base` is constructed from a
-            //    `NonNull` pointer, and the addition that produces `elem` must
-            //    not overflow or wrap around, so `elem &gt;= base &gt; 0`.
+            <span class="comment">// SAFETY: `elem` must not be null. `base` is constructed from a
+            // `NonNull` pointer, and the addition that produces `elem` must not
+            // overflow or wrap around, so `elem &gt;= base &gt; 0`.
             //
             // TODO(#429): Once `NonNull::new_unchecked` documents that it
             // preserves provenance, cite those docs.
@@ -819,19 +785,13 @@
 
             <span class="comment">// SAFETY: The safety invariants of `Ptr::new` (see definition) are
             // satisfied:
-            // 0. If `elem`'s referent is not zero sized, then `elem` is derived
-            //    from a valid Rust allocation, because `self` is derived from a
-            //    valid Rust allocation, by invariant on `Ptr`.
-            // 1. If `elem`'s referent is not zero sized, then `elem` has valid
-            //    provenance for `self`, because it derived from `self` using a
-            //    series of provenance-preserving operations.
-            // 2. If `elem`'s referent is not zero sized, then `elem` is
-            //    entirely contained in the allocation of `self` (see above).
-            // 3. `elem` addresses a byte range whose length fits in an `isize`
-            //    (see above).
-            // 4. `elem` addresses a byte range which does not wrap around the
-            //    address space (see above).
-            // 5. If `elem`'s referent is not zero sized, then the allocation of
+            // 0. If `elem`'s referent is not zero sized, then `elem` has valid
+            //    provenance for its referent, because it derived from `self`
+            //    using a series of provenance-preserving operations, and
+            //    because `self` has valid provenance for its referent. By the
+            //    same argument, `elem`'s referent is entirely contained within
+            //    the same allocated object as `self`'s referent.
+            // 1. If `elem`'s referent is not zero sized, then the allocation of
             //    `elem` is guaranteed to live for at least `'a`, because `elem`
             //    is entirely contained in `self`, which lives for at least `'a`
             //    by invariant on `Ptr`.
@@ -887,25 +847,11 @@
         // same allocation as `self`, if any.
         //
         // 0. By the above lemma, if `slice`'s referent is not zero sized, then
-        //    `slice` is derived from the same allocation as `self`, which, by
-        //    invariant on `Ptr`, is valid.
+        //    `slice` has the same referent as `self`. By invariant on `self`,
+        //    this referent is entirely contained within some allocation, `A`.
+        //    Because `slice` was constructed using provenance-preserving
+        //    operations, it has provenance for its entire referent.
         // 1. By the above lemma, if `slice`'s referent is not zero sized, then
-        //    , `slice` has valid provenance for `A`, since it is derived from
-        //    the pointer `self`, which, by invariant on `Ptr`, has valid
-        //    provenance for `A`.
-        // 2. By the above lemma, if `slice`'s referent is not zero sized, then
-        //    `slice` addresses a byte range which is entirely contained in `A`,
-        //    because it references exactly the same byte range as `self`,
-        //    which, by invariant on `Ptr`, is entirely contained in `A`.
-        // 3. By the above lemma, `slice` addresses a byte range whose length
-        //    fits in an `isize`, since it addresses exactly the same byte range
-        //    as `self`, which, by invariant on `Ptr`, has a length that fits in
-        //    an `isize`.
-        // 4. By the above lemma, `slice` addresses a byte range which does not
-        //    wrap around the address space, since it addresses exactly the same
-        //    byte range as `self`, which, by invariant on `Ptr`, does not wrap
-        //    around the address space.
-        // 5. By the above lemma, if `slice`'s referent is not zero sized, then
         //    `A` is guaranteed to live for at least `'a`, because it is derived
         //    from the same allocation as `self`, which, by invariant on `Ptr`,
         //    lives for at least `'a`.
@@ -1005,55 +951,17 @@
 
         <span class="comment">// SAFETY:
         // 0. By invariant, if `target`'s referent is not zero sized, then
-        //    `target` is derived from some valid Rust allocation, `A`. By
-        //    contract on `cast`, `ptr` is derived from `self`, and thus from
-        //    the same valid Rust allocation, `A`.
-        // 1. By invariant, if `target`'s referent is not zero sized, then
         //    `target` has provenance valid for some Rust allocation, `A`.
         //    Because `ptr` is derived from `target` via provenance-preserving
-        //    operations, `ptr` will also have provenance valid for `A`.
-        // -  `validate_cast_and_convert_metadata` promises that the object
+        //    operations, `ptr` will also have provenance valid for its entire
+        //    referent.
+        // 1. `validate_cast_and_convert_metadata` promises that the object
         //    described by `elems` and `split_at` lives at a byte range which is
-        //    a subset of the input byte range. Thus:
-        //    2. Since, by invariant, if `target`'s referent is not zero sized,
-        //       then `target` addresses a byte range which is entirely
-        //       contained in `A`, so does `ptr`.
-        //    3. Since, by invariant, `target` addresses a byte range whose
-        //       length fits in an `isize`, so does `ptr`.
-        //    4. Since, by invariant, `target` addresses a byte range which does
-        //       not wrap around the address space, so does `ptr`.
-        //    5. Since, by invariant, if `target`'s referent is not zero sized,
-        //       then `target` refers to an allocation which is guaranteed to
-        //       live for at least `'a`, so does `ptr`.
+        //    a subset of the input byte range. Thus, by invariant, if
+        //    `target`'s referent is not zero sized, then `target` refers to an
+        //    allocation which is guaranteed to live for at least `'a`, and thus
+        //    so does `ptr`.
         </span><span class="prelude-val">Ok</span>((<span class="kw">unsafe </span>{ PtrInner::new(ptr) }, remainder))
-    }
-}
-
-<span class="attr">#[allow(clippy::needless_lifetimes)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; PtrInner&lt;<span class="lifetime">'a</span>, T&gt; {
-    <span class="doccomment">/// Performs an unaligned read of `self`'s referent.
-    ///
-    /// # Safety
-    ///
-    /// `self` must point to a properly initialized value of type `T`, and
-    /// reading a copy of `T` must not violate `T`'s safety invariants.
-    ///
-    /// `self`'s referent must not be concurrently modified during this call.
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>read_unaligned(<span class="self">self</span>) -&gt; T {
-        <span class="kw">let </span>raw = <span class="self">self</span>.as_non_null().as_ptr();
-        <span class="comment">// SAFETY: The caller promises that `self` points to a bit-valid `T` and
-        // that reading a copy of it won't violate `T`'s safety invariants. The
-        // caller promises that `self`'s referent won't be concurrently modified
-        // during this operation.
-        //
-        // `raw` is valid for reads:
-        // - `self.as_non_null()` returns a `NonNull`, which is guaranteed to be
-        //   non-null.
-        // - By invariant on `PtrInner`, `raw` is is either zero-sized or:
-        //   - ...is within bounds of a single allocated object which lives for
-        //     at least `'a`.
-        //   - ...has valid provenance for that object.
-        </span><span class="kw">unsafe </span>{ core::ptr::read_unaligned(raw) }
     }
 }
 
@@ -1071,9 +979,17 @@
             <span class="comment">// SAFETY: `i` is in bounds by construction.
             </span><span class="kw">let </span>(l, r) = <span class="kw">unsafe </span>{ ptr.split_at(i) };
             <span class="comment">// SAFETY: Points to a valid value by construction.
-            </span><span class="kw">let </span>l_sum: usize = l.iter().map(|ptr| <span class="kw">unsafe </span>{ ptr.read_unaligned() }).sum();
+            </span><span class="attr">#[allow(clippy::undocumented_unsafe_blocks)] </span><span class="comment">// Clippy false positive
+            </span><span class="kw">let </span>l_sum: usize = l
+                .iter()
+                .map(|ptr| <span class="kw">unsafe </span>{ core::ptr::read_unaligned(ptr.as_non_null().as_ptr()) })
+                .sum();
             <span class="comment">// SAFETY: Points to a valid value by construction.
-            </span><span class="kw">let </span>r_sum: usize = r.iter().map(|ptr| <span class="kw">unsafe </span>{ ptr.read_unaligned() }).sum();
+            </span><span class="attr">#[allow(clippy::undocumented_unsafe_blocks)] </span><span class="comment">// Clippy false positive
+            </span><span class="kw">let </span>r_sum: usize = r
+                .iter()
+                .map(|ptr| <span class="kw">unsafe </span>{ core::ptr::read_unaligned(ptr.as_non_null().as_ptr()) })
+                .sum();
             <span class="macro">assert_eq!</span>(l_sum, i);
             <span class="macro">assert_eq!</span>(r_sum, N - i);
             <span class="macro">assert_eq!</span>(l_sum + r_sum, N);

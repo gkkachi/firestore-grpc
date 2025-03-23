@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.23/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="zerocopy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">zerocopy/</div>lib.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.24/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="zerocopy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.1 (4eb161250 2025-03-15)" data-channel="1.85.1" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">zerocopy/</div>lib.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -6640,222 +6640,7 @@
 <a href="#6639" id="6639">6639</a>
 <a href="#6640" id="6640">6640</a>
 <a href="#6641" id="6641">6641</a>
-<a href="#6642" id="6642">6642</a>
-<a href="#6643" id="6643">6643</a>
-<a href="#6644" id="6644">6644</a>
-<a href="#6645" id="6645">6645</a>
-<a href="#6646" id="6646">6646</a>
-<a href="#6647" id="6647">6647</a>
-<a href="#6648" id="6648">6648</a>
-<a href="#6649" id="6649">6649</a>
-<a href="#6650" id="6650">6650</a>
-<a href="#6651" id="6651">6651</a>
-<a href="#6652" id="6652">6652</a>
-<a href="#6653" id="6653">6653</a>
-<a href="#6654" id="6654">6654</a>
-<a href="#6655" id="6655">6655</a>
-<a href="#6656" id="6656">6656</a>
-<a href="#6657" id="6657">6657</a>
-<a href="#6658" id="6658">6658</a>
-<a href="#6659" id="6659">6659</a>
-<a href="#6660" id="6660">6660</a>
-<a href="#6661" id="6661">6661</a>
-<a href="#6662" id="6662">6662</a>
-<a href="#6663" id="6663">6663</a>
-<a href="#6664" id="6664">6664</a>
-<a href="#6665" id="6665">6665</a>
-<a href="#6666" id="6666">6666</a>
-<a href="#6667" id="6667">6667</a>
-<a href="#6668" id="6668">6668</a>
-<a href="#6669" id="6669">6669</a>
-<a href="#6670" id="6670">6670</a>
-<a href="#6671" id="6671">6671</a>
-<a href="#6672" id="6672">6672</a>
-<a href="#6673" id="6673">6673</a>
-<a href="#6674" id="6674">6674</a>
-<a href="#6675" id="6675">6675</a>
-<a href="#6676" id="6676">6676</a>
-<a href="#6677" id="6677">6677</a>
-<a href="#6678" id="6678">6678</a>
-<a href="#6679" id="6679">6679</a>
-<a href="#6680" id="6680">6680</a>
-<a href="#6681" id="6681">6681</a>
-<a href="#6682" id="6682">6682</a>
-<a href="#6683" id="6683">6683</a>
-<a href="#6684" id="6684">6684</a>
-<a href="#6685" id="6685">6685</a>
-<a href="#6686" id="6686">6686</a>
-<a href="#6687" id="6687">6687</a>
-<a href="#6688" id="6688">6688</a>
-<a href="#6689" id="6689">6689</a>
-<a href="#6690" id="6690">6690</a>
-<a href="#6691" id="6691">6691</a>
-<a href="#6692" id="6692">6692</a>
-<a href="#6693" id="6693">6693</a>
-<a href="#6694" id="6694">6694</a>
-<a href="#6695" id="6695">6695</a>
-<a href="#6696" id="6696">6696</a>
-<a href="#6697" id="6697">6697</a>
-<a href="#6698" id="6698">6698</a>
-<a href="#6699" id="6699">6699</a>
-<a href="#6700" id="6700">6700</a>
-<a href="#6701" id="6701">6701</a>
-<a href="#6702" id="6702">6702</a>
-<a href="#6703" id="6703">6703</a>
-<a href="#6704" id="6704">6704</a>
-<a href="#6705" id="6705">6705</a>
-<a href="#6706" id="6706">6706</a>
-<a href="#6707" id="6707">6707</a>
-<a href="#6708" id="6708">6708</a>
-<a href="#6709" id="6709">6709</a>
-<a href="#6710" id="6710">6710</a>
-<a href="#6711" id="6711">6711</a>
-<a href="#6712" id="6712">6712</a>
-<a href="#6713" id="6713">6713</a>
-<a href="#6714" id="6714">6714</a>
-<a href="#6715" id="6715">6715</a>
-<a href="#6716" id="6716">6716</a>
-<a href="#6717" id="6717">6717</a>
-<a href="#6718" id="6718">6718</a>
-<a href="#6719" id="6719">6719</a>
-<a href="#6720" id="6720">6720</a>
-<a href="#6721" id="6721">6721</a>
-<a href="#6722" id="6722">6722</a>
-<a href="#6723" id="6723">6723</a>
-<a href="#6724" id="6724">6724</a>
-<a href="#6725" id="6725">6725</a>
-<a href="#6726" id="6726">6726</a>
-<a href="#6727" id="6727">6727</a>
-<a href="#6728" id="6728">6728</a>
-<a href="#6729" id="6729">6729</a>
-<a href="#6730" id="6730">6730</a>
-<a href="#6731" id="6731">6731</a>
-<a href="#6732" id="6732">6732</a>
-<a href="#6733" id="6733">6733</a>
-<a href="#6734" id="6734">6734</a>
-<a href="#6735" id="6735">6735</a>
-<a href="#6736" id="6736">6736</a>
-<a href="#6737" id="6737">6737</a>
-<a href="#6738" id="6738">6738</a>
-<a href="#6739" id="6739">6739</a>
-<a href="#6740" id="6740">6740</a>
-<a href="#6741" id="6741">6741</a>
-<a href="#6742" id="6742">6742</a>
-<a href="#6743" id="6743">6743</a>
-<a href="#6744" id="6744">6744</a>
-<a href="#6745" id="6745">6745</a>
-<a href="#6746" id="6746">6746</a>
-<a href="#6747" id="6747">6747</a>
-<a href="#6748" id="6748">6748</a>
-<a href="#6749" id="6749">6749</a>
-<a href="#6750" id="6750">6750</a>
-<a href="#6751" id="6751">6751</a>
-<a href="#6752" id="6752">6752</a>
-<a href="#6753" id="6753">6753</a>
-<a href="#6754" id="6754">6754</a>
-<a href="#6755" id="6755">6755</a>
-<a href="#6756" id="6756">6756</a>
-<a href="#6757" id="6757">6757</a>
-<a href="#6758" id="6758">6758</a>
-<a href="#6759" id="6759">6759</a>
-<a href="#6760" id="6760">6760</a>
-<a href="#6761" id="6761">6761</a>
-<a href="#6762" id="6762">6762</a>
-<a href="#6763" id="6763">6763</a>
-<a href="#6764" id="6764">6764</a>
-<a href="#6765" id="6765">6765</a>
-<a href="#6766" id="6766">6766</a>
-<a href="#6767" id="6767">6767</a>
-<a href="#6768" id="6768">6768</a>
-<a href="#6769" id="6769">6769</a>
-<a href="#6770" id="6770">6770</a>
-<a href="#6771" id="6771">6771</a>
-<a href="#6772" id="6772">6772</a>
-<a href="#6773" id="6773">6773</a>
-<a href="#6774" id="6774">6774</a>
-<a href="#6775" id="6775">6775</a>
-<a href="#6776" id="6776">6776</a>
-<a href="#6777" id="6777">6777</a>
-<a href="#6778" id="6778">6778</a>
-<a href="#6779" id="6779">6779</a>
-<a href="#6780" id="6780">6780</a>
-<a href="#6781" id="6781">6781</a>
-<a href="#6782" id="6782">6782</a>
-<a href="#6783" id="6783">6783</a>
-<a href="#6784" id="6784">6784</a>
-<a href="#6785" id="6785">6785</a>
-<a href="#6786" id="6786">6786</a>
-<a href="#6787" id="6787">6787</a>
-<a href="#6788" id="6788">6788</a>
-<a href="#6789" id="6789">6789</a>
-<a href="#6790" id="6790">6790</a>
-<a href="#6791" id="6791">6791</a>
-<a href="#6792" id="6792">6792</a>
-<a href="#6793" id="6793">6793</a>
-<a href="#6794" id="6794">6794</a>
-<a href="#6795" id="6795">6795</a>
-<a href="#6796" id="6796">6796</a>
-<a href="#6797" id="6797">6797</a>
-<a href="#6798" id="6798">6798</a>
-<a href="#6799" id="6799">6799</a>
-<a href="#6800" id="6800">6800</a>
-<a href="#6801" id="6801">6801</a>
-<a href="#6802" id="6802">6802</a>
-<a href="#6803" id="6803">6803</a>
-<a href="#6804" id="6804">6804</a>
-<a href="#6805" id="6805">6805</a>
-<a href="#6806" id="6806">6806</a>
-<a href="#6807" id="6807">6807</a>
-<a href="#6808" id="6808">6808</a>
-<a href="#6809" id="6809">6809</a>
-<a href="#6810" id="6810">6810</a>
-<a href="#6811" id="6811">6811</a>
-<a href="#6812" id="6812">6812</a>
-<a href="#6813" id="6813">6813</a>
-<a href="#6814" id="6814">6814</a>
-<a href="#6815" id="6815">6815</a>
-<a href="#6816" id="6816">6816</a>
-<a href="#6817" id="6817">6817</a>
-<a href="#6818" id="6818">6818</a>
-<a href="#6819" id="6819">6819</a>
-<a href="#6820" id="6820">6820</a>
-<a href="#6821" id="6821">6821</a>
-<a href="#6822" id="6822">6822</a>
-<a href="#6823" id="6823">6823</a>
-<a href="#6824" id="6824">6824</a>
-<a href="#6825" id="6825">6825</a>
-<a href="#6826" id="6826">6826</a>
-<a href="#6827" id="6827">6827</a>
-<a href="#6828" id="6828">6828</a>
-<a href="#6829" id="6829">6829</a>
-<a href="#6830" id="6830">6830</a>
-<a href="#6831" id="6831">6831</a>
-<a href="#6832" id="6832">6832</a>
-<a href="#6833" id="6833">6833</a>
-<a href="#6834" id="6834">6834</a>
-<a href="#6835" id="6835">6835</a>
-<a href="#6836" id="6836">6836</a>
-<a href="#6837" id="6837">6837</a>
-<a href="#6838" id="6838">6838</a>
-<a href="#6839" id="6839">6839</a>
-<a href="#6840" id="6840">6840</a>
-<a href="#6841" id="6841">6841</a>
-<a href="#6842" id="6842">6842</a>
-<a href="#6843" id="6843">6843</a>
-<a href="#6844" id="6844">6844</a>
-<a href="#6845" id="6845">6845</a>
-<a href="#6846" id="6846">6846</a>
-<a href="#6847" id="6847">6847</a>
-<a href="#6848" id="6848">6848</a>
-<a href="#6849" id="6849">6849</a>
-<a href="#6850" id="6850">6850</a>
-<a href="#6851" id="6851">6851</a>
-<a href="#6852" id="6852">6852</a>
-<a href="#6853" id="6853">6853</a>
-<a href="#6854" id="6854">6854</a>
-<a href="#6855" id="6855">6855</a>
-<a href="#6856" id="6856">6856</a>
-<a href="#6857" id="6857">6857</a></pre></div><pre class="rust"><code><span class="comment">// Copyright 2018 The Fuchsia Authors
+<a href="#6642" id="6642">6642</a></pre></div><pre class="rust"><code><span class="comment">// Copyright 2018 The Fuchsia Authors
 //
 // Licensed under the 2-Clause BSD License &lt;LICENSE-BSD or
 // https://opensource.org/license/bsd-2-clause&gt;, Apache License, Version 2.0
@@ -7159,7 +6944,7 @@
     </span>clippy::arithmetic_side_effects,
     clippy::indexing_slicing,
 ))]
-#![cfg_attr(not(any(test, feature = <span class="string">"std"</span>)), no_std)]
+#![cfg_attr(not(any(test, kani, feature = <span class="string">"std"</span>)), no_std)]
 #![cfg_attr(
     all(feature = <span class="string">"simd-nightly"</span>, any(target_arch = <span class="string">"x86"</span>, target_arch = <span class="string">"x86_64"</span>)),
     feature(stdarch_x86_avx512)
@@ -7214,7 +6999,7 @@
 <span class="kw">pub use </span><span class="kw">crate</span>::wrappers::<span class="kw-2">*</span>;
 
 <span class="kw">use </span>core::{
-    cell::UnsafeCell,
+    cell::{Cell, UnsafeCell},
     cmp::Ordering,
     fmt::{<span class="self">self</span>, Debug, Display, Formatter},
     hash::Hasher,
@@ -7234,17 +7019,17 @@
 
 <span class="kw">use </span><span class="kw">crate</span>::pointer::invariant::{<span class="self">self</span>, BecauseExclusive};
 
-<span class="attr">#[cfg(any(feature = <span class="string">"alloc"</span>, test))]
+<span class="attr">#[cfg(any(feature = <span class="string">"alloc"</span>, test, kani))]
 </span><span class="kw">extern crate </span>alloc;
 <span class="attr">#[cfg(any(feature = <span class="string">"alloc"</span>, test))]
 </span><span class="kw">use </span>alloc::{boxed::Box, vec::Vec};
 
-<span class="attr">#[cfg(any(feature = <span class="string">"alloc"</span>, test, kani))]
+<span class="attr">#[cfg(any(feature = <span class="string">"alloc"</span>, test))]
 </span><span class="kw">use </span>core::alloc::Layout;
 
 <span class="comment">// Used by `TryFromBytes::is_bit_valid`.
 </span><span class="attr">#[doc(hidden)]
-</span><span class="kw">pub use </span><span class="kw">crate</span>::pointer::{invariant::BecauseImmutable, Maybe, MaybeAligned, Ptr};
+</span><span class="kw">pub use </span><span class="kw">crate</span>::pointer::{invariant::BecauseImmutable, Maybe, Ptr};
 <span class="comment">// Used by `KnownLayout`.
 </span><span class="attr">#[doc(hidden)]
 </span><span class="kw">pub use </span><span class="kw">crate</span>::layout::<span class="kw-2">*</span>;
@@ -7728,7 +7513,7 @@
 
 <span class="comment">// SAFETY: Delegates safety to `DstLayout::for_slice`.
 </span><span class="kw">unsafe impl</span>&lt;T&gt; KnownLayout <span class="kw">for </span>[T] {
-    <span class="attr">#[allow(clippy::missing_inline_in_public_items)]
+    <span class="attr">#[allow(clippy::missing_inline_in_public_items, dead_code)]
     #[cfg_attr(
         all(coverage_nightly, __ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS),
         coverage(off)
@@ -7840,29 +7625,27 @@
 
 <span class="macro">safety_comment!</span> {
     <span class="doccomment">/// SAFETY:
-    /// `str`, `ManuallyDrop&lt;[T]&gt;` [1], and `UnsafeCell&lt;T&gt;` [2] have the same
-    /// representations as `[u8]`, `[T]`, and `T` repsectively. `str` has
-    /// different bit validity than `[u8]`, but that doesn't affect the
-    /// soundness of this impl.
+    /// `str` has the same representation as `[u8]`. `ManuallyDrop&lt;T&gt;` [1],
+    /// `UnsafeCell&lt;T&gt;` [2], and `Cell&lt;T&gt;` [3] have the same representation as
+    /// `T`.
     ///
-    /// [1] Per https://doc.rust-lang.org/nightly/core/mem/struct.ManuallyDrop.html:
+    /// [1] Per https://doc.rust-lang.org/1.85.0/std/mem/struct.ManuallyDrop.html:
     ///
     ///   `ManuallyDrop&lt;T&gt;` is guaranteed to have the same layout and bit
     ///   validity as `T`
     ///
-    /// [2] Per https://doc.rust-lang.org/core/cell/struct.UnsafeCell.html#memory-layout:
+    /// [2] Per https://doc.rust-lang.org/1.85.0/core/cell/struct.UnsafeCell.html#memory-layout:
     ///
     ///   `UnsafeCell&lt;T&gt;` has the same in-memory representation as its inner
     ///   type `T`.
     ///
-    /// TODO(#429):
-    /// -  Add quotes from docs.
-    /// -  Once [1] (added in
-    /// https://github.com/rust-lang/rust/pull/115522) is available on stable,
-    /// quote the stable docs instead of the nightly docs.
+    /// [3] Per https://doc.rust-lang.org/1.85.0/core/cell/struct.Cell.html#memory-layout:
+    ///
+    ///   `Cell&lt;T&gt;` has the same in-memory representation as `T`.
     </span><span class="macro">unsafe_impl_known_layout!</span>(<span class="attr">#[repr([u8]</span>)] str);
     <span class="macro">unsafe_impl_known_layout!</span>(T: <span class="question-mark">?</span>Sized + KnownLayout =&gt; <span class="attr">#[repr(T)] </span>ManuallyDrop&lt;T&gt;);
     <span class="macro">unsafe_impl_known_layout!</span>(T: <span class="question-mark">?</span>Sized + KnownLayout =&gt; <span class="attr">#[repr(T)] </span>UnsafeCell&lt;T&gt;);
+    <span class="macro">unsafe_impl_known_layout!</span>(T: <span class="question-mark">?</span>Sized + KnownLayout =&gt; <span class="attr">#[repr(T)] </span>Cell&lt;T&gt;);
 }
 
 <span class="macro">safety_comment!</span> {
@@ -9700,24 +9483,43 @@
     <span class="comment">// We use `from_mut` despite not mutating via `c_ptr` so that we don't need
     // to add a `T: Immutable` bound.
     </span><span class="kw">let </span>c_ptr = Ptr::from_mut(<span class="kw-2">&amp;mut </span>candidate);
-    <span class="kw">let </span>c_ptr = c_ptr.transparent_wrapper_into_inner();
     <span class="comment">// SAFETY: `c_ptr` has no uninitialized sub-ranges because it derived from
-    // `candidate`, which the caller promises is entirely initialized.
+    // `candidate`, which the caller promises is entirely initialized. Since
+    // `candidate` is a `MaybeUninit`, it has no validity requirements, and so
+    // no values written to an `Initialized` `c_ptr` can violate its validity.
+    // Since `c_ptr` has `Exclusive` aliasing, no mutations may happen except
+    // via `c_ptr` so long as it is live, so we don't need to worry about the
+    // fact that `c_ptr` may have more restricted validity than `candidate`.
     </span><span class="kw">let </span>c_ptr = <span class="kw">unsafe </span>{ c_ptr.assume_validity::&lt;invariant::Initialized&gt;() };
+    <span class="kw">let </span>c_ptr = c_ptr.transmute();
 
-    <span class="comment">// This call may panic. If that happens, it doesn't cause any soundness
-    // issues, as we have not generated any invalid state which we need to
-    // fix before returning.
+    <span class="comment">// Since we don't have `T: KnownLayout`, we hack around that by using
+    // `Wrapping&lt;T&gt;`, which implements `KnownLayout` even if `T` doesn't.
     //
-    // Note that one panic or post-monomorphization error condition is
-    // calling `try_into_valid` (and thus `is_bit_valid`) with a shared
-    // pointer when `Self: !Immutable`. Since `Self: Immutable`, this panic
-    // condition will not happen.
-    </span><span class="kw">if </span>!T::is_bit_valid(c_ptr.forget_aligned()) {
+    // This call may panic. If that happens, it doesn't cause any soundness
+    // issues, as we have not generated any invalid state which we need to fix
+    // before returning.
+    //
+    // Note that one panic or post-monomorphization error condition is calling
+    // `try_into_valid` (and thus `is_bit_valid`) with a shared pointer when
+    // `Self: !Immutable`. Since `Self: Immutable`, this panic condition will
+    // not happen.
+    </span><span class="kw">if </span>!Wrapping::&lt;T&gt;::is_bit_valid(c_ptr.forget_aligned()) {
         <span class="kw">return </span><span class="prelude-val">Err</span>(ValidityError::new(source).into());
     }
 
-    <span class="comment">// SAFETY: We just validated that `candidate` contains a valid `T`.
+    <span class="kw">fn </span>_assert_same_size_and_validity&lt;T&gt;()
+    <span class="kw">where
+        </span>Wrapping&lt;T&gt;: pointer::TransmuteFrom&lt;T, invariant::Valid, invariant::Valid&gt;,
+        T: pointer::TransmuteFrom&lt;Wrapping&lt;T&gt;, invariant::Valid, invariant::Valid&gt;,
+    {
+    }
+
+    _assert_same_size_and_validity::&lt;T&gt;();
+
+    <span class="comment">// SAFETY: We just validated that `candidate` contains a valid
+    // `Wrapping&lt;T&gt;`, which has the same size and bit validity as `T`, as
+    // guaranteed by the preceding type assertion.
     </span><span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ candidate.assume_init() })
 }
 
@@ -10404,7 +10206,7 @@
     {
         <span class="macro">static_assert_dst_is_not_zst!</span>(<span class="self">Self</span>);
         <span class="kw">match </span>Ptr::from_ref(source).try_cast_into_no_leftover::&lt;<span class="kw">_</span>, BecauseImmutable&gt;(<span class="prelude-val">None</span>) {
-            <span class="prelude-val">Ok</span>(ptr) =&gt; <span class="prelude-val">Ok</span>(ptr.bikeshed_recall_valid().as_ref()),
+            <span class="prelude-val">Ok</span>(ptr) =&gt; <span class="prelude-val">Ok</span>(ptr.recall_validity().as_ref()),
             <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(err.map_src(|src| src.as_ref())),
         }
     }
@@ -10640,7 +10442,7 @@
     {
         <span class="macro">static_assert_dst_is_not_zst!</span>(<span class="self">Self</span>);
         <span class="kw">match </span>Ptr::from_mut(source).try_cast_into_no_leftover::&lt;<span class="kw">_</span>, BecauseExclusive&gt;(<span class="prelude-val">None</span>) {
-            <span class="prelude-val">Ok</span>(ptr) =&gt; <span class="prelude-val">Ok</span>(ptr.bikeshed_recall_valid().as_mut()),
+            <span class="prelude-val">Ok</span>(ptr) =&gt; <span class="prelude-val">Ok</span>(ptr.recall_validity().as_mut()),
             <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(err.map_src(|src| src.as_mut())),
         }
     }
@@ -10879,7 +10681,7 @@
         <span class="kw">let </span>source = Ptr::from_ref(source);
         <span class="kw">let </span>maybe_slf = source.try_cast_into_no_leftover::&lt;<span class="kw">_</span>, BecauseImmutable&gt;(<span class="prelude-val">Some</span>(count));
         <span class="kw">match </span>maybe_slf {
-            <span class="prelude-val">Ok</span>(slf) =&gt; <span class="prelude-val">Ok</span>(slf.bikeshed_recall_valid().as_ref()),
+            <span class="prelude-val">Ok</span>(slf) =&gt; <span class="prelude-val">Ok</span>(slf.recall_validity().as_ref()),
             <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(err.map_src(|s| s.as_ref())),
         }
     }
@@ -11110,7 +10912,9 @@
         <span class="kw">let </span>source = Ptr::from_mut(source);
         <span class="kw">let </span>maybe_slf = source.try_cast_into_no_leftover::&lt;<span class="kw">_</span>, BecauseImmutable&gt;(<span class="prelude-val">Some</span>(count));
         <span class="kw">match </span>maybe_slf {
-            <span class="prelude-val">Ok</span>(slf) =&gt; <span class="prelude-val">Ok</span>(slf.bikeshed_recall_valid().as_mut()),
+            <span class="prelude-val">Ok</span>(slf) =&gt; <span class="prelude-val">Ok</span>(slf
+                .recall_validity::&lt;<span class="kw">_</span>, (<span class="kw">_</span>, (<span class="kw">_</span>, (BecauseExclusive, BecauseExclusive)))&gt;()
+                .as_mut()),
             <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(err.map_src(|s| s.as_mut())),
         }
     }
@@ -11460,7 +11264,12 @@
 
         <span class="kw">let </span>ptr = Ptr::from_mut(<span class="kw-2">&amp;mut </span>buf);
         <span class="comment">// SAFETY: After `buf.zero()`, `buf` consists entirely of initialized,
-        // zeroed bytes.
+        // zeroed bytes. Since `MaybeUninit` has no validity requirements, `ptr`
+        // cannot be used to write values which will violate `buf`'s bit
+        // validity. Since `ptr` has `Exclusive` aliasing, nothing other than
+        // `ptr` may be used to mutate `ptr`'s referent, and so its bit validity
+        // cannot be violated even though `buf` may have more permissive bit
+        // validity than `ptr`.
         </span><span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ ptr.assume_validity::&lt;invariant::Initialized&gt;() };
         <span class="kw">let </span>ptr = ptr.as_bytes::&lt;BecauseExclusive&gt;();
         src.read_exact(ptr.as_mut())<span class="question-mark">?</span>;
@@ -11563,7 +11372,7 @@
     <span class="kw">let </span>(slf, prefix_suffix) = Ptr::from_ref(source)
         .try_cast_into::&lt;<span class="kw">_</span>, BecauseImmutable&gt;(cast_type, meta)
         .map_err(|err| err.map_src(|s| s.as_ref()))<span class="question-mark">?</span>;
-    <span class="prelude-val">Ok</span>((slf.bikeshed_recall_valid().as_ref(), prefix_suffix.as_ref()))
+    <span class="prelude-val">Ok</span>((slf.recall_validity().as_ref(), prefix_suffix.as_ref()))
 }
 
 <span class="doccomment">/// Interprets the given affix of the given bytes as a `&amp;mut Self` without
@@ -11575,7 +11384,7 @@
 /// If there are insufficient bytes, or if that affix of `source` is not
 /// appropriately aligned, this returns `Err`.
 </span><span class="attr">#[inline(always)]
-</span><span class="kw">fn </span>mut_from_prefix_suffix&lt;T: FromBytes + KnownLayout + <span class="question-mark">?</span>Sized&gt;(
+</span><span class="kw">fn </span>mut_from_prefix_suffix&lt;T: FromBytes + IntoBytes + KnownLayout + <span class="question-mark">?</span>Sized&gt;(
     source: <span class="kw-2">&amp;mut </span>[u8],
     meta: <span class="prelude-ty">Option</span>&lt;T::PointerMetadata&gt;,
     cast_type: CastType,
@@ -11583,7 +11392,7 @@
     <span class="kw">let </span>(slf, prefix_suffix) = Ptr::from_mut(source)
         .try_cast_into::&lt;<span class="kw">_</span>, BecauseExclusive&gt;(cast_type, meta)
         .map_err(|err| err.map_src(|s| s.as_mut()))<span class="question-mark">?</span>;
-    <span class="prelude-val">Ok</span>((slf.bikeshed_recall_valid().as_mut(), prefix_suffix.as_mut()))
+    <span class="prelude-val">Ok</span>((slf.recall_validity().as_mut(), prefix_suffix.as_mut()))
 }
 
 <span class="doccomment">/// Analyzes whether a type is [`IntoBytes`].
@@ -13470,245 +13279,6 @@
                 &lt;[u16]&gt;::new_box_zeroed_with_elems((max / mem::size_of::&lt;u16&gt;()) + <span class="number">1</span>),
                 <span class="prelude-val">Err</span>(AllocError)
             );
-        }
-    }
-}
-
-<span class="attr">#[cfg(kani)]
-</span><span class="kw">mod </span>proofs {
-    <span class="kw">use super</span>::<span class="kw-2">*</span>;
-
-    <span class="kw">impl </span>kani::Arbitrary <span class="kw">for </span>DstLayout {
-        <span class="kw">fn </span>any() -&gt; <span class="self">Self </span>{
-            <span class="kw">let </span>align: NonZeroUsize = kani::any();
-            <span class="kw">let </span>size_info: SizeInfo = kani::any();
-
-            kani::assume(align.is_power_of_two());
-            kani::assume(align &lt; DstLayout::THEORETICAL_MAX_ALIGN);
-
-            <span class="comment">// For testing purposes, we most care about instantiations of
-            // `DstLayout` that can correspond to actual Rust types. We use
-            // `Layout` to verify that our `DstLayout` satisfies the validity
-            // conditions of Rust layouts.
-            </span>kani::assume(
-                <span class="kw">match </span>size_info {
-                    SizeInfo::Sized { size } =&gt; Layout::from_size_align(size, align.get()),
-                    SizeInfo::SliceDst(TrailingSliceLayout { offset, elem_size: <span class="kw">_ </span>}) =&gt; {
-                        <span class="comment">// `SliceDst`` cannot encode an exact size, but we know
-                        // it is at least `offset` bytes.
-                        </span>Layout::from_size_align(offset, align.get())
-                    }
-                }
-                .is_ok(),
-            );
-
-            <span class="self">Self </span>{ align: align, size_info: size_info }
-        }
-    }
-
-    <span class="kw">impl </span>kani::Arbitrary <span class="kw">for </span>SizeInfo {
-        <span class="kw">fn </span>any() -&gt; <span class="self">Self </span>{
-            <span class="kw">let </span>is_sized: bool = kani::any();
-
-            <span class="kw">match </span>is_sized {
-                <span class="bool-val">true </span>=&gt; {
-                    <span class="kw">let </span>size: usize = kani::any();
-
-                    kani::assume(size &lt;= isize::MAX <span class="kw">as _</span>);
-
-                    SizeInfo::Sized { size }
-                }
-                <span class="bool-val">false </span>=&gt; SizeInfo::SliceDst(kani::any()),
-            }
-        }
-    }
-
-    <span class="kw">impl </span>kani::Arbitrary <span class="kw">for </span>TrailingSliceLayout {
-        <span class="kw">fn </span>any() -&gt; <span class="self">Self </span>{
-            <span class="kw">let </span>elem_size: usize = kani::any();
-            <span class="kw">let </span>offset: usize = kani::any();
-
-            kani::assume(elem_size &lt; isize::MAX <span class="kw">as _</span>);
-            kani::assume(offset &lt; isize::MAX <span class="kw">as _</span>);
-
-            TrailingSliceLayout { elem_size, offset }
-        }
-    }
-
-    <span class="attr">#[kani::proof]
-    </span><span class="kw">fn </span>prove_dst_layout_extend() {
-        <span class="kw">use </span><span class="kw">crate</span>::util::{max, min, padding_needed_for};
-
-        <span class="kw">let </span>base: DstLayout = kani::any();
-        <span class="kw">let </span>field: DstLayout = kani::any();
-        <span class="kw">let </span>packed: <span class="prelude-ty">Option</span>&lt;NonZeroUsize&gt; = kani::any();
-
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(max_align) = packed {
-            kani::assume(max_align.is_power_of_two());
-            kani::assume(base.align &lt;= max_align);
-        }
-
-        <span class="comment">// The base can only be extended if it's sized.
-        </span>kani::assume(<span class="macro">matches!</span>(base.size_info, SizeInfo::Sized { .. }));
-        <span class="kw">let </span>base_size = <span class="kw">if let </span>SizeInfo::Sized { size } = base.size_info {
-            size
-        } <span class="kw">else </span>{
-            <span class="macro">unreachable!</span>();
-        };
-
-        <span class="comment">// Under the above conditions, `DstLayout::extend` will not panic.
-        </span><span class="kw">let </span>composite = base.extend(field, packed);
-
-        <span class="comment">// The field's alignment is clamped by `max_align` (i.e., the
-        // `packed` attribute, if any) [1].
-        //
-        // [1] Per https://doc.rust-lang.org/reference/type-layout.html#the-alignment-modifiers:
-        //
-        //   The alignments of each field, for the purpose of positioning
-        //   fields, is the smaller of the specified alignment and the
-        //   alignment of the field's type.
-        </span><span class="kw">let </span>field_align = min(field.align, packed.unwrap_or(DstLayout::THEORETICAL_MAX_ALIGN));
-
-        <span class="comment">// The struct's alignment is the maximum of its previous alignment and
-        // `field_align`.
-        </span><span class="macro">assert_eq!</span>(composite.align, max(base.align, field_align));
-
-        <span class="comment">// Compute the minimum amount of inter-field padding needed to
-        // satisfy the field's alignment, and offset of the trailing field.
-        // [1]
-        //
-        // [1] Per https://doc.rust-lang.org/reference/type-layout.html#the-alignment-modifiers:
-        //
-        //   Inter-field padding is guaranteed to be the minimum required in
-        //   order to satisfy each field's (possibly altered) alignment.
-        </span><span class="kw">let </span>padding = padding_needed_for(base_size, field_align);
-        <span class="kw">let </span>offset = base_size + padding;
-
-        <span class="comment">// For testing purposes, we'll also construct `alloc::Layout`
-        // stand-ins for `DstLayout`, and show that `extend` behaves
-        // comparably on both types.
-        </span><span class="kw">let </span>base_analog = Layout::from_size_align(base_size, base.align.get()).unwrap();
-
-        <span class="kw">match </span>field.size_info {
-            SizeInfo::Sized { size: field_size } =&gt; {
-                <span class="kw">if let </span>SizeInfo::Sized { size: composite_size } = composite.size_info {
-                    <span class="comment">// If the trailing field is sized, the resulting layout will
-                    // be sized. Its size will be the sum of the preceding
-                    // layout, the size of the new field, and the size of
-                    // inter-field padding between the two.
-                    </span><span class="macro">assert_eq!</span>(composite_size, offset + field_size);
-
-                    <span class="kw">let </span>field_analog =
-                        Layout::from_size_align(field_size, field_align.get()).unwrap();
-
-                    <span class="kw">if let </span><span class="prelude-val">Ok</span>((actual_composite, actual_offset)) = base_analog.extend(field_analog)
-                    {
-                        <span class="macro">assert_eq!</span>(actual_offset, offset);
-                        <span class="macro">assert_eq!</span>(actual_composite.size(), composite_size);
-                        <span class="macro">assert_eq!</span>(actual_composite.align(), composite.align.get());
-                    } <span class="kw">else </span>{
-                        <span class="comment">// An error here reflects that composite of `base`
-                        // and `field` cannot correspond to a real Rust type
-                        // fragment, because such a fragment would violate
-                        // the basic invariants of a valid Rust layout. At
-                        // the time of writing, `DstLayout` is a little more
-                        // permissive than `Layout`, so we don't assert
-                        // anything in this branch (e.g., unreachability).
-                    </span>}
-                } <span class="kw">else </span>{
-                    <span class="macro">panic!</span>(<span class="string">"The composite of two sized layouts must be sized."</span>)
-                }
-            }
-            SizeInfo::SliceDst(TrailingSliceLayout {
-                offset: field_offset,
-                elem_size: field_elem_size,
-            }) =&gt; {
-                <span class="kw">if let </span>SizeInfo::SliceDst(TrailingSliceLayout {
-                    offset: composite_offset,
-                    elem_size: composite_elem_size,
-                }) = composite.size_info
-                {
-                    <span class="comment">// The offset of the trailing slice component is the sum
-                    // of the offset of the trailing field and the trailing
-                    // slice offset within that field.
-                    </span><span class="macro">assert_eq!</span>(composite_offset, offset + field_offset);
-                    <span class="comment">// The elem size is unchanged.
-                    </span><span class="macro">assert_eq!</span>(composite_elem_size, field_elem_size);
-
-                    <span class="kw">let </span>field_analog =
-                        Layout::from_size_align(field_offset, field_align.get()).unwrap();
-
-                    <span class="kw">if let </span><span class="prelude-val">Ok</span>((actual_composite, actual_offset)) = base_analog.extend(field_analog)
-                    {
-                        <span class="macro">assert_eq!</span>(actual_offset, offset);
-                        <span class="macro">assert_eq!</span>(actual_composite.size(), composite_offset);
-                        <span class="macro">assert_eq!</span>(actual_composite.align(), composite.align.get());
-                    } <span class="kw">else </span>{
-                        <span class="comment">// An error here reflects that composite of `base`
-                        // and `field` cannot correspond to a real Rust type
-                        // fragment, because such a fragment would violate
-                        // the basic invariants of a valid Rust layout. At
-                        // the time of writing, `DstLayout` is a little more
-                        // permissive than `Layout`, so we don't assert
-                        // anything in this branch (e.g., unreachability).
-                    </span>}
-                } <span class="kw">else </span>{
-                    <span class="macro">panic!</span>(<span class="string">"The extension of a layout with a DST must result in a DST."</span>)
-                }
-            }
-        }
-    }
-
-    <span class="attr">#[kani::proof]
-    #[kani::should_panic]
-    </span><span class="kw">fn </span>prove_dst_layout_extend_dst_panics() {
-        <span class="kw">let </span>base: DstLayout = kani::any();
-        <span class="kw">let </span>field: DstLayout = kani::any();
-        <span class="kw">let </span>packed: <span class="prelude-ty">Option</span>&lt;NonZeroUsize&gt; = kani::any();
-
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(max_align) = packed {
-            kani::assume(max_align.is_power_of_two());
-            kani::assume(base.align &lt;= max_align);
-        }
-
-        kani::assume(<span class="macro">matches!</span>(base.size_info, SizeInfo::SliceDst(..)));
-
-        <span class="kw">let _ </span>= base.extend(field, packed);
-    }
-
-    <span class="attr">#[kani::proof]
-    </span><span class="kw">fn </span>prove_dst_layout_pad_to_align() {
-        <span class="kw">use </span><span class="kw">crate</span>::util::padding_needed_for;
-
-        <span class="kw">let </span>layout: DstLayout = kani::any();
-
-        <span class="kw">let </span>padded: DstLayout = layout.pad_to_align();
-
-        <span class="comment">// Calling `pad_to_align` does not alter the `DstLayout`'s alignment.
-        </span><span class="macro">assert_eq!</span>(padded.align, layout.align);
-
-        <span class="kw">if let </span>SizeInfo::Sized { size: unpadded_size } = layout.size_info {
-            <span class="kw">if let </span>SizeInfo::Sized { size: padded_size } = padded.size_info {
-                <span class="comment">// If the layout is sized, it will remain sized after padding is
-                // added. Its sum will be its unpadded size and the size of the
-                // trailing padding needed to satisfy its alignment
-                // requirements.
-                </span><span class="kw">let </span>padding = padding_needed_for(unpadded_size, layout.align);
-                <span class="macro">assert_eq!</span>(padded_size, unpadded_size + padding);
-
-                <span class="comment">// Prove that calling `DstLayout::pad_to_align` behaves
-                // identically to `Layout::pad_to_align`.
-                </span><span class="kw">let </span>layout_analog =
-                    Layout::from_size_align(unpadded_size, layout.align.get()).unwrap();
-                <span class="kw">let </span>padded_analog = layout_analog.pad_to_align();
-                <span class="macro">assert_eq!</span>(padded_analog.align(), layout.align.get());
-                <span class="macro">assert_eq!</span>(padded_analog.size(), padded_size);
-            } <span class="kw">else </span>{
-                <span class="macro">panic!</span>(<span class="string">"The padding of a sized layout must result in a sized layout."</span>)
-            }
-        } <span class="kw">else </span>{
-            <span class="comment">// If the layout is a DST, padding cannot be statically added.
-            </span><span class="macro">assert_eq!</span>(padded.size_info, layout.size_info);
         }
     }
 }

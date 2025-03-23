@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.23/src/wrappers.rs`."><title>wrappers.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="zerocopy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">zerocopy/</div>wrappers.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.24/src/wrappers.rs`."><title>wrappers.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="zerocopy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.1 (4eb161250 2025-03-15)" data-channel="1.85.1" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">zerocopy/</div>wrappers.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -749,13 +749,7 @@
 <a href="#748" id="748">748</a>
 <a href="#749" id="749">749</a>
 <a href="#750" id="750">750</a>
-<a href="#751" id="751">751</a>
-<a href="#752" id="752">752</a>
-<a href="#753" id="753">753</a>
-<a href="#754" id="754">754</a>
-<a href="#755" id="755">755</a>
-<a href="#756" id="756">756</a>
-<a href="#757" id="757">757</a></pre></div><pre class="rust"><code><span class="comment">// Copyright 2023 The Fuchsia Authors
+<a href="#751" id="751">751</a></pre></div><pre class="rust"><code><span class="comment">// Copyright 2023 The Fuchsia Authors
 //
 // Licensed under a BSD-style license &lt;LICENSE-BSD&gt;, Apache License, Version 2.0
 // &lt;LICENSE-APACHE or https://www.apache.org/licenses/LICENSE-2.0&gt;, or the MIT
@@ -886,17 +880,11 @@
     ///   `UnsafeCell`s exactly when `T` does.
     /// - `TryFromBytes`: `Unalign&lt;T&gt;` has the same the same bit validity as
     ///   `T`, so `T::is_bit_valid` is a sound implementation of `is_bit_valid`.
-    ///   Furthermore:
-    ///   - Since `T` and `Unalign&lt;T&gt;` have the same layout, they have the same
-    ///     size (as required by `unsafe_impl!`).
-    ///   - Since `T` and `Unalign&lt;T&gt;` have the same fields, they have
-    ///     `UnsafeCell`s at the same byte ranges (as required by
-    ///     `unsafe_impl!`).
     </span><span class="macro">impl_or_verify!</span>(T =&gt; Unaligned <span class="kw">for </span>Unalign&lt;T&gt;);
     <span class="macro">impl_or_verify!</span>(T: Immutable =&gt; Immutable <span class="kw">for </span>Unalign&lt;T&gt;);
     <span class="macro">impl_or_verify!</span>(
         T: TryFromBytes =&gt; TryFromBytes <span class="kw">for </span>Unalign&lt;T&gt;;
-        |c: Maybe&lt;T&gt;| T::is_bit_valid(c)
+        |c| T::is_bit_valid(c.transmute())
     );
     <span class="macro">impl_or_verify!</span>(T: FromZeros =&gt; FromZeros <span class="kw">for </span>Unalign&lt;T&gt;);
     <span class="macro">impl_or_verify!</span>(T: FromBytes =&gt; FromBytes <span class="kw">for </span>Unalign&lt;T&gt;);
@@ -945,7 +933,7 @@
     /// may prefer [`Deref::deref`], which is infallible.
     </span><span class="attr">#[inline(always)]
     </span><span class="kw">pub fn </span>try_deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>T, AlignmentError&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>, T&gt;&gt; {
-        <span class="kw">let </span>inner = Ptr::from_ref(<span class="self">self</span>).transparent_wrapper_into_inner();
+        <span class="kw">let </span>inner = Ptr::from_ref(<span class="self">self</span>).transmute();
         <span class="kw">match </span>inner.bikeshed_try_into_aligned() {
             <span class="prelude-val">Ok</span>(aligned) =&gt; <span class="prelude-val">Ok</span>(aligned.as_ref()),
             <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(err.map_src(|src| src.into_unalign().as_ref())),
@@ -962,7 +950,7 @@
     /// callers may prefer [`DerefMut::deref_mut`], which is infallible.
     </span><span class="attr">#[inline(always)]
     </span><span class="kw">pub fn </span>try_deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span>T, AlignmentError&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>, T&gt;&gt; {
-        <span class="kw">let </span>inner = Ptr::from_mut(<span class="self">self</span>).transparent_wrapper_into_inner();
+        <span class="kw">let </span>inner = Ptr::from_mut(<span class="self">self</span>).transmute::&lt;<span class="kw">_</span>, <span class="kw">_</span>, (<span class="kw">_</span>, (<span class="kw">_</span>, <span class="kw">_</span>))&gt;();
         <span class="kw">match </span>inner.bikeshed_try_into_aligned() {
             <span class="prelude-val">Ok</span>(aligned) =&gt; <span class="prelude-val">Ok</span>(aligned.as_mut()),
             <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(err.map_src(|src| src.into_unalign().as_mut())),
@@ -1151,14 +1139,14 @@
 
     <span class="attr">#[inline(always)]
     </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>T {
-        Ptr::from_ref(<span class="self">self</span>).transparent_wrapper_into_inner().bikeshed_recall_aligned().as_ref()
+        Ptr::from_ref(<span class="self">self</span>).transmute().bikeshed_recall_aligned().as_ref()
     }
 }
 
 <span class="kw">impl</span>&lt;T: Unaligned&gt; DerefMut <span class="kw">for </span>Unalign&lt;T&gt; {
     <span class="attr">#[inline(always)]
     </span><span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>T {
-        Ptr::from_mut(<span class="self">self</span>).transparent_wrapper_into_inner().bikeshed_recall_aligned().as_mut()
+        Ptr::from_mut(<span class="self">self</span>).transmute::&lt;<span class="kw">_</span>, <span class="kw">_</span>, (<span class="kw">_</span>, (<span class="kw">_</span>, <span class="kw">_</span>))&gt;().bikeshed_recall_aligned().as_mut()
     }
 }
 

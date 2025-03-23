@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.23/src/util/macros.rs`."><title>macros.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="zerocopy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">zerocopy/util/</div>macros.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.24/src/util/macros.rs`."><title>macros.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="zerocopy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.1 (4eb161250 2025-03-15)" data-channel="1.85.1" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">zerocopy/util/</div>macros.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -802,11 +802,7 @@
 <a href="#801" id="801">801</a>
 <a href="#802" id="802">802</a>
 <a href="#803" id="803">803</a>
-<a href="#804" id="804">804</a>
-<a href="#805" id="805">805</a>
-<a href="#806" id="806">806</a>
-<a href="#807" id="807">807</a>
-<a href="#808" id="808">808</a></pre></div><pre class="rust"><code><span class="comment">// Copyright 2023 The Fuchsia Authors
+<a href="#804" id="804">804</a></pre></div><pre class="rust"><code><span class="comment">// Copyright 2023 The Fuchsia Authors
 //
 // Licensed under a BSD-style license &lt;LICENSE-BSD&gt;, Apache License, Version 2.0
 // &lt;LICENSE-APACHE or https://www.apache.org/licenses/LICENSE-2.0&gt;, or the MIT
@@ -851,27 +847,14 @@
 ///   `is_bit_valid` to unconditionally return `true`. In other words, it must
 ///   be the case that any initialized sequence of bytes constitutes a valid
 ///   instance of `$ty`.
-/// - If an `is_bit_valid` impl is provided, then:
-///   - Regardless of whether the provided closure takes a `Ptr&lt;$repr&gt;` or
-///     `&amp;$repr` argument, if `$ty` and `$repr` are different types, then it
-///     must be the case that, given `t: *mut $ty` and `let r = t as *mut
-///     $repr`:
-///     - `r` refers to an object of equal or lesser size than the object
-///       referred to by `t`.
-///     - `r` refers to an object with `UnsafeCell`s at the same byte ranges as
-///       the object referred to by `t`.
-///   - If the provided closure takes a `&amp;$repr` argument, then given a `Ptr&lt;'a,
-///     $ty&gt;` which satisfies the preconditions of
-///     `TryFromBytes::&lt;$ty&gt;::is_bit_valid`, it must be guaranteed that the
-///     memory referenced by that `Ptr` always contains a valid `$repr`.
-///   - The impl of `is_bit_valid` must only return `true` for its argument
-///     `Ptr&lt;$repr&gt;` if the original `Ptr&lt;$ty&gt;` refers to a valid `$ty`.
+/// - If an `is_bit_valid` impl is provided, then the impl of `is_bit_valid`
+///   must only return `true` if its argument refers to a valid `$ty`.
 </span><span class="macro">macro_rules!</span> unsafe_impl {
     <span class="comment">// Implement `$trait` for `$ty` with no bounds.
-    </span>($(<span class="attr">#[<span class="macro-nonterminal">$attr</span>:meta]</span>)* <span class="macro-nonterminal">$ty</span>:ty: <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span>$(; |<span class="macro-nonterminal">$candidate</span>:ident: MaybeAligned&lt;<span class="macro-nonterminal">$repr</span>:ty&gt;| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?</span>) =&gt; {
+    </span>($(<span class="attr">#[<span class="macro-nonterminal">$attr</span>:meta]</span>)* <span class="macro-nonterminal">$ty</span>:ty: <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span>$(; |<span class="macro-nonterminal">$candidate</span>:ident| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?</span>) =&gt; {
         $(<span class="attr">#[<span class="macro-nonterminal">$attr</span>]</span>)*
         <span class="kw">unsafe impl </span><span class="macro-nonterminal">$</span><span class="kw">trait for </span><span class="macro-nonterminal">$ty </span>{
-            <span class="macro">unsafe_impl!</span>(@method <span class="macro-nonterminal">$</span><span class="kw">trait </span>$(; |<span class="macro-nonterminal">$candidate</span>: MaybeAligned&lt;<span class="macro-nonterminal">$repr</span>&gt;| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?</span>);
+            <span class="macro">unsafe_impl!</span>(@method <span class="macro-nonterminal">$</span><span class="kw">trait </span>$(; |<span class="macro-nonterminal">$candidate</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?</span>);
         }
     };
 
@@ -934,26 +917,26 @@
         $(<span class="attr">#[<span class="macro-nonterminal">$attr</span>:meta]</span>)*
         <span class="kw">const </span><span class="macro-nonterminal">$constname</span>:ident : <span class="macro-nonterminal">$constty</span>:ident $(,)<span class="question-mark">?
         </span>$(<span class="macro-nonterminal">$tyvar</span>:ident $(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound</span>:ident $(+)<span class="question-mark">?</span>)* $(<span class="macro-nonterminal">$bound</span>:ident $(+)<span class="question-mark">?</span>)* )<span class="question-mark">?</span>),*
-        =&gt; <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span><span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty $(; |<span class="macro-nonterminal">$candidate</span>:ident $(: MaybeAligned&lt;<span class="macro-nonterminal">$ref_repr</span>:ty&gt;)<span class="question-mark">? </span>$(: Maybe&lt;<span class="macro-nonterminal">$ptr_repr</span>:ty&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?
+        =&gt; <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span><span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty $(; |<span class="macro-nonterminal">$candidate</span>:ident| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?
     </span>) =&gt; {
         <span class="macro">unsafe_impl!</span>(
             @inner
             $(<span class="attr">#[<span class="macro-nonterminal">$attr</span>]</span>)*
             @<span class="kw">const </span><span class="macro-nonterminal">$constname</span>: <span class="macro-nonterminal">$constty</span>,
             $(<span class="macro-nonterminal">$tyvar </span>$(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound </span>+)* + $(<span class="macro-nonterminal">$bound </span>+)<span class="kw-2">*</span>)<span class="question-mark">?</span>,)*
-            =&gt; <span class="macro-nonterminal">$</span><span class="kw">trait for </span><span class="macro-nonterminal">$ty </span>$(; |<span class="macro-nonterminal">$candidate </span>$(: MaybeAligned&lt;<span class="macro-nonterminal">$ref_repr</span>&gt;)<span class="question-mark">? </span>$(: Maybe&lt;<span class="macro-nonterminal">$ptr_repr</span>&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?
+            =&gt; <span class="macro-nonterminal">$</span><span class="kw">trait for </span><span class="macro-nonterminal">$ty </span>$(; |<span class="macro-nonterminal">$candidate</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?
         </span>);
     };
     (
         $(<span class="attr">#[<span class="macro-nonterminal">$attr</span>:meta]</span>)*
         $(<span class="macro-nonterminal">$tyvar</span>:ident $(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound</span>:ident $(+)<span class="question-mark">?</span>)* $(<span class="macro-nonterminal">$bound</span>:ident $(+)<span class="question-mark">?</span>)* )<span class="question-mark">?</span>),*
-        =&gt; <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span><span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty $(; |<span class="macro-nonterminal">$candidate</span>:ident $(: MaybeAligned&lt;<span class="macro-nonterminal">$ref_repr</span>:ty&gt;)<span class="question-mark">? </span>$(: Maybe&lt;<span class="macro-nonterminal">$ptr_repr</span>:ty&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?
+        =&gt; <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span><span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty $(; |<span class="macro-nonterminal">$candidate</span>:ident| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?
     </span>) =&gt; {
         <span class="macro">unsafe_impl!</span>(
             @inner
             $(<span class="attr">#[<span class="macro-nonterminal">$attr</span>]</span>)*
             $(<span class="macro-nonterminal">$tyvar </span>$(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound </span>+)* + $(<span class="macro-nonterminal">$bound </span>+)<span class="kw-2">*</span>)<span class="question-mark">?</span>,)*
-            =&gt; <span class="macro-nonterminal">$</span><span class="kw">trait for </span><span class="macro-nonterminal">$ty </span>$(; |<span class="macro-nonterminal">$candidate </span>$(: MaybeAligned&lt;<span class="macro-nonterminal">$ref_repr</span>&gt;)<span class="question-mark">? </span>$(: Maybe&lt;<span class="macro-nonterminal">$ptr_repr</span>&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?
+            =&gt; <span class="macro-nonterminal">$</span><span class="kw">trait for </span><span class="macro-nonterminal">$ty </span>$(; |<span class="macro-nonterminal">$candidate</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?
         </span>);
     };
     (
@@ -961,62 +944,22 @@
         $(<span class="attr">#[<span class="macro-nonterminal">$attr</span>:meta]</span>)*
         $(@<span class="kw">const </span><span class="macro-nonterminal">$constname</span>:ident : <span class="macro-nonterminal">$constty</span>:ident,)*
         $(<span class="macro-nonterminal">$tyvar</span>:ident $(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound</span>:ident +)* + $(<span class="macro-nonterminal">$bound</span>:ident +)* )<span class="question-mark">?</span>,)*
-        =&gt; <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span><span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty $(; |<span class="macro-nonterminal">$candidate</span>:ident $(: MaybeAligned&lt;<span class="macro-nonterminal">$ref_repr</span>:ty&gt;)<span class="question-mark">? </span>$(: Maybe&lt;<span class="macro-nonterminal">$ptr_repr</span>:ty&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?
+        =&gt; <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span><span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty $(; |<span class="macro-nonterminal">$candidate</span>:ident| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?
     </span>) =&gt; {
         $(<span class="attr">#[<span class="macro-nonterminal">$attr</span>]</span>)*
         <span class="attr">#[allow(non_local_definitions)]
         </span><span class="kw">unsafe impl</span>&lt;$(<span class="macro-nonterminal">$tyvar </span>$(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound </span>+)* $(<span class="macro-nonterminal">$bound </span>+)<span class="kw-2">*</span>)<span class="question-mark">?</span>),* $(, <span class="kw">const </span><span class="macro-nonterminal">$constname</span>: <span class="macro-nonterminal">$constty</span>,)<span class="kw-2">*</span>&gt; <span class="macro-nonterminal">$</span><span class="kw">trait for </span><span class="macro-nonterminal">$ty </span>{
-            <span class="macro">unsafe_impl!</span>(@method <span class="macro-nonterminal">$</span><span class="kw">trait </span>$(; |<span class="macro-nonterminal">$candidate</span>: $(MaybeAligned&lt;<span class="macro-nonterminal">$ref_repr</span>&gt;)<span class="question-mark">? </span>$(Maybe&lt;<span class="macro-nonterminal">$ptr_repr</span>&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?</span>);
+            <span class="macro">unsafe_impl!</span>(@method <span class="macro-nonterminal">$</span><span class="kw">trait </span>$(; |<span class="macro-nonterminal">$candidate</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?</span>);
         }
     };
 
-    (@method TryFromBytes ; |<span class="macro-nonterminal">$candidate</span>:ident: MaybeAligned&lt;<span class="macro-nonterminal">$repr</span>:ty&gt;| <span class="macro-nonterminal">$is_bit_valid</span>:expr) =&gt; {
-        <span class="attr">#[allow(clippy::missing_inline_in_public_items)]
+    (@method TryFromBytes ; |<span class="macro-nonterminal">$candidate</span>:ident| <span class="macro-nonterminal">$is_bit_valid</span>:expr) =&gt; {
+        <span class="attr">#[allow(clippy::missing_inline_in_public_items, dead_code)]
         #[cfg_attr(all(coverage_nightly, __ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS), coverage(off))]
         </span><span class="kw">fn </span>only_derive_is_allowed_to_implement_this_trait() {}
 
         <span class="attr">#[inline]
-        </span><span class="kw">fn </span>is_bit_valid&lt;AA: <span class="kw">crate</span>::pointer::invariant::Reference&gt;(candidate: Maybe&lt;<span class="lifetime">'_</span>, <span class="self">Self</span>, AA&gt;) -&gt; bool {
-            <span class="comment">// SAFETY:
-            // - The cast preserves address. The caller has promised that the
-            //   cast results in an object of equal or lesser size, and so the
-            //   cast returns a pointer which references a subset of the bytes
-            //   of `p`.
-            // - The cast preserves provenance.
-            // - The caller has promised that the destination type has
-            //   `UnsafeCell`s at the same byte ranges as the source type.
-            </span><span class="attr">#[allow(clippy::as_conversions)]
-            </span><span class="kw">let </span>candidate = <span class="kw">unsafe </span>{ candidate.cast_unsized_unchecked::&lt;<span class="macro-nonterminal">$repr</span>, <span class="kw">_</span>&gt;(|p| p <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>) };
-
-            <span class="comment">// SAFETY: The caller has promised that the referenced memory region
-            // will contain a valid `$repr`.
-            </span><span class="kw">let </span><span class="macro-nonterminal">$candidate </span>= <span class="kw">unsafe </span>{ candidate.assume_validity::&lt;<span class="kw">crate</span>::pointer::invariant::Valid&gt;() };
-            <span class="macro-nonterminal">$is_bit_valid
-        </span>}
-    };
-    (@method TryFromBytes ; |<span class="macro-nonterminal">$candidate</span>:ident: Maybe&lt;<span class="macro-nonterminal">$repr</span>:ty&gt;| <span class="macro-nonterminal">$is_bit_valid</span>:expr) =&gt; {
-        <span class="attr">#[allow(clippy::missing_inline_in_public_items)]
-        #[cfg_attr(all(coverage_nightly, __ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS), coverage(off))]
-        </span><span class="kw">fn </span>only_derive_is_allowed_to_implement_this_trait() {}
-
-        <span class="attr">#[inline]
-        </span><span class="kw">fn </span>is_bit_valid&lt;AA: <span class="kw">crate</span>::pointer::invariant::Reference&gt;(candidate: Maybe&lt;<span class="lifetime">'_</span>, <span class="self">Self</span>, AA&gt;) -&gt; bool {
-            <span class="comment">// SAFETY:
-            // - The cast preserves address. The caller has promised that the
-            //   cast results in an object of equal or lesser size, and so the
-            //   cast returns a pointer which references a subset of the bytes
-            //   of `p`.
-            // - The cast preserves provenance.
-            // - The caller has promised that the destination type has
-            //   `UnsafeCell`s at the same byte ranges as the source type.
-            </span><span class="attr">#[allow(clippy::as_conversions)]
-            </span><span class="kw">let </span><span class="macro-nonterminal">$candidate </span>= <span class="kw">unsafe </span>{ candidate.cast_unsized_unchecked::&lt;<span class="macro-nonterminal">$repr</span>, <span class="kw">_</span>&gt;(|p| p <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>) };
-
-            <span class="comment">// Restore the invariant that the referent bytes are initialized.
-            // SAFETY: The above cast does not uninitialize any referent bytes;
-            // they remain initialized.
-            </span><span class="kw">let </span><span class="macro-nonterminal">$candidate </span>= <span class="kw">unsafe </span>{ <span class="macro-nonterminal">$candidate</span>.assume_validity::&lt;<span class="kw">crate</span>::pointer::invariant::Initialized&gt;() };
-
+        </span><span class="kw">fn </span>is_bit_valid&lt;AA: <span class="kw">crate</span>::pointer::invariant::Reference&gt;(<span class="macro-nonterminal">$candidate</span>: Maybe&lt;<span class="lifetime">'_</span>, <span class="self">Self</span>, AA&gt;) -&gt; bool {
             <span class="macro-nonterminal">$is_bit_valid
         </span>}
     };
@@ -1027,163 +970,101 @@
         <span class="attr">#[inline(always)] </span><span class="kw">fn </span>is_bit_valid&lt;AA: <span class="kw">crate</span>::pointer::invariant::Reference&gt;(<span class="kw">_</span>: Maybe&lt;<span class="lifetime">'_</span>, <span class="self">Self</span>, AA&gt;) -&gt; bool { <span class="bool-val">true </span>}
     };
     (@method <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident</span>) =&gt; {
-        <span class="attr">#[allow(clippy::missing_inline_in_public_items)]
+        <span class="attr">#[allow(clippy::missing_inline_in_public_items, dead_code)]
         #[cfg_attr(all(coverage_nightly, __ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS), coverage(off))]
         </span><span class="kw">fn </span>only_derive_is_allowed_to_implement_this_trait() {}
     };
-    (@method <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident</span>; |<span class="macro-nonterminal">$_candidate</span>:ident $(: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$_ref_repr</span>:ty)<span class="question-mark">? </span>$(: NonNull&lt;<span class="macro-nonterminal">$_ptr_repr</span>:ty&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$_is_bit_valid</span>:expr) =&gt; {
+    (@method <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident</span>; |<span class="macro-nonterminal">$_candidate</span>:ident| <span class="macro-nonterminal">$_is_bit_valid</span>:expr) =&gt; {
         <span class="macro">compile_error!</span>(<span class="string">"Can't provide `is_bit_valid` impl for trait other than `TryFromBytes`"</span>);
     };
 }
 
-<span class="doccomment">/// Implements `$trait` for a type which implements `TransparentWrapper`.
+<span class="doccomment">/// Implements `$trait` for `$ty` where `$ty: TransmuteFrom&lt;$repr&gt;` (and
+/// vice-versa).
 ///
 /// Calling this macro is safe; the internals of the macro emit appropriate
 /// trait bounds which ensure that the given impl is sound.
-</span><span class="macro">macro_rules!</span> impl_for_transparent_wrapper {
+</span><span class="macro">macro_rules!</span> impl_for_transmute_from {
     (
         $(<span class="attr">#[<span class="macro-nonterminal">$attr</span>:meta]</span>)*
         $(<span class="macro-nonterminal">$tyvar</span>:ident $(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound</span>:ident $(+)<span class="question-mark">?</span>)* $(<span class="macro-nonterminal">$bound</span>:ident $(+)<span class="question-mark">?</span>)* )<span class="question-mark">?</span>)<span class="question-mark">?
-        </span>=&gt; <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span><span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty $(; |<span class="macro-nonterminal">$candidate</span>:ident $(: MaybeAligned&lt;<span class="macro-nonterminal">$ref_repr</span>:ty&gt;)<span class="question-mark">? </span>$(: Maybe&lt;<span class="macro-nonterminal">$ptr_repr</span>:ty&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?
-    </span>) =&gt; {
+        </span>=&gt; <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span><span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty [$(<span class="macro-nonterminal">$unsafe_cell</span>:ident)<span class="question-mark">? </span>&lt;<span class="macro-nonterminal">$repr</span>:ty&gt;]
+    ) =&gt; {
         $(<span class="attr">#[<span class="macro-nonterminal">$attr</span>]</span>)*
         <span class="attr">#[allow(non_local_definitions)]
 
-        </span><span class="comment">// This block implements `$trait` for `$ty` under the following
-        // conditions:
-        // - `$ty: TransparentWrapper`
-        // - `$ty::Inner: $trait`
-        // - For some `Xxx`, `$ty::XxxVariance = Covariant` (`Xxx` is determined
-        //   by the `@define_is_transparent_wrapper` macro arms). This bound
-        //   ensures that some layout property is the same between `$ty` and
-        //   `$ty::Inner`. Which layout property this is depends on the trait
-        //   being implemented (for example, `FromBytes` is not concerned with
-        //   alignment, but is concerned with bit validity).
-        //
-        // In other words, `$ty` is guaranteed to soundly implement `$trait`
-        // because some property of its layout is the same as `$ty::Inner`,
-        // which implements `$trait`. Most of the complexity in this macro is to
-        // ensure that the above-mentioned conditions are actually met, and that
-        // the proper variance (ie, the proper layout property) is chosen.
-
-        // SAFETY:
-        // - `is_transparent_wrapper&lt;I, W&gt;` requires:
-        //   - `W: TransparentWrapper&lt;I&gt;`
-        //   - `W::Inner: $trait`
-        // - `f` is generic over `I: Invariants`, and in its body, calls
-        //   `is_transparent_wrapper::&lt;I, $ty&gt;()`. Thus, this code will only
-        //   compile if, for all `I: Invariants`:
-        //   - `$ty: TransparentWrapper&lt;I&gt;`
-        //   - `$ty::Inner: $trait`
-        //
-        // These two facts - that `$ty: TransparentWrapper&lt;I&gt;` and that
-        // `$ty::Inner: $trait` - are the preconditions to the full safety
-        // proofs, which are completed below in the
-        // `@define_is_transparent_wrapper` macro arms. The safety proof is
-        // slightly different for each trait.
+        </span><span class="comment">// SAFETY: `is_trait&lt;T, R&gt;` (defined and used below) requires `T:
+        // TransmuteFrom&lt;R&gt;`, `R: TransmuteFrom&lt;T&gt;`, and `R: $trait`. It is
+        // called using `$ty` and `$repr`, ensuring that `$ty` and `$repr` have
+        // equivalent bit validity, and ensuring that `$repr: $trait`. The
+        // supported traits - `TryFromBytes`, `FromZeros`, `FromBytes`, and
+        // `IntoBytes` - are defined only in terms of the bit validity of a
+        // type. Therefore, `$repr: $trait` ensures that `$ty: $trait` is sound.
         </span><span class="kw">unsafe impl</span>&lt;$(<span class="macro-nonterminal">$tyvar </span>$(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound </span>+)* $(<span class="macro-nonterminal">$bound </span>+)<span class="kw-2">*</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>&gt; <span class="macro-nonterminal">$</span><span class="kw">trait for </span><span class="macro-nonterminal">$ty </span>{
             <span class="attr">#[allow(dead_code, clippy::missing_inline_in_public_items)]
             #[cfg_attr(all(coverage_nightly, __ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS), coverage(off))]
             </span><span class="kw">fn </span>only_derive_is_allowed_to_implement_this_trait() {
-                <span class="kw">use crate</span>::{pointer::invariant::Invariants, util::<span class="kw-2">*</span>};
+                <span class="kw">use </span><span class="kw">crate</span>::pointer::{<span class="kw-2">*</span>, invariant::Valid};
 
-                <span class="macro">impl_for_transparent_wrapper!</span>(@define_is_transparent_wrapper <span class="macro-nonterminal">$</span><span class="kw">trait</span>);
+                <span class="macro">impl_for_transmute_from!</span>(@assert_is_supported_trait <span class="macro-nonterminal">$</span><span class="kw">trait</span>);
+
+                <span class="kw">fn </span><span class="macro-nonterminal">is_trait</span>&lt;T, R&gt;()
+                <span class="kw">where
+                    </span>T: TransmuteFrom&lt;R, Valid, Valid&gt; + <span class="question-mark">?</span>Sized,
+                    R: TransmuteFrom&lt;T, Valid, Valid&gt; + <span class="question-mark">?</span>Sized,
+                    R: <span class="macro-nonterminal">$</span><span class="kw">trait</span>,
+                {
+                }
 
                 <span class="attr">#[<span class="macro-nonterminal">cfg_attr</span>(all(coverage_nightly, __ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS), coverage(off))]
-                </span><span class="kw">fn </span>f&lt;I: Invariants, $(<span class="macro-nonterminal">$tyvar </span>$(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound </span>+)* $(<span class="macro-nonterminal">$bound </span>+)<span class="kw-2">*</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>&gt;() {
-                    is_transparent_wrapper::&lt;I, <span class="macro-nonterminal">$ty</span>&gt;();
+                </span><span class="kw">fn </span>f&lt;$(<span class="macro-nonterminal">$tyvar </span>$(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound </span>+)* $(<span class="macro-nonterminal">$bound </span>+)<span class="kw-2">*</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>&gt;() {
+                    is_trait::&lt;<span class="macro-nonterminal">$ty</span>, <span class="macro-nonterminal">$repr</span>&gt;();
                 }
             }
 
-            <span class="macro">impl_for_transparent_wrapper!</span>(
+            <span class="macro">impl_for_transmute_from!</span>(
                 @is_bit_valid
                 $(&lt;<span class="macro-nonterminal">$tyvar </span>$(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound </span>+)* $(<span class="macro-nonterminal">$bound </span>+)<span class="kw-2">*</span>)<span class="question-mark">?</span>&gt;)<span class="question-mark">?
-                </span><span class="macro-nonterminal">$</span><span class="kw">trait for </span><span class="macro-nonterminal">$ty
-            </span>);
+                </span><span class="macro-nonterminal">$</span><span class="kw">trait for </span><span class="macro-nonterminal">$ty </span>[$(<span class="macro-nonterminal">$unsafe_cell</span>)<span class="question-mark">? </span>&lt;<span class="macro-nonterminal">$repr</span>&gt;]
+            );
         }
     };
-    (@define_is_transparent_wrapper Immutable) =&gt; {
-        <span class="comment">// SAFETY: `W: TransparentWrapper&lt;UnsafeCellVariance = Covariant&gt;`
-        // requires that `W` has `UnsafeCell`s at the same byte offsets as
-        // `W::Inner`. `W::Inner: Immutable` implies that `W::Inner` does not
-        // contain any `UnsafeCell`s, and so `W` does not contain any
-        // `UnsafeCell`s. Since `W = $ty`, `$ty` can soundly implement
-        // `Immutable`.
-        </span><span class="macro">impl_for_transparent_wrapper!</span>(@define_is_transparent_wrapper Immutable, UnsafeCellVariance)
-    };
-    (@define_is_transparent_wrapper FromZeros) =&gt; {
-        <span class="comment">// SAFETY: `W: TransparentWrapper&lt;ValidityVariance = Covariant&gt;`
-        // requires that `W` has the same bit validity as `W::Inner`. `W::Inner:
-        // FromZeros` implies that the all-zeros bit pattern is a bit-valid
-        // instance of `W::Inner`, and so the all-zeros bit pattern is a
-        // bit-valid instance of `W`. Since `W = $ty`, `$ty` can soundly
-        // implement `FromZeros`.
-        </span><span class="macro">impl_for_transparent_wrapper!</span>(@define_is_transparent_wrapper FromZeros, ValidityVariance)
-    };
-    (@define_is_transparent_wrapper FromBytes) =&gt; {
-        <span class="comment">// SAFETY: `W: TransparentWrapper&lt;ValidityVariance = Covariant&gt;`
-        // requires that `W` has the same bit validity as `W::Inner`. `W::Inner:
-        // FromBytes` implies that any initialized bit pattern is a bit-valid
-        // instance of `W::Inner`, and so any initialized bit pattern is a
-        // bit-valid instance of `W`. Since `W = $ty`, `$ty` can soundly
-        // implement `FromBytes`.
-        </span><span class="macro">impl_for_transparent_wrapper!</span>(@define_is_transparent_wrapper FromBytes, ValidityVariance)
-    };
-    (@define_is_transparent_wrapper IntoBytes) =&gt; {
-        <span class="comment">// SAFETY: `W: TransparentWrapper&lt;ValidityVariance = Covariant&gt;`
-        // requires that `W` has the same bit validity as `W::Inner`. `W::Inner:
-        // IntoBytes` implies that no bit-valid instance of `W::Inner` contains
-        // uninitialized bytes, and so no bit-valid instance of `W` contains
-        // uninitialized bytes. Since `W = $ty`, `$ty` can soundly implement
-        // `IntoBytes`.
-        </span><span class="macro">impl_for_transparent_wrapper!</span>(@define_is_transparent_wrapper IntoBytes, ValidityVariance)
-    };
-    (@define_is_transparent_wrapper Unaligned) =&gt; {
-        <span class="comment">// SAFETY: `W: TransparentWrapper&lt;AlignmentVariance = Covariant&gt;`
-        // requires that `W` has the same alignment as `W::Inner`. `W::Inner:
-        // Unaligned` implies `W::Inner`'s alignment is 1, and so `W`'s
-        // alignment is 1. Since `W = $ty`, `W` can soundly implement
-        // `Unaligned`.
-        </span><span class="macro">impl_for_transparent_wrapper!</span>(@define_is_transparent_wrapper Unaligned, AlignmentVariance)
-    };
-    (@define_is_transparent_wrapper TryFromBytes) =&gt; {
-        <span class="comment">// SAFETY: `W: TransparentWrapper&lt;ValidityVariance = Covariant&gt;`
-        // requires that `W` has the same bit validity as `W::Inner`. `W::Inner:
-        // TryFromBytes` implies that `&lt;W::Inner as
-        // TryFromBytes&gt;::is_bit_valid(c)` only returns `true` if `c` references
-        // a bit-valid instance of `W::Inner`. Thus, `&lt;W::Inner as
-        // TryFromBytes&gt;::is_bit_valid(c)` only returns `true` if `c` references
-        // a bit-valid instance of `W`. Below, we implement `&lt;W as
-        // TryFromBytes&gt;::is_bit_valid` by deferring to `&lt;W::Inner as
-        // TryFromBytes&gt;::is_bit_valid`. Since `W = $ty`, it is sound for `$ty`
-        // to implement `TryFromBytes` with this implementation of
-        // `is_bit_valid`.
-        </span><span class="macro">impl_for_transparent_wrapper!</span>(@define_is_transparent_wrapper TryFromBytes, ValidityVariance)
-    };
-    (@define_is_transparent_wrapper <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident</span>, <span class="macro-nonterminal">$variance</span>:ident) =&gt; {
-        <span class="attr">#[cfg_attr(all(coverage_nightly, __ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS), coverage(off))]
-        </span><span class="kw">fn </span>is_transparent_wrapper&lt;I: Invariants, W: TransparentWrapper&lt;I, <span class="macro-nonterminal">$variance </span>= Covariant&gt; + <span class="question-mark">?</span>Sized&gt;()
-        <span class="kw">where
-            </span>W::Inner: <span class="macro-nonterminal">$</span><span class="kw">trait</span>,
-        {}
-    };
+    (@assert_is_supported_trait TryFromBytes) =&gt; {};
+    (@assert_is_supported_trait FromZeros) =&gt; {};
+    (@assert_is_supported_trait FromBytes) =&gt; {};
+    (@assert_is_supported_trait IntoBytes) =&gt; {};
     (
-        @<span class="macro-nonterminal">is_bit_valid
-        </span>$(&lt;<span class="macro-nonterminal">$tyvar</span>:ident $(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound</span>:ident $(+)<span class="question-mark">?</span>)* $(<span class="macro-nonterminal">$bound</span>:ident $(+)<span class="question-mark">?</span>)* )<span class="question-mark">?</span>&gt;)<span class="question-mark">?
-        </span>TryFromBytes <span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty
+        @is_bit_valid
+        $(&lt;<span class="macro-nonterminal">$tyvar</span>:ident $(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound</span>:ident $(+)<span class="question-mark">?</span>)* $(<span class="macro-nonterminal">$bound</span>:ident $(+)<span class="question-mark">?</span>)* )<span class="question-mark">?</span>&gt;)<span class="question-mark">?
+        </span>TryFromBytes <span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty [UnsafeCell&lt;<span class="macro-nonterminal">$repr</span>:ty&gt;]
     ) =&gt; {
-        <span class="comment">// SAFETY: See safety comment in `(@define_is_transparent_wrapper
-        // TryFromBytes)` macro arm for an explanation of why this is a sound
-        // implementation of `is_bit_valid`.
-        </span><span class="attr">#[inline]
+        <span class="attr">#[inline]
         </span><span class="kw">fn </span>is_bit_valid&lt;A: <span class="kw">crate</span>::pointer::invariant::Reference&gt;(candidate: Maybe&lt;<span class="lifetime">'_</span>, <span class="self">Self</span>, A&gt;) -&gt; bool {
-            TryFromBytes::is_bit_valid(candidate.transparent_wrapper_into_inner())
+            <span class="kw">let </span>c: Maybe&lt;<span class="lifetime">'_</span>, <span class="self">Self</span>, <span class="kw">crate</span>::pointer::invariant::Exclusive&gt; = candidate.into_exclusive_or_pme();
+            <span class="kw">let </span>c: Maybe&lt;<span class="lifetime">'_</span>, <span class="macro-nonterminal">$repr</span>, <span class="kw">_</span>&gt; = c.transmute::&lt;<span class="kw">_</span>, <span class="kw">_</span>, (<span class="kw">_</span>, (<span class="kw">_</span>, (BecauseExclusive, BecauseExclusive)))&gt;();
+            <span class="comment">// SAFETY: This macro ensures that `$repr` and `Self` have the same
+            // size and bit validity. Thus, a bit-valid instance of `$repr` is
+            // also a bit-valid instance of `Self`.
+            </span>&lt;<span class="macro-nonterminal">$repr </span><span class="kw">as </span>TryFromBytes&gt;::is_bit_valid(c)
         }
     };
     (
         @is_bit_valid
         $(&lt;<span class="macro-nonterminal">$tyvar</span>:ident $(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound</span>:ident $(+)<span class="question-mark">?</span>)* $(<span class="macro-nonterminal">$bound</span>:ident $(+)<span class="question-mark">?</span>)* )<span class="question-mark">?</span>&gt;)<span class="question-mark">?
-        </span><span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span><span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty
+        </span>TryFromBytes <span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty [&lt;<span class="macro-nonterminal">$repr</span>:ty&gt;]
+    ) =&gt; {
+        <span class="attr">#[inline]
+        </span><span class="kw">fn </span>is_bit_valid&lt;A: <span class="kw">crate</span>::pointer::invariant::Reference&gt;(candidate: Maybe&lt;<span class="lifetime">'_</span>, <span class="self">Self</span>, A&gt;) -&gt; bool {
+            <span class="comment">// SAFETY: This macro ensures that `$repr` and `Self` have the same
+            // size and bit validity. Thus, a bit-valid instance of `$repr` is
+            // also a bit-valid instance of `Self`.
+            </span>&lt;<span class="macro-nonterminal">$repr </span><span class="kw">as </span>TryFromBytes&gt;::is_bit_valid(candidate.transmute())
+        }
+    };
+    (
+        @is_bit_valid
+        $(&lt;<span class="macro-nonterminal">$tyvar</span>:ident $(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound</span>:ident $(+)<span class="question-mark">?</span>)* $(<span class="macro-nonterminal">$bound</span>:ident $(+)<span class="question-mark">?</span>)* )<span class="question-mark">?</span>&gt;)<span class="question-mark">?
+        </span><span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span><span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty [$(<span class="macro-nonterminal">$unsafe_cell</span>:ident)<span class="question-mark">? </span>&lt;<span class="macro-nonterminal">$repr</span>:ty&gt;]
     ) =&gt; {
         <span class="comment">// Trait other than `TryFromBytes`; no `is_bit_valid` impl.
     </span>};
@@ -1210,33 +1091,33 @@
 </span><span class="macro">macro_rules!</span> unsafe_impl_for_power_set {
     (
         <span class="macro-nonterminal">$first</span>:ident $(, <span class="macro-nonterminal">$rest</span>:ident)* $(-&gt; <span class="macro-nonterminal">$ret</span>:ident)<span class="question-mark">? </span>=&gt; <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span><span class="kw">for </span><span class="macro-nonterminal">$</span><span class="kw">macro</span>:<span class="macro">ident!</span>(...)
-        $(; |<span class="macro-nonterminal">$candidate</span>:ident $(: MaybeAligned&lt;<span class="macro-nonterminal">$ref_repr</span>:ty&gt;)<span class="question-mark">? </span>$(: Maybe&lt;<span class="macro-nonterminal">$ptr_repr</span>:ty&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?
+        $(; |<span class="macro-nonterminal">$candidate</span>:ident| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?
     </span>) =&gt; {
         <span class="macro">unsafe_impl_for_power_set!</span>(
             $(<span class="macro-nonterminal">$rest</span>),* $(-&gt; <span class="macro-nonterminal">$ret</span>)<span class="question-mark">? </span>=&gt; <span class="macro-nonterminal">$</span><span class="kw">trait for </span><span class="macro-nonterminal">$</span><span class="macro">macro!</span>(...)
-            $(; |<span class="macro-nonterminal">$candidate </span>$(: MaybeAligned&lt;<span class="macro-nonterminal">$ref_repr</span>&gt;)<span class="question-mark">? </span>$(: Maybe&lt;<span class="macro-nonterminal">$ptr_repr</span>&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?
+            $(; |<span class="macro-nonterminal">$candidate</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?
         </span>);
         <span class="macro">unsafe_impl_for_power_set!</span>(
             @<span class="kw">impl </span><span class="macro-nonterminal">$first </span>$(, <span class="macro-nonterminal">$rest</span>)* $(-&gt; <span class="macro-nonterminal">$ret</span>)<span class="question-mark">? </span>=&gt; <span class="macro-nonterminal">$</span><span class="kw">trait for </span><span class="macro-nonterminal">$</span><span class="macro">macro!</span>(...)
-            $(; |<span class="macro-nonterminal">$candidate </span>$(: MaybeAligned&lt;<span class="macro-nonterminal">$ref_repr</span>&gt;)<span class="question-mark">? </span>$(: Maybe&lt;<span class="macro-nonterminal">$ptr_repr</span>&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?
+            $(; |<span class="macro-nonterminal">$candidate</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?
         </span>);
     };
     (
         $(-&gt; <span class="macro-nonterminal">$ret</span>:ident)<span class="question-mark">? </span>=&gt; <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span><span class="kw">for </span><span class="macro-nonterminal">$</span><span class="kw">macro</span>:<span class="macro">ident!</span>(...)
-        $(; |<span class="macro-nonterminal">$candidate</span>:ident $(: MaybeAligned&lt;<span class="macro-nonterminal">$ref_repr</span>:ty&gt;)<span class="question-mark">? </span>$(: Maybe&lt;<span class="macro-nonterminal">$ptr_repr</span>:ty&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?
+        $(; |<span class="macro-nonterminal">$candidate</span>:ident| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?
     </span>) =&gt; {
         <span class="macro">unsafe_impl_for_power_set!</span>(
             @<span class="kw">impl </span>$(-&gt; <span class="macro-nonterminal">$ret</span>)<span class="question-mark">? </span>=&gt; <span class="macro-nonterminal">$</span><span class="kw">trait for </span><span class="macro-nonterminal">$</span><span class="macro">macro!</span>(...)
-            $(; |<span class="macro-nonterminal">$candidate </span>$(: MaybeAligned&lt;<span class="macro-nonterminal">$ref_repr</span>&gt;)<span class="question-mark">? </span>$(: Maybe&lt;<span class="macro-nonterminal">$ptr_repr</span>&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?
+            $(; |<span class="macro-nonterminal">$candidate</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?
         </span>);
     };
     (
         @<span class="kw">impl </span>$(<span class="macro-nonterminal">$vars</span>:ident),* $(-&gt; <span class="macro-nonterminal">$ret</span>:ident)<span class="question-mark">? </span>=&gt; <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span><span class="kw">for </span><span class="macro-nonterminal">$</span><span class="kw">macro</span>:<span class="macro">ident!</span>(...)
-        $(; |<span class="macro-nonterminal">$candidate</span>:ident $(: MaybeAligned&lt;<span class="macro-nonterminal">$ref_repr</span>:ty&gt;)<span class="question-mark">? </span>$(: Maybe&lt;<span class="macro-nonterminal">$ptr_repr</span>:ty&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?
+        $(; |<span class="macro-nonterminal">$candidate</span>:ident| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?
     </span>) =&gt; {
         <span class="macro">unsafe_impl!</span>(
             $(<span class="macro-nonterminal">$vars</span>,)* $(<span class="macro-nonterminal">$ret</span>)<span class="question-mark">? </span>=&gt; <span class="macro-nonterminal">$</span><span class="kw">trait for </span><span class="macro-nonterminal">$</span><span class="macro">macro!</span>($(<span class="macro-nonterminal">$vars</span>),* $(-&gt; <span class="macro-nonterminal">$ret</span>)<span class="question-mark">?</span>)
-            $(; |<span class="macro-nonterminal">$candidate </span>$(: MaybeAligned&lt;<span class="macro-nonterminal">$ref_repr</span>&gt;)<span class="question-mark">? </span>$(: Maybe&lt;<span class="macro-nonterminal">$ptr_repr</span>&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?
+            $(; |<span class="macro-nonterminal">$candidate</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?
         </span>);
     };
 }
@@ -1320,11 +1201,11 @@
     };
     (
         $(<span class="macro-nonterminal">$tyvar</span>:ident $(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound</span>:ident $(+)<span class="question-mark">?</span>)* $(<span class="macro-nonterminal">$bound</span>:ident $(+)<span class="question-mark">?</span>)* )<span class="question-mark">?</span>),*
-        =&gt; <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span><span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty $(; |<span class="macro-nonterminal">$candidate</span>:ident $(: MaybeAligned&lt;<span class="macro-nonterminal">$ref_repr</span>:ty&gt;)<span class="question-mark">? </span>$(: Maybe&lt;<span class="macro-nonterminal">$ptr_repr</span>:ty&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?
+        =&gt; <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident </span><span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty $(; |<span class="macro-nonterminal">$candidate</span>:ident| <span class="macro-nonterminal">$is_bit_valid</span>:expr)<span class="question-mark">?
     </span>) =&gt; {
         <span class="macro">impl_or_verify!</span>(@<span class="kw">impl </span>{ <span class="macro">unsafe_impl!</span>(
             $(<span class="macro-nonterminal">$tyvar </span>$(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound </span>+)* $(<span class="macro-nonterminal">$bound </span>+)<span class="kw-2">*</span>)<span class="question-mark">?</span>),* =&gt; <span class="macro-nonterminal">$</span><span class="kw">trait for </span><span class="macro-nonterminal">$ty
-            </span>$(; |<span class="macro-nonterminal">$candidate </span>$(: MaybeAligned&lt;<span class="macro-nonterminal">$ref_repr</span>&gt;)<span class="question-mark">? </span>$(: Maybe&lt;<span class="macro-nonterminal">$ptr_repr</span>&gt;)<span class="question-mark">?</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?
+            </span>$(; |<span class="macro-nonterminal">$candidate</span>| <span class="macro-nonterminal">$is_bit_valid</span>)<span class="question-mark">?
         </span>); });
         <span class="macro">impl_or_verify!</span>(@verify <span class="macro-nonterminal">$</span><span class="kw">trait</span>, {
             <span class="kw">impl</span>&lt;$(<span class="macro-nonterminal">$tyvar </span>$(: $(<span class="question-mark">? </span><span class="macro-nonterminal">$optbound </span>+)* $(<span class="macro-nonterminal">$bound </span>+)<span class="kw-2">*</span>)<span class="question-mark">?</span>),<span class="kw-2">*</span>&gt; Subtrait <span class="kw">for </span><span class="macro-nonterminal">$ty </span>{}
@@ -1414,7 +1295,7 @@
 
             <span class="attr">#[allow(non_local_definitions)]
             </span><span class="kw">unsafe impl</span>&lt;$(<span class="macro-nonterminal">$tyvar</span>: <span class="question-mark">?</span>Sized + KnownLayout)<span class="question-mark">?</span>&gt; KnownLayout <span class="kw">for </span><span class="macro-nonterminal">$ty </span>{
-                <span class="attr">#[allow(clippy::missing_inline_in_public_items)]
+                <span class="attr">#[allow(clippy::missing_inline_in_public_items, dead_code)]
                 #[cfg_attr(all(coverage_nightly, __ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS), coverage(off))]
                 </span><span class="kw">fn </span>only_derive_is_allowed_to_implement_this_trait() {}
 
@@ -1613,5 +1494,116 @@
             !dst_is_zst
         }, <span class="string">"cannot call this method on a dynamically-sized type whose trailing slice element is zero-sized"</span>);
     }}
+}
+
+<span class="macro">macro_rules!</span> cast {
+    () =&gt; {
+        |p| {
+            <span class="comment">// SAFETY: `NonNull::as_ptr` returns a non-null pointer, so the
+            // argument to `NonNull::new_unchecked` is also non-null.
+            </span><span class="attr">#[allow(clippy::as_conversions, unused_unsafe)]
+            #[allow(clippy::undocumented_unsafe_blocks)] </span><span class="comment">// Clippy false positive
+            </span><span class="kw">return unsafe </span>{
+                core::ptr::NonNull::new_unchecked(core::ptr::NonNull::as_ptr(p) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>)
+            };
+        }
+    };
+    (<span class="macro-nonterminal">$p</span>:ident) =&gt; {
+        <span class="macro">cast!</span>()(<span class="macro-nonterminal">$p</span>)
+    };
+}
+
+<span class="doccomment">/// Implements `TransmuteFrom` and `SizeEq` for `T` and `$wrapper&lt;T&gt;`.
+///
+/// # Safety
+///
+/// `T` and `$wrapper&lt;T&gt;` must have the same bit validity, and must have the
+/// same size in the sense of `SizeEq`.
+</span><span class="macro">macro_rules!</span> unsafe_impl_for_transparent_wrapper {
+    (T $(: <span class="question-mark">?</span><span class="macro-nonterminal">$optbound</span>:ident)<span class="question-mark">? </span>=&gt; <span class="macro-nonterminal">$wrapper</span>:ident&lt;T&gt;) =&gt; {
+        <span class="kw">const _</span>: () = {
+            <span class="kw">use </span>core::ptr::NonNull;
+            <span class="kw">use </span><span class="kw">crate</span>::pointer::{TransmuteFrom, SizeEq, invariant::Valid};
+
+            <span class="comment">// SAFETY: The caller promises that `T` and `$wrapper&lt;T&gt;` have the
+            // same bit validity.
+            </span><span class="kw">unsafe impl</span>&lt;T $(: <span class="question-mark">?</span><span class="macro-nonterminal">$optbound</span>)<span class="question-mark">?</span>&gt; TransmuteFrom&lt;T, Valid, Valid&gt; <span class="kw">for </span><span class="macro-nonterminal">$wrapper</span>&lt;T&gt; {}
+            <span class="comment">// SAFETY: See previous safety comment.
+            </span><span class="kw">unsafe impl</span>&lt;T $(: <span class="question-mark">?</span><span class="macro-nonterminal">$optbound</span>)<span class="question-mark">?</span>&gt; TransmuteFrom&lt;<span class="macro-nonterminal">$wrapper</span>&lt;T&gt;, Valid, Valid&gt; <span class="kw">for </span>T {}
+            <span class="comment">// SAFETY: The caller promises that `T` and `$wrapper&lt;T&gt;` satisfy
+            // `SizeEq`.
+            </span><span class="kw">unsafe impl</span>&lt;T $(: <span class="question-mark">?</span><span class="macro-nonterminal">$optbound</span>)<span class="question-mark">?</span>&gt; SizeEq&lt;T&gt; <span class="kw">for </span><span class="macro-nonterminal">$wrapper</span>&lt;T&gt; {
+                <span class="kw">fn </span>cast_from_raw(t: NonNull&lt;T&gt;) -&gt; NonNull&lt;<span class="macro-nonterminal">$wrapper</span>&lt;T&gt;&gt; {
+                    <span class="macro">cast!</span>(t)
+                }
+            }
+            <span class="comment">// SAFETY: See previous safety comment.
+            </span><span class="kw">unsafe impl</span>&lt;T $(: <span class="question-mark">?</span><span class="macro-nonterminal">$optbound</span>)<span class="question-mark">?</span>&gt; SizeEq&lt;<span class="macro-nonterminal">$wrapper</span>&lt;T&gt;&gt; <span class="kw">for </span>T {
+                <span class="kw">fn </span>cast_from_raw(t: NonNull&lt;<span class="macro-nonterminal">$wrapper</span>&lt;T&gt;&gt;) -&gt; NonNull&lt;T&gt; {
+                    <span class="macro">cast!</span>(t)
+                }
+            }
+        };
+
+        <span class="comment">// So that this macro must be invoked inside `safety_comment!` or else
+        // it will generate a `clippy::undocumented_unsafe_blocks` warning.
+        </span><span class="attr">#[allow(unused_unsafe)]
+        </span><span class="kw">const _</span>: () = <span class="kw">unsafe </span>{};
+    };
+}
+
+<span class="macro">macro_rules!</span> impl_transitive_transmute_from {
+    ($(<span class="macro-nonterminal">$tyvar</span>:ident $(: <span class="question-mark">?</span><span class="macro-nonterminal">$optbound</span>:ident)<span class="question-mark">?</span>)<span class="question-mark">? </span>=&gt; <span class="macro-nonterminal">$t</span>:ty =&gt; <span class="macro-nonterminal">$u</span>:ty =&gt; <span class="macro-nonterminal">$v</span>:ty) =&gt; {
+        <span class="kw">const _</span>: () = {
+            <span class="kw">use </span>core::ptr::NonNull;
+            <span class="kw">use </span><span class="kw">crate</span>::pointer::{TransmuteFrom, SizeEq, invariant::Valid};
+
+            <span class="comment">// SAFETY: Since `$u: SizeEq&lt;$t&gt;` and `$v: SizeEq&lt;U&gt;`, this impl is
+            // transitively sound.
+            </span><span class="kw">unsafe impl</span>&lt;$(<span class="macro-nonterminal">$tyvar </span>$(: <span class="question-mark">?</span><span class="macro-nonterminal">$optbound</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>&gt; SizeEq&lt;<span class="macro-nonterminal">$t</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$v
+            </span><span class="kw">where
+                </span><span class="macro-nonterminal">$u</span>: SizeEq&lt;<span class="macro-nonterminal">$t</span>&gt;,
+                <span class="macro-nonterminal">$v</span>: SizeEq&lt;<span class="macro-nonterminal">$u</span>&gt;,
+            {
+                <span class="kw">fn </span>cast_from_raw(t: NonNull&lt;<span class="macro-nonterminal">$t</span>&gt;) -&gt; NonNull&lt;<span class="macro-nonterminal">$v</span>&gt; {
+                    <span class="macro">cast!</span>(t)
+                }
+            }
+
+            <span class="comment">// SAFETY: Since `$u: TransmuteFrom&lt;$t, Valid, Valid&gt;`, it is sound
+            // to transmute a bit-valid `$t` to a bit-valid `$u`. Since `$v:
+            // TransmuteFrom&lt;$u, Valid, Valid&gt;`, it is sound to transmute that
+            // bit-valid `$u` to a bit-valid `$v`.
+            </span><span class="kw">unsafe impl</span>&lt;$(<span class="macro-nonterminal">$tyvar </span>$(: <span class="question-mark">?</span><span class="macro-nonterminal">$optbound</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>&gt; TransmuteFrom&lt;<span class="macro-nonterminal">$t</span>, Valid, Valid&gt; <span class="kw">for </span><span class="macro-nonterminal">$v
+            </span><span class="kw">where
+                </span><span class="macro-nonterminal">$u</span>: TransmuteFrom&lt;<span class="macro-nonterminal">$t</span>, Valid, Valid&gt;,
+                <span class="macro-nonterminal">$v</span>: TransmuteFrom&lt;<span class="macro-nonterminal">$u</span>, Valid, Valid&gt;,
+            {}
+        };
+    };
+}
+
+<span class="macro">macro_rules!</span> impl_size_eq {
+    (<span class="macro-nonterminal">$t</span>:ty, <span class="macro-nonterminal">$u</span>:ty) =&gt; {
+        <span class="kw">const _</span>: () = {
+            <span class="kw">use </span><span class="kw">crate</span>::pointer::SizeEq;
+            <span class="kw">use </span>core::ptr::NonNull;
+
+    <span class="macro">static_assert!</span>(=&gt; mem::size_of::&lt;<span class="macro-nonterminal">$t</span>&gt;() == mem::size_of::&lt;<span class="macro-nonterminal">$u</span>&gt;());
+
+            <span class="comment">// SAFETY: We've asserted that their sizes are equal.
+            </span><span class="kw">unsafe impl </span>SizeEq&lt;<span class="macro-nonterminal">$t</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$u </span>{
+                <span class="kw">fn </span>cast_from_raw(t: NonNull&lt;<span class="macro-nonterminal">$t</span>&gt;) -&gt; NonNull&lt;<span class="macro-nonterminal">$u</span>&gt; {
+                    <span class="macro">cast!</span>(t)
+                }
+            }
+            <span class="comment">// SAFETY: We've asserted that their sizes are equal.
+            </span><span class="kw">unsafe impl </span>SizeEq&lt;<span class="macro-nonterminal">$u</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$t </span>{
+                <span class="kw">fn </span>cast_from_raw(u: NonNull&lt;<span class="macro-nonterminal">$u</span>&gt;) -&gt; NonNull&lt;<span class="macro-nonterminal">$t</span>&gt; {
+                    <span class="macro">cast!</span>(u)
+                }
+            }
+        };
+    };
 }
 </code></pre></div></section></main></body></html>

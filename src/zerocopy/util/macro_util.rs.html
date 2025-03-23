@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.23/src/util/macro_util.rs`."><title>macro_util.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="zerocopy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">zerocopy/util/</div>macro_util.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.24/src/util/macro_util.rs`."><title>macro_util.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="zerocopy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.1 (4eb161250 2025-03-15)" data-channel="1.85.1" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">zerocopy/util/</div>macro_util.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -1108,7 +1108,18 @@
 <a href="#1107" id="1107">1107</a>
 <a href="#1108" id="1108">1108</a>
 <a href="#1109" id="1109">1109</a>
-<a href="#1110" id="1110">1110</a></pre></div><pre class="rust"><code><span class="comment">// Copyright 2022 The Fuchsia Authors
+<a href="#1110" id="1110">1110</a>
+<a href="#1111" id="1111">1111</a>
+<a href="#1112" id="1112">1112</a>
+<a href="#1113" id="1113">1113</a>
+<a href="#1114" id="1114">1114</a>
+<a href="#1115" id="1115">1115</a>
+<a href="#1116" id="1116">1116</a>
+<a href="#1117" id="1117">1117</a>
+<a href="#1118" id="1118">1118</a>
+<a href="#1119" id="1119">1119</a>
+<a href="#1120" id="1120">1120</a>
+<a href="#1121" id="1121">1121</a></pre></div><pre class="rust"><code><span class="comment">// Copyright 2022 The Fuchsia Authors
 //
 // Licensed under a BSD-style license &lt;LICENSE-BSD&gt;, Apache License, Version 2.0
 // &lt;LICENSE-APACHE or https://www.apache.org/licenses/LICENSE-2.0&gt;, or the MIT
@@ -1127,15 +1138,22 @@
 
 </span><span class="attr">#![allow(missing_debug_implementations)]
 
-</span><span class="kw">use </span>core::mem::{<span class="self">self</span>, ManuallyDrop};
+</span><span class="kw">use </span>core::{
+    mem::{<span class="self">self</span>, ManuallyDrop},
+    ptr::NonNull,
+};
 
 <span class="comment">// TODO(#29), TODO(https://github.com/rust-lang/rust/issues/69835): Remove this
 // `cfg` when `size_of_val_raw` is stabilized.
 </span><span class="attr">#[cfg(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)]
-</span><span class="kw">use </span>core::ptr::{<span class="self">self</span>, NonNull};
+#[cfg(not(target_pointer_width = <span class="string">"16"</span>))]
+</span><span class="kw">use </span>core::ptr;
 
 <span class="kw">use crate</span>::{
-    pointer::invariant::{<span class="self">self</span>, BecauseExclusive, BecauseImmutable, Invariants},
+    pointer::{
+        invariant::{<span class="self">self</span>, BecauseExclusive, BecauseImmutable, Invariants},
+        TryTransmuteFromPtr,
+    },
     FromBytes, Immutable, IntoBytes, Ptr, TryFromBytes, ValidityError,
 };
 
@@ -1209,11 +1227,13 @@
 }
 
 <span class="attr">#[cfg(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)]
+#[cfg(not(target_pointer_width = <span class="string">"16"</span>))]
 </span><span class="kw">const </span>_64K: usize = <span class="number">1 </span>&lt;&lt; <span class="number">16</span>;
 
 <span class="comment">// TODO(#29), TODO(https://github.com/rust-lang/rust/issues/69835): Remove this
 // `cfg` when `size_of_val_raw` is stabilized.
 </span><span class="attr">#[cfg(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)]
+#[cfg(not(target_pointer_width = <span class="string">"16"</span>))]
 #[repr(C, align(<span class="number">65536</span>))]
 </span><span class="kw">struct </span>Aligned64kAllocation([u8; _64K]);
 
@@ -1226,6 +1246,7 @@
 </span><span class="comment">// TODO(#29), TODO(https://github.com/rust-lang/rust/issues/69835): Remove this
 // `cfg` when `size_of_val_raw` is stabilized.
 </span><span class="attr">#[cfg(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)]
+#[cfg(not(target_pointer_width = <span class="string">"16"</span>))]
 </span><span class="kw">pub const </span>ALIGNED_64K_ALLOCATION: NonNull&lt;[u8]&gt; = {
     <span class="kw">const </span>REF: <span class="kw-2">&amp;</span>Aligned64kAllocation = <span class="kw-2">&amp;</span>Aligned64kAllocation([<span class="number">0</span>; _64K]);
     <span class="kw">let </span>ptr: <span class="kw-2">*const </span>Aligned64kAllocation = REF;
@@ -1457,7 +1478,7 @@
 </span><span class="attr">#[macro_export]
 </span><span class="macro">macro_rules!</span> struct_has_padding {
     (<span class="macro-nonterminal">$t</span>:ty, [$(<span class="macro-nonterminal">$ts</span>:ty),<span class="kw-2">*</span>]) =&gt; {
-        ::zerocopy::util::macro_util::size_of::&lt;<span class="macro-nonterminal">$t</span>&gt;() &gt; <span class="number">0 </span>$(+ ::zerocopy::util::macro_util::size_of::&lt;<span class="macro-nonterminal">$ts</span>&gt;())*
+        <span class="macro-nonterminal">$crate::util::macro_util::size_of</span>::&lt;<span class="macro-nonterminal">$t</span>&gt;() &gt; <span class="number">0 </span>$(+ <span class="macro-nonterminal">$crate::util::macro_util::size_of</span>::&lt;<span class="macro-nonterminal">$ts</span>&gt;())*
     };
 }
 
@@ -1477,7 +1498,7 @@
 </span><span class="attr">#[macro_export]
 </span><span class="macro">macro_rules!</span> union_has_padding {
     (<span class="macro-nonterminal">$t</span>:ty, [$(<span class="macro-nonterminal">$ts</span>:ty),<span class="kw-2">*</span>]) =&gt; {
-        <span class="bool-val">false </span>$(|| ::zerocopy::util::macro_util::size_of::&lt;<span class="macro-nonterminal">$t</span>&gt;() != ::zerocopy::util::macro_util::size_of::&lt;<span class="macro-nonterminal">$ts</span>&gt;())*
+        <span class="bool-val">false </span>$(|| <span class="macro-nonterminal">$crate::util::macro_util::size_of</span>::&lt;<span class="macro-nonterminal">$t</span>&gt;() != <span class="macro-nonterminal">$crate::util::macro_util::size_of</span>::&lt;<span class="macro-nonterminal">$ts</span>&gt;())*
     };
 }
 
@@ -1502,10 +1523,10 @@
 </span><span class="macro">macro_rules!</span> enum_has_padding {
     (<span class="macro-nonterminal">$t</span>:ty, <span class="macro-nonterminal">$disc</span>:ty, $([$(<span class="macro-nonterminal">$ts</span>:ty),<span class="kw-2">*</span>]),<span class="kw-2">*</span>) =&gt; {
         <span class="bool-val">false </span>$(
-            || ::zerocopy::util::macro_util::size_of::&lt;<span class="macro-nonterminal">$t</span>&gt;()
+            || <span class="macro-nonterminal">$crate::util::macro_util::size_of</span>::&lt;<span class="macro-nonterminal">$t</span>&gt;()
                 != (
-                    ::zerocopy::util::macro_util::size_of::&lt;<span class="macro-nonterminal">$disc</span>&gt;()
-                    $(+ ::zerocopy::util::macro_util::size_of::&lt;<span class="macro-nonterminal">$ts</span>&gt;())*
+                    <span class="macro-nonterminal">$crate::util::macro_util::size_of</span>::&lt;<span class="macro-nonterminal">$disc</span>&gt;()
+                    $(+ <span class="macro-nonterminal">$crate::util::macro_util::size_of</span>::&lt;<span class="macro-nonterminal">$ts</span>&gt;())*
                 )
         )*
     }
@@ -1658,7 +1679,7 @@
 /// [`is_bit_valid`]: TryFromBytes::is_bit_valid
 </span><span class="attr">#[doc(hidden)]
 #[inline]
-</span><span class="kw">fn </span>try_cast_or_pme&lt;Src, Dst, I, R&gt;(
+</span><span class="kw">fn </span>try_cast_or_pme&lt;Src, Dst, I, R, S&gt;(
     src: Ptr&lt;<span class="lifetime">'_</span>, Src, I&gt;,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;
     Ptr&lt;<span class="lifetime">'_</span>, Dst, (I::Aliasing, invariant::Unaligned, invariant::Valid)&gt;,
@@ -1668,7 +1689,9 @@
     </span><span class="comment">// TODO(#2226): There should be a `Src: FromBytes` bound here, but doing so
     // requires deeper surgery.
     </span>Src: invariant::Read&lt;I::Aliasing, R&gt;,
-    Dst: TryFromBytes + invariant::Read&lt;I::Aliasing, R&gt;,
+    Dst: TryFromBytes
+        + invariant::Read&lt;I::Aliasing, R&gt;
+        + TryTransmuteFromPtr&lt;Dst, I::Aliasing, invariant::Initialized, invariant::Valid, S&gt;,
     I: Invariants&lt;Validity = invariant::Initialized&gt;,
     I::Aliasing: invariant::Reference,
 {
@@ -1680,7 +1703,7 @@
     //   `Src`.
     // - `p as *mut Dst` is a provenance-preserving cast
     </span><span class="attr">#[allow(clippy::as_conversions)]
-    </span><span class="kw">let </span>c_ptr = <span class="kw">unsafe </span>{ src.cast_unsized(|p| p <span class="kw">as </span><span class="kw-2">*mut </span>Dst) };
+    </span><span class="kw">let </span>c_ptr = <span class="kw">unsafe </span>{ src.cast_unsized(NonNull::cast::&lt;Dst&gt;) };
 
     <span class="kw">match </span>c_ptr.try_into_valid() {
         <span class="prelude-val">Ok</span>(ptr) =&gt; <span class="prelude-val">Ok</span>(ptr),
@@ -1694,7 +1717,7 @@
             //   to the size of `Src`.
             // - `p as *mut Src` is a provenance-preserving cast
             </span><span class="attr">#[allow(clippy::as_conversions)]
-            </span><span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ ptr.cast_unsized(|p| p <span class="kw">as </span><span class="kw-2">*mut </span>Src) };
+            </span><span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ ptr.cast_unsized(NonNull::cast::&lt;Src&gt;) };
             <span class="comment">// SAFETY: `ptr` is `src`, and has the same alignment invariant.
             </span><span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ ptr.assume_alignment::&lt;I::Alignment&gt;() };
             <span class="comment">// SAFETY: `ptr` is `src` and has the same validity invariant.
@@ -1747,8 +1770,7 @@
     //
     //   `MaybeUninit&lt;T&gt;` is guaranteed to have the same size, alignment, and
     //   ABI as `T`
-    </span><span class="kw">let </span>ptr: Ptr&lt;<span class="lifetime">'_</span>, Dst, <span class="kw">_</span>&gt; =
-        <span class="kw">unsafe </span>{ ptr.cast_unsized(|mu: <span class="kw-2">*mut </span>mem::MaybeUninit&lt;Dst&gt;| mu.cast()) };
+    </span><span class="kw">let </span>ptr: Ptr&lt;<span class="lifetime">'_</span>, Dst, <span class="kw">_</span>&gt; = <span class="kw">unsafe </span>{ ptr.cast_unsized(NonNull::&lt;mem::MaybeUninit&lt;Dst&gt;&gt;::cast) };
 
     <span class="kw">if </span>Dst::is_bit_valid(ptr.forget_aligned()) {
         <span class="comment">// SAFETY: Since `Dst::is_bit_valid`, we know that `ptr`'s referent is
@@ -1782,7 +1804,7 @@
 {
     <span class="kw">let </span>ptr = Ptr::from_ref(src);
     <span class="kw">let </span>ptr = ptr.bikeshed_recall_initialized_immutable();
-    <span class="kw">match </span>try_cast_or_pme::&lt;Src, Dst, <span class="kw">_</span>, BecauseImmutable&gt;(ptr) {
+    <span class="kw">match </span>try_cast_or_pme::&lt;Src, Dst, <span class="kw">_</span>, BecauseImmutable, <span class="kw">_</span>&gt;(ptr) {
         <span class="prelude-val">Ok</span>(ptr) =&gt; {
             <span class="macro">static_assert!</span>(Src, Dst =&gt; mem::align_of::&lt;Dst&gt;() &lt;= mem::align_of::&lt;Src&gt;());
             <span class="comment">// SAFETY: We have checked that `Dst` does not have a stricter
@@ -1826,7 +1848,7 @@
 {
     <span class="kw">let </span>ptr = Ptr::from_mut(src);
     <span class="kw">let </span>ptr = ptr.bikeshed_recall_initialized_from_bytes();
-    <span class="kw">match </span>try_cast_or_pme::&lt;Src, Dst, <span class="kw">_</span>, BecauseExclusive&gt;(ptr) {
+    <span class="kw">match </span>try_cast_or_pme::&lt;Src, Dst, <span class="kw">_</span>, BecauseExclusive, <span class="kw">_</span>&gt;(ptr) {
         <span class="prelude-val">Ok</span>(ptr) =&gt; {
             <span class="macro">static_assert!</span>(Src, Dst =&gt; mem::align_of::&lt;Dst&gt;() &lt;= mem::align_of::&lt;Src&gt;());
             <span class="comment">// SAFETY: We have checked that `Dst` does not have a stricter
@@ -1834,7 +1856,7 @@
             </span><span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ ptr.assume_alignment::&lt;invariant::Aligned&gt;() };
             <span class="prelude-val">Ok</span>(ptr.as_mut())
         }
-        <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(err.map_src(|ptr| ptr.bikeshed_recall_valid().as_mut())),
+        <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(err.map_src(|ptr| ptr.recall_validity().as_mut())),
     }
 }
 
