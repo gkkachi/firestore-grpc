@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.44.2/src/net/unix/datagram/socket.rs`."><title>socket.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-6c3ea77c.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="tokio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0 (05f9846f8 2025-03-31)" data-channel="1.86.0" data-search-js="search-581efc7a.js" data-settings-js="settings-6dad6058.js" ><script src="../../../../../static.files/storage-3a5871a4.js"></script><script defer src="../../../../../static.files/src-script-b8d3f215.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-4d63596a.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">tokio/net/unix/datagram/</div>socket.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-4"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use </span><span class="kw">crate</span>::io::{Interest, PollEvented, ReadBuf, Ready};
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.45.0/src/net/unix/datagram/socket.rs`."><title>socket.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-6c3ea77c.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="tokio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0 (05f9846f8 2025-03-31)" data-channel="1.86.0" data-search-js="search-581efc7a.js" data-settings-js="settings-6dad6058.js" ><script src="../../../../../static.files/storage-3a5871a4.js"></script><script defer src="../../../../../static.files/src-script-b8d3f215.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-4d63596a.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">tokio/net/unix/datagram/</div>socket.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-4"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use </span><span class="kw">crate</span>::io::{Interest, PollEvented, ReadBuf, Ready};
 <a href=#2 id=2 data-nosnippet>2</a><span class="kw">use </span><span class="kw">crate</span>::net::unix::SocketAddr;
 <a href=#3 id=3 data-nosnippet>3</a><span class="kw">use </span><span class="kw">crate</span>::util::check_socket_for_blocking;
 <a href=#4 id=4 data-nosnippet>4</a>
@@ -36,10 +36,10 @@
 <a href=#36 id=36 data-nosnippet>36</a>    /// # Examples
 <a href=#37 id=37 data-nosnippet>37</a>    /// Using named sockets, associated with a filesystem path:
 <a href=#38 id=38 data-nosnippet>38</a>    /// ```
-<a href=#39 id=39 data-nosnippet>39</a>    /// # if cfg!(miri) { return } // No `socket` in miri.
-<a href=#40 id=40 data-nosnippet>40</a>    /// # use std::error::Error;
-<a href=#41 id=41 data-nosnippet>41</a>    /// # #[tokio::main]
-<a href=#42 id=42 data-nosnippet>42</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#39 id=39 data-nosnippet>39</a>    /// # use std::error::Error;
+<a href=#40 id=40 data-nosnippet>40</a>    /// # #[tokio::main]
+<a href=#41 id=41 data-nosnippet>41</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#42 id=42 data-nosnippet>42</a>    /// # if cfg!(miri) { return Ok(()); } // No `socket` in miri.
 <a href=#43 id=43 data-nosnippet>43</a>    /// use tokio::net::UnixDatagram;
 <a href=#44 id=44 data-nosnippet>44</a>    /// use tempfile::tempdir;
 <a href=#45 id=45 data-nosnippet>45</a>    ///
@@ -69,10 +69,10 @@
 <a href=#69 id=69 data-nosnippet>69</a>    ///
 <a href=#70 id=70 data-nosnippet>70</a>    /// Using unnamed sockets, created as a pair
 <a href=#71 id=71 data-nosnippet>71</a>    /// ```
-<a href=#72 id=72 data-nosnippet>72</a>    /// # if cfg!(miri) { return } // No SOCK_DGRAM for `socketpair` in miri.
-<a href=#73 id=73 data-nosnippet>73</a>    /// # use std::error::Error;
-<a href=#74 id=74 data-nosnippet>74</a>    /// # #[tokio::main]
-<a href=#75 id=75 data-nosnippet>75</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#72 id=72 data-nosnippet>72</a>    /// # use std::error::Error;
+<a href=#73 id=73 data-nosnippet>73</a>    /// # #[tokio::main]
+<a href=#74 id=74 data-nosnippet>74</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#75 id=75 data-nosnippet>75</a>    /// # if cfg!(miri) { return Ok(()); } // No SOCK_DGRAM for `socketpair` in miri.
 <a href=#76 id=76 data-nosnippet>76</a>    /// use tokio::net::UnixDatagram;
 <a href=#77 id=77 data-nosnippet>77</a>    ///
 <a href=#78 id=78 data-nosnippet>78</a>    /// // Create the pair of sockets
@@ -374,10 +374,10 @@
 <a href=#374 id=374 data-nosnippet>374</a>    ///
 <a href=#375 id=375 data-nosnippet>375</a>    /// # Examples
 <a href=#376 id=376 data-nosnippet>376</a>    /// ```
-<a href=#377 id=377 data-nosnippet>377</a>    /// # if cfg!(miri) { return } // No `socket` in miri.
-<a href=#378 id=378 data-nosnippet>378</a>    /// # use std::error::Error;
-<a href=#379 id=379 data-nosnippet>379</a>    /// # #[tokio::main]
-<a href=#380 id=380 data-nosnippet>380</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#377 id=377 data-nosnippet>377</a>    /// # use std::error::Error;
+<a href=#378 id=378 data-nosnippet>378</a>    /// # #[tokio::main]
+<a href=#379 id=379 data-nosnippet>379</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#380 id=380 data-nosnippet>380</a>    /// # if cfg!(miri) { return Ok(()); } // No `socket` in miri.
 <a href=#381 id=381 data-nosnippet>381</a>    /// use tokio::net::UnixDatagram;
 <a href=#382 id=382 data-nosnippet>382</a>    /// use tempfile::tempdir;
 <a href=#383 id=383 data-nosnippet>383</a>    ///
@@ -407,10 +407,10 @@
 <a href=#407 id=407 data-nosnippet>407</a>    ///
 <a href=#408 id=408 data-nosnippet>408</a>    /// # Examples
 <a href=#409 id=409 data-nosnippet>409</a>    /// ```
-<a href=#410 id=410 data-nosnippet>410</a>    /// # if cfg!(miri) { return } // No SOCK_DGRAM for `socketpair` in miri.
-<a href=#411 id=411 data-nosnippet>411</a>    /// # use std::error::Error;
-<a href=#412 id=412 data-nosnippet>412</a>    /// # #[tokio::main]
-<a href=#413 id=413 data-nosnippet>413</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#410 id=410 data-nosnippet>410</a>    /// # use std::error::Error;
+<a href=#411 id=411 data-nosnippet>411</a>    /// # #[tokio::main]
+<a href=#412 id=412 data-nosnippet>412</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#413 id=413 data-nosnippet>413</a>    /// # if cfg!(miri) { return Ok(()); } // No SOCK_DGRAM for `socketpair` in miri.
 <a href=#414 id=414 data-nosnippet>414</a>    /// use tokio::net::UnixDatagram;
 <a href=#415 id=415 data-nosnippet>415</a>    ///
 <a href=#416 id=416 data-nosnippet>416</a>    /// // Create the pair of sockets
@@ -466,10 +466,10 @@
 <a href=#466 id=466 data-nosnippet>466</a>    /// explicitly with [`Runtime::enter`](crate::runtime::Runtime::enter) function.
 <a href=#467 id=467 data-nosnippet>467</a>    /// # Examples
 <a href=#468 id=468 data-nosnippet>468</a>    /// ```
-<a href=#469 id=469 data-nosnippet>469</a>    /// # if cfg!(miri) { return } // No `socket` in miri.
-<a href=#470 id=470 data-nosnippet>470</a>    /// # use std::error::Error;
-<a href=#471 id=471 data-nosnippet>471</a>    /// # #[tokio::main]
-<a href=#472 id=472 data-nosnippet>472</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#469 id=469 data-nosnippet>469</a>    /// # use std::error::Error;
+<a href=#470 id=470 data-nosnippet>470</a>    /// # #[tokio::main]
+<a href=#471 id=471 data-nosnippet>471</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#472 id=472 data-nosnippet>472</a>    /// # if cfg!(miri) { return Ok(()); } // No `socket` in miri.
 <a href=#473 id=473 data-nosnippet>473</a>    /// use tokio::net::UnixDatagram;
 <a href=#474 id=474 data-nosnippet>474</a>    /// use std::os::unix::net::UnixDatagram as StdUDS;
 <a href=#475 id=475 data-nosnippet>475</a>    /// use tempfile::tempdir;
@@ -533,10 +533,10 @@
 <a href=#533 id=533 data-nosnippet>533</a>    ///
 <a href=#534 id=534 data-nosnippet>534</a>    /// # Examples
 <a href=#535 id=535 data-nosnippet>535</a>    /// ```
-<a href=#536 id=536 data-nosnippet>536</a>    /// # if cfg!(miri) { return } // No `socket` in miri.
-<a href=#537 id=537 data-nosnippet>537</a>    /// # use std::error::Error;
-<a href=#538 id=538 data-nosnippet>538</a>    /// # #[tokio::main]
-<a href=#539 id=539 data-nosnippet>539</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#536 id=536 data-nosnippet>536</a>    /// # use std::error::Error;
+<a href=#537 id=537 data-nosnippet>537</a>    /// # #[tokio::main]
+<a href=#538 id=538 data-nosnippet>538</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#539 id=539 data-nosnippet>539</a>    /// # if cfg!(miri) { return Ok(()); } // No `socket` in miri.
 <a href=#540 id=540 data-nosnippet>540</a>    /// use tokio::net::UnixDatagram;
 <a href=#541 id=541 data-nosnippet>541</a>    /// use tempfile::tempdir;
 <a href=#542 id=542 data-nosnippet>542</a>    ///
@@ -573,10 +573,10 @@
 <a href=#573 id=573 data-nosnippet>573</a>    ///
 <a href=#574 id=574 data-nosnippet>574</a>    /// # Examples
 <a href=#575 id=575 data-nosnippet>575</a>    /// ```
-<a href=#576 id=576 data-nosnippet>576</a>    /// # if cfg!(miri) { return } // No `socket` in miri.
-<a href=#577 id=577 data-nosnippet>577</a>    /// # use std::error::Error;
-<a href=#578 id=578 data-nosnippet>578</a>    /// # #[tokio::main]
-<a href=#579 id=579 data-nosnippet>579</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#576 id=576 data-nosnippet>576</a>    /// # use std::error::Error;
+<a href=#577 id=577 data-nosnippet>577</a>    /// # #[tokio::main]
+<a href=#578 id=578 data-nosnippet>578</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#579 id=579 data-nosnippet>579</a>    /// # if cfg!(miri) { return Ok(()); } // No `socket` in miri.
 <a href=#580 id=580 data-nosnippet>580</a>    /// use tokio::net::UnixDatagram;
 <a href=#581 id=581 data-nosnippet>581</a>    /// use tempfile::tempdir;
 <a href=#582 id=582 data-nosnippet>582</a>    ///
@@ -618,10 +618,10 @@
 <a href=#618 id=618 data-nosnippet>618</a>    ///
 <a href=#619 id=619 data-nosnippet>619</a>    /// # Examples
 <a href=#620 id=620 data-nosnippet>620</a>    /// ```
-<a href=#621 id=621 data-nosnippet>621</a>    /// # if cfg!(miri) { return } // No SOCK_DGRAM for `socketpair` in miri.
-<a href=#622 id=622 data-nosnippet>622</a>    /// # use std::error::Error;
-<a href=#623 id=623 data-nosnippet>623</a>    /// # #[tokio::main]
-<a href=#624 id=624 data-nosnippet>624</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#621 id=621 data-nosnippet>621</a>    /// # use std::error::Error;
+<a href=#622 id=622 data-nosnippet>622</a>    /// # #[tokio::main]
+<a href=#623 id=623 data-nosnippet>623</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#624 id=624 data-nosnippet>624</a>    /// # if cfg!(miri) { return Ok(()); } // No SOCK_DGRAM for `socketpair` in miri.
 <a href=#625 id=625 data-nosnippet>625</a>    /// use tokio::net::UnixDatagram;
 <a href=#626 id=626 data-nosnippet>626</a>    ///
 <a href=#627 id=627 data-nosnippet>627</a>    /// // Create the pair of sockets
@@ -749,10 +749,10 @@
 <a href=#749 id=749 data-nosnippet>749</a>    ///
 <a href=#750 id=750 data-nosnippet>750</a>    /// # Examples
 <a href=#751 id=751 data-nosnippet>751</a>    /// ```
-<a href=#752 id=752 data-nosnippet>752</a>    /// # if cfg!(miri) { return } // No SOCK_DGRAM for `socketpair` in miri.
-<a href=#753 id=753 data-nosnippet>753</a>    /// # use std::error::Error;
-<a href=#754 id=754 data-nosnippet>754</a>    /// # #[tokio::main]
-<a href=#755 id=755 data-nosnippet>755</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#752 id=752 data-nosnippet>752</a>    /// # use std::error::Error;
+<a href=#753 id=753 data-nosnippet>753</a>    /// # #[tokio::main]
+<a href=#754 id=754 data-nosnippet>754</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#755 id=755 data-nosnippet>755</a>    /// # if cfg!(miri) { return Ok(()); } // No SOCK_DGRAM for `socketpair` in miri.
 <a href=#756 id=756 data-nosnippet>756</a>    /// use tokio::net::UnixDatagram;
 <a href=#757 id=757 data-nosnippet>757</a>    ///
 <a href=#758 id=758 data-nosnippet>758</a>    /// // Create the pair of sockets
@@ -900,10 +900,10 @@
 <a href=#900 id=900 data-nosnippet>900</a>        ///
 <a href=#901 id=901 data-nosnippet>901</a>        /// # Examples
 <a href=#902 id=902 data-nosnippet>902</a>        /// ```
-<a href=#903 id=903 data-nosnippet>903</a>        /// # if cfg!(miri) { return } // No `socket` in miri.
-<a href=#904 id=904 data-nosnippet>904</a>        /// # use std::error::Error;
-<a href=#905 id=905 data-nosnippet>905</a>        /// # #[tokio::main]
-<a href=#906 id=906 data-nosnippet>906</a>        /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#903 id=903 data-nosnippet>903</a>        /// # use std::error::Error;
+<a href=#904 id=904 data-nosnippet>904</a>        /// # #[tokio::main]
+<a href=#905 id=905 data-nosnippet>905</a>        /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#906 id=906 data-nosnippet>906</a>        /// # if cfg!(miri) { return Ok(()); } // No `socket` in miri.
 <a href=#907 id=907 data-nosnippet>907</a>        /// use tokio::net::UnixDatagram;
 <a href=#908 id=908 data-nosnippet>908</a>        /// use tempfile::tempdir;
 <a href=#909 id=909 data-nosnippet>909</a>        ///
@@ -1017,10 +1017,10 @@
 <a href=#1017 id=1017 data-nosnippet>1017</a>        ///
 <a href=#1018 id=1018 data-nosnippet>1018</a>        /// # Examples
 <a href=#1019 id=1019 data-nosnippet>1019</a>        /// ```
-<a href=#1020 id=1020 data-nosnippet>1020</a>        /// # if cfg!(miri) { return } // No SOCK_DGRAM for `socketpair` in miri.
-<a href=#1021 id=1021 data-nosnippet>1021</a>        /// # use std::error::Error;
-<a href=#1022 id=1022 data-nosnippet>1022</a>        /// # #[tokio::main]
-<a href=#1023 id=1023 data-nosnippet>1023</a>        /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1020 id=1020 data-nosnippet>1020</a>        /// # use std::error::Error;
+<a href=#1021 id=1021 data-nosnippet>1021</a>        /// # #[tokio::main]
+<a href=#1022 id=1022 data-nosnippet>1022</a>        /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1023 id=1023 data-nosnippet>1023</a>        /// # if cfg!(miri) { return Ok(()); } // No SOCK_DGRAM for `socketpair` in miri.
 <a href=#1024 id=1024 data-nosnippet>1024</a>        /// use tokio::net::UnixDatagram;
 <a href=#1025 id=1025 data-nosnippet>1025</a>        ///
 <a href=#1026 id=1026 data-nosnippet>1026</a>        /// // Create the pair of sockets
@@ -1068,10 +1068,10 @@
 <a href=#1068 id=1068 data-nosnippet>1068</a>    ///
 <a href=#1069 id=1069 data-nosnippet>1069</a>    /// # Examples
 <a href=#1070 id=1070 data-nosnippet>1070</a>    /// ```
-<a href=#1071 id=1071 data-nosnippet>1071</a>    /// # if cfg!(miri) { return } // No `socket` in miri.
-<a href=#1072 id=1072 data-nosnippet>1072</a>    /// # use std::error::Error;
-<a href=#1073 id=1073 data-nosnippet>1073</a>    /// # #[tokio::main]
-<a href=#1074 id=1074 data-nosnippet>1074</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1071 id=1071 data-nosnippet>1071</a>    /// # use std::error::Error;
+<a href=#1072 id=1072 data-nosnippet>1072</a>    /// # #[tokio::main]
+<a href=#1073 id=1073 data-nosnippet>1073</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1074 id=1074 data-nosnippet>1074</a>    /// # if cfg!(miri) { return Ok(()); } // No `socket` in miri.
 <a href=#1075 id=1075 data-nosnippet>1075</a>    /// use tokio::net::UnixDatagram;
 <a href=#1076 id=1076 data-nosnippet>1076</a>    /// use tempfile::tempdir;
 <a href=#1077 id=1077 data-nosnippet>1077</a>    ///
@@ -1119,10 +1119,10 @@
 <a href=#1119 id=1119 data-nosnippet>1119</a>    ///
 <a href=#1120 id=1120 data-nosnippet>1120</a>    /// # Examples
 <a href=#1121 id=1121 data-nosnippet>1121</a>    /// ```
-<a href=#1122 id=1122 data-nosnippet>1122</a>    /// # if cfg!(miri) { return } // No `socket` in miri.
-<a href=#1123 id=1123 data-nosnippet>1123</a>    /// # use std::error::Error;
-<a href=#1124 id=1124 data-nosnippet>1124</a>    /// # #[tokio::main]
-<a href=#1125 id=1125 data-nosnippet>1125</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1122 id=1122 data-nosnippet>1122</a>    /// # use std::error::Error;
+<a href=#1123 id=1123 data-nosnippet>1123</a>    /// # #[tokio::main]
+<a href=#1124 id=1124 data-nosnippet>1124</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1125 id=1125 data-nosnippet>1125</a>    /// # if cfg!(miri) { return Ok(()); } // No `socket` in miri.
 <a href=#1126 id=1126 data-nosnippet>1126</a>    /// use tokio::net::UnixDatagram;
 <a href=#1127 id=1127 data-nosnippet>1127</a>    /// use tempfile::tempdir;
 <a href=#1128 id=1128 data-nosnippet>1128</a>    ///
@@ -1436,10 +1436,10 @@
 <a href=#1436 id=1436 data-nosnippet>1436</a>    /// # Examples
 <a href=#1437 id=1437 data-nosnippet>1437</a>    /// For a socket bound to a local path
 <a href=#1438 id=1438 data-nosnippet>1438</a>    /// ```
-<a href=#1439 id=1439 data-nosnippet>1439</a>    /// # if cfg!(miri) { return } // No `socket` in miri.
-<a href=#1440 id=1440 data-nosnippet>1440</a>    /// # use std::error::Error;
-<a href=#1441 id=1441 data-nosnippet>1441</a>    /// # #[tokio::main]
-<a href=#1442 id=1442 data-nosnippet>1442</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1439 id=1439 data-nosnippet>1439</a>    /// # use std::error::Error;
+<a href=#1440 id=1440 data-nosnippet>1440</a>    /// # #[tokio::main]
+<a href=#1441 id=1441 data-nosnippet>1441</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1442 id=1442 data-nosnippet>1442</a>    /// # if cfg!(miri) { return Ok(()); } // No `socket` in miri.
 <a href=#1443 id=1443 data-nosnippet>1443</a>    /// use tokio::net::UnixDatagram;
 <a href=#1444 id=1444 data-nosnippet>1444</a>    /// use tempfile::tempdir;
 <a href=#1445 id=1445 data-nosnippet>1445</a>    ///
@@ -1459,10 +1459,10 @@
 <a href=#1459 id=1459 data-nosnippet>1459</a>    ///
 <a href=#1460 id=1460 data-nosnippet>1460</a>    /// For an unbound socket
 <a href=#1461 id=1461 data-nosnippet>1461</a>    /// ```
-<a href=#1462 id=1462 data-nosnippet>1462</a>    /// # if cfg!(miri) { return } // No `socket` in miri.
-<a href=#1463 id=1463 data-nosnippet>1463</a>    /// # use std::error::Error;
-<a href=#1464 id=1464 data-nosnippet>1464</a>    /// # #[tokio::main]
-<a href=#1465 id=1465 data-nosnippet>1465</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1462 id=1462 data-nosnippet>1462</a>    /// # use std::error::Error;
+<a href=#1463 id=1463 data-nosnippet>1463</a>    /// # #[tokio::main]
+<a href=#1464 id=1464 data-nosnippet>1464</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1465 id=1465 data-nosnippet>1465</a>    /// # if cfg!(miri) { return Ok(()); } // No `socket` in miri.
 <a href=#1466 id=1466 data-nosnippet>1466</a>    /// use tokio::net::UnixDatagram;
 <a href=#1467 id=1467 data-nosnippet>1467</a>    ///
 <a href=#1468 id=1468 data-nosnippet>1468</a>    /// // Create an unbound socket
@@ -1484,10 +1484,10 @@
 <a href=#1484 id=1484 data-nosnippet>1484</a>    /// # Examples
 <a href=#1485 id=1485 data-nosnippet>1485</a>    /// For a peer with a local path
 <a href=#1486 id=1486 data-nosnippet>1486</a>    /// ```
-<a href=#1487 id=1487 data-nosnippet>1487</a>    /// # if cfg!(miri) { return } // No `socket` in miri.
-<a href=#1488 id=1488 data-nosnippet>1488</a>    /// # use std::error::Error;
-<a href=#1489 id=1489 data-nosnippet>1489</a>    /// # #[tokio::main]
-<a href=#1490 id=1490 data-nosnippet>1490</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1487 id=1487 data-nosnippet>1487</a>    /// # use std::error::Error;
+<a href=#1488 id=1488 data-nosnippet>1488</a>    /// # #[tokio::main]
+<a href=#1489 id=1489 data-nosnippet>1489</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1490 id=1490 data-nosnippet>1490</a>    /// # if cfg!(miri) { return Ok(()); } // No `socket` in miri.
 <a href=#1491 id=1491 data-nosnippet>1491</a>    /// use tokio::net::UnixDatagram;
 <a href=#1492 id=1492 data-nosnippet>1492</a>    /// use tempfile::tempdir;
 <a href=#1493 id=1493 data-nosnippet>1493</a>    ///
@@ -1510,10 +1510,10 @@
 <a href=#1510 id=1510 data-nosnippet>1510</a>    ///
 <a href=#1511 id=1511 data-nosnippet>1511</a>    /// For an unbound peer
 <a href=#1512 id=1512 data-nosnippet>1512</a>    /// ```
-<a href=#1513 id=1513 data-nosnippet>1513</a>    /// # if cfg!(miri) { return } // No SOCK_DGRAM for `socketpair` in miri.
-<a href=#1514 id=1514 data-nosnippet>1514</a>    /// # use std::error::Error;
-<a href=#1515 id=1515 data-nosnippet>1515</a>    /// # #[tokio::main]
-<a href=#1516 id=1516 data-nosnippet>1516</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1513 id=1513 data-nosnippet>1513</a>    /// # use std::error::Error;
+<a href=#1514 id=1514 data-nosnippet>1514</a>    /// # #[tokio::main]
+<a href=#1515 id=1515 data-nosnippet>1515</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1516 id=1516 data-nosnippet>1516</a>    /// # if cfg!(miri) { return Ok(()); } // No SOCK_DGRAM for `socketpair` in miri.
 <a href=#1517 id=1517 data-nosnippet>1517</a>    /// use tokio::net::UnixDatagram;
 <a href=#1518 id=1518 data-nosnippet>1518</a>    ///
 <a href=#1519 id=1519 data-nosnippet>1519</a>    /// // Create the pair of sockets
@@ -1532,10 +1532,10 @@
 <a href=#1532 id=1532 data-nosnippet>1532</a>    ///
 <a href=#1533 id=1533 data-nosnippet>1533</a>    /// # Examples
 <a href=#1534 id=1534 data-nosnippet>1534</a>    /// ```
-<a href=#1535 id=1535 data-nosnippet>1535</a>    /// # if cfg!(miri) { return } // No `socket` in miri.
-<a href=#1536 id=1536 data-nosnippet>1536</a>    /// # use std::error::Error;
-<a href=#1537 id=1537 data-nosnippet>1537</a>    /// # #[tokio::main]
-<a href=#1538 id=1538 data-nosnippet>1538</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1535 id=1535 data-nosnippet>1535</a>    /// # use std::error::Error;
+<a href=#1536 id=1536 data-nosnippet>1536</a>    /// # #[tokio::main]
+<a href=#1537 id=1537 data-nosnippet>1537</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1538 id=1538 data-nosnippet>1538</a>    /// # if cfg!(miri) { return Ok(()); } // No `socket` in miri.
 <a href=#1539 id=1539 data-nosnippet>1539</a>    /// use tokio::net::UnixDatagram;
 <a href=#1540 id=1540 data-nosnippet>1540</a>    ///
 <a href=#1541 id=1541 data-nosnippet>1541</a>    /// // Create an unbound socket
@@ -1560,10 +1560,10 @@
 <a href=#1560 id=1560 data-nosnippet>1560</a>    ///
 <a href=#1561 id=1561 data-nosnippet>1561</a>    /// # Examples
 <a href=#1562 id=1562 data-nosnippet>1562</a>    /// ```
-<a href=#1563 id=1563 data-nosnippet>1563</a>    /// # if cfg!(miri) { return } // No SOCK_DGRAM for `socketpair` in miri.
-<a href=#1564 id=1564 data-nosnippet>1564</a>    /// # use std::error::Error;
-<a href=#1565 id=1565 data-nosnippet>1565</a>    /// # #[tokio::main]
-<a href=#1566 id=1566 data-nosnippet>1566</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1563 id=1563 data-nosnippet>1563</a>    /// # use std::error::Error;
+<a href=#1564 id=1564 data-nosnippet>1564</a>    /// # #[tokio::main]
+<a href=#1565 id=1565 data-nosnippet>1565</a>    /// # async fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+<a href=#1566 id=1566 data-nosnippet>1566</a>    /// # if cfg!(miri) { return Ok(()); } // No SOCK_DGRAM for `socketpair` in miri.
 <a href=#1567 id=1567 data-nosnippet>1567</a>    /// use tokio::net::UnixDatagram;
 <a href=#1568 id=1568 data-nosnippet>1568</a>    /// use std::net::Shutdown;
 <a href=#1569 id=1569 data-nosnippet>1569</a>    ///
