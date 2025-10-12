@@ -1,6 +1,6 @@
 [package]
 name = "firestore_grpc"
-version = "0.288.0"
+version = "0.289.0"
 authors = ["Konosuke Kachi <github@s.k-kachi.net>"]
 edition = "2018"
 license = "MIT"
