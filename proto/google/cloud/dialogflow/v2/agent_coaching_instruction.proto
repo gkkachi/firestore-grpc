@@ -14,15 +14,15 @@
 
 syntax = "proto3";
 
-package google.cloud.dialogflow.v2beta1;
+package google.cloud.dialogflow.v2;
 
 import "google/api/field_behavior.proto";
 
-option csharp_namespace = "Google.Cloud.Dialogflow.V2Beta1";
-option go_package = "cloud.google.com/go/dialogflow/apiv2beta1/dialogflowpb;dialogflowpb";
+option csharp_namespace = "Google.Cloud.Dialogflow.V2";
+option go_package = "cloud.google.com/go/dialogflow/apiv2/dialogflowpb;dialogflowpb";
 option java_multiple_files = true;
 option java_outer_classname = "AgentCoachingInstructionProto";
-option java_package = "com.google.cloud.dialogflow.v2beta1";
+option java_package = "com.google.cloud.dialogflow.v2";
 option objc_class_prefix = "DF";
 
 // Agent Coaching instructions that customer can configure.
