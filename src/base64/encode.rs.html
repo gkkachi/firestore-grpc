@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.13.1/src/encode.rs`."><title>encode.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="base64" data-themes="" data-resource-suffix="" data-rustdoc-version="1.92.0 (ded5c06cf 2025-12-08)" data-channel="1.92.0" data-search-js="search-d69d8955.js" data-stringdex-js="stringdex-c3e638e9.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-ce535bd0.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">base64/</div>encode.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use crate</span>::{Config, PAD_BYTE};
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.13.1/src/encode.rs`."><title>encode.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="base64" data-themes="" data-resource-suffix="" data-rustdoc-version="1.93.0 (254b59607 2026-01-19)" data-channel="1.93.0" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">base64/</div>encode.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use crate</span>::{Config, PAD_BYTE};
 <a href=#2 id=2 data-nosnippet>2</a><span class="attr">#[cfg(any(feature = <span class="string">"alloc"</span>, feature = <span class="string">"std"</span>, test))]
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use crate</span>::{chunked_encoder, STANDARD};
 <a href=#4 id=4 data-nosnippet>4</a><span class="attr">#[cfg(any(feature = <span class="string">"alloc"</span>, feature = <span class="string">"std"</span>, test))]
@@ -413,7 +413,7 @@
 <a href=#413 id=413 data-nosnippet>413</a>            <span class="kw">let </span>input_len = input_len_range.sample(<span class="kw-2">&amp;mut </span>rng);
 <a href=#414 id=414 data-nosnippet>414</a>
 <a href=#415 id=415 data-nosnippet>415</a>            <span class="kw">for _ in </span><span class="number">0</span>..input_len {
-<a href=#416 id=416 data-nosnippet>416</a>                orig_data.push(rng.gen());
+<a href=#416 id=416 data-nosnippet>416</a>                orig_data.push(rng.<span class="kw">gen</span>());
 <a href=#417 id=417 data-nosnippet>417</a>            }
 <a href=#418 id=418 data-nosnippet>418</a>
 <a href=#419 id=419 data-nosnippet>419</a>            <span class="kw">let </span>prefix_len = prefix_len_range.sample(<span class="kw-2">&amp;mut </span>rng);
@@ -465,12 +465,12 @@
 <a href=#465 id=465 data-nosnippet>465</a>            <span class="kw">let </span>input_len = input_len_range.sample(<span class="kw-2">&amp;mut </span>rng);
 <a href=#466 id=466 data-nosnippet>466</a>
 <a href=#467 id=467 data-nosnippet>467</a>            <span class="kw">for _ in </span><span class="number">0</span>..input_len {
-<a href=#468 id=468 data-nosnippet>468</a>                orig_data.push(rng.gen());
+<a href=#468 id=468 data-nosnippet>468</a>                orig_data.push(rng.<span class="kw">gen</span>());
 <a href=#469 id=469 data-nosnippet>469</a>            }
 <a href=#470 id=470 data-nosnippet>470</a>
 <a href=#471 id=471 data-nosnippet>471</a>            <span class="comment">// plenty of existing garbage in the encoded buffer
 <a href=#472 id=472 data-nosnippet>472</a>            </span><span class="kw">for _ in </span><span class="number">0</span>..<span class="number">10 </span>* input_len {
-<a href=#473 id=473 data-nosnippet>473</a>                encoded_data.push(rng.gen());
+<a href=#473 id=473 data-nosnippet>473</a>                encoded_data.push(rng.<span class="kw">gen</span>());
 <a href=#474 id=474 data-nosnippet>474</a>            }
 <a href=#475 id=475 data-nosnippet>475</a>
 <a href=#476 id=476 data-nosnippet>476</a>            encoded_data_original_state.extend_from_slice(<span class="kw-2">&amp;</span>encoded_data);
@@ -518,7 +518,7 @@
 <a href=#518 id=518 data-nosnippet>518</a>            <span class="kw">let </span>input_len = input_len_range.sample(<span class="kw-2">&amp;mut </span>rng);
 <a href=#519 id=519 data-nosnippet>519</a>
 <a href=#520 id=520 data-nosnippet>520</a>            <span class="kw">for _ in </span><span class="number">0</span>..input_len {
-<a href=#521 id=521 data-nosnippet>521</a>                orig_data.push(rng.gen());
+<a href=#521 id=521 data-nosnippet>521</a>                orig_data.push(rng.<span class="kw">gen</span>());
 <a href=#522 id=522 data-nosnippet>522</a>            }
 <a href=#523 id=523 data-nosnippet>523</a>
 <a href=#524 id=524 data-nosnippet>524</a>            <span class="kw">let </span>config = random_config(<span class="kw-2">&amp;mut </span>rng);
@@ -559,7 +559,7 @@
 <a href=#559 id=559 data-nosnippet>559</a>            <span class="kw">let </span>input_len = input_len_range.sample(<span class="kw-2">&amp;mut </span>rng);
 <a href=#560 id=560 data-nosnippet>560</a>
 <a href=#561 id=561 data-nosnippet>561</a>            <span class="kw">for _ in </span><span class="number">0</span>..input_len {
-<a href=#562 id=562 data-nosnippet>562</a>                input.push(rng.gen());
+<a href=#562 id=562 data-nosnippet>562</a>                input.push(rng.<span class="kw">gen</span>());
 <a href=#563 id=563 data-nosnippet>563</a>            }
 <a href=#564 id=564 data-nosnippet>564</a>
 <a href=#565 id=565 data-nosnippet>565</a>            <span class="kw">let </span>config = random_config(<span class="kw-2">&amp;mut </span>rng);
@@ -567,7 +567,7 @@
 <a href=#567 id=567 data-nosnippet>567</a>            <span class="comment">// fill up the output buffer with garbage
 <a href=#568 id=568 data-nosnippet>568</a>            </span><span class="kw">let </span>encoded_size = encoded_size(input_len, config).unwrap();
 <a href=#569 id=569 data-nosnippet>569</a>            <span class="kw">for _ in </span><span class="number">0</span>..encoded_size {
-<a href=#570 id=570 data-nosnippet>570</a>                output.push(rng.gen());
+<a href=#570 id=570 data-nosnippet>570</a>                output.push(rng.<span class="kw">gen</span>());
 <a href=#571 id=571 data-nosnippet>571</a>            }
 <a href=#572 id=572 data-nosnippet>572</a>
 <a href=#573 id=573 data-nosnippet>573</a>            <span class="kw">let </span>orig_output_buf = output.to_vec();
@@ -599,7 +599,7 @@
 <a href=#599 id=599 data-nosnippet>599</a>            <span class="kw">let </span>input_len = input_len_range.sample(<span class="kw-2">&amp;mut </span>rng);
 <a href=#600 id=600 data-nosnippet>600</a>
 <a href=#601 id=601 data-nosnippet>601</a>            <span class="kw">for _ in </span><span class="number">0</span>..input_len {
-<a href=#602 id=602 data-nosnippet>602</a>                input.push(rng.gen());
+<a href=#602 id=602 data-nosnippet>602</a>                input.push(rng.<span class="kw">gen</span>());
 <a href=#603 id=603 data-nosnippet>603</a>            }
 <a href=#604 id=604 data-nosnippet>604</a>
 <a href=#605 id=605 data-nosnippet>605</a>            <span class="kw">let </span>config = random_config(<span class="kw-2">&amp;mut </span>rng);
@@ -607,7 +607,7 @@
 <a href=#607 id=607 data-nosnippet>607</a>            <span class="comment">// fill up the output buffer with garbage
 <a href=#608 id=608 data-nosnippet>608</a>            </span><span class="kw">let </span>encoded_size = encoded_size(input_len, config).unwrap();
 <a href=#609 id=609 data-nosnippet>609</a>            <span class="kw">for _ in </span><span class="number">0</span>..encoded_size + <span class="number">1000 </span>{
-<a href=#610 id=610 data-nosnippet>610</a>                output.push(rng.gen());
+<a href=#610 id=610 data-nosnippet>610</a>                output.push(rng.<span class="kw">gen</span>());
 <a href=#611 id=611 data-nosnippet>611</a>            }
 <a href=#612 id=612 data-nosnippet>612</a>
 <a href=#613 id=613 data-nosnippet>613</a>            <span class="kw">let </span>orig_output_buf = output.to_vec();
@@ -634,7 +634,7 @@
 <a href=#634 id=634 data-nosnippet>634</a>
 <a href=#635 id=635 data-nosnippet>635</a>            <span class="comment">// fill output with random
 <a href=#636 id=636 data-nosnippet>636</a>            </span><span class="kw">for _ in </span><span class="number">0</span>..<span class="number">10 </span>{
-<a href=#637 id=637 data-nosnippet>637</a>                output.push(rng.gen());
+<a href=#637 id=637 data-nosnippet>637</a>                output.push(rng.<span class="kw">gen</span>());
 <a href=#638 id=638 data-nosnippet>638</a>            }
 <a href=#639 id=639 data-nosnippet>639</a>
 <a href=#640 id=640 data-nosnippet>640</a>            <span class="kw">let </span>orig_output_buf = output.to_vec();
@@ -656,7 +656,7 @@
 <a href=#656 id=656 data-nosnippet>656</a>        <span class="kw">let </span><span class="kw-2">mut </span>rng = rand::rngs::SmallRng::from_entropy();
 <a href=#657 id=657 data-nosnippet>657</a>
 <a href=#658 id=658 data-nosnippet>658</a>        <span class="kw">for _ in </span><span class="number">0</span>..input_len {
-<a href=#659 id=659 data-nosnippet>659</a>            bytes.push(rng.gen());
+<a href=#659 id=659 data-nosnippet>659</a>            bytes.push(rng.<span class="kw">gen</span>());
 <a href=#660 id=660 data-nosnippet>660</a>        }
 <a href=#661 id=661 data-nosnippet>661</a>
 <a href=#662 id=662 data-nosnippet>662</a>        <span class="kw">let </span>encoded = encode_config(<span class="kw-2">&amp;</span>bytes, config);
@@ -672,4 +672,5 @@
 <a href=#672 id=672 data-nosnippet>672</a>            encode_config(<span class="string">b"\xFB\xFF"</span>, <span class="kw">crate</span>::STANDARD_NO_PAD).replace(<span class="string">"/"</span>, <span class="string">","</span>)
 <a href=#673 id=673 data-nosnippet>673</a>        );
 <a href=#674 id=674 data-nosnippet>674</a>    }
-<a href=#675 id=675 data-nosnippet>675</a>}</code></pre></div></section></main></body></html>
+<a href=#675 id=675 data-nosnippet>675</a>}
+</code></pre></div></section></main></body></html>

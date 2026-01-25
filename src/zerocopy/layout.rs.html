@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.33/src/layout.rs`."><title>layout.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="zerocopy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.92.0 (ded5c06cf 2025-12-08)" data-channel="1.92.0" data-search-js="search-d69d8955.js" data-stringdex-js="stringdex-c3e638e9.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-ce535bd0.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">zerocopy/</div>layout.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-4"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Copyright 2024 The Fuchsia Authors
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.33/src/layout.rs`."><title>layout.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="zerocopy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.93.0 (254b59607 2026-01-19)" data-channel="1.93.0" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">zerocopy/</div>layout.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-4"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Copyright 2024 The Fuchsia Authors
 <a href=#2 id=2 data-nosnippet>2</a>//
 <a href=#3 id=3 data-nosnippet>3</a>// Licensed under the 2-Clause BSD License &lt;LICENSE-BSD or
 <a href=#4 id=4 data-nosnippet>4</a>// https://opensource.org/license/bsd-2-clause&gt;, Apache License, Version 2.0
@@ -880,9 +880,9 @@
 <a href=#880 id=880 data-nosnippet>880</a>                    </span><span class="attr">#[allow(clippy::arithmetic_side_effects)]
 <a href=#881 id=881 data-nosnippet>881</a>                    </span><span class="kw">let </span>elem_remainder = src.elem_size % dst_elem_size.get();
 <a href=#882 id=882 data-nosnippet>882</a>
-<a href=#883 id=883 data-nosnippet>883</a>                    <span class="kw">if </span>delta_mod_other_elem != <span class="number">0
+<a href=#883 id=883 data-nosnippet>883</a>                    <span class="kw">if </span><span class="macro">delta_mod_other_elem !</span>= <span class="number">0
 <a href=#884 id=884 data-nosnippet>884</a>                        </span>|| src.elem_size &lt; dst.elem_size
-<a href=#885 id=885 data-nosnippet>885</a>                        || elem_remainder != <span class="number">0
+<a href=#885 id=885 data-nosnippet>885</a>                        || <span class="macro">elem_remainder !</span>= <span class="number">0
 <a href=#886 id=886 data-nosnippet>886</a>                    </span>{
 <a href=#887 id=887 data-nosnippet>887</a>                        <span class="kw">return </span><span class="prelude-val">None</span>;
 <a href=#888 id=888 data-nosnippet>888</a>                    }
@@ -1319,8 +1319,8 @@
 <a href=#1319 id=1319 data-nosnippet>1319</a>                // valid `tt`s (required by the top match pattern). See the comment
 <a href=#1320 id=1320 data-nosnippet>1320</a>                // below for more details. This arm removes these parentheses to
 <a href=#1321 id=1321 data-nosnippet>1321</a>                // avoid generating an `unused_parens` warning.
-<a href=#1322 id=1322 data-nosnippet>1322</a>                </span>(@<span class="macro-nonterminal">$</span><span class="kw">_</span>:<span class="macro-nonterminal">ident </span>(<span class="macro-nonterminal">$vals</span>:expr)) =&gt; { <span class="macro-nonterminal">$vals </span>};
-<a href=#1323 id=1323 data-nosnippet>1323</a>                (@<span class="macro-nonterminal">$</span><span class="kw">_</span>:<span class="macro-nonterminal">ident $vals</span>:expr) =&gt; { <span class="macro-nonterminal">$vals </span>};
+<a href=#1322 id=1322 data-nosnippet>1322</a>                </span>(@<span class="macro-nonterminal">$_</span>:ident (<span class="macro-nonterminal">$vals</span>:expr)) =&gt; { <span class="macro-nonterminal">$vals </span>};
+<a href=#1323 id=1323 data-nosnippet>1323</a>                (@<span class="macro-nonterminal">$_</span>:ident <span class="macro-nonterminal">$vals</span>:expr) =&gt; { <span class="macro-nonterminal">$vals </span>};
 <a href=#1324 id=1324 data-nosnippet>1324</a>            }
 <a href=#1325 id=1325 data-nosnippet>1325</a>
 <a href=#1326 id=1326 data-nosnippet>1326</a>        <span class="kw">const </span>EVENS: [usize; <span class="number">8</span>] = [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">14</span>];
@@ -1398,7 +1398,7 @@
 <a href=#1398 id=1398 data-nosnippet>1398</a>                // allowed to rely on this, but a lot of math is nicer if
 <a href=#1399 id=1399 data-nosnippet>1399</a>                // they're able to, and some callers might accidentally do that.
 <a href=#1400 id=1400 data-nosnippet>1400</a>                </span><span class="kw">let </span>sized = <span class="macro">matches!</span>(layout.size_info, SizeInfo::Sized { .. });
-<a href=#1401 id=1401 data-nosnippet>1401</a>                <span class="macro">assert!</span>(!(sized &amp;&amp; elems != <span class="number">0</span>), <span class="string">"{}"</span>, debug_str);
+<a href=#1401 id=1401 data-nosnippet>1401</a>                <span class="macro">assert!</span>(!(sized &amp;&amp; <span class="macro">elems !</span>= <span class="number">0</span>), <span class="string">"{}"</span>, debug_str);
 <a href=#1402 id=1402 data-nosnippet>1402</a>
 <a href=#1403 id=1403 data-nosnippet>1403</a>                <span class="kw">let </span>resulting_size = <span class="kw">match </span>layout.size_info {
 <a href=#1404 id=1404 data-nosnippet>1404</a>                    SizeInfo::Sized { size } =&gt; size,
@@ -1446,7 +1446,7 @@
 <a href=#1446 id=1446 data-nosnippet>1446</a>                    CastType::Prefix =&gt; <span class="number">0</span>,
 <a href=#1447 id=1447 data-nosnippet>1447</a>                    CastType::Suffix =&gt; bytes_len,
 <a href=#1448 id=1448 data-nosnippet>1448</a>                };
-<a href=#1449 id=1449 data-nosnippet>1449</a>                <span class="kw">let </span>misaligned = (base + addr) % layout.align != <span class="number">0</span>;
+<a href=#1449 id=1449 data-nosnippet>1449</a>                <span class="kw">let </span>misaligned = (base + addr) % layout.<span class="macro">align !</span>= <span class="number">0</span>;
 <a href=#1450 id=1450 data-nosnippet>1450</a>
 <a href=#1451 id=1451 data-nosnippet>1451</a>                <span class="macro">assert!</span>(insufficient_bytes || misaligned);
 <a href=#1452 id=1452 data-nosnippet>1452</a>            }
@@ -1459,7 +1459,7 @@
 <a href=#1459 id=1459 data-nosnippet>1459</a>            .map(Into::&lt;SizeInfo&gt;::into)
 <a href=#1460 id=1460 data-nosnippet>1460</a>            .chain(<span class="macro">itertools::iproduct!</span>(sizes, elem_sizes).map(Into::&lt;SizeInfo&gt;::into));
 <a href=#1461 id=1461 data-nosnippet>1461</a>        <span class="kw">let </span>layouts = <span class="macro">itertools::iproduct!</span>(size_infos, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">32</span>])
-<a href=#1462 id=1462 data-nosnippet>1462</a>                .filter(|(size_info, align)| !<span class="macro">matches!</span>(size_info, SizeInfo::Sized { size } <span class="kw">if </span>size % align != <span class="number">0</span>))
+<a href=#1462 id=1462 data-nosnippet>1462</a>                .filter(|(size_info, align)| !<span class="macro">matches!</span>(size_info, SizeInfo::Sized { size } <span class="kw">if </span>size % <span class="macro">align !</span>= <span class="number">0</span>))
 <a href=#1463 id=1463 data-nosnippet>1463</a>                .map(|(size_info, align)| layout(size_info, align));
 <a href=#1464 id=1464 data-nosnippet>1464</a>        <span class="macro">itertools::iproduct!</span>(layouts, <span class="number">0</span>..<span class="number">8</span>, <span class="number">0</span>..<span class="number">8</span>, [CastType::Prefix, CastType::Suffix])
 <a href=#1465 id=1465 data-nosnippet>1465</a>            .for_each(validate_behavior);
@@ -1589,7 +1589,7 @@
 <a href=#1589 id=1589 data-nosnippet>1589</a>                    <span class="macro">assert_eq!</span>(got_split_at, size, <span class="string">"{}"</span>, assert_msg);
 <a href=#1590 id=1590 data-nosnippet>1590</a>                    <span class="kw">if </span>dst {
 <a href=#1591 id=1591 data-nosnippet>1591</a>                        <span class="macro">assert!</span>(got_elems &gt;= elems, <span class="string">"{}"</span>, assert_msg);
-<a href=#1592 id=1592 data-nosnippet>1592</a>                        <span class="kw">if </span>got_elems != elems {
+<a href=#1592 id=1592 data-nosnippet>1592</a>                        <span class="kw">if </span><span class="macro">got_elems !</span>= elems {
 <a href=#1593 id=1593 data-nosnippet>1593</a>                            <span class="comment">// If `validate_cast_and_convert_metadata`
 <a href=#1594 id=1594 data-nosnippet>1594</a>                            // returned more elements than `elems`, that
 <a href=#1595 id=1595 data-nosnippet>1595</a>                            // means that `elems` is not the maximum number
@@ -2095,4 +2095,5 @@
 <a href=#2095 id=2095 data-nosnippet>2095</a>            </span><span class="macro">assert_eq!</span>(padded.size_info, layout.size_info);
 <a href=#2096 id=2096 data-nosnippet>2096</a>        }
 <a href=#2097 id=2097 data-nosnippet>2097</a>    }
-<a href=#2098 id=2098 data-nosnippet>2098</a>}</code></pre></div></section></main></body></html>
+<a href=#2098 id=2098 data-nosnippet>2098</a>}
+</code></pre></div></section></main></body></html>
