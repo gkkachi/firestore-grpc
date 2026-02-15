@@ -61,8 +61,6 @@ message ClientTransaction {
     // - [InvokeContractMethod][google.cloud.universalledger.v1.InvokeContractMethod]
     // - [CreateContractTokenManager][google.cloud.universalledger.v1.CreateContractTokenManager]
     // - [TransferContractTokenManager][google.cloud.universalledger.v1.TransferContractTokenManager]
-    // - [RemoveSigningPublicKey][google.cloud.universalledger.v1.RemoveSigningPublicKey]
-    // - [ReplaceSigningPublicKey][google.cloud.universalledger.v1.ReplaceSigningPublicKey]
     // <!--
     // clang-format on
     // -->
@@ -394,11 +392,4 @@ message TransactionAttempt {
   // attempt.
   repeated StatusEvent status_events = 3
       [(google.api.field_behavior) = OUTPUT_ONLY];
-}
-
-// The state of a transaction.
-message TransactionState {
-  // One entry per each known submission of the transaction to the validator
-  // handling the request.
-  repeated TransactionAttempt transaction_attempts = 1;
 }
