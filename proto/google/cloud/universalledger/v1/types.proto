@@ -176,8 +176,14 @@ message TransactionChain {
 
 // A Merkle tree with a cryptographic digest of the root node.
 message MerkleTree {
-  // Output only. The cryptographic digest of the root node.
-  string root_hash_hex = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+  // Output only. Deprecated: Use `root_digest_hex`. The cryptographic digest of
+  // the root node.
+  string root_hash_hex = 1
+      [deprecated = true, (google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The hexadecimal representation of the digest of the root node.
+  // Format: A 64-character hexadecimal string.
+  string root_digest_hex = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // Output only. The number of transactions in the tree.
   int64 num_transactions = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
@@ -318,13 +324,25 @@ message TransactionCertificate {
 message ProofOfInclusion {
   // Represents a node in a Merkle tree path.
   message MerkleTreeNode {
-    // Output only. The hex representation of the hash of the left child of a
-    // node.
-    string left_child_hash_hex = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+    // Output only. Deprecated: Use `left_child_digest_hex`. The hex
+    // representation of the hash of the left child of a node.
+    string left_child_hash_hex = 1
+        [deprecated = true, (google.api.field_behavior) = OUTPUT_ONLY];
 
-    // Output only. The hex representation of the hash of the right child of a
-    // node.
-    string right_child_hash_hex = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+    // Output only. Deprecated: Use `right_child_digest_hex`. The hex
+    // representation of the hash of the right child of a node.
+    string right_child_hash_hex = 2
+        [deprecated = true, (google.api.field_behavior) = OUTPUT_ONLY];
+
+    // Output only. The hexadecimal representation of the digest of the left
+    // child of a node. Format: A 64-character hexadecimal string.
+    string left_child_digest_hex = 3
+        [(google.api.field_behavior) = OUTPUT_ONLY];
+
+    // Output only. The hexadecimal representation of the digest of the right
+    // child of a node. Format: A 64-character hexadecimal string.
+    string right_child_digest_hex = 4
+        [(google.api.field_behavior) = OUTPUT_ONLY];
   }
 
   // Output only. Certificate of the inclusion of the transaction effects in a

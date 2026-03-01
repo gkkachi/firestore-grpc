@@ -21,6 +21,7 @@ import "google/ads/googleads/v23/enums/brand_safety_suitability.proto";
 import "google/ads/googleads/v23/enums/conversion_tracking_status_enum.proto";
 import "google/ads/googleads/v23/enums/customer_pay_per_conversion_eligibility_failure_reason.proto";
 import "google/ads/googleads/v23/enums/customer_status.proto";
+import "google/ads/googleads/v23/enums/eu_political_advertising_status.proto";
 import "google/ads/googleads/v23/enums/local_services_verification_status.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
@@ -179,6 +180,15 @@ message Customer {
 
   // Video specific information about a Customer.
   VideoCustomer video_customer = 54;
+
+  // Output only. Returns the advertiser self-declaration status of whether this
+  // customer contains political advertising content targeted towards the
+  // European Union. You can use the Google Ads UI to update this account-level
+  // declaration, or use the API to update the self-declaration status of
+  // individual campaigns.
+  google.ads.googleads.v23.enums.EuPoliticalAdvertisingStatusEnum
+      .EuPoliticalAdvertisingStatus contains_eu_political_advertising = 55
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 }
 
 // Call reporting setting for a customer. Only mutable in an `update` operation.

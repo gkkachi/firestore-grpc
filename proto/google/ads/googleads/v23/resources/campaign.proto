@@ -34,6 +34,7 @@ import "google/ads/googleads/v23/enums/asset_field_type.proto";
 import "google/ads/googleads/v23/enums/asset_set_type.proto";
 import "google/ads/googleads/v23/enums/bidding_strategy_system_status.proto";
 import "google/ads/googleads/v23/enums/bidding_strategy_type.proto";
+import "google/ads/googleads/v23/enums/booking_status.proto";
 import "google/ads/googleads/v23/enums/brand_safety_suitability.proto";
 import "google/ads/googleads/v23/enums/campaign_experiment_type.proto";
 import "google/ads/googleads/v23/enums/campaign_keyword_match_type.proto";
@@ -44,6 +45,7 @@ import "google/ads/googleads/v23/enums/campaign_status.proto";
 import "google/ads/googleads/v23/enums/eu_political_advertising_status.proto";
 import "google/ads/googleads/v23/enums/listing_type.proto";
 import "google/ads/googleads/v23/enums/location_source_type.proto";
+import "google/ads/googleads/v23/enums/messaging_restriction_type.proto";
 import "google/ads/googleads/v23/enums/negative_geo_target_type.proto";
 import "google/ads/googleads/v23/enums/non_skippable_max_duration.proto";
 import "google/ads/googleads/v23/enums/non_skippable_min_duration.proto";
@@ -401,8 +403,53 @@ message Campaign {
           .VideoAdSequenceInteractionType previous_step_interaction_type = 5;
     }
 
+    // Container for ad category self-disclosure for campaigns with the
+    // FIXED_CPM or FIXED_SHARE_OF_VOICE bidding strategies.
+    message ReservationAdCategorySelfDisclosure {
+      // The campaign is expected to contain gambling-related ads.
+      bool gambling = 1;
+
+      // The campaign is expected to contain alcohol-related ads.
+      bool alcohol = 2;
+
+      // The campaign is expected to contain politics-related ads.
+      bool politics = 3;
+    }
+
+    // Container for booking details for campaigns with the FIXED_CPM or
+    // FIXED_SHARE_OF_VOICE bidding strategies.
+    message BookingDetails {
+      // Output only. The status of the booking.
+      google.ads.googleads.v23.enums.BookingStatusEnum.BookingStatus status = 1
+          [(google.api.field_behavior) = OUTPUT_ONLY];
+
+      // Output only. Time until which booked inventory will be held or has been
+      // held for this campaign. Available for status HELD and HOLD_EXPIRED.
+      // Format is "yyyy-MM-dd HH:mm:ss" in the customer's time zone.
+      string hold_expiration_date_time = 2
+          [(google.api.field_behavior) = OUTPUT_ONLY];
+
+      // Output only. Time when the booked inventory of this campaign will be
+      // cancelled or has been cancelled. Available for primary status
+      // NOT_ELIGIBLE if the campaign will be cancelled and for primary status
+      // reason BOOKING_CANCELLED. Format is "yyyy-MM-dd HH:mm:ss" in the
+      // customer's time zone.
+      string cancellation_date_time = 3
+          [(google.api.field_behavior) = OUTPUT_ONLY];
+    }
+
     // Container for video ads sequencing definition.
     VideoAdSequence video_ad_sequence = 4;
+
+    // Ad category self-disclosure for campaigns with the FIXED_CPM or
+    // FIXED_SHARE_OF_VOICE bidding strategies.
+    ReservationAdCategorySelfDisclosure
+        reservation_ad_category_self_disclosure = 5;
+
+    // Output only. Booking information for campaigns with the FIXED_CPM or
+    // FIXED_SHARE_OF_VOICE bidding strategies.
+    BookingDetails booking_details = 6
+        [(google.api.field_behavior) = OUTPUT_ONLY];
 
     // Controls for defining video responsive ads behavior.
     oneof fluidity_control {
@@ -455,6 +502,31 @@ message Campaign {
     // sensitive): Open Sans, Roboto, Montserrat, Poppins, Lato, Oswald,
     // Playfair Display, Roboto Slab.
     string predefined_font_family = 3;
+  }
+
+  // Settings to control automatically generated text assets.
+  message TextGuidelines {
+    // Exact words or phrases that will be excluded from generated text
+    // assets. At most 25 exclusions may be provided. Valid exclusions may
+    // contain a maximum of 30 characters.
+    repeated string term_exclusions = 1;
+
+    // Freeform instructions that will be used to guide text asset generation
+    // using LLM inference. At most 40 restrictions may be provided.
+    repeated MessagingRestriction messaging_restrictions = 2;
+  }
+
+  // Freeform instructions that will be used to guide text asset generation
+  // using LLM inference.
+  message MessagingRestriction {
+    // Freeform instructions to guide text asset generation using LLM
+    // inference. Valid instructions may contain a maximum of 300 characters.
+    string restriction_text = 1;
+
+    // Determines how the guideline is applied. Only
+    // `RESTRICTION_BASED_EXCLUSION` is currently supported.
+    google.ads.googleads.v23.enums.MessagingRestrictionTypeEnum
+        .MessagingRestrictionType restriction_type = 2;
   }
 
   // Settings for AI Max in search campaigns.
@@ -827,6 +899,11 @@ message Campaign {
   // used for Performance Max campaigns that have Brand Guidelines enabled.
   BrandGuidelines brand_guidelines = 98;
 
+  // Settings to control automatically generated text assets. Only available
+  // in Performance Max and Search campaigns (Brand Guidelines does not need
+  // to be enabled).
+  TextGuidelines text_guidelines = 107;
+
   // Third-Party integration partners.
   google.ads.googleads.v23.common.CampaignThirdPartyIntegrationPartners
       third_party_integration_partners = 100;
@@ -842,6 +919,15 @@ message Campaign {
   // Output only. Types of feeds that are attached directly to this campaign.
   repeated google.ads.googleads.v23.enums.AssetSetTypeEnum.AssetSetType
       feed_types = 103 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. Indicates whether this campaign is missing a declaration about
+  // whether it contains political advertising targeted towards the EU and is
+  // ineligible for any exemptions. If this field is true, use the
+  // contains_eu_political_advertising field to add the required declaration.
+  //
+  // This field is read-only.
+  bool missing_eu_political_advertising_declaration = 108
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // The bidding strategy for the campaign.
   //

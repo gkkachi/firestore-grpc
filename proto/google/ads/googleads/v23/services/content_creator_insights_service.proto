@@ -116,8 +116,10 @@ message GenerateCreatorInsightsRequest {
         brand_entities = 1 [(google.api.field_behavior) = OPTIONAL];
 
     // Optional. When true, we will expand the search to beyond just the
-    // entities specified in [brand_entities] to other related knowledge graph
-    // entities similar to the brand. The default value is `false`.
+    // entities specified in
+    // [brand_entities][google.ads.googleads.v23.services.GenerateCreatorInsightsRequest.SearchBrand.brand_entities]
+    // to other related knowledge graph entities similar to the brand. The
+    // default value is `false`.
     bool include_related_topics = 2 [(google.api.field_behavior) = OPTIONAL];
   }
 
@@ -354,6 +356,9 @@ message SearchTopics {
   // Required. A list of knowledge graph entities to retrieve trend information
   // for. Supported entities are tagged with
   // [CONTENT_TRENDING_INSIGHTS][google.ads.googleads.v23.enums.InsightsKnowledgeGraphEntityCapabilitiesEnum.InsightsKnowledgeGraphEntityCapabilities.CONTENT_TRENDING_INSIGHTS].
+  // Use
+  // [AudienceInsightsService.ListAudienceInsightsAttributes][google.ads.googleads.v23.services.AudienceInsightsService.ListAudienceInsightsAttributes]
+  // to get the list of supported entities.
   repeated google.ads.googleads.v23.common.AudienceInsightsEntity entities = 1
       [(google.api.field_behavior) = REQUIRED];
 }
@@ -364,11 +369,19 @@ message TrendInsight {
   google.ads.googleads.v23.common.AudienceInsightsAttributeMetadata
       trend_attribute = 1;
 
-  // Metrics associated with this trend.
+  // Metrics associated with this trend. These metrics are for the latest
+  // available month and the comparison period is 3 months.
   TrendInsightMetrics trend_metrics = 2;
 
   // The direction of trend (such as RISING or DECLINING).
   google.ads.googleads.v23.enums.InsightsTrendEnum.InsightsTrend trend = 3;
+
+  // 12 months of historical data for the trend, including the most recent month
+  // the TrendInsight represents. Each data point represents 1 month of data and
+  // the comparison period is 1 month. The data points are ordered from most
+  // recent month to least recent month. Only populated for trends using
+  // search_topics.
+  repeated TrendInsightDataPoint trend_data_points = 6;
 
   // Related videos for this topic. Only populated for trends using
   // search_topics.
@@ -382,9 +395,13 @@ message TrendInsight {
 
 // Metrics associated with a trend insight.
 message TrendInsightMetrics {
-  // The number of views for this trend. This is only populated for SearchTopics
-  // requests.
+  // The number of views for this trend. This is only populated for the latest
+  // month of data for SearchTopics requests.
   int64 views_count = 1;
+
+  // Views value normalized to be in the range 0-100. This is only populated for
+  // SearchTopics requests.
+  int64 views_indexed_value = 4;
 
   // The fraction (from 0 to 1 inclusive) of the requested audience that has
   // has searched or viewed this trend. This is only populated for
@@ -392,9 +409,20 @@ message TrendInsightMetrics {
   double audience_share = 2;
 
   // The percentage of the change in the trend's value over the comparison
-  // period, where 1.0 represents 100%. If this is not set, it means that the
-  // trend is emerging.
+  // period, where 1.0 represents 100%. If this is 0, it means that the trend is
+  // emerging (new) or sustained (existing but unchanged).
   double trend_change_percent = 3;
+}
+
+// Trend data for a specific month.
+message TrendInsightDataPoint {
+  // The month that the trend data point represents in the string format
+  // "YYYY-MM".
+  string month = 1;
+
+  // Metrics associated with this trend and month. The comparison period for
+  // these metrics is 1 month.
+  TrendInsightMetrics trend_metrics = 2;
 }
 
 // Languages that pertain to a YouTube channel based on the channel content.

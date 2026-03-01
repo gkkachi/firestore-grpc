@@ -50,5 +50,8 @@ message ProductLinkInvitationErrorEnum {
 
     // The customer is not permitted to create the invitation.
     CUSTOMER_NOT_PERMITTED_TO_CREATE_INVITATION = 5;
+
+    // The `allowed_domain` property for the advertising partner is invalid.
+    INVALID_ADVERTISING_PARTNER_ALLOWED_DOMAIN = 6;
   }
 }

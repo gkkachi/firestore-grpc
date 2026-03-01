@@ -80,6 +80,15 @@ message ProductLinkInvitation {
     AdvertisingPartnerLinkInvitationIdentifier advertising_partner = 7
         [(google.api.field_behavior) = OUTPUT_ONLY];
   }
+
+  // The properties for the product link invitation.
+  oneof invited_account_properties {
+    // Output only. Advertising Partner link invitation properties. These
+    // properties are only applicable when the link is for an Advertising
+    // Partner.
+    AdvertisingPartnerLinkInvitationProperties advertising_partner_properties =
+        8 [(google.api.field_behavior) = OUTPUT_ONLY];
+  }
 }
 
 // The identifier for Hotel account.
@@ -106,4 +115,12 @@ message AdvertisingPartnerLinkInvitationIdentifier {
       type: "googleads.googleapis.com/Customer"
     }
   ];
+}
+
+// Properties specific to an Advertising Partner link invitation.
+message AdvertisingPartnerLinkInvitationProperties {
+  // Immutable. The allowed domain for the Advertising Partner link invitation.
+  // The advertising partner will only be able to advertise on this domain. The
+  // field is immutable after the creation of the link invitation.
+  optional string allowed_domain = 1 [(google.api.field_behavior) = IMMUTABLE];
 }

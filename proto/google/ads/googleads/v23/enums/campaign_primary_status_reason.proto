@@ -160,5 +160,25 @@ message CampaignPrimaryStatusReasonEnum {
     // The campaign has location restrictions but does not specify location
     // targeting.
     MISSING_LOCATION_TARGETING = 39;
+
+    // The campaign is a campaign with the FIXED_CPM bidding strategy but is not
+    // booked. Contributes to CampaignPrimaryStatus.NOT_ELIGIBLE when the
+    // campaign is not paused, and CampaignPrimaryStatus.PAUSED when the
+    // campaign is paused.
+    CAMPAIGN_NOT_BOOKED = 40;
+
+    // The campaign is a campaign with the FIXED_CPM bidding strategy for which
+    // inventory was held, with the hold expiring. The hold expiry time can be
+    // read from Campaign.booking_details.hold_expiration_date_time. Contributes
+    // to CampaignPrimaryStatus.PAUSED.
+    BOOKING_HOLD_EXPIRING = 41;
+
+    // The campaign is a campaign with the FIXED_CPM bidding strategy with the
+    // inventory hold expired. Contributes to CampaignPrimaryStatus.PAUSED.
+    BOOKING_HOLD_EXPIRED = 42;
+
+    // The campaign is a campaign with the FIXED_CPM bidding strategy that has
+    // been auto-cancelled. Contributes to CampaignPrimaryStatus.NOT_ELIGIBLE.
+    BOOKING_CANCELLED = 43;
   }
 }

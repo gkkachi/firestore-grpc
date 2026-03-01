@@ -75,6 +75,14 @@ message ProductLink {
     AdvertisingPartnerIdentifier advertising_partner = 13
         [(google.api.field_behavior) = OUTPUT_ONLY];
   }
+
+  // The properties for the product link.
+  oneof product_link_properties {
+    // Output only. Advertising Partner link properties. These properties are
+    // only applicable when the link is for an Advertising Partner.
+    AdvertisingPartnerProperties advertising_partner_properties = 15
+        [(google.api.field_behavior) = OUTPUT_ONLY];
+  }
 }
 
 // The identifier for Data Partner account.
@@ -122,4 +130,13 @@ message AdvertisingPartnerIdentifier {
       type: "googleads.googleapis.com/Customer"
     }
   ];
+}
+
+// Properties specific to an Advertising Partner link.
+message AdvertisingPartnerProperties {
+  // Output only. The allowed domain for the Advertising Partner link. The
+  // advertising partner will only be able to advertise on this domain. The
+  // field is immutable.
+  optional string allowed_domain = 1
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 }

@@ -239,7 +239,8 @@ message UserInterestAttributeMetadata {
 
 // Metadata associated with a Knowledge Graph Entity attribute.
 message KnowledgeGraphAttributeMetadata {
-  // The capabilities of the entity used in [ContentCreatorInsightsService][].
+  // The capabilities of the entity used in
+  // [ContentCreatorInsightsService][google.ads.googleads.v23.services.ContentCreatorInsightsService].
   repeated google.ads.googleads.v23.enums
       .InsightsKnowledgeGraphEntityCapabilitiesEnum
       .InsightsKnowledgeGraphEntityCapabilities entity_capabilities = 1;

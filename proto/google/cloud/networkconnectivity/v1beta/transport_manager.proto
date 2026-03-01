@@ -75,6 +75,14 @@ service TransportManager {
     option (google.api.method_signature) = "name";
   }
 
+  // Gets the operational status of a single Transport.
+  rpc GetStatus(GetStatusRequest) returns (GetStatusResponse) {
+    option (google.api.http) = {
+      get: "/v1beta/{name=projects/*/locations/*/transports/*}:getStatus"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
   // Creates a new Transport in a given project and location.
   rpc CreateTransport(CreateTransportRequest)
       returns (google.longrunning.Operation) {
@@ -393,6 +401,15 @@ message Transport {
     // The Transport is configured and the underlying connectivity is considered
     // operational.
     ACTIVE = 4;
+
+    // The Transport is being deleted from GCP. The underlying connectivity is
+    // no longer operational.
+    DELETING = 5;
+
+    // The Transport was deleted on the remote provider's end and is no longer
+    // operational. GCP has insufficient information to move the resource back
+    // to PENDING_KEY state.
+    DEPROVISIONED = 6;
   }
 
   // Identifier. Name of the resource.
@@ -525,6 +542,102 @@ message GetTransportRequest {
       type: "networkconnectivity.googleapis.com/Transport"
     }
   ];
+}
+
+// Message for getting a Transport's operational status.
+message GetStatusRequest {
+  // Required. Name of the resource.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "networkconnectivity.googleapis.com/Transport"
+    }
+  ];
+}
+
+// Message for the response to getting a Transport's operational status.
+message GetStatusResponse {
+  // The overall status of the Transport.
+  enum OverallStatus {
+    // Unspecified status.
+    OVERALL_STATUS_UNSPECIFIED = 0;
+
+    // Resource is active and operational.
+    ACTIVE = 1;
+
+    // Resource is waiting for an activation key to be exchanged.
+    PENDING_KEY = 2;
+
+    // Activation keys have been exchanged and connectivity is being
+    // established.
+    CONFIGURING = 3;
+
+    // VPC Peering has been taken down, or the NCC Spoke has been rejected.
+    DISCONNECTED = 4;
+
+    // User configuration is correct, but the configured capacity is
+    // operationally down.
+    DOWN = 5;
+  }
+
+  // The operational status of the underlying networking components.
+  enum OperationalStatus {
+    // Unspecified status.
+    OPERATIONAL_STATUS_UNSPECIFIED = 0;
+
+    // Protected capacity is available and networking components show as up.
+    OPERATIONAL_STATUS_ACTIVE = 1;
+
+    // Protected capacity is showing as operationally down.
+    OPERATIONAL_STATUS_DOWN = 2;
+  }
+
+  // Current status of connectivity to the local GCP resource. This reflects
+  // whether the VPC Peering or NCC Hub appears correctly configured.
+  enum ConnectivityStatus {
+    // Unspecified status.
+    CONNECTIVITY_STATUS_UNSPECIFIED = 0;
+
+    // VPC Peering or the NCC Hub appear to be correctly established.
+    CONNECTIVITY_STATUS_CONNECTED = 1;
+
+    // VPC Peering has been taken down, or the NCC Spoke has been rejected.
+    CONNECTIVITY_STATUS_DISCONNECTED = 2;
+  }
+
+  // Current status of MACSec on the underlying network connectivity between GC
+  // and the partner.
+  enum MacSecStatus {
+    // Unspecified status.
+    MAC_SEC_STATUS_UNSPECIFIED = 0;
+
+    // MACSec is protecting the links and configured in fail closed.
+    MAC_SEC_STATUS_ACTIVE_FAIL_CLOSED = 1;
+
+    // MACSec is protecting the links and configured to fail open on at least
+    // one of the redundant links.
+    MAC_SEC_STATUS_ACTIVE_FAIL_OPEN = 2;
+
+    // MACSec is not configured on at least one of the underlying links.
+    MAC_SEC_STATUS_NOT_CONFIGURED = 3;
+  }
+
+  // The overall status of the Transport. This field will always output the most
+  // critical status of the Transport. For example, if the connectivity is
+  // DISCONNECTED, and the underlying networking components are DOWN, then
+  // the overall status will be DOWN.
+  OverallStatus overall_status = 1;
+
+  // The operational status of the underlying networking components.
+  OperationalStatus operational_status = 2;
+
+  // Current status of connectivity to the local GCP resource. This reflects
+  // whether the VPC Peering or NCC Hub appears correctly configured.
+  ConnectivityStatus connectivity_status = 3;
+
+  // Current status of MACSec on the underlying network connectivity between GC
+  // and the partner.
+  MacSecStatus mac_sec_status = 4;
 }
 
 // Message for creating a Transport

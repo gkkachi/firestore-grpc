@@ -57,5 +57,8 @@ message ReachPlanSurfaceEnum {
 
     // Shorts ad surface.
     SHORTS = 6;
+
+    // Google Display Network ad surface.
+    GOOGLE_DISPLAY_NETWORK = 9;
   }
 }

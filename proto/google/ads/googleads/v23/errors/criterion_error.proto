@@ -532,6 +532,10 @@ message CriterionErrorEnum {
     // Brand list can only be negatively targeted for the campaign type.
     ONLY_EXCLUSION_BRAND_LIST_ALLOWED_FOR_CAMPAIGN_TYPE = 158;
 
+    // The combination of demographic criteria would result in only targeting
+    // the "undetermined" segment, which is prohibited.
+    CANNOT_TARGET_ONLY_UNDETERMINED = 165;
+
     // Cannot positively target locations outside of restricted area for
     // campaign.
     LOCATION_TARGETING_NOT_ELIGIBLE_FOR_RESTRICTED_CAMPAIGN = 166;

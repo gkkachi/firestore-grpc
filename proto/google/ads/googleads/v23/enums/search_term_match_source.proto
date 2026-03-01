@@ -52,5 +52,9 @@ message SearchTermMatchSourceEnum {
 
     // The match is from the search term matching functionality in PMax.
     PERFORMANCE_MAX = 6;
+
+    // The match is from a vertical ads data feed (e.g. Travel Ads entity
+    // targeting).
+    VERTICAL_ADS_DATA_FEED = 7;
   }
 }

@@ -198,6 +198,7 @@ import "google/ads/googleads/v23/resources/user_list_customer_type.proto";
 import "google/ads/googleads/v23/resources/user_location_view.proto";
 import "google/ads/googleads/v23/resources/video.proto";
 import "google/ads/googleads/v23/resources/webpage_view.proto";
+import "google/ads/googleads/v23/resources/youtube_video_upload.proto";
 import "google/ads/googleads/v23/services/ad_group_ad_label_service.proto";
 import "google/ads/googleads/v23/services/ad_group_ad_service.proto";
 import "google/ads/googleads/v23/services/ad_group_asset_service.proto";
@@ -1179,6 +1180,10 @@ message GoogleAdsRow {
   // The android privacy shared key google network type referenced in the query.
   google.ads.googleads.v23.resources.AndroidPrivacySharedKeyGoogleNetworkType
       android_privacy_shared_key_google_network_type = 219;
+
+  // The YouTube video upload referenced in the query.
+  google.ads.googleads.v23.resources.YouTubeVideoUpload you_tube_video_upload =
+      245;
 
   // The applied incentive referenced in the query.
   google.ads.googleads.v23.resources.AppliedIncentive applied_incentive = 246;

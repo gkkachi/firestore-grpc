@@ -21,6 +21,7 @@ import "google/ads/googleads/v23/common/criteria.proto";
 import "google/ads/googleads/v23/common/dates.proto";
 import "google/ads/googleads/v23/enums/benchmarks_marketing_objective.proto";
 import "google/ads/googleads/v23/enums/benchmarks_source_type.proto";
+import "google/ads/googleads/v23/enums/benchmarks_time_granularity.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
@@ -287,6 +288,11 @@ message GenerateBenchmarksMetricsRequest {
   // support a list of product IDs or a list of marketing objectives.
   ProductFilter product_filter = 5 [(google.api.field_behavior) = REQUIRED];
 
+  // Optional. The set of dimensions to group metrics by. If multiple dimensions
+  // are selected, cross-dimension breakdowns are returned.
+  BreakdownDefinition breakdown_definition = 9
+      [(google.api.field_behavior) = OPTIONAL];
+
   // Optional. The three-character ISO 4217 currency code. If unspecified, the
   // default currency for monetary values is USD.
   string currency_code = 6 [(google.api.field_behavior) = OPTIONAL];
@@ -337,6 +343,18 @@ message ProductFilter {
   }
 }
 
+// The set of dimensions to group metrics by.
+message BreakdownDefinition {
+  // A date breakdown using the selected granularity. The effective date range
+  // is extended to include the full time periods that overlap with the selected
+  // start and end dates. For example, a monthly breakdown with a start date of
+  // 2025-06-15 will include a breakdown for June. Weeks start on Sunday and end
+  // on Saturday. This is different from the ISO 8601 standard, where weeks
+  // start on Monday.
+  google.ads.googleads.v23.enums.BenchmarksTimeGranularityEnum
+      .BenchmarksTimeGranularity date_breakdown = 1;
+}
+
 // Response message for
 // [BenchmarksService.GenerateBenchmarksMetrics][google.ads.googleads.v23.services.BenchmarksService.GenerateBenchmarksMetrics].
 message GenerateBenchmarksMetricsResponse {
@@ -345,6 +363,28 @@ message GenerateBenchmarksMetricsResponse {
 
   // Metrics for the selected benchmarks source.
   Metrics average_benchmarks_metrics = 2;
+
+  // Breakdown metrics grouped by dimensions.
+  repeated BreakdownMetrics breakdown_metrics = 3;
+}
+
+// Metrics for a given breakdown.
+message BreakdownMetrics {
+  // Dimensions by which the breakdown metrics are grouped by.
+  BreakdownKey breakdown_key = 1;
+
+  // Metrics belonging to the customer.
+  Metrics customer_metrics = 2;
+
+  // Metrics for the selected benchmarks source.
+  Metrics average_benchmarks_metrics = 3;
+}
+
+// Dimensions by which the breakdown metrics are grouped by.
+message BreakdownKey {
+  // Dates used for the breakdown. For example, this represents the start and
+  // end dates of the week for a weekly breakdown.
+  google.ads.googleads.v23.common.DateRange dates = 1;
 }
 
 // All metrics returned against a criteria.
