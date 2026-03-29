@@ -42,5 +42,12 @@ message ShareablePreviewErrorEnum {
 
     // asset group does not exist under this customer.
     ASSET_GROUP_DOES_NOT_EXIST_UNDER_THIS_CUSTOMER = 3;
+
+    // Unsupported ad type for the given preview type.
+    UNSUPPORTED_AD_TYPE = 4;
+
+    // The combined number of asset groups and ad group ads exceeds the maximum
+    // of 10.
+    TOO_MANY_RESOURCES_IN_REQUEST = 6;
   }
 }

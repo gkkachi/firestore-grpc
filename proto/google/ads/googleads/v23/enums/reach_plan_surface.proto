@@ -60,5 +60,8 @@ message ReachPlanSurfaceEnum {
 
     // Google Display Network ad surface.
     GOOGLE_DISPLAY_NETWORK = 9;
+
+    // In-Stream non-skippable (30 seconds) ad surface.
+    IN_STREAM_NON_SKIPPABLE_THIRTY_SECONDS = 10;
   }
 }

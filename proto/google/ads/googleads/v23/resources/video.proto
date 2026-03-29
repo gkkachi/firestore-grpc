@@ -31,6 +31,10 @@ option ruby_package = "Google::Ads::GoogleAds::V23::Resources";
 // Proto file describing the video resource.
 
 // A video.
+//
+// If the video has any enhancements, the stats on all of them will be
+// aggregated and displayed on this video resource. To get stats for a specific
+// enhancement, use the VideoEnhancement resource instead.
 message Video {
   option (google.api.resource) = {
     type: "googleads.googleapis.com/Video"
