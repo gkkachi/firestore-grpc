@@ -433,6 +433,11 @@ message ExternalRuntimeOptions {
 
   // Optional. Language runtime version. Example: `python-3.11`.
   string runtime_version = 5 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Maximum number of requests that a Cloud Run instance can handle
+  // concurrently. If absent or if `0`, a default concurrency is used.
+  int64 container_request_concurrency = 6
+      [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Options for a user-defined Spark routine.

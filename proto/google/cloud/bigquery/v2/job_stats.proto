@@ -1365,6 +1365,11 @@ message PerformanceInsights {
   // for diagnosing performance regression.
   repeated StagePerformanceChangeInsight stage_performance_change_insights = 3
       [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. Performance insights for table-level attributes that changed
+  // compared to previous runs.
+  repeated TableChangeInsight table_change_insights = 4
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 }
 
 // Performance insights compared to the previous executions for a specific
@@ -1436,6 +1441,38 @@ message PartitionSkew {
 
   // Output only. Source stages which produce skewed data.
   repeated SkewSource skew_sources = 1
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+
+// Table-level performance insights compared to previous runs. These insights
+// don't apply to specific query stages, rather they apply to the whole table.
+message TableChangeInsight {
+  // Output only. The table that was queried.
+  TableReference table_reference = 1
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. If present, indicates that the table's metadata column index
+  // staleness has increased significantly compared to previous jobs with the
+  // same query hash.
+  optional MetadataCacheStalenessInsight metadata_cache_staleness_insight = 2
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. True if the table's column metadata index was not used in the
+  // current job, but was used in a previous job with the same query hash.
+  optional bool metadata_cache_not_used_but_used_previously = 3
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+
+// Column Metadata Index staleness detailed infnormation.
+message MetadataCacheStalenessInsight {
+  // Output only. Average column metadata index staleness of previous runs with
+  // the same query hash.
+  google.protobuf.Duration avg_previous_staleness_ms = 1
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The percent increase in staleness between the current job and
+  // the average staleness of previous jobs with the same query hash.
+  double staleness_percentage_increase = 2
       [(google.api.field_behavior) = OUTPUT_ONLY];
 }
 

@@ -40,6 +40,12 @@ message GenAiFunctionCostOptimizationStats {
   optional string message = 2;
 }
 
+// Provides cache statistics for a GenAi function call.
+message GenAiFunctionCacheStats {
+  // Number of rows served from cache.
+  optional int64 num_cache_hit_rows = 1;
+}
+
 // Provides statistics for each Ai function call within a query.
 message GenAiFunctionStats {
   // Name of the function.
@@ -57,6 +63,9 @@ message GenAiFunctionStats {
 
   // Cost optimization stats if applied on the rows processed by the function.
   optional GenAiFunctionCostOptimizationStats cost_optimization_stats = 5;
+
+  // Cache stats for the function.
+  optional GenAiFunctionCacheStats cache_stats = 6;
 }
 
 // Provides error statistics for the query job across all AI function calls.

@@ -184,8 +184,7 @@ enum Publisher {
   // Meteorological Agency in Brazil
   BRAZIL_INMET = 8;
 
-  // United Kingdom
-  UK_ENV_AGENCY = 9;
+  reserved 9;
 
   // Meteoalarm / EUMETNET
   // Bulgaria
