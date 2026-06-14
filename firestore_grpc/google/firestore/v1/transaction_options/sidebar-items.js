@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["Mode"],"mod":["read_only"],"struct":["ReadOnly","ReadWrite"]};
+window.SIDEBAR_ITEMS = {"enum":["ConcurrencyMode","Mode"],"mod":["read_only"],"struct":["ReadOnly","ReadWrite"]};
