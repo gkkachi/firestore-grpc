@@ -58,5 +58,8 @@ message SmartCampaignErrorEnum {
 
     // The final URL could not be crawled.
     FINAL_URL_NOT_CRAWLABLE = 8;
+
+    // New Smart campaigns cannot be created.
+    CREATION_FAILED = 9;
   }
 }
