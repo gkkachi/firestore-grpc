@@ -282,6 +282,18 @@ message Session {
     SKIPPED = 7;
   }
 
+  // The type of the test (e.g. suite, testplan).
+  enum Type {
+    // Default value.
+    TYPE_UNSPECIFIED = 0;
+
+    // The test is a suite.
+    SUITE = 1;
+
+    // The test is a testplan.
+    TESTPLAN = 2;
+  }
+
   // Identifier. The resource name of the session.
   // Format: sessions/{session}
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];
@@ -330,6 +342,16 @@ message Session {
   // Output only. Time at which execution of the session was finished.
   google.protobuf.Timestamp finish_time = 11
       [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Optional. The ResultDB root invocation ID for the session.
+  string resultdb_root_invocation_id = 12
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The type of the test.
+  Type type = 13 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The display name of the test (e.g. dummy_suite, dummy_testplan).
+  string display_name = 14 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Timeout settings for the test run.
@@ -352,6 +374,11 @@ message Timeout {
 message TradefedTest {
   // Required. The command to run the Tradefed test.
   string command = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. Map from shard index to extra arguments to append to the command.
+  // The key is the 0-based shard index (i.e. 0, 1, ..., shard_count - 1).
+  // If shard_count is 0 or 1, only key 0 is valid.
+  map<int32, string> shard_args = 2 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Summary information for an entire test effort
@@ -581,4 +608,7 @@ message TestEffort {
 
   // Optional. Option to make boot tests optional.
   bool skip_boot_prerequisite = 15 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The number of static shards to use for this test effort.
+  int32 static_shard_count = 16 [(google.api.field_behavior) = OPTIONAL];
 }
