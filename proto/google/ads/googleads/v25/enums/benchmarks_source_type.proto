@@ -40,5 +40,8 @@ message BenchmarksSourceTypeEnum {
     // The classification of ad categories for benchmarking. (for example,
     // "Technology" or "Finance").
     INDUSTRY_VERTICAL = 2;
+
+    // A Product & Service Category.
+    CATEGORY = 3;
   }
 }

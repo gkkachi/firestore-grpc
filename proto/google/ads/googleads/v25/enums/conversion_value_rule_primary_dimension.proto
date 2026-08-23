@@ -61,5 +61,8 @@ message ConversionValueRulePrimaryDimensionEnum {
 
     // When a query-time itinerary condition is satisfied.
     ITINERARY = 9;
+
+    // When a loyalty membership condition is satisfied.
+    LOYALTY_MEMBERSHIP = 10;
   }
 }
