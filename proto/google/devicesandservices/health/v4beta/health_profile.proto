@@ -14,7 +14,7 @@
 
 syntax = "proto3";
 
-package google.devicesandservices.health.v4;
+package google.devicesandservices.health.v4beta;
 
 import "google/api/annotations.proto";
 import "google/api/client.proto";
@@ -25,13 +25,13 @@ import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 import "google/type/date.proto";
 
-option csharp_namespace = "Google.DevicesAndServices.Health.V4";
-option go_package = "google.golang.org/genproto/googleapis/devicesandservices/health/apiv4;healthpb";
+option csharp_namespace = "Google.DevicesAndServices.Health.V4Beta";
+option go_package = "google.golang.org/genproto/googleapis/devicesandservices/health/apiv4beta;healthpb";
 option java_multiple_files = true;
 option java_outer_classname = "HealthProfileProto";
-option java_package = "com.google.devicesandservices.health.v4";
-option php_namespace = "Google\\DevicesAndServices\\Health\\V4";
-option ruby_package = "Google::DevicesAndServices::Health::V4";
+option java_package = "com.google.devicesandservices.health.v4beta";
+option php_namespace = "Google\\DevicesAndServices\\Health\\V4beta";
+option ruby_package = "Google::DevicesAndServices::Health::V4beta";
 
 // Health Profile Service
 service HealthProfileService {
@@ -53,7 +53,7 @@ service HealthProfileService {
   // Returns user Profile details.
   rpc GetProfile(GetProfileRequest) returns (Profile) {
     option (google.api.http) = {
-      get: "/v4/{name=users/*/profile}"
+      get: "/v4beta/{name=users/*/profile}"
     };
     option (google.api.method_signature) = "name";
   }
@@ -61,7 +61,7 @@ service HealthProfileService {
   // Updates the user's profile details.
   rpc UpdateProfile(UpdateProfileRequest) returns (Profile) {
     option (google.api.http) = {
-      patch: "/v4/{profile.name=users/*/profile}"
+      patch: "/v4beta/{profile.name=users/*/profile}"
       body: "profile"
     };
     option (google.api.method_signature) = "profile,update_mask";
@@ -70,7 +70,7 @@ service HealthProfileService {
   // Returns user settings details.
   rpc GetSettings(GetSettingsRequest) returns (Settings) {
     option (google.api.http) = {
-      get: "/v4/{name=users/*/settings}"
+      get: "/v4beta/{name=users/*/settings}"
     };
     option (google.api.method_signature) = "name";
   }
@@ -78,7 +78,7 @@ service HealthProfileService {
   // Updates the user's settings details.
   rpc UpdateSettings(UpdateSettingsRequest) returns (Settings) {
     option (google.api.http) = {
-      patch: "/v4/{settings.name=users/*/settings}"
+      patch: "/v4beta/{settings.name=users/*/settings}"
       body: "settings"
     };
     option (google.api.method_signature) = "settings,update_mask";
@@ -90,7 +90,7 @@ service HealthProfileService {
   // used by migrating clients to map identifiers between the two systems.
   rpc GetIdentity(GetIdentityRequest) returns (Identity) {
     option (google.api.http) = {
-      get: "/v4/{name=users/*/identity}"
+      get: "/v4beta/{name=users/*/identity}"
     };
     option (google.api.method_signature) = "name";
   }
@@ -98,7 +98,7 @@ service HealthProfileService {
   // Returns user's IRN Profile details.
   rpc GetIrnProfile(GetIrnProfileRequest) returns (IrnProfile) {
     option (google.api.http) = {
-      get: "/v4/{name=users/*/irnProfile}"
+      get: "/v4beta/{name=users/*/irnProfile}"
     };
     option (google.api.method_signature) = "name";
   }
@@ -106,7 +106,7 @@ service HealthProfileService {
   // Returns user's Device.
   rpc GetPairedDevice(GetPairedDeviceRequest) returns (PairedDevice) {
     option (google.api.http) = {
-      get: "/v4/{name=users/*/pairedDevices/*}"
+      get: "/v4beta/{name=users/*/pairedDevices/*}"
     };
     option (google.api.method_signature) = "name";
   }
@@ -115,7 +115,7 @@ service HealthProfileService {
   rpc ListPairedDevices(ListPairedDevicesRequest)
       returns (ListPairedDevicesResponse) {
     option (google.api.http) = {
-      get: "/v4/{parent=users/*}/pairedDevices"
+      get: "/v4beta/{parent=users/*}/pairedDevices"
     };
     option (google.api.method_signature) = "parent";
   }
@@ -136,7 +136,7 @@ message User {
   // Identifier. The resource name of the user.
   //
   // The `{user}` ID is a system-generated identifier, as described in
-  // [Identity.health_user_id][google.devicesandservices.health.v4.Identity.health_user_id].
+  // [Identity.health_user_id][google.devicesandservices.health.v4beta.Identity.health_user_id].
   //
   // Format: `users/{user}`
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];

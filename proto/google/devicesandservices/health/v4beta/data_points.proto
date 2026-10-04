@@ -14,28 +14,28 @@
 
 syntax = "proto3";
 
-package google.devicesandservices.health.v4;
+package google.devicesandservices.health.v4beta;
 
 import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "google/devicesandservices/health/v4/data_coordinates.proto";
-import "google/devicesandservices/health/v4/data_model.proto";
-import "google/devicesandservices/health/v4/data_source.proto";
+import "google/devicesandservices/health/v4beta/data_coordinates.proto";
+import "google/devicesandservices/health/v4beta/data_model.proto";
+import "google/devicesandservices/health/v4beta/data_source.proto";
 import "google/longrunning/operations.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 import "google/type/interval.proto";
 
-option csharp_namespace = "Google.DevicesAndServices.Health.V4";
-option go_package = "google.golang.org/genproto/googleapis/devicesandservices/health/apiv4;healthpb";
+option csharp_namespace = "Google.DevicesAndServices.Health.V4Beta";
+option go_package = "google.golang.org/genproto/googleapis/devicesandservices/health/apiv4beta;healthpb";
 option java_multiple_files = true;
 option java_outer_classname = "DataPointsProto";
-option java_package = "com.google.devicesandservices.health.v4";
-option php_namespace = "Google\\DevicesAndServices\\Health\\V4";
-option ruby_package = "Google::DevicesAndServices::Health::V4";
+option java_package = "com.google.devicesandservices.health.v4beta";
+option php_namespace = "Google\\DevicesAndServices\\Health\\V4beta";
+option ruby_package = "Google::DevicesAndServices::Health::V4beta";
 
 // Data Points Service exposing the user's health and fitness measured and
 // derived data.
@@ -44,8 +44,10 @@ service DataPointsService {
   option (google.api.oauth_scopes) =
       "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.readonly,"
       "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.writeonly,"
+      "https://www.googleapis.com/auth/googlehealth.ecg.readonly,"
       "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly,"
       "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.writeonly,"
+      "https://www.googleapis.com/auth/googlehealth.irn.readonly,"
       "https://www.googleapis.com/auth/googlehealth.location.readonly,"
       "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly,"
       "https://www.googleapis.com/auth/googlehealth.logged_symptoms.writeonly,"
@@ -60,7 +62,7 @@ service DataPointsService {
   // Get a single identifyable data point.
   rpc GetDataPoint(GetDataPointRequest) returns (DataPoint) {
     option (google.api.http) = {
-      get: "/v4/{name=users/*/dataTypes/*/dataPoints/*}"
+      get: "/v4beta/{name=users/*/dataTypes/*/dataPoints/*}"
     };
     option (google.api.method_signature) = "name";
   }
@@ -68,7 +70,7 @@ service DataPointsService {
   // Query user health and fitness data points.
   rpc ListDataPoints(ListDataPointsRequest) returns (ListDataPointsResponse) {
     option (google.api.http) = {
-      get: "/v4/{parent=users/*/dataTypes/*}/dataPoints"
+      get: "/v4beta/{parent=users/*/dataTypes/*}/dataPoints"
     };
     option (google.api.method_signature) = "parent";
   }
@@ -77,7 +79,7 @@ service DataPointsService {
   rpc CreateDataPoint(CreateDataPointRequest)
       returns (google.longrunning.Operation) {
     option (google.api.http) = {
-      post: "/v4/{parent=users/*/dataTypes/*}/dataPoints"
+      post: "/v4beta/{parent=users/*/dataTypes/*}/dataPoints"
       body: "data_point"
     };
     option (google.api.method_signature) = "parent,data_point";
@@ -92,7 +94,7 @@ service DataPointsService {
   rpc UpdateDataPoint(UpdateDataPointRequest)
       returns (google.longrunning.Operation) {
     option (google.api.http) = {
-      patch: "/v4/{data_point.name=users/*/dataTypes/*/dataPoints/*}"
+      patch: "/v4beta/{data_point.name=users/*/dataTypes/*/dataPoints/*}"
       body: "data_point"
     };
     option (google.api.method_signature) = "data_point";
@@ -106,7 +108,7 @@ service DataPointsService {
   rpc BatchDeleteDataPoints(BatchDeleteDataPointsRequest)
       returns (google.longrunning.Operation) {
     option (google.api.http) = {
-      post: "/v4/{parent=users/*/dataTypes/*}/dataPoints:batchDelete"
+      post: "/v4beta/{parent=users/*/dataTypes/*}/dataPoints:batchDelete"
       body: "*"
     };
     option (google.longrunning.operation_info) = {
@@ -119,7 +121,7 @@ service DataPointsService {
   rpc ReconcileDataPoints(ReconcileDataPointsRequest)
       returns (ReconcileDataPointsResponse) {
     option (google.api.http) = {
-      get: "/v4/{parent=users/*/dataTypes/*}/dataPoints:reconcile"
+      get: "/v4beta/{parent=users/*/dataTypes/*}/dataPoints:reconcile"
     };
   }
 
@@ -127,7 +129,7 @@ service DataPointsService {
   rpc RollUpDataPoints(RollUpDataPointsRequest)
       returns (RollUpDataPointsResponse) {
     option (google.api.http) = {
-      post: "/v4/{parent=users/*/dataTypes/*}/dataPoints:rollUp"
+      post: "/v4beta/{parent=users/*/dataTypes/*}/dataPoints:rollUp"
       body: "*"
     };
   }
@@ -136,7 +138,7 @@ service DataPointsService {
   rpc DailyRollUpDataPoints(DailyRollUpDataPointsRequest)
       returns (DailyRollUpDataPointsResponse) {
     option (google.api.http) = {
-      post: "/v4/{parent=users/*/dataTypes/*}/dataPoints:dailyRollUp"
+      post: "/v4beta/{parent=users/*/dataTypes/*}/dataPoints:dailyRollUp"
       body: "*"
     };
   }
@@ -161,7 +163,7 @@ service DataPointsService {
   rpc ExportExerciseTcx(ExportExerciseTcxRequest)
       returns (ExportExerciseTcxResponse) {
     option (google.api.http) = {
-      get: "/v4/{name=users/*/dataTypes/*/dataPoints/*}:exportExerciseTcx"
+      get: "/v4beta/{name=users/*/dataTypes/*/dataPoints/*}:exportExerciseTcx"
     };
     option (google.api.method_signature) = "name";
   }
@@ -361,6 +363,16 @@ message DataPoint {
 
     // Optional. Data for points in the `moods` sample data type collection.
     Moods moods = 53 [(google.api.field_behavior) = OPTIONAL];
+
+    // Optional. Data for points in the `skin-temperature` sample data type
+    // collection.
+    SkinTemperature skin_temperature = 54
+        [(google.api.field_behavior) = OPTIONAL];
+
+    // Optional. Data for points in the `skin-temperature-sensors` sample data
+    // type collection.
+    SkinTemperatureSensors skin_temperature_sensors = 60
+        [(google.api.field_behavior) = OPTIONAL];
   }
 
   // Identifier. Data point name, only supported for the subset of identifiable
@@ -373,11 +385,11 @@ message DataPoint {
   // `users/abcd1234/dataTypes/sleep/dataPoints/a1b2c3d4-e5f6-7890-1234-567890abcdef`
   //
   // The `{user}` ID is a system-generated identifier, as described in
-  // [Identity.health_user_id][google.devicesandservices.health.v4.Identity.health_user_id].
+  // [Identity.health_user_id][google.devicesandservices.health.v4beta.Identity.health_user_id].
   //
   // The `{data_type}` ID corresponds to the kebab-case version of the field
   // names in the [DataPoint
-  // data][google.devicesandservices.health.v4.DataPoint] union
+  // data][google.devicesandservices.health.v4beta.DataPoint] union
   // field, e.g. `heart-rate` for the `heart_rate` field.
   //
   // The `{data_point}` ID can be client-provided or system-generated.
@@ -514,6 +526,13 @@ message ReconciledDataPoint {
 
     // Data for points in the `blood-glucose` sample data type collection.
     BloodGlucose blood_glucose = 46;
+
+    // Data for points in the `skin-temperature` sample data type collection.
+    SkinTemperature skin_temperature = 54;
+
+    // Data for points in the `skin-temperature-sensors` sample data type
+    // collection.
+    SkinTemperatureSensors skin_temperature_sensors = 30;
   }
 
   // Identifier. Data point name, only supported for the subset of identifiable
@@ -526,11 +545,11 @@ message ReconciledDataPoint {
   // `users/abcd1234/dataTypes/sleep/dataPoints/a1b2c3d4-e5f6-7890-1234-567890abcdef`
   //
   // The `{user}` ID is a system-generated identifier, as described in
-  // [Identity.health_user_id][google.devicesandservices.health.v4.Identity.health_user_id].
+  // [Identity.health_user_id][google.devicesandservices.health.v4beta.Identity.health_user_id].
   //
   // The `{data_type}` ID corresponds to the kebab-case version of the field
   // names in the [DataPoint
-  // data][google.devicesandservices.health.v4.DataPoint] union
+  // data][google.devicesandservices.health.v4beta.DataPoint] union
   // field, e.g. `heart-rate` for the `heart_rate` field.
   //
   // The `{data_point}` ID can be client-provided or system-generated.
@@ -664,6 +683,10 @@ message RollupDataPoint {
     // Returned by default when rolling up data points from the
     // `blood-glucose` data type.
     BloodGlucoseRollupValue blood_glucose = 26;
+
+    // Returned by default when rolling up data points from the
+    // `skin-temperature` data type.
+    SkinTemperatureRollupValue skin_temperature = 27;
   }
 
   // Start time of the window this value aggregates over
@@ -812,6 +835,10 @@ message DailyRollupDataPoint {
     // Returned by default when rolling up data points from the
     // `blood-glucose` data type.
     BloodGlucoseRollupValue blood_glucose = 28;
+
+    // Returned by default when rolling up data points from the
+    // `skin-temperature` data type.
+    SkinTemperatureRollupValue skin_temperature = 29;
   }
 
   // Start time of the window this value aggregates over
@@ -828,7 +855,7 @@ message GetDataPointRequest {
   // Format: `users/{user}/dataTypes/{data_type}/dataPoints/{data_point}`
   //
   // See
-  // [DataPoint.name][google.devicesandservices.health.v4.DataPoint.name]
+  // [DataPoint.name][google.devicesandservices.health.v4beta.DataPoint.name]
   // for examples and possible values.
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,
@@ -848,7 +875,7 @@ message ListDataPointsRequest {
   // - `users/me/dataTypes/weight`
   //
   // For a list of the supported data types see the [DataPoint
-  // data][google.devicesandservices.health.v4.DataPoint] union
+  // data][google.devicesandservices.health.v4beta.DataPoint] union
   // field.
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
@@ -970,6 +997,45 @@ message ListDataPointsRequest {
   // Data points in the response will be ordered by the interval start time in
   // descending order.
   string filter = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The data source family name to filter by.
+  //
+  // If empty, data points from all available data sources will be returned.
+  //
+  // Format: `users/me/dataSourceFamilies/{data_source_family}`
+  //
+  // The supported values are:
+  //
+  // - `users/me/dataSourceFamilies/all-sources` - Default value. Includes data
+  // from all available data sources.
+  // - `users/me/dataSourceFamilies/google-wearables` - Includes data from
+  // Google and Fitbit tracker devices (such as Fitbit trackers and Pixel
+  // Watch). Excludes manually logged data.
+  // - `users/me/dataSourceFamilies/google-sources` - Includes first-party
+  // Google data, such as data from tracker devices, manually logged data, and
+  // Health Connect.
+  // - `users/me/dataSourceFamilies/self-sources` - Includes only the data the
+  // calling client wrote through this API, that is, data points whose data
+  // source was registered through this API with the same OAuth client ID as
+  // the caller.
+  //
+  // Callers that were only granted write scopes for the requested data types
+  // may only read the data they wrote themselves: their requests are
+  // implicitly restricted to `self-sources`, and requesting any other data
+  // source family fails with `PERMISSION_DENIED`.
+  //
+  // If no data point matches the requested data source family, the response is
+  // an empty list rather than an error.
+  //
+  // Filtering by data source family is not supported for the `sleep`, `food`
+  // and `food-measurement-unit` data types, because the underlying listing
+  // implementation cannot restrict results by data source. Such requests fail
+  // with `INVALID_ARGUMENT` when the data source family is set explicitly, and
+  // with `PERMISSION_DENIED` when the restriction is only implied by the
+  // caller's scopes. For `sleep`, use
+  // [ReconcileDataPoints][google.devicesandservices.health.v4beta.DataPointsService.ReconcileDataPoints]
+  // instead.
+  string data_source_family = 5 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Response containing raw data points matching the query
@@ -1022,7 +1088,7 @@ message BatchDeleteDataPointsRequest {
   //
   // For a list of the supported data types see the
   // [DataPoint
-  // data][google.devicesandservices.health.v4.DataPoint] union
+  // data][google.devicesandservices.health.v4beta.DataPoint] union
   // field.
   //
   // Deleting data points across multiple data type collections is supported
@@ -1070,7 +1136,7 @@ message ReconcileDataPointsRequest {
   //
   // For a list of the supported data types see the
   // [DataPoint
-  // data][google.devicesandservices.health.v4.DataPoint] union
+  // data][google.devicesandservices.health.v4beta.DataPoint] union
   // field.
   string parent = 1 [(google.api.field_behavior) = REQUIRED];
 
@@ -1089,7 +1155,7 @@ message ReconcileDataPointsRequest {
   //
   // A time range, either physical or civil, can be specified.
   // See the
-  // [ListDataPointsRequest.filter][google.devicesandservices.health.v4.ListDataPointsRequest.filter]
+  // [ListDataPointsRequest.filter][google.devicesandservices.health.v4beta.ListDataPointsRequest.filter]
   // for the supported fields and syntax.
   string filter = 4 [(google.api.field_behavior) = OPTIONAL];
 
@@ -1141,7 +1207,7 @@ message RollUpDataPointsRequest {
   // - `users/me/dataTypes/distance`
   //
   // For a list of the supported data types see the [RollupDataPoint
-  // value][google.devicesandservices.health.v4.RollupDataPoint]
+  // value][google.devicesandservices.health.v4beta.RollupDataPoint]
   // union field.
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
@@ -1225,7 +1291,7 @@ message DailyRollUpDataPointsRequest {
   // - `users/me/dataTypes/distance`
   //
   // For a list of the supported data types see the [DailyRollupDataPoint
-  // value][google.devicesandservices.health.v4.DailyRollupDataPoint]
+  // value][google.devicesandservices.health.v4beta.DailyRollupDataPoint]
   // union field.
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
@@ -1312,7 +1378,7 @@ message DataType {
   // Format: `users/{user}/dataTypes/{data_type}`
   //
   // See
-  // [DataPoint.name][google.devicesandservices.health.v4.DataPoint.name]
+  // [DataPoint.name][google.devicesandservices.health.v4beta.DataPoint.name]
   // for examples and possible values.
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 }
